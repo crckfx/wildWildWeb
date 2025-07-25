@@ -1,0 +1,4 @@
+.trash
+tools/node_modules
+dist
+private
