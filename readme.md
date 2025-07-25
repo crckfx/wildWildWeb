@@ -17,18 +17,15 @@ build-all.js is doing the following:
 node .\tools\diff-spot-2\resolve-all.js . .\dist  .\pages.json --write --clean --verbose
 ```
 
-
 ## usage: pages.json
 > *<strong>pages.json</strong>: mandatory file in root that defines all the pages for a build run*
 
 required for a given entry:
-
 - (key)
 - contentPath
 - title
 
 optional:
-
 - outputPath
 - imports
 - scripts
