@@ -1,8 +1,11 @@
 # wildWildWeb
 a project to supersede MathIsWild
 
+## usage: install
+uhh something something `cd .\tools`
+
 ## usage: build
-clean and build with verbouse output:
+clean and build with verbose output:
 ``` powershell
 node .\tools\build-all.js
 ```

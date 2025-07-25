@@ -17,7 +17,7 @@
         "title": "Away",
         "contentPath": "pages/away/away.html",
         "styles": [],
-        "headerPath": "components/header_secondary.html",
+        "headerPath": "components/header/header_secondary.html",
         "children": {
             "beach-house": {
                 "title": "Beach House",

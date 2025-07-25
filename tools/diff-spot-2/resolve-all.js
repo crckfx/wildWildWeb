@@ -18,7 +18,7 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
     const absDistRoot = path.resolve(distRoot);
 
     const defaultHeadContentPath = 'components/head-content.html';
-    const defaultHeaderPath = 'components/header.html';
+    const defaultHeaderPath = 'components/header/header.html';
     const defaultFooterPath = 'components/footer.html';
     const defaultTemplatePath = 'templates/page.ejs';
 
