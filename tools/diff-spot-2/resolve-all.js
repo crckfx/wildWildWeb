@@ -17,10 +17,10 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
     const absProjectRoot = path.resolve(projectRoot);
     const absDistRoot = path.resolve(distRoot);
 
-    const headContentPath = path.resolve(absProjectRoot, 'components/head-content.html');
-    const headerPath = path.resolve(absProjectRoot, 'components/header.html');
-    const footerPath = path.resolve(absProjectRoot, 'components/footer.html');
-    const templatePath = path.resolve(absProjectRoot, 'templates/page.ejs');
+    const defaultHeadContentPath = 'components/head-content.html';
+    const defaultHeaderPath = 'components/header.html';
+    const defaultFooterPath = 'components/footer.html';
+    const defaultTemplatePath = 'templates/page.ejs';
 
     const raw = fs.readFileSync(pagesJsonPath, "utf-8");
     const nested = JSON.parse(raw);
@@ -34,7 +34,16 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
     let totalDeleted = 0;
 
     for (const page of flatPages) {
-        const { title, contentPath, outputPath, pageId, imports = [], styles = [], scripts = [] } = page;
+        const {
+            title, contentPath, outputPath, pageId,
+            imports = [], styles = [], scripts = [],
+        } = page;
+
+        // All remaining paths: resolve user-provided or default to expected project-relative paths
+        const templatePath = path.resolve(absProjectRoot, page.templatePath ?? defaultTemplatePath);
+        const headContentPath = path.resolve(absProjectRoot, page.headContentPath ?? defaultHeadContentPath);
+        const headerPath = path.resolve(absProjectRoot, page.headerPath ?? defaultHeaderPath);
+        const footerPath = path.resolve(absProjectRoot, page.footerPath ?? defaultFooterPath);
 
         // ── Rendering Phase ──
         if (!contentPath || !outputPath) {
