@@ -19,7 +19,7 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
 
     const defaultHeadContentPath = 'components/head-content.html';
     const defaultHeaderPath = 'components/header/header.html';
-    const defaultFooterPath = 'components/footer.html';
+    const defaultFooterPath = 'components/footer/footer.html';
     const defaultTemplatePath = 'templates/page.ejs';
 
     const raw = fs.readFileSync(pagesJsonPath, "utf-8");

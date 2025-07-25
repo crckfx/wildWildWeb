@@ -21,11 +21,14 @@ node .\tools\diff-spot-2\resolve-all.js . .\dist  .\pages.json --write --clean -
 ## usage: pages.json
 > *<strong>pages.json</strong>: mandatory file in root that defines all the pages for a build run*
 
-required:
+required for a given entry:
+
+- (key)
 - contentPath
+- title
 
 optional:
-- title
+
 - outputPath
 - imports
 - scripts
