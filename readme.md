@@ -1,22 +1,34 @@
-# Wild Wild Web
+# wildWildWeb
 a project to supersede MathIsWild
 
 ## usage: build
-writes and cleans with verbose output:
+clean and build with verbouse output:
 ``` powershell
 node .\tools\build-all.js
 ```
 
 ### under the hood
-build-all.js does the following:
+build-all.js is doing the following:
 ``` powershell
-# (assuming your cd is the project root)
+# (assuming cd is the project root)
 node .\tools\diff-spot-2\resolve-all.js . .\dist  .\pages.json --write --clean --verbose
 ```
 
 
-### pages.json
-mandatory file in root that defines all the pages for a build run
+## usage: pages.json
+> *<strong>pages.json</strong>: mandatory file in root that defines all the pages for a build run*
+
+required:
+- contentPath
+
+optional:
+- title
+- outputPath
+- imports
+- scripts
+- styles
+- children
+
 
 for example:
 ``` json
