@@ -7,22 +7,17 @@ import { flattenPages } from "./read/flatten-pages.js";
 import { compareEntry } from "./read/compare-entry.js";
 import { renderPage } from "./render/render.js";
 import { applyChanges } from "./copy/write.js";
-import { isCLI, logChange, walkAllFiles } from "./etc/helpers.js";
+import { isCLI, loadJSON, logChange, walkAllFiles } from "./etc/helpers.js";
 
 // 🧠 Main function
-export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options = {}) {
+export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPath, options = {}) {
     const { write = false, clean = false, verbose = false } = options;
 
     const absProjectRoot = path.resolve(projectRoot);
     const absDistRoot = path.resolve(distRoot);
 
-    const defaultHeadContentPath = 'components/head-content.html';
-    const defaultHeaderPath = 'components/header/header.html';
-    const defaultFooterPath = 'components/footer/footer.html';
-    const defaultTemplatePath = 'templates/page.ejs';
-
-    const raw = fs.readFileSync(pagesJsonPath, "utf-8");
-    const nested = JSON.parse(raw);
+    const defaults = await loadJSON(configPath);
+    const nested = await loadJSON(pagesJsonPath);
     const flatPages = flattenPages(nested);
 
     const expectedPaths = new Set();
@@ -39,10 +34,10 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
         } = page;
 
         // All remaining paths: resolve user-provided or default to expected project-relative paths
-        const templatePath = path.resolve(absProjectRoot, page.templatePath ?? defaultTemplatePath);
-        const headContentPath = path.resolve(absProjectRoot, page.headContentPath ?? defaultHeadContentPath);
-        const headerPath = path.resolve(absProjectRoot, page.headerPath ?? defaultHeaderPath);
-        const footerPath = path.resolve(absProjectRoot, page.footerPath ?? defaultFooterPath);
+        const templatePath = path.resolve(absProjectRoot, page.templatePath ?? defaults.templatePath);
+        const headContentPath = path.resolve(absProjectRoot, page.headContentPath ?? defaults.headContentPath);
+        const headerPath = path.resolve(absProjectRoot, page.headerPath ?? defaults.headerPath);
+        const footerPath = path.resolve(absProjectRoot, page.footerPath ?? defaults.footerPath);
 
         // ── Rendering Phase ──
         if (!contentPath || !outputPath) {
@@ -134,11 +129,11 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
 // ─── CLI ENTRY ───
 if (isCLI(import.meta.url)) {
     const args = process.argv.slice(2);
-    const [projectRootArg, distRootArg, pagesJsonArg, ...rest] = args;
+    const [projectRootArg, distRootArg, pagesJsonArg, configJsonArg, ...rest] = args;
 
-    if (!projectRootArg || !distRootArg || !pagesJsonArg) {
+    if (!projectRootArg || !distRootArg || !pagesJsonArg || !configJsonArg) {
         console.error(
-            chalk.red("Usage: node resolve-all.js <projectRoot> <distRoot> <pagesJson> [--write] [--clean] [--verbose]")
+            chalk.red("Usage: node resolve-all.js <projectRoot> <distRoot> <pagesJson> <configJson> [--write] [--clean] [--verbose]")
         );
         process.exit(1);
     }
@@ -147,7 +142,7 @@ if (isCLI(import.meta.url)) {
     const cleanMode = rest.includes("--clean");
     const verboseMode = rest.includes("--verbose");
 
-    resolveAll(projectRootArg, distRootArg, pagesJsonArg, {
+    resolveAll(projectRootArg, distRootArg, pagesJsonArg, configJsonArg, {
         write: writeMode,
         clean: cleanMode,
         verbose: verboseMode,

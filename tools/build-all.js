@@ -10,10 +10,11 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, '..');
 const distRoot = path.resolve(projectRoot, 'dist');
 const pagesJson = path.resolve(projectRoot, 'pages.json');
+const configJson = path.resolve(projectRoot, 'config.json');
 
 // ─── CLI ENTRY ───
 if (isCLI(import.meta.url)) {
-    resolveAll(projectRoot, distRoot, pagesJson, {
+    resolveAll(projectRoot, distRoot, pagesJson, configJson, {
         write: true,
         clean: true,
         verbose: true,

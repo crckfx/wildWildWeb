@@ -1,7 +1,9 @@
 import fs from 'fs';
+import { readFile } from 'fs/promises';
 import chalk from "chalk";
 import path from "path";
 import { fileURLToPath } from 'url';
+
 
 // helper to 
 export function isCLI(callerMetaUrl) {
@@ -56,3 +58,12 @@ export function logChange(change, options = {}) {
 }
 
 
+/**
+ * Reads a UTF-8 file and parses its contents as JSON.
+ * @param {string} filePath - The path to the JSON file.
+ * @returns {Promise<any>} The parsed JSON object.
+ */
+export async function loadJSON(filePath) {
+    const text = await readFile(filePath, 'utf8');
+    return JSON.parse(text);
+}

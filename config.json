@@ -1,0 +1,6 @@
+{
+    "headContentPath": "components/head-content.html",
+    "headerPath": "components/header/header.html",
+    "footerPath": "components/footer/footer.html",
+    "templatePath": "templates/page.ejs"
+}
