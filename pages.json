@@ -44,7 +44,6 @@
     },
     "splat": {
         "title": "Splat",
-        "contentPath": "pages/splat/splat.html",
-        "styles": ["/css/theme.css"]
+        "contentPath": "pages/splat/splat.html"
     }
 }

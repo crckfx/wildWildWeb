@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { ensureDir } from '../etc/helpers.js';
 
 export function applyChanges(changes) {
     const written = [];
@@ -21,8 +22,3 @@ export function applyChanges(changes) {
     return written;
 }
 
-function ensureDir(dirPath) {
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-    }
-}

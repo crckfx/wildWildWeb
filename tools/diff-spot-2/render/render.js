@@ -3,13 +3,9 @@ import ejs from 'ejs';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
+import { ensureDir } from '../etc/helpers.js';
 
-// helper function to create a directory if it doesn't exist
-function ensureDir(dirPath) {
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
-    }
-}
+
 
 // helper function to read file as utf8
 const readTextFile = (filePath) => readFile(filePath, 'utf8');

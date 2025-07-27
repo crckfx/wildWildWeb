@@ -8,7 +8,7 @@ import { flattenPages } from "./read/flatten-pages.js";
 import { compareEntry } from "./read/compare-entry.js";
 import { renderPage } from "./render/render.js";
 import { applyChanges } from "./copy/write.js";
-import { logChange, walkAllFiles } from "./copy/misc.js";
+import { logChange, walkAllFiles } from "./etc/helpers.js";
 
 // 🧠 Main function
 export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options = {}) {

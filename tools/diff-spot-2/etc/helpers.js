@@ -1,6 +1,14 @@
-import fs from "fs";
+import fs from 'fs';
 import chalk from "chalk";
 import path from "path";
+
+
+// helper function to create a directory if it doesn't exist
+export function ensureDir(dirPath) {
+    if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+    }
+}
 
 // ------------------ HELPERS ------------------
 

@@ -3,7 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { scanDifferences } from "../copy/scan.js";
-import { logChange } from "../copy/misc.js";
+import { logChange } from "../etc/helpers.js";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
 

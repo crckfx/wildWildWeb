@@ -65,7 +65,6 @@ for example:
                         "title": "Rule #1",
                         "contentPath": "pages/away/beach-house/dont-tell-michael/dont-tell-michael.html",
                         "styles": [ "/away/beach-house/beach-house.css" ],
-                        "scripts": [ "/js/global.js" ]
                     }
                 }
             }
