@@ -24,6 +24,7 @@ export async function renderPage({
     footerPath,
     outputPath,
     scripts,
+    modules,
     styles
 }) {
     // define the main variables
@@ -38,6 +39,10 @@ export async function renderPage({
         .map(src => `<script src="${src}"></script>`)
         .join('\n');
 
+    const moduleTags = (Array.isArray(modules) ? modules : [])
+        .map(src => `<script type="module" src="${src}"></script>`)
+        .join('\n');
+
     const styleTags = (Array.isArray(styles) ? styles : [])
         .map(href => `<link rel="stylesheet" href="${href}">`)
         .join('\n');
@@ -50,6 +55,7 @@ export async function renderPage({
         footer,
         body,
         scripts: scriptTags,
+        modules: moduleTags,
         styles: styleTags,
     });
 

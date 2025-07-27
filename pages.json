@@ -5,13 +5,12 @@
         "outputPath": "dist/index.html",
         "imports": [
             "css",
-            "js"
+            "js",
+            "assets/favicon.ico"
         ],
         "styles": [],
-        "scripts": [
-            "/js/global.js"
-        ],
-        "modules": []
+        "scripts": [],
+        "modules": ["/js/global.js"]
     },
     "away": {
         "title": "Away",
@@ -37,13 +36,15 @@
                         "contentPath": "pages/away/beach-house/dont-tell-michael/dont-tell-michael.html",
                         "styles": [
                             "/away/beach-house/beach-house.css"
-                        ],
-                        "scripts": [
-                            "/js/global.js"
                         ]
                     }
                 }
             }
         }
+    },
+    "splat": {
+        "title": "Splat",
+        "contentPath": "pages/splat/splat.html",
+        "styles": ["/css/theme.css"]
     }
 }

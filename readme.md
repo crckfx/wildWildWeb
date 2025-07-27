@@ -2,7 +2,8 @@
 a project to supersede MathIsWild
 
 ## usage: install
-uhh something something `cd .\tools`
+uhh something something 
+`cd .\tools`
 
 ## usage: build
 clean and build with verbose output:
@@ -21,7 +22,7 @@ node .\tools\diff-spot-2\resolve-all.js . .\dist  .\pages.json --write --clean -
 > *<strong>pages.json</strong>: mandatory file in root that defines all the pages for a build run*
 
 required for a given entry:
-- (key)
+- (a unique key)
 - contentPath
 - title
 
@@ -30,6 +31,7 @@ optional:
 - imports
 - scripts
 - styles
+- modules
 - children
 
 

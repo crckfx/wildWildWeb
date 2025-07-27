@@ -4,18 +4,22 @@
 
 body {
     margin: 0;
+
+    background-color: var(--color-bg-1);
+    color: var(--color-text-1);
+
 }
 
 main {
     display: flex;
     align-items: center;
     flex-direction: column;
-    flex: 1
+    flex: 1;
 }
 
 .site-header {
-    background-color: red;
-    color: white;
+    background: var(--header-bg);
+    color: var(--footer-text);
     padding: 1rem 0;
     display: flex;
     flex-direction: column;
@@ -29,9 +33,14 @@ main {
 }
 
 .site-footer {
-    background-color: blue;
-    color: white;
+    background: var(--footer-bg);
+    color: var(--footer-text);
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+
+.site-footer fieldset {
+    border: none;
 }

@@ -6,6 +6,6 @@
 
 ## current
 
-- [ ] make ensureDir() a global function
-- [ ] make isCLI() a global function
+- [ ] (in build tools) make ensureDir() a global function
+- [ ] (in build tools) make isCLI() a global function
 - [ ] ?

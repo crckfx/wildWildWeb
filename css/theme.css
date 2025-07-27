@@ -1,0 +1,43 @@
+/* Theme tokens */
+[data-theme="light"] {
+    --color-bg-1: hsl(210, 20%, 98%);
+    --color-bg-2: hsl(210, 20%, 92%);
+    --color-bg-3: hsl(210, 20%, 80%);
+
+    --color-text-1: #1A202C;
+    --color-text-2: #113840;
+    --color-text-3: #3f3f3f;
+
+    --color-accent: #0070f3;
+
+    --header-text: white;
+    --header-bg: #4c94c7;
+    
+    --footer-text: white;
+    --footer-bg: radial-gradient(circle at bottom right,
+            #73acca,
+            #4c94c7 80%);
+
+}
+
+[data-theme="dark"] {
+    --color-bg-1: hsl(220, 26%, 14%);
+    --color-bg-2: hsl(220, 26%, 20%);
+    --color-bg-3: hsl(220, 26%, 25%);
+
+    --color-text-1: #F9FAFB;
+    --color-text-2: #96d5e3;
+    --color-text-3: #cecece;
+
+    --color-accent: #79ffe1;
+
+    --header-text: white;
+    --header-bg: #0b66a7;
+    
+    --footer-text: white;
+    --footer-bg: radial-gradient(circle at bottom right,
+            #2882b3,
+            #0b66a7 80%);
+}
+
+

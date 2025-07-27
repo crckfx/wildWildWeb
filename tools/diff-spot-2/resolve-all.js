@@ -36,7 +36,7 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
     for (const page of flatPages) {
         const {
             title, contentPath, outputPath, pageId,
-            imports = [], styles = [], scripts = [],
+            imports = [], styles = [], scripts = [], modules = [],
         } = page;
 
         // All remaining paths: resolve user-provided or default to expected project-relative paths
@@ -62,6 +62,7 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
                     footerPath,
                     templatePath,
                     scripts,
+                    modules,
                     styles,
                 });
                 totalRendered++;
