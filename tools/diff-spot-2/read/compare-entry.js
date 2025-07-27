@@ -3,9 +3,7 @@
 import fs from "fs";
 import path from "path";
 import { scanDifferences } from "../copy/scan.js";
-import { logChange } from "../etc/helpers.js";
-import { fileURLToPath } from "url";
-import chalk from "chalk";
+import { isCLI, logChange } from "../etc/helpers.js";
 
 /**
  * Resolves imports for a single page config (dry run).
@@ -61,8 +59,7 @@ export function compareEntry(absProjectRoot, pageConfig, options = {}) {
 }
 
 // CLI entry point
-
-if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+if (isCLI(import.meta.url)) {
     const args = process.argv.slice(2);
     const [projectRootArg, jsonEntryPath, ...rest] = args;
 

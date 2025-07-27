@@ -2,7 +2,6 @@
 
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 import chalk from "chalk";
 import { flattenPages } from "./read/flatten-pages.js";
 import { compareEntry } from "./read/compare-entry.js";
@@ -133,7 +132,6 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
 }
 
 // ─── CLI ENTRY ───
-// if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
 if (isCLI(import.meta.url)) {
     const args = process.argv.slice(2);
     const [projectRootArg, distRootArg, pagesJsonArg, ...rest] = args;

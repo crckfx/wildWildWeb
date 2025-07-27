@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import { isCLI } from '../etc/helpers.js';
 
 /**
  * Recursively flattens the nested pages structure into a flat array.
@@ -62,7 +62,7 @@ function printFlattenedPages(flatPages) {
 
 // ────── CLI ENTRY POINT ──────
 
-if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+if (isCLI(import.meta.url)) {
     const args = process.argv.slice(2);
     const [projectRootArg, distRootArg, pagesJsonArg] = args;
 

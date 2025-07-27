@@ -1,8 +1,8 @@
 import { resolveAll } from "./diff-spot-2/resolve-all.js"
-import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import chalk from "chalk";
+import { isCLI } from "./diff-spot-2/etc/helpers.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,7 +12,7 @@ const distRoot = path.resolve(projectRoot, 'dist');
 const pagesJson = path.resolve(projectRoot, 'pages.json');
 
 // ─── CLI ENTRY ───
-if (fs.realpathSync(process.argv[1]) === fs.realpathSync(__filename)) {
+if (isCLI(import.meta.url)) {
     resolveAll(projectRoot, distRoot, pagesJson, {
         write: true,
         clean: true,
