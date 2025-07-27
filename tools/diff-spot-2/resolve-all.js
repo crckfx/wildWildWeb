@@ -8,7 +8,7 @@ import { flattenPages } from "./read/flatten-pages.js";
 import { compareEntry } from "./read/compare-entry.js";
 import { renderPage } from "./render/render.js";
 import { applyChanges } from "./copy/write.js";
-import { logChange, walkAllFiles } from "./etc/helpers.js";
+import { isCLI, logChange, walkAllFiles } from "./etc/helpers.js";
 
 // 🧠 Main function
 export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options = {}) {
@@ -133,7 +133,8 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, options =
 }
 
 // ─── CLI ENTRY ───
-if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+// if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+if (isCLI(import.meta.url)) {
     const args = process.argv.slice(2);
     const [projectRootArg, distRootArg, pagesJsonArg, ...rest] = args;
 

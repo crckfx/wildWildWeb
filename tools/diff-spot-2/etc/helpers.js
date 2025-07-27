@@ -1,6 +1,17 @@
 import fs from 'fs';
 import chalk from "chalk";
 import path from "path";
+import { fileURLToPath } from 'url';
+
+// helper to 
+export function isCLI(callerMetaUrl) {
+    if (!process.argv[1]) return false; // safeguard if no argv[1]
+
+    const invokedPath = fs.realpathSync(process.argv[1]);
+    const callerPath = fs.realpathSync(fileURLToPath(callerMetaUrl));
+
+    return invokedPath === callerPath;
+}
 
 
 // helper function to create a directory if it doesn't exist
@@ -43,3 +54,5 @@ export function logChange(change, options = {}) {
 
     console.log(`${tag} ${rel}`);
 }
+
+

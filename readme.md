@@ -1,21 +1,26 @@
 # wildWildWeb
 a project to supersede MathIsWild
 
-## usage: install
-uhh something something 
-`cd .\tools`
+## installation
+```bash
+# clone the repo
+git clone git@github.org:crckfx/wildWildWeb
+# install the tools' npm dependencies:
+cd wildWildWeb/tools
+npm install
+```
 
-## usage: build
+## building
 clean and build with verbose output:
-``` powershell
-node .\tools\build-all.js
+```bash
+node ./tools/build-all.js
 ```
 
 ### under the hood
 build-all.js is doing the following:
-``` powershell
+``` bash
 # (assuming cd is the project root)
-node .\tools\diff-spot-2\resolve-all.js . .\dist  .\pages.json --write --clean --verbose
+node ./tools/diff-spot-2/resolve-all.js . ./dist  ./pages.json --write --clean --verbose
 ```
 
 ## usage: pages.json

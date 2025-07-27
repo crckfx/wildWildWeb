@@ -1,9 +1,7 @@
 import { readFile, writeFile } from 'fs/promises';
 import ejs from 'ejs';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
 import path from 'path';
-import { ensureDir } from '../etc/helpers.js';
+import { ensureDir, isCLI } from '../etc/helpers.js';
 
 
 
@@ -62,7 +60,9 @@ export async function renderPage({
 }
 
 // CLI entry point (outdated)
-if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+// if (fs.realpathSync(process.argv[1]) === fs.realpathSync(fileURLToPath(import.meta.url))) {
+if (isCLI(import.meta.url)) {
+    
     const args = process.argv.slice(2);
     const [pagePath, templatePath, headContentPath, headerPath, footerPath, outputPath] = args;
 
