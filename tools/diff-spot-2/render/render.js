@@ -18,7 +18,11 @@ export async function renderPage({
     outputPath,
     scripts,
     modules,
-    styles
+    styles,
+    globalHtmlPath,
+    navPath,
+    articleId,
+    image,
 }) {
     // define the main variables
     const [head, header, footer, body] = await Promise.all([
@@ -27,6 +31,9 @@ export async function renderPage({
         readTextFile(footerPath),
         readTextFile(pagePath),
     ]);
+
+    // this is meant to be an optional build component. if it's empty we should simply not pass it to ejs.
+    const global = globalHtmlPath ? await readTextFile(globalHtmlPath) : null;
 
     const scriptTags = (Array.isArray(scripts) ? scripts : [])
         .map(src => `<script src="${src}"></script>`)
@@ -50,6 +57,10 @@ export async function renderPage({
         scripts: scriptTags,
         modules: moduleTags,
         styles: styleTags,
+        global,
+        navPath,
+        articleId,
+        image
     });
 
     // save the file
@@ -60,7 +71,7 @@ export async function renderPage({
 
 // CLI entry point (outdated)
 if (isCLI(import.meta.url)) {
-    
+
     const args = process.argv.slice(2);
     const [pagePath, templatePath, headContentPath, headerPath, footerPath, outputPath] = args;
 

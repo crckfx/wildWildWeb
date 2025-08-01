@@ -48,7 +48,7 @@ export function logChange(change, options = {}) {
         DIFFERS: chalk.green("[DIFFERS]"),
         WRITTEN: chalk.cyan("[WRITTEN]"),
         SKIP: chalk.dim("[SKIP]"),
-        DELETE: chalk.red("[DELETE]"),
+        DELETE: chalk.hex("#FF8800")("[DELETE]"),
     }[change.status] || `[${change.status}]`;
 
     // Skip quiet statuses unless verbose

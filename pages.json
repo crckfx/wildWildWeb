@@ -27,9 +27,6 @@
                 "styles": [
                     "/away/beach-house/beach-house.css"
                 ],
-                "scripts": [
-                    "/js/global.js"
-                ],
                 "children": {
                     "dont-tell-michael": {
                         "title": "Rule #1",

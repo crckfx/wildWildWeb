@@ -13,12 +13,17 @@ import { isCLI, loadJSON, logChange, walkAllFiles } from "./etc/helpers.js";
 export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPath, options = {}) {
     const { write = false, clean = false, verbose = false } = options;
 
-    const absProjectRoot = path.resolve(projectRoot);
-    const absDistRoot = path.resolve(distRoot);
+    const root = path.resolve(projectRoot);
+    const dist = path.resolve(distRoot);
 
     const defaults = await loadJSON(configPath);
     const nested = await loadJSON(pagesJsonPath);
     const flatPages = flattenPages(nested);
+
+    // resolve the optional shared global HTML path (only once)
+    const defaultGlobalHtmlPath = defaults.globalHtmlPath
+        ? path.resolve(root, defaults.globalHtmlPath)
+        : null;
 
     const expectedPaths = new Set();
     const allChanges = [];
@@ -31,20 +36,26 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPat
         const {
             title, contentPath, outputPath, pageId,
             imports = [], styles = [], scripts = [], modules = [],
+            navPath = null, articleId = null, image = null,
         } = page;
 
         // All remaining paths: resolve user-provided or default to expected project-relative paths
-        const templatePath = path.resolve(absProjectRoot, page.templatePath ?? defaults.templatePath);
-        const headContentPath = path.resolve(absProjectRoot, page.headContentPath ?? defaults.headContentPath);
-        const headerPath = path.resolve(absProjectRoot, page.headerPath ?? defaults.headerPath);
-        const footerPath = path.resolve(absProjectRoot, page.footerPath ?? defaults.footerPath);
+        const templatePath = path.resolve(root, page.templatePath ?? defaults.templatePath);
+        const headContentPath = path.resolve(root, page.headContentPath ?? defaults.headContentPath);
+        const headerPath = path.resolve(root, page.headerPath ?? defaults.headerPath);
+        const footerPath = path.resolve(root, page.footerPath ?? defaults.footerPath);
+        
+        const globalHtmlPath = page.globalHtmlPath
+            ? path.resolve(root, page.globalHtmlPath)
+            : defaultGlobalHtmlPath;
+
 
         // ── Rendering Phase ──
         if (!contentPath || !outputPath) {
             if (verbose) console.warn(chalk.gray(`[SKIP] ${pageId}: no contentPath or outputPath`));
         } else {
-            const pagePath = path.resolve(absProjectRoot, contentPath);
-            const outputHtmlPath = path.resolve(absProjectRoot, outputPath);
+            const pagePath = path.resolve(root, contentPath);
+            const outputHtmlPath = path.resolve(root, outputPath);
 
             if (fs.existsSync(pagePath)) {
                 await renderPage({
@@ -58,6 +69,10 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPat
                     scripts,
                     modules,
                     styles,
+                    globalHtmlPath,
+                    navPath,
+                    articleId,
+                    image
                 });
                 totalRendered++;
             } else {
@@ -66,7 +81,7 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPat
         }
 
         // ── Resolve Imports Phase ──
-        const result = compareEntry(absProjectRoot, page, {
+        const result = compareEntry(root, page, {
             verbose,
             pageId,
         });
@@ -79,12 +94,12 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPat
 
         // Track output HTML path as expected (rendered output)
         if (outputPath) {
-            const htmlOut = path.resolve(absProjectRoot, outputPath);
+            const htmlOut = path.resolve(root, outputPath);
             expectedPaths.add(htmlOut);
         }
 
         // Also track expected import destinations
-        const outputDir = path.resolve(absProjectRoot, path.dirname(outputPath));
+        const outputDir = path.resolve(root, path.dirname(outputPath));
         for (const importPath of imports) {
             const dst = path.join(outputDir, path.basename(importPath));
             expectedPaths.add(path.resolve(dst));
@@ -106,10 +121,10 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPat
     console.log(`✅ Rendered ${totalRendered} pages.`);
 
     if (clean) {
-        const allDistFiles = walkAllFiles(absDistRoot);
+        const allDistFiles = walkAllFiles(dist);
         for (const abs of allDistFiles) {
             if (!expectedPaths.has(abs)) {
-                const rel = path.relative(absDistRoot, abs);
+                const rel = path.relative(dist, abs);
                 logChange({ status: "DELETE", relative: rel });
                 fs.unlinkSync(abs);
                 totalDeleted++;
@@ -129,12 +144,10 @@ export async function resolveAll(projectRoot, distRoot, pagesJsonPath, configPat
 // ─── CLI ENTRY ───
 if (isCLI(import.meta.url)) {
     const args = process.argv.slice(2);
-    const [projectRootArg, distRootArg, pagesJsonArg, configJsonArg, ...rest] = args;
+    const [root, dist, pages, config, ...rest] = args;
 
-    if (!projectRootArg || !distRootArg || !pagesJsonArg || !configJsonArg) {
-        console.error(
-            chalk.red("Usage: node resolve-all.js <projectRoot> <distRoot> <pagesJson> <configJson> [--write] [--clean] [--verbose]")
-        );
+    if (!root || !dist || !pages || !config) {
+        console.log("Usage: node resolve-all.js <projectRoot> <distRoot> <pagesJson> <configJson> [--write] [--clean] [--verbose]");
         process.exit(1);
     }
 
@@ -142,7 +155,7 @@ if (isCLI(import.meta.url)) {
     const cleanMode = rest.includes("--clean");
     const verboseMode = rest.includes("--verbose");
 
-    resolveAll(projectRootArg, distRootArg, pagesJsonArg, configJsonArg, {
+    resolveAll(root, dist, pages, config, {
         write: writeMode,
         clean: cleanMode,
         verbose: verboseMode,
