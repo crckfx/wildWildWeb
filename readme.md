@@ -1,26 +1,14 @@
 # wildWildWeb
 a project to supersede MathIsWild
-
-## installation
-```bash
-# clone the repo
-git clone git@github.org:crckfx/wildWildWeb
-# install the tools' npm dependencies:
-cd wildWildWeb/tools
-npm install
-```
+- initially got swallowed up by its build tool
+- then, the build tool was separated into a project called *pageGoblin*
+- now, it's a site to supersede MathIsWild again (built with pageGoblin)
 
 ## building
-clean and build with verbose output:
-```bash
-node ./tools/build-all.js
-```
-
-### under the hood
-build-all.js is doing the following:
-``` bash
-# (assuming cd is the project root)
-node ./tools/diff-spot-2/resolve-all.js . ./dist  ./pages.json --write --clean --verbose
+- basically just call pageGoblin and provide *projectDir*, *buildDir*, *config*, *--write* & *--clean*
+- currently just using a powershell script containing:
+```powershell
+node Z:/dev/node/pageGoblin/resolve-all.js . ./dist ./config.json --write --clean
 ```
 
 ## usage: pages.json

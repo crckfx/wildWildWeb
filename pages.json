@@ -2,7 +2,7 @@
     "home": {
         "title": "Home",
         "contentPath": "pages/home/home.html",
-        "outputPath": "dist/index.html",
+        "outDir": "/",
         "imports": [
             "css",
             "js",
@@ -27,12 +27,18 @@
                 "styles": [
                     "/away/beach-house/beach-house.css"
                 ],
+                "templatePath": "templates/page_blank.ejs",
                 "children": {
                     "dont-tell-michael": {
                         "title": "Rule #1",
                         "contentPath": "pages/away/beach-house/dont-tell-michael/dont-tell-michael.html",
                         "styles": [
                             "/away/beach-house/beach-house.css"
+                        ]
+                    },
+                    "stash": {
+                        "imports": [
+                            "private/3616116-middle-4146237521.png"
                         ]
                     }
                 }
