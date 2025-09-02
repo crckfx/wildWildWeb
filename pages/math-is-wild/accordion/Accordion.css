@@ -12,7 +12,6 @@
     overflow: hidden;
     /* overridden by class? */
     border-radius: 8px;    
-    /* overridden by class? */
     gap: 2px;
     /* remember, the transparent border exposes the background */
     border: 2px solid transparent;
