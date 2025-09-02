@@ -125,19 +125,19 @@
 /* ----------------------------- */
 
 #calculator #arrowLeft {
-    background-image: url('../../Images/svg/leftArrow-white.svg');
+    background-image: url('/resources/images/svg/leftArrow-white.svg');
     background-size: 60% 60%;
     background-position: center;
     background-repeat: no-repeat;    
 }
 #calculator #arrowRight {
-    background-image: url('../../Images/svg/rightArrow-white.svg');
+    background-image: url('/resources/images/svg/rightArrow-white.svg');
     background-size: 60% 60%;
     background-position: center;
     background-repeat: no-repeat;    
 }
 #calculator #backspace {
-    background-image: url('../../Images/svg/backspace-white.svg');
+    background-image: url('/resources/images/svg/backspace-white.svg');
     background-size: 60% 60%;
     background-position: center;
     background-repeat: no-repeat;    

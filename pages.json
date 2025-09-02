@@ -6,6 +6,7 @@
         "imports": [
             "css",
             "js",
+            "resources",
             "assets/favicon.ico"
         ],
         "styles": [],
