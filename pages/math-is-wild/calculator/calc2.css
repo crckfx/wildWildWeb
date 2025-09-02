@@ -1,0 +1,144 @@
+.calc_container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 10px;
+}
+
+#calculator {
+    background-color: #555;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    padding: 20px;
+    max-width: 500px;
+    flex: 1;
+    width: 100%;
+    /* only for if it's a flex item */
+    box-sizing: border-box;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 16px;
+}
+
+/* note: used to be '.buttons.mobile'; making it global style for now */
+#calculator .buttons {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columns, each takes an equal fraction of the width */
+    /* grid-auto-rows: minmax(50px, 1fr); */
+
+    /* width: 100%; */
+    /* height: 100%; */
+}
+
+#calculator .button {
+    /* font-family: 'Roboto', 'Noto Sans', Arial, sans-serif; */
+    font-size: 1.5rem;
+    color: #d0d0d0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    padding: 0;
+    box-sizing: content-box;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+    min-width: 3rem;
+    min-height: 3rem;
+    /* aspect-ratio: 1/1; */
+}
+
+
+#calculator .control.button {
+    background-color: #44a;
+}
+
+#calculator .button.digit,
+#calculator .button.operand {
+    background-color: #222;
+}
+
+#calculator .button.control:active {
+    background-color: #227;
+}
+
+#calculator .button.digit:active,
+#calculator .button.operand:active {
+    background-color: #000;
+}
+
+/* ----------------------------- */
+/* ---- output area ---- */
+#calculator #prevInputArea {
+    color: #d0d0d0;
+    border: 4px solid transparent;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    background-color: #444;
+    height: 2rem;
+    margin-bottom: 10px;
+    text-align: right;
+
+    display: -webkit-box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+#calculator #prevInputArea.soft {
+    color: #d0d0d040;
+}
+
+/* ----------------------------- */
+
+/* ----------------------------- */
+/* ---- input area ---- */
+#calculator #textArea {
+    border: 4px solid transparent;
+    border-radius: 8px;
+    font-size: 2rem;
+    background-color: #888;
+    height: 5rem;
+    margin-bottom: 10px;
+    display: block;
+    width: 100%;
+    text-align: right;
+    box-sizing: border-box;
+    color: white;
+    text-align: right;
+    word-wrap: none;
+}
+
+#calculator #textArea:focus {
+    outline: none;
+}
+
+/* ----------------------------- */
+
+#calculator #arrowLeft {
+    background-image: url('../../Images/svg/leftArrow-white.svg');
+    background-size: 60% 60%;
+    background-position: center;
+    background-repeat: no-repeat;    
+}
+#calculator #arrowRight {
+    background-image: url('../../Images/svg/rightArrow-white.svg');
+    background-size: 60% 60%;
+    background-position: center;
+    background-repeat: no-repeat;    
+}
+#calculator #backspace {
+    background-image: url('../../Images/svg/backspace-white.svg');
+    background-size: 60% 60%;
+    background-position: center;
+    background-repeat: no-repeat;    
+}

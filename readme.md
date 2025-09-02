@@ -5,11 +5,12 @@ a project to supersede MathIsWild
 - now, it's a site to supersede MathIsWild again (built with pageGoblin)
 
 ## building
-- basically just call pageGoblin and provide *projectDir*, *buildDir*, *config*, *--write* & *--clean*
-- currently just using a powershell script containing:
+- you need to have *pageGoblin* installed
+for example:
 ```powershell
 node Z:/dev/node/pageGoblin/resolve-all.js . ./dist ./config.json --write --clean
 ```
+- currently just using a powershell script containing the above
 
 ## usage: pages.json
 > *<strong>pages.json</strong>: mandatory file in root that defines all the pages for a build run*

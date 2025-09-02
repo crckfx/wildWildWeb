@@ -10,7 +10,9 @@
         ],
         "styles": [],
         "scripts": [],
-        "modules": ["/js/global.js"]
+        "modules": [
+            "/js/global.js"
+        ]
     },
     "away": {
         "title": "Away",
@@ -48,5 +50,22 @@
     "splat": {
         "title": "Splat",
         "contentPath": "pages/splat/splat.html"
+    },
+    "calculator": {
+        "title": "Calculator",
+        "contentPath": "pages/math-is-wild/calculator/calculator.html",
+        "imports": [
+            "pages/math-is-wild/calculator/calc2.css",
+            "pages/math-is-wild/calculator/js"
+        ],
+        "styles": [
+            "./calc2.css"
+        ],
+        "scripts": [
+            "./js/local_Parser.js",
+            "./js/local_Calculator.js",
+            "./js/local_main.js",
+            "./js/local_tester.js"
+        ]
     }
 }

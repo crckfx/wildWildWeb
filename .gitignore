@@ -3,5 +3,5 @@ tools/node_modules
 dist
 private
 .pageGoblin
-
+resources
 build.ps1
