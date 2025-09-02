@@ -10,12 +10,10 @@
     color: var(--color-text);
     display: grid;
     overflow: hidden;
-    border-radius: 8px;
+    /* overridden by class? */
+    border-radius: 8px;    
     /* overridden by class? */
     gap: 2px;
-    /* overridden by class? */
-    /* gap: var(--accordion-gap);  */
-    /* gap: var(--accordion-gap, 2px); Default to 2px if not set */
     /* remember, the transparent border exposes the background */
     border: 2px solid transparent;
 }
