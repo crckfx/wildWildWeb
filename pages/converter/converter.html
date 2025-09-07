@@ -1,0 +1,31 @@
+<div class="wrap">
+	<h2>converters</h2>
+	<p>or maybe it should be called "processing"</p>
+	<p>a section for pages that convert files, or more generally "put some data in and get something out"</p>
+	<div>
+		<p><a href="./svg2png">svg2png</a></p>
+	</div>
+
+	<div>
+		<p>created class "ploder" for a reusable "upload file(s) box"</p>
+        <p>for example:</p>
+		<div id="hohoho" class="ploder">Drag and drop here (or click?)</div>
+        
+		<p>todo: allow the specifics of the ploder to be defined in HTML? as in use a global JS include to activate a ploder?</p>
+	</div>
+
+</div>
+
+
+
+<script type="module">
+	import {
+		Ploder
+	} from './Ploder.js';
+
+	// Instantiate with "accept only text/plain"
+	new Ploder(document.getElementById('hohoho'), {
+		accept: 'text/plain',
+		pattern: /^text\// // only text files
+	});
+</script>

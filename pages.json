@@ -79,5 +79,33 @@
         "styles": [
             "./Accordion.css"
         ]
+    },
+    "converter": {
+        "title": "Converters",
+        "contentPath": "pages/converter/converter.html",
+        "imports": [
+            "pages/converter/Ploder.js",
+            "pages/converter/ploder.css"
+        ],
+        "styles": [
+            "/converter/ploder.css"
+        ],
+        "children": {
+            "svg2png": {
+                "title": "SVG to PNG",
+                "contentPath": "pages/converter/svg2png/svg2png.html",
+                "imports": [
+                    "pages/converter/Ploder.js",
+                    "pages/converter/ploder.css",
+                    "pages/converter/svg2png/svg2png.js"
+                ],
+                "styles": [
+                    "/converter/svg2png/ploder.css"
+                ],
+                "modules": [
+                    "svg2png.js"
+                ]
+            }
+        }
     }
 }
