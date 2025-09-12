@@ -4,7 +4,8 @@
 
 body {
     margin: 0;
-
+    font-family: "Kanit", sans-serif;
+    font-style: normal;
     background-color: var(--color-bg-1);
     color: var(--color-text-1);
 
