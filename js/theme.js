@@ -11,11 +11,9 @@ function resolveTheme(choice) {
 
 function applyTheme(choice) {
     // apply the theme
-    document.body.dataset.theme = resolveTheme(choice);
-
+    document.documentElement.dataset.theme = resolveTheme(choice);
     // save the choice
     localStorage.setItem('theme', choice);
-
     // update the UI
     if (select) select.value = choice;
 }
