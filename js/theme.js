@@ -1,21 +1,35 @@
-function getPreferredTheme() {
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const validThemes = ['light', 'dark', 'system'];
+const select = document.querySelector('.color-picker select');
+
+function getSystemTheme() {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function applyTheme(mode) {
-    const theme = (mode === 'auto') ? getPreferredTheme() : mode;
-    document.body.setAttribute('data-theme', theme);
+function resolveTheme(choice) {
+    return choice === 'system' ? getSystemTheme() : choice;
+}
+
+function applyTheme(choice) {
+    // apply the theme
+    document.body.dataset.theme = resolveTheme(choice);
+
+    // save the choice
+    localStorage.setItem('theme', choice);
+
+    // update the UI
+    if (select) select.value = choice;
 }
 
 export function loadTheme() {
-    const select = document.querySelector('.color-picker select');
     if (!select) return;
 
-    // Apply initial selection
-    applyTheme(select.value);
+    // load theme from storage 
+    let saved = localStorage.getItem('theme');
+    // if it's not valid, use 'system'
+    if (!validThemes.includes(saved)) saved = 'system';
+
+    applyTheme(saved);
 
     // Listen for user changes
-    select.addEventListener('change', () => {
-        applyTheme(select.value);
-    });
+    select.addEventListener('change', () => applyTheme(select.value));
 }
