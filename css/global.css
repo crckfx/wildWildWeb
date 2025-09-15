@@ -20,6 +20,7 @@ main {
     align-items: center;
     flex-direction: column;
     flex: 1;
+    overflow-x: hidden;
 }
 
 .site-header {
@@ -48,4 +49,11 @@ main {
 
 .site-footer fieldset {
     border: none;
+}
+
+#global-icons {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
 }

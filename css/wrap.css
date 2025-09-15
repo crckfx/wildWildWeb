@@ -7,6 +7,12 @@
     width: 85%;
 }
 
+.wrap-small {
+    width: 100%;
+    max-width: 700px;
+}
+
 .marge1 {
     margin-top: 48px;
+    margin-bottom: 48px;
 }

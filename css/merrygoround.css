@@ -1,0 +1,227 @@
+.carousel {
+    position: relative;
+    width: 100%;
+    margin: 32px 0;
+}
+
+.carousel-inner {
+    position: relative;
+    height: 100%;
+    min-height: 300px;
+}
+
+.carousel-item {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    padding: 0;
+}
+
+.carousel-item.active {
+    display: flex;
+    transform: translateX(0);
+    z-index: 2;
+    opacity: 1;
+}
+
+
+.carousel-item.slide-in {
+    opacity: 1;
+}
+
+.carousel-item.slide-out {
+    opacity: 0;
+}
+
+.carousel-item.carousel-item-next,
+.carousel-item.carousel-item-prev {
+    display: flex;
+    z-index: 1;
+}
+
+/* Positions when sliding */
+.carousel-item.carousel-item-next.carousel-item-start {
+    transform: translateX(100%);
+}
+
+.carousel-item.carousel-item-next.carousel-item-start.slide-in {
+    transform: translateX(0);
+}
+
+.carousel-item.carousel-item-prev.carousel-item-end {
+    transform: translateX(-100%);
+}
+
+.carousel-item.carousel-item-prev.carousel-item-end.slide-in {
+    transform: translateX(0);
+}
+
+.carousel-item.active.carousel-item-start.slide-out {
+    transform: translateX(-100%);
+}
+
+.carousel-item.active.carousel-item-end.slide-out {
+    transform: translateX(100%);
+}
+
+/* Buttons */
+.btn-group {
+    margin-top: 1rem;
+    text-align: center;
+    width: 120px;
+    display: flex;
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+}
+
+#prevBtn,
+#nextBtn {
+    /* background-color: rgba(0, 0, 0, 0.25); */
+    /* color: white; */
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0;
+    padding: 0.5em;
+    width: 2.5em;
+    height: 2.5em;
+    transform-origin: center;
+}
+
+#nextBtn svg {
+    transform: rotate(180deg);
+}
+
+
+
+/* =================================================================================================== */
+/* =================================================================================================== */
+
+.testimonial-card {
+    direction: ltr;
+    break-inside: avoid;
+    margin: 0;
+    /* margin-bottom: 48px; */
+    /* background-color: red; */
+    /* color: #F1F1F1; */
+    padding: 24px 36px;
+    border-radius: 48px;
+
+    box-shadow: var(--shadow-preset-A);
+    transition: 0.2s;
+
+}
+
+.testimonial-card blockquote {
+    font-style: italic;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    line-height: 1.75em;
+}
+
+.testimonial-card blockquote .quote-image {
+    height: 3em;
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    transform: rotate(180deg);
+    margin-bottom: 1em;
+    object-fit: contain;
+}
+
+.testimonial-card figcaption {
+    font-weight: 600;
+    text-align: center;
+}
+
+.testimonial-card .stars {
+    text-align: center;
+    font-size: 1.8em;
+    color: #F0D008;
+}
+
+
+
+.carousel-inner .carousel-item:nth-child(4n+1)>.testimonial-card {
+    background-color: var(--lf-eucalypt);
+}
+
+.carousel-inner .carousel-item:nth-child(4n+2)>.testimonial-card {
+    background-color: var(--lf-dusty-blue);
+}
+
+.carousel-inner .carousel-item:nth-child(4n+3)>.testimonial-card {
+    background-color: var(--lf-navy-blue);
+}
+
+.carousel-inner .carousel-item:nth-child(4n+4)>.testimonial-card {
+    background-color: var(--lf-khaki);
+}
+
+
+
+@media screen and (min-width: 480px) {
+    .carousel-item {
+        padding: 24px 48px;
+    }
+
+    .testimonial-card {
+        padding: 32px 48px;
+    }
+}
+
+
+@media screen and (min-width: 600px) {
+
+    .carousel-item {
+        padding: 36px 64px;
+    }
+
+    #prevBtn,
+    #nextBtn {
+        z-index: 5;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        /* width: 3em; */
+        /* height: 3em; */
+    }
+
+    #prevBtn {
+        left: 0;
+    }
+
+    #nextBtn {
+        right: 0;
+    }
+
+    .btn-group {
+        margin: 0;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .testimonial-card {
+        font-size: 20px;
+    }
+
+    .carousel-item {
+        padding: 36px 64px;
+    }
+}

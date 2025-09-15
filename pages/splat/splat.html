@@ -1,18 +1,41 @@
 <style>
-
-    .element {
-		height: 200px;
+	.element {
+		min-height: 200px;
 		margin: 24px 0;
 		background-color: var(--color-bg-2);
 		color: var(--color-text-1);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.two-column {
+		flex: 1;
+		display: flex;
+		justify-content: space-between;
+		/* let's be explicit about the height stuff; why not  */
+		align-items: stretch;
+		/* we also do want to use a min width (or media query) to make sure vertical layout is properly arranged for mobile (or "smaller width") */
+		flex-direction: row;
+		/* possibly crude (but quite possibly best) way to make sure content wraps based on some minima (or do the reverse based on some maxima) */
+		flex-wrap: wrap;
+		/* this seems a good way to achieve it horizontally, based on the "effective container width", not the crude viewport */
+		gap: 5%;
+	}
+
+	.two-column>section {
+		flex: 1 1 100%;
+	}
+
+	@media screen and (min-width: 1000px) {
+		.two-column>section {
+			flex: 1 1 0;
+		}
 	}
 </style>
 
-<div class="wrap marge1">
-    
+<div class="wrap marge1 two-column">
+
 	<section class="element" data-theme="light">
 		LIGHT THEME
 	</section>

@@ -4,5 +4,6 @@
     "footerPath": "components/footer/footer.html",
     "templatePath": "templates/page.ejs",
 
-    "pagesJsonPath": "pages.json"
+    "pagesJsonPath": "pages.json",
+    "globalHtmlPath": "components/global.html"
 }

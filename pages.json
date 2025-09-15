@@ -9,10 +9,13 @@
             "resources",
             "assets/favicon.ico"
         ],
-        "styles": [],
+        "styles": [
+            "/css/merrygoround.css"
+        ],
         "scripts": [],
         "modules": [
-            "/js/global.js"
+            "/js/global.js",
+            "/js/merrygoround/addHomepageCarousel.js"
         ]
     },
     "away": {
@@ -105,6 +108,14 @@
                 "modules": [
                     "svg2png.js"
                 ]
+            }
+        }
+    },
+    "feature": {
+        "children": {
+            "dragger": {
+                "title": "Dragger",
+                "contentPath": "pages/feature/dragger/dragger.html"
             }
         }
     }
