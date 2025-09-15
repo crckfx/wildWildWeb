@@ -10,7 +10,8 @@
             "assets/favicon.ico"
         ],
         "styles": [
-            "/css/merrygoround.css"
+            "/css/merrygoround.css",
+            "/css/testimonial-card.css"
         ],
         "scripts": [],
         "modules": [

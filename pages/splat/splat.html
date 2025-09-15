@@ -4,22 +4,19 @@
 		margin: 24px 0;
 		background-color: var(--color-bg-2);
 		color: var(--color-text-1);
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		/* display: flex; */
+		/* justify-content: center; */
+		/* align-items: center; */
+        padding: 24px;
 	}
 
 	.two-column {
 		flex: 1;
 		display: flex;
 		justify-content: space-between;
-		/* let's be explicit about the height stuff; why not  */
 		align-items: stretch;
-		/* we also do want to use a min width (or media query) to make sure vertical layout is properly arranged for mobile (or "smaller width") */
 		flex-direction: row;
-		/* possibly crude (but quite possibly best) way to make sure content wraps based on some minima (or do the reverse based on some maxima) */
 		flex-wrap: wrap;
-		/* this seems a good way to achieve it horizontally, based on the "effective container width", not the crude viewport */
 		gap: 5%;
 	}
 
@@ -37,9 +34,21 @@
 <div class="wrap marge1 two-column">
 
 	<section class="element" data-theme="light">
-		LIGHT THEME
+		<h1>LIGHT THEME</h1>
+        <p style="background-color: var(--color-bg-1);">background 1</p>
+        <p style="background-color: var(--color-bg-2);">background 2</p>
+        <p style="background-color: var(--color-bg-3);">background 3</p>
+        <p style="color: var(--color-text-1)"><strong>text 1</strong></p>
+        <p style="color: var(--color-text-2)"><strong>text 2</strong></p>
+        <p style="color: var(--color-text-3)"><strong>text 3</strong></p>
 	</section>
 	<section class="element" data-theme="dark">
-		DARK THEME
+        <h1>DARK THEME</h1>
+        <p style="background-color: var(--color-bg-1);">background 1</p>
+        <p style="background-color: var(--color-bg-2);">background 2</p>
+        <p style="background-color: var(--color-bg-3);">background 3</p>
+        <p style="color: var(--color-text-1)"><strong>text 1</strong></p>
+        <p style="color: var(--color-text-2)"><strong>text 2</strong></p>
+        <p style="color: var(--color-text-3)"><strong>text 3</strong></p>
 	</section>
 </div>

@@ -57,3 +57,11 @@ main {
     height: 0;
     overflow: hidden;
 }
+
+.center {
+    justify-content: center;
+}
+
+.full-width {
+    width: 100%;
+}
