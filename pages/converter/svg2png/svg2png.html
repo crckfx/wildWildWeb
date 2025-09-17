@@ -1,26 +1,79 @@
 <div class="wrap">
-	<h2>SVG to PNG</h2>
-	<p>upload an SVG file, view it in a preview box, download it as PNG at a specified render size</p>
-	<p><a href="../">back to converters</a></p>
+	<div class="info full-width">
+		<h2>SVG to PNG</h2>
+		<p>upload an SVG file, view it in a preview box, download it as PNG at a specified render size</p>
+		<p><a href="../">back to converters</a></p>
 
-	<div class="info">
 		<h2>overview</h2>
 		<p>using the "ploder" class to provide an upload box</p>
-		<p>todo: provide a preview box and display the uploaded svg</p>
+		<p>done: provide a preview box and display the uploaded svg</p>
+		<p>todo: make the controls affect the render and/or css</p>
 		<p>todo(later): display the text in an editable text box, optionally as a form, and use it to edit the SVG code inline and re-render</p>
 	</div>
+	<div class="applet">
+		<!-- controls -->
+		<div class="controls">
+			<div class="control">
+				<div id="svgploder" class="ploder">Drag and drop here (or click?)</div>
+			</div>
 
-	<div id="svgploder" class="ploder">Drag and drop here (or click?)</div>
-	<div class="preview">
-		<canvas id="svgPreview"></canvas>
+			<div class="control">
+				<label for="bgColor">background colour</label>
+				<input id="bgColor" type="color" value="#ffffff">
+			</div>
+
+			<div class="control">
+				<label for="renderSize">render size</label>
+				<input id="renderSize" type="number" value="512">
+			</div>
+
+			<div class="control">
+				<div>
+					<input id="bgToggle" type="checkbox">
+					<label for="bgToggle">show/hide background</label>
+				</div>
+				<div>
+					<input id="realSize" type="checkbox">
+					<label for="realSize">preview real size</label>
+				</div>
+			</div>
+		</div>
+
+		<!-- viewport -->
+		<div class="preview">
+			<canvas id="svgPreview"></canvas>
+		</div>
 	</div>
-
-
 </div>
 
+
+
+
 <style>
+	.applet {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		background-color: var(--color-bg-2);
+		margin: 20px;
+
+	}
+
+	.applet .controls {
+		display: flex;
+		flex-direction: row;
+		gap: 12px;
+	}
+
+	.applet .controls>.control {
+		flex: 1;
+		background-color: var(--color-bg-1);
+		padding: 8px;
+		margin: 8px;
+	}
+
 	/* class to place a canvas inside  */
-	.preview {
+	.applet .preview {
 		display: flex;
 		justify-content: center;
 		align-items: center;

@@ -73,17 +73,6 @@
             "./js/local_tester.js"
         ]
     },
-    "accordion": {
-        "title": "Accordion",
-        "contentPath": "pages/math-is-wild/accordion/accordion.html",
-        "imports": [
-            "pages/math-is-wild/accordion/Accordion.css",
-            "pages/math-is-wild/accordion/accordionES6.js"
-        ],
-        "styles": [
-            "./Accordion.css"
-        ]
-    },
     "converter": {
         "title": "Converters",
         "contentPath": "pages/converter/converter.html",
@@ -117,6 +106,17 @@
             "dragger": {
                 "title": "Dragger",
                 "contentPath": "pages/feature/dragger/dragger.html"
+            },
+            "accordion": {
+                "title": "Accordion",
+                "contentPath": "pages/feature/accordion/accordion.html",
+                "imports": [
+                    "pages/feature/accordion/Accordion.css",
+                    "pages/feature/accordion/accordionES6.js"
+                ],
+                "styles": [
+                    "./Accordion.css"
+                ]
             }
         }
     }
