@@ -1,0 +1,87 @@
+/* ---------------------------------------------------------------- */
+/* ---- accordion main styles ---- */
+:root {
+    --color-bulb-on: #00ddff;
+    --color-bulb-off: #00ddff22;
+}
+
+/* accordion: the thing that can contain one or more collapsible layers */
+.accordion {
+    color: var(--color-text);
+    display: grid;
+    overflow: hidden;
+    /* overridden by class? */
+    border-radius: 8px;    
+    gap: 2px;
+    /* remember, the transparent border exposes the background */
+    border: 2px solid transparent;
+}
+
+.accordion hr {
+    border-color: #88888833;
+}
+
+/* accordion-panel: a single collapsible layer within an accordion (there may be siblings) */
+.accordion-panel {
+    background-color: #222;
+    padding: 0;
+    border: none;
+    scroll-margin-bottom: 20px;
+}
+
+
+/* ---------------------------------------------------------------- */
+/* ---- accordion TRIGGER styles ---- */
+/* accordion trigger: the button component that the user can touch to expand/collapse */
+.accordion-trigger {
+    background: transparent;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    width: 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 2rem;
+    position: relative;
+    cursor: pointer;
+}
+
+/* ::before: the light denoting on/off for the panel */
+.accordion-trigger::before {
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Center the light vertically */
+    background-color: var(--color-bulb-off);
+    width: 5px;
+    /* Fixed height for the light */
+    height: 35px;
+    /* Smooth transition for the light color */
+    transition: background-color 500ms;
+}
+
+.accordion-trigger[aria-expanded="true"]::before {
+    background-color: var(--color-bulb-on);
+}
+
+/* ---------------------------------------------------------------- */
+/* ---- accordion CONTENT styles ---- */
+/* accordion-content: the content that gets hidden or shown based on the the trigger */
+.accordion-content {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 500ms;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+.accordion-content[aria-hidden="false"] {
+    grid-template-rows: 1fr;
+}
+
+.accordion-content>div {
+    overflow: hidden;
+}
