@@ -7,6 +7,10 @@ a project to supersede MathIsWild
 ## overview
 - uses *pageGoblin* (you need to have the repo on your machine)
 
+at minimum, you provide:
+- `pages.json`
+- `config.json`
+
 ### default template
 - stored at ```templates/page.ejs```
 - it targets some site default layout styles via using '.page-content' and then &lt;main&gt;
@@ -18,7 +22,8 @@ a project to supersede MathIsWild
     - injects 'modules', 'scripts' & 'global' at the end of &lt;body&gt;
 
 
-```html page.ejs
+```html
+<!-- page.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +52,7 @@ a project to supersede MathIsWild
 this is the default page template, an example with less assumptions is at ```templates/page_blank.ejs```
 
 ### *config.json*
-defaults for pageGoblin. default config is:
+default paths for pageGoblin. default config is:
 ```json
 {
     "headContentPath": "components/head-content.html",  // global inject into <head>
@@ -62,12 +67,11 @@ defaults for pageGoblin. default config is:
 ```
 
 ### using pageGoblin
-- pageGoblin is called as a node CLI script
-- execute its `resolve-all.js`, along with the following params::
-    1. path to wildWildWeb root directory
-    2. path to your desired build (output) directory
-    3. path to this repo's pageGoblin `config.json` file
-    4. flags: `--write` and/or `--clean` 
+pageGoblin is called as a node CLI script by executing its `resolve-all.js`, along with the following params:
+1. path to wildWildWeb root directory
+2. path to your desired build (output) directory
+3. path to this repo's pageGoblin `config.json` file
+4. flags: `--write` and/or `--clean` 
 
 for example, from your wildWildWeb directory (Powershell):
 ```powershell

@@ -5,44 +5,70 @@
 		<p><a href="../">back to converters</a></p>
 
 		<h2>overview</h2>
-		<p>using the "ploder" class to provide an upload box</p>
-		<p>done: provide a preview box and display the uploaded svg</p>
-		<p>todo: make the controls affect the render and/or css</p>
+		<p>DONE - use the "ploder" class to provide an upload box</p>
+		<p>DONE - provide a preview box and display the uploaded svg</p>
+		<p>DONE - make the controls affect the render and/or css</p>
+
 		<p>todo(later): display the text in an editable text box, optionally as a form, and use it to edit the SVG code inline and re-render</p>
+
+		<h3>todo also</h3>
+		<ul>
+			<li>get icons for [UPLOAD], [EXPORT], </li>
+			<li>decide on UI controls.
+				upload,
+				export,
+				exportOptions,
+				edit,
+				resize,
+				fullscreen
+			</li>
+		</ul>
 	</div>
 	<div class="applet">
-		<!-- controls -->
-		<div class="controls">
-			<div class="control">
-				<div id="svgploder" class="ploder">Drag and drop here (or click?)</div>
-			</div>
-
-			<div class="control">
-				<label for="bgColor">background colour</label>
-				<input id="bgColor" type="color" value="#ffffff">
-			</div>
-
-			<div class="control">
-				<label for="renderSize">render size</label>
-				<input id="renderSize" type="number" value="512">
-			</div>
-
-			<div class="control">
-				<div>
-					<input id="bgToggle" type="checkbox">
-					<label for="bgToggle">show/hide background</label>
-				</div>
-				<div>
-					<input id="realSize" type="checkbox">
-					<label for="realSize">preview real size</label>
-				</div>
-			</div>
-		</div>
 
 		<!-- viewport -->
 		<div class="preview">
 			<canvas id="svgPreview"></canvas>
 		</div>
+
+		<!-- controls -->
+		<div class="controls">
+			<div class="control">
+				<span id="svgploder" class="ploder">Upload</span>
+				<button>Export</span>
+			</div>
+
+			<div class="control">
+				<span>
+					<label for="bgToggle">background on/off</label>
+					<input id="bgToggle" type="checkbox">
+				</span>
+				<span>
+					<label for="bgColor">background colour</label>
+					<input id="bgColor" type="color" value="#ffffff">
+				</span>
+			</div>
+
+			<div class="control">
+				<span>
+					<label for="renderWidth">width?</label>
+					<input id="renderWidth" type="number" value="512">
+				</span>
+				<span>
+					<label for="renderHeight">height?</label>
+					<input id="renderHeight" type="number" value="512">
+				</span>
+			</div>
+
+			<div class="control">
+				<div>
+					<input id="fitToggle" type="checkbox">
+					<label for="fitToggle">fit preview</label>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 </div>
 
@@ -57,12 +83,18 @@
 		background-color: var(--color-bg-2);
 		margin: 20px;
 
+		height: 800px;
+		width: 400px;
+
 	}
 
 	.applet .controls {
 		display: flex;
 		flex-direction: row;
 		gap: 12px;
+		/* overflow-x: scroll; */
+		flex-wrap: wrap;
+		font-size: 12px;
 	}
 
 	.applet .controls>.control {
@@ -72,10 +104,23 @@
 		margin: 8px;
 	}
 
+    .applet .controls button {
+        padding: 8px;
+        background-color: transparent;
+        border-radius: 8px;
+        color: inherit;
+    }
+
 	/* class to place a canvas inside  */
 	.applet .preview {
-		display: flex;
-		justify-content: center;
-		align-items: center;
+		flex: 1;
+		display: grid;
+		place-items: center;
+		overflow: auto;
+	}
+
+	.applet .preview.fit>canvas {
+		max-width: 100%;
+		max-height: 100%;
 	}
 </style>
