@@ -5,9 +5,12 @@
 		<p><a href="../">back to converters</a></p>
 
 		<h2>overview</h2>
-		<p>DONE - use the "ploder" class to provide an upload box</p>
-		<p>DONE - provide a preview box and display the uploaded svg</p>
-		<p>DONE - make the controls affect the render and/or css</p>
+        <h3>finished tasks</h3>
+        <ul>
+            <li>DONE - use the "ploder" class to provide an upload box</li>
+            <li>DONE - provide a preview box and display the uploaded svg</li>
+            <li>DONE - make the controls affect the render and/or css</li>
+        </ul>
 
 		<p>todo(later): display the text in an editable text box, optionally as a form, and use it to edit the SVG code inline and re-render</p>
 
@@ -34,14 +37,19 @@
 		<!-- controls -->
 		<div class="controls">
 			<div class="control">
-				<span id="svgploder" class="ploder">Upload</span>
+				<span id="svgploder" class="ploder">
+					<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 48 48">
+						<use href="#icon-paperclip"></use>
+					</svg>
+					Upload
+				</span>
 				<button>Export</span>
 			</div>
 
 			<div class="control">
 				<span>
-					<label for="bgToggle">background on/off</label>
 					<input id="bgToggle" type="checkbox">
+					<label for="bgToggle">background on/off</label>
 				</span>
 				<span>
 					<label for="bgColor">background colour</label>
@@ -52,75 +60,32 @@
 			<div class="control">
 				<span>
 					<label for="renderWidth">width?</label>
-					<input id="renderWidth" type="number" value="512">
+					<input id="renderWidth" type="number" value="512" max="9999">
 				</span>
 				<span>
 					<label for="renderHeight">height?</label>
-					<input id="renderHeight" type="number" value="512">
+					<input id="renderHeight" type="number" value="512" max="9999">
 				</span>
 			</div>
 
 			<div class="control">
-				<div>
-					<input id="fitToggle" type="checkbox">
+				<span>
+					<input id="fitToggle" type="checkbox" checked>
 					<label for="fitToggle">fit preview</label>
-				</div>
+				</span>
+				<span>
+					<input id="toggle_showOutline" type="checkbox" checked>
+					<label for="toggle_showOutline">show outline</label>
+				</span>
 			</div>
+
+            <div class="control">
+				<button>Text Editor</button>
+            </div>
 		</div>
 
 
+        <div id="textBox">feed me some code</div>
+
 	</div>
 </div>
-
-
-
-
-<style>
-	.applet {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		background-color: var(--color-bg-2);
-		margin: 20px;
-
-		height: 800px;
-		width: 400px;
-
-	}
-
-	.applet .controls {
-		display: flex;
-		flex-direction: row;
-		gap: 12px;
-		/* overflow-x: scroll; */
-		flex-wrap: wrap;
-		font-size: 12px;
-	}
-
-	.applet .controls>.control {
-		flex: 1;
-		background-color: var(--color-bg-1);
-		padding: 8px;
-		margin: 8px;
-	}
-
-    .applet .controls button {
-        padding: 8px;
-        background-color: transparent;
-        border-radius: 8px;
-        color: inherit;
-    }
-
-	/* class to place a canvas inside  */
-	.applet .preview {
-		flex: 1;
-		display: grid;
-		place-items: center;
-		overflow: auto;
-	}
-
-	.applet .preview.fit>canvas {
-		max-width: 100%;
-		max-height: 100%;
-	}
-</style>

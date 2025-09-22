@@ -1,5 +1,7 @@
 import { Ploder } from './Ploder.js';
 
+const MAX_SIZE = 9999;
+
 const canvas = document.getElementById('svgPreview');
 const ctx = canvas.getContext('2d');
 
@@ -8,7 +10,8 @@ const bgColorInput = document.getElementById('bgColor');
 const bgToggle = document.getElementById('bgToggle');
 const renderWidth = document.getElementById('renderWidth');
 const renderHeight = document.getElementById('renderHeight');
-const fitToggle = document.getElementById('fitToggle');
+const toggle_fitToPage = document.getElementById('fitToggle');
+const toggle_showOutline = document.getElementById('toggle_showOutline');
 const previewBox = document.querySelector('.preview');
 
 // keep track of loaded SVG as text
@@ -34,6 +37,7 @@ function renderSVGToCanvas(svgText, opts = {}) {
     const img = new Image();
 
     img.onload = () => {
+        if (w > MAX_SIZE || h > MAX_SIZE) return;
         canvas.width = w;
         canvas.height = h;
 
@@ -88,8 +92,11 @@ async function resize_and_render(svgText) {
     });
 });
 
-fitToggle.addEventListener('input', () => {
-    fitToggle.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
+toggle_fitToPage.addEventListener('input', () => {
+    toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
+})
+toggle_showOutline.addEventListener('input', () => {
+    toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
 })
 
 // --- run ---
@@ -103,11 +110,14 @@ new Ploder(document.getElementById('svgploder'), {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+    toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
+    toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
     const defaultSVG = await getSVGFromURL('/resources/images/svg/snkbx_Boosh.svg');
     resize_and_render(defaultSVG);
 });
 
-// helper functions
+// ----------------------------------------------------------------------------------------
+// --- helper functions ---
 function getSVGFromFile(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

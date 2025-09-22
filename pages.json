@@ -90,10 +90,12 @@
                 "imports": [
                     "pages/converter/Ploder.js",
                     "pages/converter/ploder.css",
-                    "pages/converter/svg2png/svg2png.js"
+                    "pages/converter/svg2png/svg2png.js",
+                    "pages/converter/svg2png/svg2png.css"
                 ],
                 "styles": [
-                    "/converter/svg2png/ploder.css"
+                    "/converter/svg2png/ploder.css",
+                    "/converter/svg2png/svg2png.css"
                 ],
                 "modules": [
                     "svg2png.js"
