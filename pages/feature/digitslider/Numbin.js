@@ -31,7 +31,7 @@ export class Numbin {
         this.input.addEventListener('pointermove', e => {
             if (e.buttons === 1) {
                 const deltaY = e.clientY - this.startY;
-                if (Math.abs(deltaY) > 20) {
+                if (Math.abs(deltaY) > 10) {
                     this.moved = true;
                     if (deltaY > 0) this.value = this.value - this.step;
                     else this.value = this.value + this.step;
