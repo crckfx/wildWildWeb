@@ -7,7 +7,8 @@
             "css",
             "js",
             "resources",
-            "assets/favicon.ico"
+            "assets/favicon.ico",
+            "components/numbin"
         ],
         "styles": [
             "/css/merrygoround.css",
@@ -95,9 +96,11 @@
                 ],
                 "styles": [
                     "/converter/svg2png/ploder.css",
-                    "/converter/svg2png/svg2png.css"
+                    "/converter/svg2png/svg2png.css",
+                    "/numbin/numbin.css"
                 ],
                 "modules": [
+                    "/numbin/Numbin.js",
                     "svg2png.js"
                 ]
             }
@@ -125,13 +128,11 @@
                 "contentPath": "pages/feature/digitslider/digitslider_minimal.html",
                 "imports": [
                     "pages/feature/digitslider/digitslider.css",
-                    "pages/feature/digitslider/numbin.css",
                     "pages/feature/digitslider/digitslider.js",
-                    "pages/feature/digitslider/Numbin.js",
                     "pages/feature/digitslider/numbin_launcher.js"
                 ],
                 "styles": [
-                    "./numbin.css",
+                    "/numbin/numbin.css",
                     "./digitslider.css"
                 ],
                 "scripts": [
@@ -139,7 +140,7 @@
                 ],
                 "modules": [
                     "./numbin_launcher.js",
-                    "./Numbin.js"
+                    "/numbin/Numbin.js"
                 ]
             }
         }

@@ -1,4 +1,5 @@
 import { Ploder } from './Ploder.js';
+import { Numbin } from '/numbin/Numbin.js';
 
 const MAX_SIZE = 9999;
 
@@ -40,7 +41,10 @@ function renderSVGToCanvas(svgText, opts = {}) {
     const img = new Image();
 
     img.onload = () => {
-        if (w > MAX_SIZE || h > MAX_SIZE) return;
+        if (w > MAX_SIZE || h > MAX_SIZE) {
+            console.log("error - something exceeded MAX_SIZE");
+            return;
+        }
         canvas.width = w;
         canvas.height = h;
 
@@ -113,6 +117,15 @@ new Ploder(document.getElementById('svgploder'), {
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+    document.querySelectorAll('input.numbin').forEach(input => {
+        const min = parseInt(input.getAttribute('min'), 10) || 0;
+        const max = parseInt(input.getAttribute('max'), 10) || 9999;
+        const step = parseInt(input.getAttribute('step'), 10) || 1;
+
+        new Numbin(input, { min, max, step });
+    });
+
     toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
     const defaultSVG = await getSVGFromURL('/resources/images/svg/snkbx_Boosh.svg');

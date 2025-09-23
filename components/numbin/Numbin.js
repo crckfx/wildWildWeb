@@ -1,5 +1,5 @@
 export class Numbin {
-    constructor(input, {min = 0, max = 9999, step = 1} = {}) {
+    constructor(input, { min = 0, max = 9999, step = 1 } = {}) {
         this.input = input;
         this.min = min;
         this.max = max;
@@ -17,8 +17,13 @@ export class Numbin {
 
     set value(v) {
         const clamped = Math.max(this.min, Math.min(this.max, v));
-        this.input.value = clamped;
+        if (this.input.value !== String(clamped)) {
+            this.input.value = clamped;
+            // Explicitly dispatch an 'input' event
+            this.input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
     }
+
 
     attachEvents() {
         this.input.addEventListener('pointerdown', e => {
