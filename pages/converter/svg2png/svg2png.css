@@ -5,9 +5,18 @@
     background-color: var(--color-bg-2);
     margin: 20px;
 
+    position: relative;
+
+}
+
+.applet.small {
     height: 800px;
     width: 400px;
+}
 
+.applet.big {
+    height: 100svh;
+    width: 400px;
 }
 
 .applet .controls {
@@ -60,6 +69,24 @@
     max-height: 100%;
 }
 
+.applet #textView {
+    position: absolute;
+    background: var(--color-bg-3);
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    /* transform: translateX(-50%) translateY(-50%); */
+    border: 2px solid var(--color-text-1);
+    padding: 12px;
+    overflow: auto;
+    z-index: 5;
+    display: none;
+}
+
+.applet #textView .textBox {
+    font-family: monospace;
+}
 
 /* ----- general ----- */
 

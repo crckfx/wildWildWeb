@@ -13,6 +13,9 @@ const renderHeight = document.getElementById('renderHeight');
 const toggle_fitToPage = document.getElementById('fitToggle');
 const toggle_showOutline = document.getElementById('toggle_showOutline');
 const previewBox = document.querySelector('.preview');
+const textView = document.getElementById('textView');
+const textBox = textView.querySelector('.textBox');
+
 
 // keep track of loaded SVG as text
 let currentSVGText = null;
@@ -114,6 +117,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
     const defaultSVG = await getSVGFromURL('/resources/images/svg/snkbx_Boosh.svg');
     resize_and_render(defaultSVG);
+    console.log(textView);
+    console.log(textBox);
+    textBox.textContent = defaultSVG;
 });
 
 // ----------------------------------------------------------------------------------------

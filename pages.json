@@ -119,6 +119,28 @@
                 "styles": [
                     "./Accordion.css"
                 ]
+            },
+            "digitslider": {
+                "title": "Digit Slider",
+                "contentPath": "pages/feature/digitslider/digitslider_minimal.html",
+                "imports": [
+                    "pages/feature/digitslider/digitslider.css",
+                    "pages/feature/digitslider/numbin.css",
+                    "pages/feature/digitslider/digitslider.js",
+                    "pages/feature/digitslider/Numbin.js",
+                    "pages/feature/digitslider/numbin_launcher.js"
+                ],
+                "styles": [
+                    "./numbin.css",
+                    "./digitslider.css"
+                ],
+                "scripts": [
+                    "./digitslider.js"
+                ],
+                "modules": [
+                    "./numbin_launcher.js",
+                    "./Numbin.js"
+                ]
             }
         }
     }
