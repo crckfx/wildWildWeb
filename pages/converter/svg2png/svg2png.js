@@ -209,7 +209,7 @@ urlDialog.addEventListener('keydown', (e) => {
 });
 
 urlDialog.addEventListener('click', (e) => {
-    if (e.target !== urlForm) {
+    if (e.target === urlDialog) {
         urlDialog.close();
     }
 });

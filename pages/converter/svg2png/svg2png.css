@@ -46,12 +46,26 @@
     gap: 4px;
 }
 
+
+.applet .controls>.control>.numbin-container {
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--color-bg-3)
+}
+
+.applet .controls>.control>.numbin-container>label {
+    padding: 0;
+}
+
 .applet .controls>.control input[type="number"] {
     color: inherit;
-    background-color: var(--color-bg-1);
-    width: 4em;
-    padding: 4px;
+    background-color: inherit;
+    font-size: 14px;
+    font-family: monospace;
 }
+
 
 /* class to place a canvas inside  */
 .applet #preview {
@@ -136,6 +150,7 @@
     align-items: center;
     color: inherit;
 }
+
 #urlDialog[open] {
     display: flex;
 }
@@ -151,11 +166,13 @@
     font-size: 1.5em;
     line-height: 2em;
 }
+
 #urlForm>input {
     width: 100%;
     font-size: 1.2em;
     line-height: 2em;
 }
+
 /********************************************/
 
 /* ----- general ----- */
