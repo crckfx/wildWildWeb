@@ -5,12 +5,12 @@
 		<p><a href="../">back to converters</a></p>
 
 		<h2>overview</h2>
-        <h3>finished tasks</h3>
-        <ul>
-            <li>DONE - use the "ploder" class to provide an upload box</li>
-            <li>DONE - provide a preview box and display the uploaded svg</li>
-            <li>DONE - make the controls affect the render and/or css</li>
-        </ul>
+		<h3>finished tasks</h3>
+		<ul>
+			<li>DONE - use the "ploder" class to provide an upload box</li>
+			<li>DONE - provide a preview box and display the uploaded svg</li>
+			<li>DONE - make the controls affect the render and/or css</li>
+		</ul>
 
 		<p>todo(later): display the text in an editable text box, optionally as a form, and use it to edit the SVG code inline and re-render</p>
 
@@ -27,10 +27,10 @@
 			</li>
 		</ul>
 	</div>
-	<div class="applet">
+	<div class="applet big">
 
 		<!-- viewport -->
-		<div class="preview">
+		<div id="preview">
 			<canvas id="svgPreview"></canvas>
 		</div>
 
@@ -43,7 +43,7 @@
 					</svg>
 					Upload
 				</span>
-				<button>Export</span>
+				<button id="urlInput">URL</button>
 			</div>
 
 			<div class="control">
@@ -52,28 +52,30 @@
 					<label for="bgToggle">background on/off</label>
 				</span>
 				<span>
-					<label for="bgColor">background colour</label>
-					<input id="bgColor" type="color" value="#ffffff">
+					<label for="bgColorInput">background colour</label>
+					<input id="bgColorInput" type="color" value="#ffffff">
 				</span>
 			</div>
 
 			<div class="control">
 				<span>
 					<label for="renderWidth">width?</label>
-                    <input id="renderWidth" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
-					<!-- <input id="renderWidth" type="number" value="512" max="9999"> -->
+					<input id="renderWidth" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
 				</span>
 				<span>
 					<label for="renderHeight">height?</label>
-					<!-- <input id="renderHeight" type="number" value="512" max="9999"> -->
-                    <input id="renderHeight" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
+					<input id="renderHeight" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
+				</span>
+				<span>
+					<label for="toggle_sizeLock">lock</label>
+					<input id="toggle_sizeLock" type="checkbox" checked />
 				</span>
 			</div>
 
 			<div class="control">
 				<span>
-					<input id="fitToggle" type="checkbox" checked>
-					<label for="fitToggle">fit preview</label>
+					<input id="toggle_fitToPage" type="checkbox">
+					<label for="toggle_fitToPage">fit preview</label>
 				</span>
 				<span>
 					<input id="toggle_showOutline" type="checkbox" checked>
@@ -81,19 +83,23 @@
 				</span>
 			</div>
 
-            <div class="control">
-				<button>Text Editor</button>
-            </div>
+			<div class="control">
+				<button id="toggle_showTextView">Edit</button>
+				<button>Export</button>
+			</div>
 		</div>
 
 
-        <div id="textView">
-            <div class="textBox">
-                feed me some code
-            </div>
-            <span class="filename">put a filename here</span>
-            
-        </div>
+		<div id="textView">
+			<div class="head">
+				<span class="name">put a filename here</span>
+				<span class="exit">x</span>
+			</div>
+			<div class="textBox">
+				feed me some code
+			</div>
+
+		</div>
 
 	</div>
 </div>
