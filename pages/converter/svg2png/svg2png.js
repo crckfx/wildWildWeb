@@ -7,19 +7,28 @@ const canvas = document.getElementById('svgPreview');
 const ctx = canvas.getContext('2d');
 
 // controls
-// const bgColorInput = document.getElementById('bgColorInput');
-// const bgToggle = document.getElementById('bgToggle');
-// const renderWidth = document.getElementById('renderWidth');
-// const renderHeight = document.getElementById('renderHeight');
-// const toggle_fitToPage = document.getElementById('toggle_fitToPage');
-// const toggle_showOutline = document.getElementById('toggle_showOutline');
-// const toggle_showTextView = document.getElementById('toggle_showTextView');
-// const toggle_sizeLock = document.getElementById('toggle_sizeLock');
-// const textView = document.getElementById('textView');
+const bgColorInput = document.getElementById('bgColorInput');
+const bgToggle = document.getElementById('bgToggle');
+const renderWidth = document.getElementById('renderWidth');
+const renderHeight = document.getElementById('renderHeight');
+const toggle_fitToPage = document.getElementById('toggle_fitToPage');
+const toggle_showOutline = document.getElementById('toggle_showOutline');
+const toggle_showTextView = document.getElementById('toggle_showTextView');
+const toggle_sizeLock = document.getElementById('toggle_sizeLock');
+const textView = document.getElementById('textView');
 const previewBox = document.getElementById('preview');
 const textBox = textView.querySelector('.textBox');
 const textView_exit = textView.querySelector('.exit');
 const textView_name = textView.querySelector('.name');
+
+const urlBtn = document.getElementById('urlInput');
+const urlDialog = document.getElementById('urlDialog');
+const urlForm = document.getElementById('urlForm');
+const urlField = document.getElementById('urlField');
+
+
+
+
 
 
 // --- state ---
@@ -176,6 +185,35 @@ toggle_sizeLock.addEventListener('input', () => {
 });
 
 textView_exit.addEventListener('click', () => textView.classList.remove('show'));
+
+urlBtn.addEventListener('click', () => {
+	urlDialog.show();
+	urlField.focus();
+});
+
+urlForm.addEventListener('submit', async () => {
+	const url = urlField.value.trim();
+	if (url) {
+		try {
+			const svgText = await getSVGFromURL(url);
+			handleSVGSource(svgText, filenameFromURL(url));
+		} catch (err) {
+			console.error("Failed to load URL:", err);
+		}
+	}
+	urlField.value = "";
+});
+
+urlDialog.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') urlDialog.close();
+});
+
+urlDialog.addEventListener('click', (e) => {
+    if (e.target !== urlForm) {
+        urlDialog.close();
+    }
+});
+
 
 // --- Ploder initialization ---
 new Ploder(document.getElementById('svgploder'), {

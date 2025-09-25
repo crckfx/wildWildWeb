@@ -26,8 +26,10 @@
 				fullscreen
 			</li>
 		</ul>
+
+        <p>http://localhost:5555/resources/images/svg/clown-halloween-it-svgrepo-com.svg</p>
 	</div>
-	<div class="applet big">
+	<div class="applet small">
 
 		<!-- viewport -->
 		<div id="preview">
@@ -98,8 +100,16 @@
 			<div class="textBox">
 				feed me some code
 			</div>
-
 		</div>
+
+		<!-- URL Input Dialog -->
+		<dialog id="urlDialog">
+			<form method="dialog" id="urlForm">
+				<label for="urlField">Paste SVG URL:</label>
+				<input type="url" id="urlField" name="url" required placeholder="https://example.com/file.svg" />
+				<!-- pressing Enter submits automatically -->
+			</form>
+		</dialog>
 
 	</div>
 </div>
