@@ -1,8 +1,8 @@
 /* Theme tokens */
 [data-theme="light"] {
     --color-bg-1: hsl(210, 20%, 98%);
-    --color-bg-2: hsl(210, 20%, 92%);
-    --color-bg-3: hsl(210, 20%, 80%);
+    --color-bg-2: hsl(210, 20%, 94%);
+    --color-bg-3: hsl(210, 20%, 86%);
 
     --color-text-1: #1A202C;
     --color-text-2: #113840;

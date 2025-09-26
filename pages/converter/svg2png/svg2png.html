@@ -27,89 +27,109 @@
 			</li>
 		</ul>
 
-        <p>http://localhost:5555/resources/images/svg/clown-halloween-it-svgrepo-com.svg</p>
-	</div>
-	<div class="applet small">
+		<p>http://localhost:5555/resources/images/svg/clown-halloween-it-svgrepo-com.svg</p>
 
-		<!-- viewport -->
-		<div id="preview">
-			<canvas id="svgPreview"></canvas>
+		<div>
+			<button onclick="switchLayout('small')">SMALL</button>
+			<button onclick="switchLayout('big')">BIG</button>
+			<button onclick="switchLayout('full')">FULL</button>
 		</div>
-
-		<!-- controls -->
-		<div class="controls">
-			<div class="control">
-				<span id="svgploder" class="ploder">
-					<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 48 48">
-						<use href="#icon-paperclip"></use>
-					</svg>
-					Upload
-				</span>
-				<button id="urlInput">URL</button>
-			</div>
-
-			<div class="control">
-				<span>
-					<input id="bgToggle" type="checkbox">
-					<label for="bgToggle">background on/off</label>
-				</span>
-				<span>
-					<label for="bgColorInput">background colour</label>
-					<input id="bgColorInput" type="color" value="#ffffff">
-				</span>
-			</div>
-
-			<div class="control">
-				<span class="numbin-container">
-					<label for="renderWidth">w</label>
-					<input id="renderWidth" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
-				</span>
-                <span>
-                    <label for="toggle_sizeLock">lock</label>
-                    <input id="toggle_sizeLock" type="checkbox" checked />
-                </span>
-				<span class="numbin-container">
-					<label for="renderHeight">h</label>
-					<input id="renderHeight" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
-				</span>
-			</div>
-
-			<div class="control">
-				<span>
-					<input id="toggle_fitToPage" type="checkbox">
-					<label for="toggle_fitToPage">fit preview</label>
-				</span>
-				<span>
-					<input id="toggle_showOutline" type="checkbox" checked>
-					<label for="toggle_showOutline">show outline</label>
-				</span>
-			</div>
-
-			<div class="control">
-				<button id="toggle_showTextView">Edit</button>
-				<button>Export</button>
-			</div>
-		</div>
-
-
-		<div id="textView">
-			<div class="head">
-				<span class="name">put a filename here</span>
-				<span class="exit">x</span>
-			</div>
-			<div class="textBox">
-				feed me some code
-			</div>
-		</div>
-
-		<!-- URL Input Dialog -->
-		<dialog id="urlDialog">
-			<form method="dialog" id="urlForm">
-				<label for="urlField">Paste SVG URL:</label>
-				<input type="url" id="urlField" name="url" required placeholder="https://example.com/file.svg" />
-				<!-- pressing Enter submits automatically -->
-			</form>
-		</dialog>
 
 	</div>
 </div>
+<div id="applet_svg2png" class="applet big">
+
+	<!-- viewport -->
+	<div id="preview">
+		<canvas id="svgPreview"></canvas>
+	</div>
+
+	<!-- controls -->
+	<div class="controls">
+		<div class="control">
+			<span id="svgploder" class="ploder">
+				<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 48 48">
+					<use href="#icon-paperclip"></use>
+				</svg>
+				Upload
+			</span>
+			<button id="urlInput">URL</button>
+			<button id="toggle_showTextView">Edit</button>
+			<button>Export</button>
+			<span>
+				<input id="bgToggle" type="checkbox">
+				<label for="bgToggle">background on/off</label>
+			</span>
+			<span>
+				<label for="bgColorInput">background colour</label>
+				<input id="bgColorInput" type="color" value="#ffffff">
+			</span>
+		</div>
+
+
+		<div class="control">
+			<span class="numbin-container">
+				<label for="renderWidth">w</label>
+				<input id="renderWidth" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
+			</span>
+			<span>
+				<label for="toggle_sizeLock">lock</label>
+				<input id="toggle_sizeLock" type="checkbox" checked />
+			</span>
+			<span class="numbin-container">
+				<label for="renderHeight">h</label>
+				<input id="renderHeight" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
+			</span>
+		</div>
+
+		<div class="control">
+			<span>
+				<input id="toggle_fitToPage" type="checkbox">
+				<label for="toggle_fitToPage">fit preview</label>
+			</span>
+			<span>
+				<input id="toggle_showOutline" type="checkbox" checked>
+				<label for="toggle_showOutline">show outline</label>
+			</span>
+		</div>
+
+	</div>
+
+
+	<div id="textView">
+		<div class="head">
+			<span class="name">put a filename here</span>
+			<span class="exit">x</span>
+		</div>
+		<div class="textBox" contenteditable="true">
+			feed me some code
+		</div>
+		<div class="submitBar">
+			<button id="submitTextView">Apply</button>
+		</div>
+	</div>
+
+	<dialog id="urlDialog">
+		<form method="dialog" id="urlForm">
+			<label for="urlField">Paste SVG URL:</label>
+			<input type="url" id="urlField" name="url" required placeholder="https://example.com/file.svg" />
+		</form>
+	</dialog>
+
+</div>
+
+
+<script>
+	const applet = document.getElementById('applet_svg2png');
+
+	const validLayoutNames = [
+		"small", "big", "full"
+	];
+
+	function switchLayout(name) {
+		// remove all valid names from classList, then add the valid one
+		if (!validLayoutNames.includes(name)) return; // sanity check
+		validLayoutNames.forEach(layout => applet.classList.remove(layout));
+		applet.classList.add(name);
+	}
+</script>

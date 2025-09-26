@@ -15,20 +15,18 @@ const toggle_fitToPage = document.getElementById('toggle_fitToPage');
 const toggle_showOutline = document.getElementById('toggle_showOutline');
 const toggle_showTextView = document.getElementById('toggle_showTextView');
 const toggle_sizeLock = document.getElementById('toggle_sizeLock');
-const textView = document.getElementById('textView');
 const previewBox = document.getElementById('preview');
+
+const textView = document.getElementById('textView');
 const textBox = textView.querySelector('.textBox');
 const textView_exit = textView.querySelector('.exit');
 const textView_name = textView.querySelector('.name');
+const textView_submit = document.getElementById('submitTextView');
 
 const urlBtn = document.getElementById('urlInput');
 const urlDialog = document.getElementById('urlDialog');
 const urlForm = document.getElementById('urlForm');
 const urlField = document.getElementById('urlField');
-
-
-
-
 
 
 // --- state ---
@@ -43,7 +41,9 @@ const canvasState = {
     backgroundColor: '#ffffff'
 };
 
-// --- central entry point ---
+async function closeTextView() { textView.classList.remove('show'); }
+
+// --- load up from svg source text ---
 async function handleSVGSource(svgText, filename = "untitled.svg") {
     if (!svgText) return;
 
@@ -56,24 +56,6 @@ async function handleSVGSource(svgText, filename = "untitled.svg") {
     if (toggle_sizeLock.checked) {
         lockedRatio = canvasState.width / canvasState.height;
     }
-}
-
-
-// --- helpers ---
-function loadSVGImage(svgText) {
-    return new Promise((resolve, reject) => {
-        const blob = new Blob([svgText], { type: 'image/svg+xml' });
-        const url = URL.createObjectURL(blob);
-        const img = new Image();
-
-        img.onload = () => {
-            URL.revokeObjectURL(url);
-            resolve(img);
-        };
-
-        img.onerror = reject;
-        img.src = url;
-    });
 }
 
 function drawCanvas(img, opts = {}) {
@@ -96,7 +78,6 @@ function drawCanvas(img, opts = {}) {
 
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 }
-
 
 
 async function renderAndSyncState(svgText) {
@@ -159,6 +140,17 @@ function handleDimensionInput(key) {
     if (currentSVGText) renderSVGToCanvas(currentSVGText);
 }
 
+async function handleTextViewSubmit() {
+    const newText = textBox.textContent;
+    try {
+        await handleSVGSource(newText, currentFilename || 'untitled.svg');
+        textBox.classList.remove('edited', 'error');
+        closeTextView();
+    } catch (e) {
+        textBox.classList.remove('edited');
+        textBox.classList.add('error');
+    }
+}
 
 renderWidth.addEventListener('input', () => handleDimensionInput('width'));
 renderHeight.addEventListener('input', () => handleDimensionInput('height'));
@@ -175,33 +167,40 @@ toggle_showOutline.addEventListener('input', () =>
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline')
 );
 
-toggle_showTextView.addEventListener('click', () => {
-    textView.classList.add('show');
-    textView_name.textContent = currentFilename || 'untitled.svg';
-});
 
 toggle_sizeLock.addEventListener('input', () => {
     lockedRatio = toggle_sizeLock.checked ? canvasState.width / canvasState.height : null;
 });
 
-textView_exit.addEventListener('click', () => textView.classList.remove('show'));
+toggle_showTextView.addEventListener('click', () => {
+    textView.classList.add('show');
+    textView_name.textContent = currentFilename || 'untitled.svg';
+});
+textView_exit.addEventListener('click', closeTextView);
+textBox.addEventListener('input', () => {
+    // User changed text
+    textBox.classList.remove('error');
+    textBox.classList.add('edited');
+});
+textView_submit.addEventListener('click', handleTextViewSubmit);
+
 
 urlBtn.addEventListener('click', () => {
-	urlDialog.show();
-	urlField.focus();
+    urlDialog.show();
+    urlField.focus();
 });
 
 urlForm.addEventListener('submit', async () => {
-	const url = urlField.value.trim();
-	if (url) {
-		try {
-			const svgText = await getSVGFromURL(url);
-			handleSVGSource(svgText, filenameFromURL(url));
-		} catch (err) {
-			console.error("Failed to load URL:", err);
-		}
-	}
-	urlField.value = "";
+    const url = urlField.value.trim();
+    if (url) {
+        try {
+            const svgText = await getSVGFromURL(url);
+            handleSVGSource(svgText, filenameFromURL(url));
+        } catch (err) {
+            console.error("Failed to load URL:", err);
+        }
+    }
+    urlField.value = "";
 });
 
 urlDialog.addEventListener('keydown', (e) => {
@@ -225,6 +224,7 @@ new Ploder(document.getElementById('svgploder'), {
 // --- DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', async () => {
 
+    // admit width / height numbins
     document.querySelectorAll('input.numbin').forEach(input => {
         const min = parseInt(input.getAttribute('min'), 10) || 0;
         const max = parseInt(input.getAttribute('max'), 10) || 9999;
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         new Numbin(input, { min, max, step });
     });
 
-    // Initial sync of canvasState with inputs
+    // init canvas state
     canvasState.showBackground = bgToggle.checked;
     canvasState.backgroundColor = bgColorInput.value;
     canvasState.width = parseInt(renderWidth.value, 10) || canvasState.width;
@@ -282,4 +282,21 @@ function inspectSVG(svgText) {
 function filenameFromURL(url) {
     const parts = url.split('/');
     return parts[parts.length - 1] || 'untitled.svg';
+}
+
+
+function loadSVGImage(svgText) {
+    return new Promise((resolve, reject) => {
+        const blob = new Blob([svgText], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+
+        img.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(img);
+        };
+
+        img.onerror = reject;
+        img.src = url;
+    });
 }
