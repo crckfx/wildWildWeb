@@ -5,3 +5,4 @@ private
 .pageGoblin
 resources
 build.ps1
+build.sh
