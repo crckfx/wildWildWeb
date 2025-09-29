@@ -43,21 +43,6 @@ const canvasState = {
 
 async function closeTextView() { textView.classList.remove('show'); }
 
-// --- load up from svg source text ---
-async function handleSVGSource(svgText, filename = "untitled.svg") {
-    if (!svgText) return;
-
-    currentFilename = filename;
-    currentSVGText = svgText;
-
-    await renderAndSyncState(svgText);
-    textBox.textContent = svgText;
-
-    if (toggle_sizeLock.checked) {
-        lockedRatio = canvasState.width / canvasState.height;
-    }
-}
-
 function drawCanvas(img, opts = {}) {
     const { width, height, showBackground, backgroundColor } = opts;
 
@@ -79,23 +64,23 @@ function drawCanvas(img, opts = {}) {
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 }
 
-
 async function renderAndSyncState(svgText) {
     const img = await loadSVGImage(svgText);
-
+    
     // Update canvasState and input elements
     canvasState.width = img.naturalWidth;
     canvasState.height = img.naturalHeight;
     renderWidth.value = canvasState.width;
     renderHeight.value = canvasState.height;
-
+    
+    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
     drawCanvas(img, canvasState);
 }
 
 // --- render from inputs without overwriting them ---
 async function renderSVGToCanvas(svgText, opts = {}) {
     if (!svgText) return;
-
+    
     const renderOpts = {
         width: canvasState.width,
         height: canvasState.height,
@@ -103,9 +88,40 @@ async function renderSVGToCanvas(svgText, opts = {}) {
         backgroundColor: canvasState.backgroundColor,
         ...opts
     };
+    
+    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
 
     const img = await loadSVGImage(svgText);
     drawCanvas(img, renderOpts);
+}
+
+
+// ------------------------------------------------------------------------------------------------
+// ----- handlers -----
+
+// load up from svg source text
+async function handleSVGSource(svgText, filename = "untitled.svg") {
+    if (!svgText) return;
+
+    currentFilename = filename;
+    currentSVGText = svgText;
+
+    await renderAndSyncState(svgText);
+    textBox.textContent = svgText;
+
+    if (toggle_sizeLock.checked) {
+        lockedRatio = canvasState.width / canvasState.height;
+    }
+}
+
+// handle toggling 'fit to screen'
+function handleFitToggle() {
+    if (toggle_fitToPage.checked) {
+        previewBox.classList.add('fit');
+        if (currentSVGText) renderSVGToCanvas(currentSVGText);
+    } else {
+        previewBox.classList.remove('fit');
+    }
 }
 
 async function handleSVGUpload(file) {
@@ -117,8 +133,7 @@ async function handleSVGUpload(file) {
 function handleCanvasPropertyInput() {
     canvasState.showBackground = bgToggle.checked;
     canvasState.backgroundColor = bgColorInput.value;
-
-    if (currentSVGText) renderSVGToCanvas(currentSVGText);
+    renderSVGToCanvas(currentSVGText);
 }
 
 function handleDimensionInput(key) {
@@ -151,6 +166,7 @@ async function handleTextViewSubmit() {
         textBox.classList.add('error');
     }
 }
+// ------------------------------------------------------------------------------------------------
 
 renderWidth.addEventListener('input', () => handleDimensionInput('width'));
 renderHeight.addEventListener('input', () => handleDimensionInput('height'));
@@ -159,9 +175,7 @@ bgToggle.addEventListener('input', handleCanvasPropertyInput);
 
 
 // --- toggles ---
-toggle_fitToPage.addEventListener('input', () =>
-    toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit')
-);
+toggle_fitToPage.addEventListener('input', handleFitToggle);
 
 toggle_showOutline.addEventListener('input', () =>
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline')
@@ -299,4 +313,14 @@ function loadSVGImage(svgText) {
         img.onerror = reject;
         img.src = url;
     });
+}
+
+function updateFitDimensions(w, h, container) {
+    const scale = Math.min(
+        container.clientWidth / w,
+        container.clientHeight / h
+    );
+
+    canvas.style.setProperty('--fit-width', w * scale + 'px');
+    canvas.style.setProperty('--fit-height', h * scale + 'px');
 }
