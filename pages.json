@@ -8,7 +8,7 @@
             "js",
             "resources",
             "assets/favicon.ico",
-            "components/numbin"
+            "misc"
         ],
         "styles": [
             "/css/merrygoround.css",
@@ -45,9 +45,7 @@
                         ]
                     },
                     "stash": {
-                        "imports": [
-                            "private/3616116-middle-4146237521.png"
-                        ]
+                        "imports": "private/3616116-middle-4146237521.png"
                     }
                 }
             }
@@ -82,29 +80,44 @@
             "pages/converter/ploder.css"
         ],
         "styles": [
-            "/converter/ploder.css"
+            "/misc/ploder/ploder.css"
         ],
         "children": {
             "svg2png": {
                 "title": "SVG to PNG",
-                "contentPath": "pages/converter/svg2png/svg2png.html",
-                "imports": [
-                    "pages/converter/Ploder.js",
-                    "pages/converter/ploder.css",
-                    "pages/converter/svg2png/svg2png.js",
-                    "pages/converter/svg2png/svg2png.css"
+                "contentPath": [
+                    "pages/svgapp/blurb.html",
+                    "pages/svgapp/svgapp.html"
                 ],
                 "styles": [
-                    "/converter/svg2png/ploder.css",
-                    "/converter/svg2png/svg2png.css",
-                    "/numbin/numbin.css"
+                    "/misc/ploder/ploder.css",
+                    "/svgapp/svgapp.css",
+                    "/misc/numbin/numbin.css"
                 ],
                 "modules": [
-                    "/numbin/Numbin.js",
-                    "svg2png.js"
+                    "/misc/numbin/Numbin.js",
+                    "/svgapp/svgapp.js"
                 ]
             }
         }
+    },
+    "svgapp": {
+        "title": "SVG App",
+        "contentPath": "pages/svgapp/svgapp.html",
+        "templatePath": "templates/blank_with_global.ejs",
+        "imports": [
+            "pages/svgapp/svgapp.js",
+            "pages/svgapp/svgapp.css"
+        ],
+        "styles": [
+            "svgapp.css",
+            "/misc/ploder/ploder.css",
+            "/misc/numbin/numbin.css"
+        ],
+        "modules": [
+            "/misc/numbin/Numbin.js",
+            "svgapp.js"
+        ]
     },
     "feature": {
         "children": {
@@ -119,9 +132,7 @@
                     "pages/feature/accordion/Accordion.css",
                     "pages/feature/accordion/accordionES6.js"
                 ],
-                "styles": [
-                    "./Accordion.css"
-                ]
+                "styles": "./Accordion.css"
             },
             "digitslider": {
                 "title": "Digit Slider",
@@ -132,7 +143,7 @@
                     "pages/feature/digitslider/numbin_launcher.js"
                 ],
                 "styles": [
-                    "/numbin/numbin.css",
+                    "/misc/numbin/numbin.css",
                     "./digitslider.css"
                 ],
                 "scripts": [
@@ -140,8 +151,11 @@
                 ],
                 "modules": [
                     "./numbin_launcher.js",
-                    "/numbin/Numbin.js"
+                    "/misc/numbin/Numbin.js"
                 ]
+            },
+            "nothing": {
+                "imports": "assets/favicon.ico"
             }
         }
     }

@@ -1,5 +1,5 @@
-import { Ploder } from './Ploder.js';
-import { Numbin } from '/numbin/Numbin.js';
+import { Ploder } from '/misc/ploder/Ploder.js';
+import { Numbin } from '/misc/numbin/Numbin.js';
 
 const MAX_SIZE = 9999;
 
