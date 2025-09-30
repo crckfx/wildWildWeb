@@ -14,7 +14,6 @@
             "/css/merrygoround.css",
             "/css/testimonial-card.css"
         ],
-        "scripts": [],
         "modules": [
             "/js/global.js",
             "/js/merrygoround/addHomepageCarousel.js"
@@ -23,26 +22,19 @@
     "away": {
         "title": "Away",
         "contentPath": "pages/away/away.html",
-        "styles": [],
         "headerPath": "components/header/header_secondary.html",
         "children": {
             "beach-house": {
                 "title": "Beach House",
                 "contentPath": "pages/away/beach-house/beach-house.html",
-                "imports": [
-                    "pages/away/beach-house/beach-house.css"
-                ],
-                "styles": [
-                    "/away/beach-house/beach-house.css"
-                ],
+                "imports": "pages/away/beach-house/beach-house.css",
+                "styles": "/away/beach-house/beach-house.css",
                 "templatePath": "templates/page_blank.ejs",
                 "children": {
                     "dont-tell-michael": {
                         "title": "Rule #1",
                         "contentPath": "pages/away/beach-house/dont-tell-michael/dont-tell-michael.html",
-                        "styles": [
-                            "/away/beach-house/beach-house.css"
-                        ]
+                        "styles": "/away/beach-house/beach-house.css"
                     },
                     "stash": {
                         "imports": "private/3616116-middle-4146237521.png"
@@ -62,9 +54,7 @@
             "pages/math-is-wild/calculator/calc2.css",
             "pages/math-is-wild/calculator/js"
         ],
-        "styles": [
-            "./calc2.css"
-        ],
+        "styles": "./calc2.css",
         "scripts": [
             "./js/local_Parser.js",
             "./js/local_Calculator.js",
@@ -79,9 +69,7 @@
             "pages/converter/Ploder.js",
             "pages/converter/ploder.css"
         ],
-        "styles": [
-            "/misc/ploder/ploder.css"
-        ],
+        "styles": "/misc/ploder/ploder.css",
         "children": {
             "svg2png": {
                 "title": "SVG to PNG",
@@ -146,9 +134,7 @@
                     "/misc/numbin/numbin.css",
                     "./digitslider.css"
                 ],
-                "scripts": [
-                    "./digitslider.js"
-                ],
+                "scripts": "./digitslider.js",
                 "modules": [
                     "./numbin_launcher.js",
                     "/misc/numbin/Numbin.js"

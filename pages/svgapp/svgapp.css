@@ -72,6 +72,10 @@
     font-family: monospace;
 }
 
+.applet .controls>.control .icon {
+    font-size: 32px;
+}
+
 
 /* class to place a canvas inside  */
 .applet #preview {

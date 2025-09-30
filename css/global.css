@@ -65,3 +65,13 @@ main {
 .full-width {
     width: 100%;
 }
+
+.icon {
+    display: inline-block;
+    stroke: currentColor;
+    height: 1em;
+    position: relative;
+    top: -0.0625em;
+    vertical-align: middle;
+    width: 1em;
+}
