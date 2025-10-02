@@ -1,9 +1,12 @@
 {
-    "headContentPath": "components/head-content.html",
-    "headerPath": "components/header/header.html",
-    "footerPath": "components/footer/footer.html",
+    "fragments": {
+        "header": "components/header/header.html",
+        "footer": "components/footer/footer.html",
+        "global": "components/global.html",
+        "head": "components/head-content.html"
+    },
+
     "templatePath": "templates/page.ejs",
 
-    "pagesJsonPath": "pages.json",
-    "globalHtmlPath": "components/global.html"
+    "pagesJsonPath": "pages.json"
 }

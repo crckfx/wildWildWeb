@@ -22,7 +22,9 @@
     "away": {
         "title": "Away",
         "contentPath": "pages/away/away.html",
-        "headerPath": "components/header/header_secondary.html",
+        "fragments": {
+            "header": "components/header/header_secondary.html"
+        },
         "children": {
             "beach-house": {
                 "title": "Beach House",
