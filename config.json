@@ -6,7 +6,7 @@
         },
         {
             "profile": "lachoutlaws",
-            "path": "LOL.json"
+            "path": "LOL/lachoutlaws_pages.json"
         }
     ],
     "profiles": {
@@ -14,7 +14,7 @@
             "templatePath": "templates/page.ejs"
         },
         "lachoutlaws": {
-            "templatePath": "templates/page_LOL.ejs",
+            "templatePath": "LOL/lachoutlaws_template.ejs",
             "fragments": {
                 "header": "LOL/pieces/header.html",
                 "footer": "LOL/pieces/footer.html",
