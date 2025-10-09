@@ -1,0 +1,577 @@
+/* =========================================================
+   TOKENS — COLORS (yours) + TYPOGRAPHY & SPACING (new)
+   ========================================================= */
+:root {
+  /* your existing */
+  --header-space: 72px;
+  --maxw: 1200px;
+  --cream: #F7F5E8;
+  --ink: #111;
+  --muted: #A8A8A8;
+  --accent-red: #FF2626;
+  --toc-w: 228px;
+  --logo-offset: 72px;
+
+  /* base spacing unit */
+  --spacing: 8px;
+
+  /* fonts + weights */
+  --font-sans: "Urbanist", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --w-300: 300;
+  --w-400: 400;
+  --w-500: 500;
+  --w-600: 600;
+  --w-700: 700;
+  --w-800: 800;
+
+  /* line heights */
+  --lh-tight: 1.2;
+  --lh-body: 1.6;
+  --lh-loose: 1.8;
+
+  /* spacing scale */
+  --s-1: calc(var(--spacing) * .5);
+  /* 4px  */
+  --s-2: var(--spacing);
+  /* 8px  */
+  --s-3: calc(var(--spacing) * 1.5);
+  /* 12px */
+  --s-4: calc(var(--spacing) * 2);
+  /* 16px */
+  --s-5: calc(var(--spacing) * 3);
+  /* 24px */
+  --s-6: calc(var(--spacing) * 4);
+  /* 32px */
+  --s-7: calc(var(--spacing) * 5);
+  /* 40px */
+  --s-8: calc(var(--spacing) * 6);
+  /* 48px */
+
+  /* fluid type steps */
+  --fs-100: clamp(.8125rem, .77rem + .25vw, .875rem);
+  --fs-200: clamp(.9375rem, .9rem + .3vw, 1rem);
+  --fs-300: 1rem;
+  --fs-400: clamp(1.0625rem, 1rem + .6vw, 1.25rem);
+  --fs-500: clamp(1.25rem, 1.05rem + 1.2vw, 1.625rem);
+  --fs-600: clamp(1.75rem, 1.25rem + 2vw, 2.25rem);
+  --fs-700: clamp(2.25rem, 1.6rem + 2.6vw, 3rem);
+  --fs-800: clamp(2.75rem, 2rem + 3.3vw, 3.5rem);
+
+  /* readable line lengths */
+  --measure: 70ch;
+  --measure-tight: 56ch;
+
+  /* GLOBAL RHYTHM (consolidated) */
+  --section-gap: clamp(48px, 6vw, 112px);
+  --block-gap: clamp(20px, 3vw, 36px);
+  --grid-gap: clamp(28px, 4vw, 44px);
+  --head-gap: clamp(14px, 2vw, 26px);
+  --subhead-gap: clamp(12px, 1.6vw, 20px);
+  --para-gap: clamp(12px, 1.8vw, 22px);
+  --lh-head: 1.08;
+}
+
+/* =========================================
+   BASE TEXT
+   ========================================= */
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--w-400);
+  font-size: 16px;
+  line-height: var(--lh-body);
+  color: var(--ink);
+  background: #fff;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-family: "Urbanist", sans-serif;
+  font-size: clamp(24px, 4.5vw, 36px);
+  letter-spacing: -1.2px;
+  font-weight: 500;
+  margin-bottom: 16px;
+  margin-top: 0px;
+
+}
+
+/* =========================================================
+   LANDING
+   ========================================================= */
+.lp {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 96px 5.6%;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+.lpTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+}
+
+.lpNotes {
+  color: #6941C6;
+  text-align: center;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  align-self: stretch;
+}
+
+.lpHeading {
+  align-self: stretch;
+  text-align: center;
+  font-family: Inter;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 60px;
+  letter-spacing: -0.96px;
+  background: lightgray 50% / cover no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lpBody {
+  align-self: stretch;
+  color: var(--Gray-600, #535862);
+  text-align: center;
+  font-family: Inter;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.lpButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lpButton {
+  display: flex;
+  align-items: flex-start;
+  mix-blend-mode: multiply;
+  padding: 2px 10px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  background: rgba(127, 221, 254, 0.50);
+  color: #005371;
+  text-align: center;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.lpImage {
+  display: flex;
+  max-width: 1280px;
+  width: 100%;
+  padding: 0 32px;
+  justify-content: center;
+  align-items: center;
+}
+
+.lpImage img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+.intro {
+  height: auto;
+  width: 100%;
+  /* padding: 10vh 5vw; */
+  /* background-color: #c2dadc; */
+  /* background: url(Images/Tartan.png); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.introWrapper {
+  display: grid;
+  grid-template-columns:
+    7.17% 15.66% 7.17% 7.17% 7% 12.75% 35.75% 7.33%;
+  grid-template-rows: 7.05% 5.23% 17.5% 33.78% 8.26% 5.59% 13.74%;
+  width: 100%;
+  max-width: 1200px;
+  height: 100vh;
+  position: relative;
+  /* margin-bottom: 100px; */
+}
+
+
+/* Bottom Image: row 2 → 5, col 1 → 2 */
+.bottom-image {
+  grid-row: 2 / 6;
+  grid-column: 1 / 4;
+  z-index: 1;
+}
+
+.bottom-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Top Image: row 3 → 6, col 2 → 6 */
+.top-image {
+  grid-row: 3 / 7;
+  grid-column: 3 / 7;
+  z-index: 2;
+}
+
+.top-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.intro__title {
+  grid-row: 5 / 6;
+  grid-column: 3 / 9;
+  z-index: 3;
+  font-family: 'Cinzel', serif;
+  font-size: 100px;
+  letter-spacing: -5px;
+  font-weight: 400;
+  text-align: left;
+  align-self: center;
+  /* mix-blend-mode: difference; */
+  /* color: white; */
+}
+
+.intro__txt {
+  grid-column: 4 / 8; /* From column 4 to the end (column 8 if you’ve added a column) */
+  grid-row: 7 / 8;     /* Only takes up row 6 */
+  align-self: start;   /* Optional: aligns the top of the text within the grid cell */
+  z-index: 3;
+}
+
+.socialTab {
+  grid-column: 1; /* From column 4 to the end (column 8 if you’ve added a column) */
+  grid-row: 5 / 8;     /* Only takes up row 6 */
+  /* background-color: yellow; */
+  width: 100%;
+  height: 100%;
+    display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 1.5rem;
+}
+
+.socialTab a {
+  color: black;
+  font-size: 1.8rem;
+  transition: transform 0.2s ease;
+}
+
+.socialTab a:hover {
+  transform: scale(1.2);
+  color: #333;
+}
+
+/* =========================================================
+   CASE STUDIES
+   ========================================================= */
+
+
+/* ── Main container ─────────────────────────────────────── */
+/* Section heading (keep your existing if you like) */
+.caseHeading{
+  margin: 8px 0 16px;
+  font-weight: 900;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+/* Simple responsive grid */
+.caseGridSimple{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* Clickable box */
+.caseBox{
+  display: grid;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+/* Image (optional) */
+.caseBox img{
+  width: 100%;
+  aspect-ratio: 16 / 9; /* change to 4/3 or 1/1 if you prefer */
+  object-fit: cover;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Title */
+.caseBox__title{
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.25;
+  letter-spacing: -0.2px;
+}
+
+/* Hover/Focus polish */
+.caseBox:hover,
+.caseBox:focus-visible{
+  transform: translateY(-2px);
+  border-color: #dcdcdc;
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+  outline: none;
+}
+
+/* If no <img>, make the box feel balanced */
+.caseBox:not(:has(img)){
+  min-height: 140px;
+  place-items: center;
+  text-align: center;
+  background: #f8f8f8;
+}
+
+/* =========================================================
+   OTHER PROJECTS 
+   ========================================================= */
+
+/* Simple grid */
+.projectGridSimple{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(12px, 2.5vw, 24px);
+  padding-bottom: 28px;
+}
+
+/* Clickable tile */
+.projectTile{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  background:#fff;
+  text-decoration:none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+/* Optional image */
+.projectTile img{
+  display:block;
+  width:100%;
+  aspect-ratio: 16 / 9;          /* adjust to your thumbs */
+  object-fit: cover;
+  border-radius: 8px;
+  background:#f5f5f5;            /* pleasant placeholder */
+}
+
+/* Title */
+.projectTile__title{
+  font-family: Inter, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(16px, 2.2vw, 20px);
+  line-height: 1.3;
+  letter-spacing: .2px;
+}
+
+/* Hover/focus */
+.projectTile:hover,
+.projectTile:focus-visible{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  border-color:#d6d6d6;
+  outline: none;
+}
+
+/* If no image, keep spacing tidy */
+.projectTile:not(:has(img)){
+  padding: 18px;
+}
+
+/* =========================================================
+   ILLUSTRATIONS
+   ========================================================= */
+
+   /* Simple responsive grid */
+.artGrid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(12px, 2.5vw, 24px);
+  padding: 0;
+  margin-top: 16px;
+}
+
+/* Clickable box */
+.artTile{
+  display: block;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+
+/* Image (optional) */
+.artTile img{
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;          /* match your current look; change to 1/1 or 4/3 if you prefer */
+  object-fit: cover;
+  background: #f5f5f5;         /* pleasant placeholder */
+}
+
+/* Text-only tile (e.g., Spline link) */
+.artTile__title{
+  display: block;
+  padding: 14px 16px;
+  font: 600 14px/1.3 Inter, system-ui, sans-serif;
+  text-align: center;
+}
+
+/* If a tile has no <img>, give it padding automatically */
+.artTile:not(:has(img)){
+  padding: 16px;
+}
+
+/* Hover/focus */
+.artTile:hover,
+.artTile:focus-visible{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  border-color: #d6d6d6;
+  outline: none;
+}
+
+
+   /* =========================================================
+   MEDIA QUERIES 
+   ========================================================= */
+
+
+
+
+   /* =========================================================
+   FEATURES
+   ========================================================= */
+.featureList{
+  display: grid;
+  gap: 40px;
+  padding: 0;    
+}
+
+.featureRow{
+  display: grid;
+  grid-template-columns: min(560px, 44%) 1fr;
+  gap: 48px;
+  align-items: center;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+}
+
+.featureRow.is-reversed{
+  grid-template-columns: 1fr min(560px, 44%);
+}
+.featureRow.is-reversed .featureMedia{ order: 2; }
+.featureRow.is-reversed .featureContent{ order: 1; }
+
+.featureMedia{
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f3f4f6;
+  aspect-ratio: 16 / 10;   
+}
+.featureMedia img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.featureContent{
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.featureTitle{
+  margin: 0;
+  font: 800 clamp(24px, 3.2vw, 40px)/1.15 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  letter-spacing: .2px;
+  color: #0a1547;
+}
+
+.featureDesc{
+  margin: 0;
+  font: 400 clamp(16px, 2.2vw, 18px)/1.65 Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #2a3340;
+}
+
+.featureBtn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #0a1547;
+  color: #fff;
+  text-decoration: none;
+  font: 600 15px/1 Inter, system-ui, sans-serif;
+  box-shadow: 0 12px 24px rgba(10,21,71,.15);
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.featureBtn:hover{ transform: translateY(-1px); box-shadow: 0 16px 30px rgba(10,21,71,.2); }
+.featureBtn:active{ transform: translateY(0); opacity: .9; }
+
+@media (max-width: 900px){
+  .featureRow,
+  .featureRow.is-reversed{
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 18px;
+  }
+  .featureMedia{ aspect-ratio: 16/9; }
+  .featureTitle{ font-size: clamp(20px, 6vw, 28px); }
+  .featureDesc{ font-size: 14px; line-height: 1.6; }
+  .featureBtn{ padding: 10px 16px; font-size: 14px; }
+}

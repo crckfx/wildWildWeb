@@ -1,12 +1,32 @@
 {
+    "sources": [
+        {
+            "profile": "default",
+            "path": "pages.json"
+        },
+        {
+            "profile": "lachoutlaws",
+            "path": "LOL.json"
+        }
+    ],
+    "profiles": {
+        "default": {
+            "templatePath": "templates/page.ejs"
+        },
+        "lachoutlaws": {
+            "templatePath": "templates/page_LOL.ejs",
+            "fragments": {
+                "header": "LOL/pieces/header.html",
+                "footer": "LOL/pieces/footer.html",
+                "global": null,
+                "head": "LOL/pieces/head.html"
+            }
+        }
+    },
     "fragments": {
         "header": "components/header/header.html",
         "footer": "components/footer/footer.html",
         "global": "components/global.html",
         "head": "components/head-content.html"
-    },
-
-    "templatePath": "templates/page.ejs",
-
-    "pagesJsonPath": "pages.json"
+    }
 }

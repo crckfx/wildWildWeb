@@ -1,0 +1,27 @@
+{
+    "lachoutlaws": {
+        "contentPath": "LOL/home.html",
+        "imports": [
+            "LOL/css",
+            "LOL/js"
+        ],
+        "styles": [
+            "/lachoutlaws/css/index.css"
+        ],
+        "scripts": "/lachoutlaws/js/test.js",
+        "children": {
+            "uni": {
+                "contentPath": "LOL/uni.html",
+                "scripts": "/lachoutlaws/js/metle.js"
+            },
+            "portfolio": {
+                "contentPath": "LOL/portfolio.html",
+                "scripts": "/lachoutlaws/js/metle.js"
+            },
+            "metle": {
+                "contentPath": "LOL/metle.html",
+                "scripts": "/lachoutlaws/js/metle.js"
+            }
+        }
+    }
+}
