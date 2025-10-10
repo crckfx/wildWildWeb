@@ -1,24 +1,27 @@
 {
     "lachoutlaws": {
+        "title": "Lachoutlaws",
         "contentPath": "LOL/home.html",
         "imports": [
             "LOL/css",
             "LOL/js"
         ],
-        "styles": [
-            "/lachoutlaws/css/index.css"
-        ],
+        "styles": "/lachoutlaws/css/index.css",
         "scripts": "/lachoutlaws/js/test.js",
+        "modules": "/lachoutlaws/js/app.js",
         "children": {
             "uni": {
+                "title": "Uni Casestudy",
                 "contentPath": "LOL/uni.html",
                 "scripts": "/lachoutlaws/js/metle.js"
             },
             "portfolio": {
+                "title": "Portfolio",                
                 "contentPath": "LOL/portfolio.html",
                 "scripts": "/lachoutlaws/js/metle.js"
             },
             "metle": {
+                "title": "Metle",
                 "contentPath": "LOL/metle.html",
                 "scripts": "/lachoutlaws/js/metle.js"
             }
