@@ -8,24 +8,18 @@
         ],
         "styles": "/lachoutlaws/css/index.css",
         "scripts": "/lachoutlaws/js/test.js",
-        "modules": "/lachoutlaws/js/app.js",
         "children": {
             "uni": {
                 "title": "Uni Casestudy",
-                "contentPath": "LOL/uni.html",
-                "scripts": [
-                    "/lachoutlaws/js/metle.js"
-                ]
+                "contentPath": "LOL/uni.html"
             },
             "portfolio": {
                 "title": "Portfolio",
-                "contentPath": "LOL/portfolio.html",
-                "scripts": "/lachoutlaws/js/metle.js"
+                "contentPath": "LOL/portfolio.html"
             },
             "metle": {
                 "title": "Metle",
-                "contentPath": "LOL/metle.html",
-                "scripts": "/lachoutlaws/js/metle.js"
+                "contentPath": "LOL/metle.html"
             }
         }
     }

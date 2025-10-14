@@ -18,7 +18,7 @@
             "fragments": {
                 "header": "LOL/pieces/header.html",
                 "footer": "LOL/pieces/footer.html",
-                "global": null,
+                "global": "LOL/pieces/global.html",
                 "head": "LOL/pieces/head.html"
             }
         }
