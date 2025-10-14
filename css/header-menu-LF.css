@@ -1,0 +1,502 @@
+nav {
+    /* background-color: var(--color-bg-1); */
+    /* margin: 0.5em 0; */
+    position: relative;
+    margin: 0.5em 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    flex-direction: column;
+}
+
+.nav-container {
+    display: grid;
+    transition: grid-gap 0.4s ease;
+    grid-gap: 0;
+    width: 100%;
+}
+
+nav[aria-expanded="true"] .nav-container {
+    grid-gap: 24px;
+}
+
+
+/* *************************************************************************************** */
+/* ==== NAV TOP === */
+/* (small: [logo + hamburger], large: [logo][menu]) */
+/* *************************************************************************************** */
+/* section for the logo-link and hamburger */
+.nav-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* logo home link */
+.logo {
+    /* width: 192px; */
+    max-width: 500px;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.logo .logo-image {
+    width: 100%;
+    content: var(--url-header-logo);
+}
+
+/* mobile menu toggle */
+.menu-toggle {
+    background: none;
+    border: none;
+    color: var(--color-text-1);
+    cursor: pointer;
+    margin-left: auto;
+    transition: color 0.3s ease;
+    padding: 6px 12px 0px 12px;
+}
+
+.menu-toggle:hover {
+    color: var(--lf-turquoise);
+}
+
+.menu-toggle .icon {
+    width: 24px;
+    height: 24px;
+}
+
+nav[aria-expanded="false"] .menu-close,
+nav[aria-expanded="true"] .menu-ham {
+    display: none;
+}
+
+nav[aria-expanded="true"] .menu-close,
+nav[aria-expanded="false"] .menu-ham {
+    display: inline-block;
+}
+
+/* *************************************************************************************** */
+/* ==== MENU === */
+/* *************************************************************************************** */
+/* menu-wrapper: (on mobile) animates grid-template-rows to slide the drawer open */
+.menu-wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s ease, opacity 0.3s ease;
+    overflow: hidden;
+    width: 100%;
+    box-shadow: var(--shadow-preset-A);
+    opacity: 0;
+    border-radius: 18px;
+}
+
+/* menu expanded state */
+nav[aria-expanded="true"] .menu-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+
+.menu {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    /* font-size: 18px; */
+    color: var(--color-primary);
+    margin-top: 1em;
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+}
+
+.menu>li {
+    border-bottom: 1px solid var(--color-subtle-divider);
+}
+
+.menu>li:last-child {
+    border-bottom: none;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    transition: background-color 0.4s ease, box-shadow 0.5s ease, border-radius 0.3s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    height: 80px;
+    font-size: 18px;
+    /* border-radius: 24px; */
+    /* border-top-left-radius: 24px; */
+    /* border-top-right-radius: 24px; */
+}
+
+
+.menu-item:hover,
+.menu-item:has(> a:focus) {
+    box-shadow: var(--inset-preset-2);
+}
+
+.has-children:hover>.menu-item {
+    box-shadow: var(--inset-preset-2);
+}
+
+
+.menu-item>a {
+    text-decoration: none;
+    flex: 1;
+    color: var(--color-primary);
+    padding: 18px 36px;
+    outline: none;
+    transition: color 0.3s ease;
+}
+
+
+.menu-item>a:hover,
+.menu-item>a:focus {
+    color: var(--lf-turquoise);
+}
+
+.has-children>.menu-item>a {
+    /* grow the submenu-toggle (if it exists) instead of the <a> */
+    flex: 0;
+}
+
+.menu-item>a>span {
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+}
+
+.menu li:has(.current) .menu-item,
+.menu li.current .menu-item {
+    background: var(--gradient-header-fade);
+}
+
+/* the underline for the current top menu item */
+.menu li:has(.current) .menu-item a span::after,
+.menu li.current .menu-item a span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8px;
+    height: 2px;
+    background-color: var(--lf-turquoise);
+}
+
+
+.submenu-toggle {
+    background: none;
+    border: none;
+    color: inherit;
+    padding: 0.75em 1.5em;
+    /* cursor: pointer; */
+    /* font-size: 1.25em; */
+    font-size: 24px;
+    text-align: right;
+    flex: 1;
+}
+
+
+/* *************************************************************************************** */
+/* ==== SUB-MENU === */
+/* *************************************************************************************** */
+/* === submenu-grid animates same as menu-wrapper === */
+.submenu-grid {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.5s ease, opacity 0.3s ease;
+}
+
+.menu li[aria-expanded="true"] .submenu-grid {
+    grid-template-rows: 1fr;
+}
+
+
+
+.submenu {
+    list-style: none;
+    /* background: #333; */
+    overflow: hidden;
+    padding: 0;
+}
+
+.submenu li {
+    /* border-top: 1px solid #444; */
+    padding: 0;
+    border-bottom: none;
+    transition: box-shadow 0.3s ease;
+    border-top: 1px solid var(--color-subtle-divider);
+}
+
+.submenu a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    padding: 24px 36px;
+    margin: 0 18px;
+    transition: background-color 0.3s ease, box-shadow 0.5s ease, color 0.3s ease;
+    border-radius: 24px;
+    outline: none;
+}
+
+.submenu a:hover,
+.submenu a:focus {
+    box-shadow: var(--inset-preset-2);
+    color: var(--lf-turquoise);
+}
+
+
+.submenu li.current {
+    background: var(--gradient-header-fade);
+}
+
+.submenu a>span {
+    white-space: nowrap;
+    display: inline-block;
+    position: relative;
+}
+
+/* the underline for the current top menu item */
+.submenu li.current a span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -8px;
+    height: 2px;
+    background-color: var(--lf-turquoise);
+}
+
+
+@media (min-width: 600px) {
+    .logo {
+        width: 256px;
+    }
+
+    /* the menu button toggling */
+    .menu-toggle .icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .menu-toggle {
+        /* top: 24px; */
+        /* right: 0px; */
+        padding: 12px 12px 0px 12px;
+    }
+
+}
+
+
+/* === WIDE SCREEN === */
+@media (min-width: 1000px) {
+    .nav-container {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+
+    /* section for the logo-link and hamburger */
+    .nav-top {
+        width: auto;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .logo {
+        flex-shrink: 0;
+        margin-right: 8vw;
+    }
+
+
+    .menu-toggle {
+        display: none;
+    }
+
+    .menu-wrapper {
+        display: block;
+        grid-template-rows: none;
+        padding: 26px 0 12px 0;
+        opacity: 1;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .menu {
+        display: flex;
+        flex-direction: row;
+        font-size: 14px;
+        justify-content: space-between;
+        width: 100%;
+        box-shadow: none;
+        margin-top: 0;
+        overflow: visible;
+        border-radius: 18px;
+    }
+
+
+    .menu li {
+        position: relative;
+        border-bottom: none;
+    }
+
+
+    .menu-item {
+        display: inline-flex;
+        height: auto;
+        border-radius: 8px;
+        padding: 0;
+        font-size: 14px;
+    }
+
+    .menu-item,
+    .menu-item:not(:last-child) {
+        border: none;
+    }
+
+    .menu li#home {
+        display: none;
+    }
+
+    .menu-item>a {
+        /* display: inline-block; */
+        position: relative;
+        padding: 16px 20px;
+        outline: none;
+    }
+
+    .menu-item>a>span {
+        position: relative;
+    }
+
+    .menu li:has(.current) .menu-item,
+    .menu li.current .menu-item {
+        background: none;
+    }
+
+    /* the underline for the current top menu item */
+    .menu li.current .menu-item a span::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -8px;
+        height: 2px;
+        background-color: var(--lf-turquoise);
+    }
+
+
+
+    .menu-item:hover,
+    .menu-item:has(> a:focus) {
+        box-shadow: var(--inset-preset-2);
+    }
+
+    .has-children:hover>.menu-item {
+        box-shadow: var(--inset-preset-2);
+    }
+
+    .submenu-toggle {
+        display: none;
+    }
+
+    /* Override grid animation on wide screens */
+    .submenu-grid {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: max-content;
+        box-shadow: var(--shadow-preset-A);
+        z-index: 10;
+        border-radius: 24px;
+        opacity: 0;
+        grid-template-rows: 0fr;
+    }
+
+
+    li:hover>.submenu-grid,
+    li:has(a:focus)>.submenu-grid {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+    .submenu {
+        /* background: none; */
+        /* background-color: var(--color-bg-2); */
+        background-color: var(--color-bg-1);
+        border: none;
+        padding: 0 4px;
+    }
+
+    .submenu li {
+        /* min-height: 60px; */
+        display: flex;
+        align-items: center;
+        border-radius: 16px;
+        border: none;
+        margin: 0;
+        padding: 4px 0;
+    }
+
+    .submenu li.current {
+        background: none;
+    }
+
+    .submenu li:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--color-subtle-divider);
+    }
+
+    .submenu li:hover a {
+        box-shadow: var(--inset-preset-2);
+    }
+
+
+    .submenu li>a {
+        padding: 1em 1em;
+        width: 100%;
+        height: 100%;
+        outline: none;
+        margin: 0;
+        border-radius: 16px;
+        background-color: var(--color-bg-1);
+    }
+
+
+    .menu-item.contact-button {
+
+        box-shadow: none;
+        /* box-shadow: var(--shadow-preset-A); */
+        background-color: var(--color-contact-btn-bg);
+        border-radius: 24px;
+    }
+
+    .menu-item.contact-button:hover,
+    .menu-item.contact-button:has(>a:focus) {
+        /* box-shadow: var(--btn-B-hover-shadow); */
+        box-shadow: var(--shadow-preset-A);
+        background-color: var(--lf-dark-navy);
+        border-radius: 16px;
+    }
+
+    .menu-item.contact-button a {
+        color: var(--color-contact-btn-text);
+    }
+
+
+    /* .contact-button:hover,
+    .contact-button a:focus {
+        box-shadow: var(--shadow-preset-B);
+    } */
+
+}

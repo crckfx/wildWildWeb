@@ -12,7 +12,8 @@
         ],
         "styles": [
             "/css/merrygoround.css",
-            "/css/testimonial-card.css"
+            "/css/testimonial-card.css",
+            "/css/feature-card.css"
         ],
         "modules": [
             "/js/global.js",
@@ -47,7 +48,20 @@
     },
     "splat": {
         "title": "Splat",
-        "contentPath": "pages/splat/splat.html"
+        "contentPath": "pages/splat/splat.html",
+        "fragments": {
+            "header": "components/header/header_LF.html"
+        },
+        "imports": [
+            "pages/splat/splat.js",
+            "pages/splat/splat.css"
+        ],
+        "styles": [
+            "/css/header-menu-LF.css",
+            "./splat.css"
+        ],
+        "modules": "splat.js",
+        "scripts": "/js/LF/header-menu.js"
     },
     "calculator": {
         "title": "Calculator",

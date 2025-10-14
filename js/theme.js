@@ -1,4 +1,4 @@
-const validThemes = ['light', 'dark', 'system'];
+export const validThemes = ['light', 'dark', 'system'];
 const select = document.querySelector('.color-picker select');
 
 function getSystemTheme() {

@@ -13,10 +13,20 @@
             "uni": {
                 "title": "Uni Casestudy",
                 "contentPath": "LOL/uni.html",
-                "scripts": "/lachoutlaws/js/metle.js"
+                "scripts": [
+                    "/lachoutlaws/js/metle.js",
+                    "/js/LF/header-menu.js"
+                ],
+                "fragments": {
+                    "header": "components/header/header_LF.html"
+                },
+                "styles": [
+                    "/css/header-menu-LF.css",
+                    "./splat.css"
+                ]
             },
             "portfolio": {
-                "title": "Portfolio",                
+                "title": "Portfolio",
                 "contentPath": "LOL/portfolio.html",
                 "scripts": "/lachoutlaws/js/metle.js"
             },

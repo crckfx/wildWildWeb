@@ -1,43 +1,46 @@
 /* Theme tokens */
 [data-theme="light"] {
-    --color-bg-1: hsl(210, 20%, 98%);
-    --color-bg-2: hsl(210, 20%, 94%);
-    --color-bg-3: hsl(210, 20%, 86%);
+    --color-bg-1: hsl(60, 20%, 96%);
+    --color-bg-2: hsl(60, 20%, 98%);
+    --color-bg-3: hsl(60, 10%, 88%);
 
-    --color-text-1: #1A202C;
-    --color-text-2: #113840;
-    --color-text-3: #3f3f3f;
-
-    --color-accent: #0070f3;
-
-    --header-text: white;
-    --header-bg: #4c94c7;
+    --color-text-1: hsl(220, 26%, 14%);
+    --color-text-2: hsl(190, 58%, 16%);
+    --color-text-3: hsl(220, 0%, 25%);
+    --color-feature-1: #0a1547;
+    --color-feature-2: #2a3340;
     
+    --color-accent: #0070f3;
+    
+    --color-footer-1: hsl(0, 45%, 28%);
+    --color-footer-2: hsl(345, 34%, 22%);
     --footer-text: white;
-    --footer-bg: radial-gradient(circle at bottom right,
-            #73acca,
-            #4c94c7 80%);
+    --header-text: white;
+    /* --footer-bg: radial-gradient(circle at bottom right,var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
+    /* --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
 
 }
 
 [data-theme="dark"] {
-    --color-bg-1: hsl(220, 26%, 14%);
-    --color-bg-2: hsl(220, 26%, 20%);
-    --color-bg-3: hsl(220, 26%, 25%);
+    --color-bg-1: hsl(219, 24%, 7%);
+    --color-bg-2: hsl(220, 23%, 12%);
+    --color-bg-3: hsl(220, 23%, 18%);
 
-    --color-text-1: #F9FAFB;
-    --color-text-2: #96d5e3;
-    --color-text-3: #cecece;
+    --color-text-1: hsl(191, 20%, 98%);
+    --color-text-2: hsl(191, 28%, 80%);
+    --color-text-3: hsl(0, 0%, 81%);
+    --color-feature-1: hsl(66, 40%, 80%);
+    --color-feature-2: hsl(60, 20%, 70%);
 
     --color-accent: #79ffe1;
 
-    --header-text: white;
-    --header-bg: #0b66a7;
-    
+    --color-footer-1: hsl(66, 45%, 44%);
+    --color-footer-2: hsl(60, 34%, 25%);
     --footer-text: white;
-    --footer-bg: radial-gradient(circle at bottom right,
-            #2882b3,
-            #0b66a7 80%);
+    --header-text: white;
 }
 
-
+* {
+    --footer-bg: radial-gradient(circle at bottom right,var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+}
