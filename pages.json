@@ -134,7 +134,7 @@
                 "contentPath": "pages/feature/accordion/accordion.html",
                 "imports": [
                     "pages/feature/accordion/Accordion.css",
-                    "pages/feature/accordion/accordionES6.js"
+                    "pages/feature/accordion/AccordionES6.js"
                 ],
                 "styles": "./Accordion.css"
             },
