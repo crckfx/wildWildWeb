@@ -14,15 +14,7 @@
                 "title": "Uni Casestudy",
                 "contentPath": "LOL/uni.html",
                 "scripts": [
-                    "/lachoutlaws/js/metle.js",
-                    "/js/LF/header-menu.js"
-                ],
-                "fragments": {
-                    "header": "components/header/header_LF.html"
-                },
-                "styles": [
-                    "/css/header-menu-LF.css",
-                    "./splat.css"
+                    "/lachoutlaws/js/metle.js"
                 ]
             },
             "portfolio": {

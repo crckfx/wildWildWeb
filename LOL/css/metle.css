@@ -103,11 +103,11 @@ body {
 .heroImage {
   display: flex;
   /* max-width: 1280px; */
+  height: auto;
   width: 100%;
-  padding: 0 32px;
   justify-content: center;
   align-items: center;
-  /* filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .12)) drop-shadow(0 10px 24px rgba(196, 22, 187, 0.14)); */
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, .12)) drop-shadow(0 10px 24px rgba(196, 22, 187, 0.14));
 }
 
 
@@ -629,93 +629,74 @@ section {
 
 /* Russels Model */
 /* _____________ */
-
 /* Double Spread */
 /* _____________ */
-.doubleSpread {
+.doubleSpread{
+  display: grid;
+  grid-template-columns: 2fr 3fr;       /* ~40/60 */
+  gap: clamp(16px, 3vw, 32px);
   width: 100%;
+  align-items: center;
   min-height: 30px;
-  display: flex;
 }
 
-.leftSpread {
-  width: 40%;
-  height: auto;
+.leftSpread,
+.rightSpread{ width:100%; height:auto; }
+
+.rightSpread{
+  display:flex;
+  align-items:center;
+  justify-content:center;               /* center text vertically on desktop */
 }
 
-.spreadImage {
-  width: 100%;
-  height: 100%;
-  padding: 32px;
+/* Image */
+.spreadImage{
+  display:block;
+  width:100%;
+  height:auto;                          /* keep natural ratio */
   object-fit: cover;
   object-position: center;
-}
-
-.rightSpread {
-  width: 60%;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius:12px;
+  /* remove the padding that caused weird cropping */
+  padding:0;
 }
 
 /* Double Spread – mobile layout */
-@media (max-width: 720px) {
-  .doubleSpread {
-    flex-direction: column;
-    /* stack */
-    align-items: stretch;
-    gap: 16px;
+@media (max-width: 720px){
+  .doubleSpread{
+    grid-template-columns: 1fr;         /* stack */
+    gap:16px;
   }
 
-  .leftSpread,
-  .rightSpread {
-    width: 100%;
-    height: auto;
+  .rightSpread{
+    justify-content:flex-start;         /* text starts at top on mobile */
+    padding:0;
   }
 
-  /* Make the image feel larger on phones */
-  .spreadImage {
-    display: block;
-    width: 100%;
-    height: auto;
-    /* let aspect-ratio drive height */
-    aspect-ratio: 4 / 3;
-    /* taller than 16/9 so it reads bigger */
-    object-fit: cover;
-    object-position: center;
-    padding: 0;
-    /* remove inner padding on small screens */
-    border-radius: 12px;
+  .leftSpread{
+    display: flex;      
+    justify-content: center;
+    align-items: center; 
   }
 
-  .rightSpread {
-    justify-content: flex-start;
-    /* align text to top */
-    padding: 0;
-    /* keep edges clean */
+  .spreadImage{
+    width:40%;
+    height:auto;                        /* don’t force aspect-ratio on phones */
+    border-radius:12px;
   }
 
-  section {
-    gap: 16px;
-    scroll-margin-top: 0px;
-  }
-
-  #overview {
-    padding-top: 0px;
-  }
+  section{ gap:16px; scroll-margin-top:0; }
+  #overview{ padding-top:0; }
 }
+
 
 /* _____________ */
 /* Double Spread */
 
-/* Three Columns */
-/* _____________ */
 .threeColumnContainer {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  /* make cards equal height if content differs */
   gap: 30px;
   width: 100%;
 }
@@ -730,7 +711,6 @@ section {
   padding: 32px 16px;
   /* slightly tighter default padding */
   flex: 1 1 calc(33.333% - 30px);
-  /* 3-up, accounts for gap */
   min-width: 260px;
   /* prevents cards from getting too skinny on wide screens */
 }
@@ -963,3 +943,48 @@ b {
 }
 
 /* gray */
+
+
+
+
+
+/* MEDIA QUERIES HERO */
+
+/* Hero — match body text on mobile */
+@media (max-width: 720px){
+  .hero{
+    padding: 24px 16px;
+    gap: 16px;
+  }
+
+  .heroTextContainer{ align-items: flex-start; }
+
+  .heroNotes{
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* Match p mobile: 14/22 */
+  .heroHeading{
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .heroBody{
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .heroButtonContainer{ gap: 6px; }
+  .heroButton{
+    font-size: 12px;
+    line-height: 16px;
+    padding: 2px 8px;
+  }
+
+  .heroImage{
+    filter: none; /* keep it clean on small screens */
+  }
+}
