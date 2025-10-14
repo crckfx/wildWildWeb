@@ -1,4 +1,4 @@
-import { Numbin } from '/numbin/Numbin.js';
+import { Numbin } from '/misc/numbin/Numbin.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('input.numbin').forEach(input => {
