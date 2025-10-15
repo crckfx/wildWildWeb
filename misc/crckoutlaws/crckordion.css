@@ -7,24 +7,18 @@
 
 /* accordion: the thing that can contain one or more collapsible layers */
 .accordion {
-    color: var(--color-text);
     display: grid;
     overflow: hidden;
     /* overridden by class? */
-    border-radius: 8px;    
+    border-radius: 8px;
     gap: 2px;
     /* remember, the transparent border exposes the background */
     border: 2px solid transparent;
 }
 
-.accordion hr {
-    border-color: #88888833;
-}
-
 /* accordion-panel: a single collapsible layer within an accordion (there may be siblings) */
 .accordion-panel {
-    background-color: #222;
-    background-color: var(--color-bg-2);
+    background-color: #e9e0e0;
     padding: 0;
     border: none;
     scroll-margin-bottom: 20px;
@@ -37,34 +31,63 @@
 .accordion-trigger {
     background: transparent;
     border: 0;
-    font: inherit;
     color: inherit;
     text-align: left;
     width: 100%;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 2rem;
+    padding: 12px 2rem;
     position: relative;
     cursor: pointer;
 }
 
-/* ::before: the light denoting on/off for the panel */
-.accordion-trigger::before {
+/* lachoutlaws  */
+.accordion-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-trigger>h2 {
+    color: var(--Headings, #262626);
+    font-family: Inter, sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+    margin: 0;
+}
+
+.accordion-trigger .chevron {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    transform: rotate(0deg);
+    margin-left: auto;
+}
+
+/* When the accordion is open */
+.accordion-trigger[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+}
+
+/* /lachoutlaws  */
+
+
+/* ::before: the light denoting on/off for the panel (optional!)*/
+.accordion.light>.accordion-trigger::before {
     content: "";
     position: absolute;
     left: 16px;
     top: 50%;
-    transform: translateY(-50%);
     /* Center the light vertically */
+    transform: translateY(-50%);
     background-color: var(--color-bulb-off);
-    width: 5px;
     /* Fixed height for the light */
+    width: 5px;
     height: 35px;
     /* Smooth transition for the light color */
     transition: background-color 500ms;
 }
 
-.accordion-trigger[aria-expanded="true"]::before {
+.accordion.light>.accordion-trigger[aria-expanded="true"]::before {
     background-color: var(--color-bulb-on);
 }
 
@@ -74,7 +97,7 @@
 .accordion-content {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 500ms;
+    transition: grid-template-rows 300ms;
     padding-left: 16px;
     padding-right: 16px;
 }
@@ -86,3 +109,17 @@
 .accordion-content>div {
     overflow: hidden;
 }
+
+/* lachoutlaws  */
+.accordion-content p {
+    color: var(--BodyCopy, #4C4C4D);
+    padding: 0 20px;
+    font-family: Urbanist, sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    margin: 0 0 1rem;
+}
+
+/* /lachoutlaws  */

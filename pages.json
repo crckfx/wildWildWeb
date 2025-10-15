@@ -1,19 +1,28 @@
 {
     "home": {
         "title": "Home",
-        "contentPath": "pages/home/home.html",
+        "contentPath": [
+            "pages/home/home.html",
+            "pages/home/LOL-feature-thing.html",
+            "pages/home/LOL-scrolling-thing.html"
+        ],
         "outDir": "/",
         "imports": [
             "css",
             "js",
             "resources",
             "assets/favicon.ico",
-            "misc"
+            "misc",
+            "pages/home/scroller-LOL.css"
         ],
         "styles": [
             "/css/merrygoround.css",
             "/css/testimonial-card.css",
-            "/css/feature-card.css"
+            "/css/feature-card.css",
+            "/scroller-LOL.css",
+            "/misc/crckoutlaws/meddle.css",
+            "/misc/crckoutlaws/lachordion.css",
+            "/misc/crckoutlaws/persona.css"
         ],
         "modules": [
             "/js/global.js",

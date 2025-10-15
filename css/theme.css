@@ -9,15 +9,17 @@
     --color-text-3: hsl(220, 0%, 25%);
     --color-feature-1: #0a1547;
     --color-feature-2: #2a3340;
-    
+
     --color-accent: #0070f3;
-    
+
     --color-footer-1: hsl(0, 45%, 28%);
     --color-footer-2: hsl(345, 34%, 22%);
     --footer-text: white;
     --header-text: white;
     /* --footer-bg: radial-gradient(circle at bottom right,var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
     /* --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
+    --color-bulb-on: hsl(60, 100%, 50%);
+    --color-bulb-off: hsla(60, 100%, 50%, 0.133);
 
 }
 
@@ -38,9 +40,11 @@
     --color-footer-2: hsl(60, 34%, 25%);
     --footer-text: white;
     --header-text: white;
-}
+
+    --color-bulb-on: #00ddff;
+    --color-bulb-off: #00ddff22;}
 
 * {
-    --footer-bg: radial-gradient(circle at bottom right,var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
     --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
 }

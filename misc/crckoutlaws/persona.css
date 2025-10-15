@@ -1,0 +1,181 @@
+.personaContainer {
+    display: flex;
+    width: 100%;
+    min-height: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 55px;
+}
+
+.persona {
+    border-radius: 16px;
+    display: flex;
+    padding: 32px;
+    align-items: center;
+    gap: 20px;
+    align-self: stretch;
+    /* background-color: #101010; */
+}
+
+.personaLeft {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.personaHeading {
+    color: var(--Dark-Green-40, #000000);
+    text-align: right;
+    font-family: "Ibarra Real Nova";
+    font-size: 80px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 80px;
+    letter-spacing: 1px;
+    align-self: stretch;
+}
+
+.personaImage {
+    display: flex;
+    width: 50%;
+    height: 100%;
+    padding: 16px;
+    align-items: flex-start;
+    gap: 10px;
+    background-color: #8ed8bf;
+    border-radius: 8px;
+}
+
+.personaRight {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 38px;
+}
+
+.personaSubContainer {
+    display: flex;
+    padding: 0 16px;
+    align-items: center;
+    gap: 32px;
+    align-self: stretch;
+}
+
+.indent {
+    width: 2px;
+    height: 66px;
+    background-color: #468671;
+}
+
+.personaSubHeadingContainer {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+}
+
+.personaSub {
+    height: 31px;
+    flex-shrink: 0;
+    align-self: stretch;
+    color: #000000;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.personaBody {
+    align-self: stretch;
+    color: #000000;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+@media (max-width: 720px) {
+    .personaContainer {
+        gap: 28px;
+    }
+
+    .persona {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 16px;
+        border-radius: 12px;
+    }
+
+    .personaLeft {
+        width: 100%;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .personaHeading {
+        text-align: left;
+        font-size: clamp(28px, 10.5vw, 42px);
+        line-height: 1.05;
+        letter-spacing: 0.5px;
+    }
+
+    .personaImage {
+        width: 100%;
+        height: auto;
+        /* let aspect-ratio control height if you use it */
+        padding: 0;
+        /* remove inner padding so the image fills */
+        border-radius: 10px;
+        aspect-ratio: 3 / 2;
+        /* tweak to 4/3 or 1/1 if you prefer */
+        background-color: #8ed8bf;
+    }
+
+    .personaRight {
+        width: 100%;
+        gap: 16px;
+    }
+
+    .personaSubContainer {
+        padding: 0;
+        gap: 12px;
+    }
+
+    .indent {
+        width: 2px;
+        height: 36px;
+        /* shorter accent line for mobile */
+        background-color: #468671;
+    }
+
+    .personaSubHeadingContainer {
+        gap: 4px;
+    }
+
+    .personaSub {
+        font-size: 14px;
+        line-height: 20px;
+    }
+
+    .personaBody {
+        font-size: 16px;
+        /* more readable than 14px on phones */
+        line-height: 24px;
+    }
+
+    .personaImage img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        border-radius: inherit;
+    }
+
+}

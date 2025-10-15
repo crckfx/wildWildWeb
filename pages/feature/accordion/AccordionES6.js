@@ -20,33 +20,35 @@ export class Accordion {
         };
 
         console.log("------ panels ------");
+        // 
         this.options.addPanels.forEach((panel) => {
-            // console.log(panel); // correctly targets a param panel
-            const newPanel = document.createElement('div');
-            newPanel.classList.add('accordion-panel');
+            // // console.log(panel); // correctly targets a param panel
+            // const newPanel = document.createElement('div');
+            // newPanel.classList.add('accordion-panel');
 
-            const newPanelTrigger = document.createElement('button');
-            newPanelTrigger.classList.add('accordion-trigger');
-            newPanelTrigger.ariaExpanded = "false";
-            newPanelTrigger.innerHTML = `<h2>${panel.title}</h2>`;
+            // const newPanelTrigger = document.createElement('button');
+            // newPanelTrigger.classList.add('accordion-trigger');
+            // newPanelTrigger.ariaExpanded = "false";
+            // newPanelTrigger.innerHTML = `<h2>${panel.title}</h2>`;
 
-            const newPanelContent = document.createElement('div');
-            newPanelContent.classList.add('accordion-content');
-            newPanelContent.ariaHidden = "true";
-            newPanelContent.innerHTML = `<div><hr>${panel.content}</div>`;
+            // const newPanelContent = document.createElement('div');
+            // newPanelContent.classList.add('accordion-content');
+            // newPanelContent.ariaHidden = "true";
+            // newPanelContent.innerHTML = `<div><hr>${panel.content}</div>`;
 
-            newPanel.appendChild(newPanelTrigger);
-            newPanel.appendChild(newPanelContent);
+            // newPanel.appendChild(newPanelTrigger);
+            // newPanel.appendChild(newPanelContent);
 
-            this.panels.push(newPanel);
+            // this.panels.push(newPanel);
 
-            console.log(`provided position is ${panel.order}`);
-            if (panel.order !== undefined) {
-                container.insertBefore(newPanel, container.children[panel.order]);
-            } else {
-                container.appendChild(newPanel);
-            }
+            // console.log(`provided position is ${panel.order}`);
+            // if (panel.order !== undefined) {
+            //     container.insertBefore(newPanel, container.children[panel.order]);
+            // } else {
+            //     container.appendChild(newPanel);
+            // }
 
+            this.createPanel(panel);
         });
         console.log("------ /panels ------");
         this.container.style.setProperty("gap", this.options.gap);
@@ -80,6 +82,33 @@ export class Accordion {
 
     }
 
+    createPanel(panel) {
+        const newPanel = document.createElement('div');
+        newPanel.classList.add('accordion-panel');
+
+        const newPanelTrigger = document.createElement('button');
+        newPanelTrigger.classList.add('accordion-trigger');
+        newPanelTrigger.ariaExpanded = "false";
+        newPanelTrigger.innerHTML = `<h2>${panel.title}</h2>`;
+
+        const newPanelContent = document.createElement('div');
+        newPanelContent.classList.add('accordion-content');
+        newPanelContent.ariaHidden = "true";
+        newPanelContent.innerHTML = `<div><hr>${panel.content}</div>`;
+
+        newPanel.appendChild(newPanelTrigger);
+        newPanel.appendChild(newPanelContent);
+
+        this.panels.push(newPanel);
+
+        console.log(`provided position is ${panel.order}`);
+        if (panel.order !== undefined) {
+            this.container.insertBefore(newPanel, this.container.children[panel.order]);
+        } else {
+            this.container.appendChild(newPanel);
+        }
+    }
+
     toggle(panel) {
         const header = panel.querySelector(".accordion-trigger");
         const content = panel.querySelector(".accordion-content");
@@ -94,13 +123,7 @@ export class Accordion {
         // experimental: scroll to fit panel
         // this is kind of crude (fires after transition), but "nearest" seems to filter nicely
         if (this.options.scrollOnExpand === true) {
-            content.addEventListener("transitionend", function handler(event) {
-                if (event.propertyName === "grid-template-rows") {
-                    // console.log('transition end');
-                    panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
-                    content.removeEventListener("transitionend", handler);
-                }
-            });
+            panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
     }
 }

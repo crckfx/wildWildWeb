@@ -1,0 +1,549 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* Left Column */
+.leftContainer {
+  display: flex;
+  width: 100%;
+  flex: 0 0 260px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 64px;
+  align-self: stretch;
+}
+
+.toc {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  padding-top: 120px;
+  position: sticky;
+  top: 0;
+}
+
+.tocHeader {
+  color: var(--Gray-900, #181D27);
+  font-family: Inter;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+  align-self: stretch;
+}
+
+.tocContainer {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.contents {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  align-self: stretch;
+  opacity: 0.3;
+  text-decoration: none;
+  transition: all .3s;
+}
+
+.current {
+  opacity: 1;
+  transform: translateX(2px);
+  transition: all .3s;
+}
+
+.currentSectionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10.793px;
+  height: 10.786px;
+}
+
+.currentSectionIcon::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cfd3d6;
+}
+
+.contents.current .currentSectionIcon::before {
+  background: #007AFF;
+}
+
+
+.currentSectionText {
+  color: var(--BodyCopy, #4C4C4D);
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+/* Right Column */
+.rightContainer {
+  display: flex;
+  width: 752px;
+  min-height: 100vh;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  gap: 64px;
+}
+
+section {
+  width: 100%;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  align-self: stretch;
+  scroll-margin-top: 87.5px;
+}
+
+#overview {
+  padding-top: 120px;
+}
+
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* gap: 16px; */
+  align-self: stretch;
+}
+
+.imageBox {
+  height: auto;
+  align-self: stretch;
+  background: #F0F0F0;
+}
+
+.imageBox:has(img),
+.imageBox:has(picture),
+.imageBox:has(video) {
+  background: transparent;
+}
+
+
+.imageBox img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: center;
+}
+
+.cite {
+  color: var(--Gray-600, #535862);
+  font-family: Inter;
+  font-size: 14px;
+  height: auto;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.divider {
+  height: 1px;
+  align-self: stretch;
+  fill: var(--Gray-200, #E9EAEB);
+}
+
+.divider svg {
+  display: block;
+  width: 100%;
+  height: 1px;
+}
+
+
+/* _____________ */
+/* Russels Model */
+.russelsModelContainer {
+  display: flex;
+  padding: 32px 32px 40px 32px;
+  flex-direction: column;
+  min-height: 30px;
+  align-items: flex-start;
+  gap: 24px;
+  align-self: stretch;
+  border-radius: 16px;
+  background-color: var(--Gray-50, #FAFAFA);
+}
+
+/* Russels Model */
+/* _____________ */
+/* Double Spread */
+/* _____________ */
+.doubleSpread{
+  display: grid;
+  grid-template-columns: 2fr 3fr;       /* ~40/60 */
+  gap: clamp(16px, 3vw, 32px);
+  width: 100%;
+  align-items: center;
+  min-height: 30px;
+}
+
+.leftSpread,
+.rightSpread{ width:100%; height:auto; }
+
+.rightSpread{
+  display:flex;
+  align-items:center;
+  justify-content:center;               /* center text vertically on desktop */
+}
+
+/* Image */
+.spreadImage{
+  display:block;
+  width:100%;
+  height:auto;                          /* keep natural ratio */
+  object-fit: cover;
+  object-position: center;
+  border-radius:12px;
+  /* remove the padding that caused weird cropping */
+  padding:0;
+}
+
+/* Double Spread – mobile layout */
+@media (max-width: 720px){
+  .doubleSpread{
+    grid-template-columns: 1fr;         /* stack */
+    gap:16px;
+  }
+
+  .rightSpread{
+    justify-content:flex-start;         /* text starts at top on mobile */
+    padding:0;
+  }
+
+  .leftSpread{
+    display: flex;      
+    justify-content: center;
+    align-items: center; 
+  }
+
+  .spreadImage{
+    width:40%;
+    height:auto;                        /* don’t force aspect-ratio on phones */
+    border-radius:12px;
+  }
+
+  section{ gap:16px; scroll-margin-top:0; }
+  #overview{ padding-top:0; }
+}
+
+
+/* _____________ */
+/* Double Spread */
+
+.threeColumnContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 30px;
+  width: 100%;
+}
+
+/* kill hard width, use flex-basis so it wraps cleanly */
+.column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 32px 16px;
+  /* slightly tighter default padding */
+  flex: 1 1 calc(33.333% - 30px);
+  min-width: 260px;
+  /* prevents cards from getting too skinny on wide screens */
+}
+
+/* 2-up on tablet */
+@media (max-width: 960px) {
+  .column {
+    flex-basis: calc(50% - 30px);
+  }
+}
+
+/* 1-up on mobile (≤720px) */
+@media (max-width: 720px) {
+  .column {
+    flex-basis: 100%;
+    padding: 20px 12px;
+    /* mobile-pleasant spacing */
+    gap: 8px;
+  }
+}
+
+/* _____________ */
+/* Three Columns */
+
+
+
+
+
+
+
+
+
+
+
+/* ---------- Responsive Design ---------- */
+
+/* Tablet */
+@media (max-width: 1100px) {
+  .mainContainer {
+    gap: 32px;
+  }
+
+  .leftContainer {
+    flex-basis: 280px;
+    padding: 0 24px;
+  }
+
+  .rightContainer {
+    padding: 0 24px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .mainContainer {
+    flex-direction: column;
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .leftContainer,
+  .rightContainer {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: auto;
+    padding: 0;
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .mainContainer {
+    padding: 0 16px;
+  }
+
+  h2 {
+    font-size: 26px;
+    line-height: 34px;
+  }
+
+  p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+b {
+  font-weight: 600;
+  color: #262626;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 4px 15px;
+  gap: 4px;
+  color: var(--Gray-600, #535862);
+  font-family: Inter;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.liWhite {
+  color: white;
+  margin: 0px;
+  font-size: 13px;
+  line-height: 15px;
+}
+
+
+
+
+
+
+
+
+/* Table */
+.tableContainer {
+  max-width: 780px;
+  margin: 0;
+}
+
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font: 400 16px/1.5 Inter, system-ui, sans-serif;
+  color: #0e0f10;
+}
+
+/* cells & borders */
+.table th,
+.table td {
+  padding: 14px 12px;
+  border-right: 1px solid #e7edf5;
+  border-bottom: 1px solid #e7edf5;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.table th:first-child,
+.table td:first-child {
+  border-left: 1px solid #e7edf5;
+}
+
+/* header */
+.table thead th {
+  font-weight: 600;
+  text-align: center;
+  background: #fff;
+  border-top: 1px solid #e7edf5;
+}
+
+.table thead th:first-child {
+  text-align: left;
+}
+
+/* rounded corners */
+.table thead th:first-child {
+  border-top-left-radius: 8px;
+}
+
+.table thead th:last-child {
+  border-top-right-radius: 8px;
+}
+
+.table tbody tr:last-child th:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+.table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+/* zebra rows */
+.table tbody tr:nth-child(even) th,
+.table tbody tr:nth-child(even) td {
+  background: #f7fbff;
+  /* subtle blue tint like your ref */
+}
+
+/* first column (row headers) */
+.tableHeader {
+  width: 48%;
+}
+
+.table tbody th[scope="row"] {
+  text-align: left;
+  font-weight: 500;
+}
+
+/* header icons */
+.tableHeaderIcon {
+  display: block;
+  width: 28px;
+  height: 28px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* result squares */
+.table td {
+  text-align: center;
+}
+
+.tableResult {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  /* slightly rounded square */
+  background: #b9bec6;
+  /* default: gray */
+}
+
+.tableResult.true {
+  background: #37b24d;
+}
+
+/* green */
+.tableResult.false {
+  background: #b9bec6;
+}
+
+/* gray */
+
+
+
+
+
+/* MEDIA QUERIES HERO */
+
+/* Hero — match body text on mobile */
+@media (max-width: 720px){
+  .hero{
+    padding: 24px 16px;
+    gap: 16px;
+  }
+
+  .heroTextContainer{ align-items: flex-start; }
+
+  .heroNotes{
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  /* Match p mobile: 14/22 */
+  .heroHeading{
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .heroBody{
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .heroButtonContainer{ gap: 6px; }
+  .heroButton{
+    font-size: 12px;
+    line-height: 16px;
+    padding: 2px 8px;
+  }
+
+  .heroImage{
+    filter: none; /* keep it clean on small screens */
+  }
+}
