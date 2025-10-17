@@ -183,7 +183,6 @@
                     "pages/feature/digitslider/digitslider.js"
                 ],
                 "styles": [
-                    "/misc/numbin/numbin.css",
                     "./digitslider.css"
                 ],
                 "scripts": "./digitslider.js"

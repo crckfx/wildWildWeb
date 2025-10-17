@@ -57,7 +57,7 @@ body {
     appearance: textfield;
     /* other browsers */
     user-select: text;
-    pointer-events: auto;
+    pointer-events: none;
     /* allow focus/edit when clicked */
     box-sizing: border-box;
 }
