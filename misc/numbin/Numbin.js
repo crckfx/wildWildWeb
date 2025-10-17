@@ -1,12 +1,14 @@
 export class Numbin {
-    constructor(input, { min = 0, max = 9999, step = 1 } = {}) {
+    constructor(input, { min = 0, max = 9999, step = 1, loop = false } = {}) {
         this.input = input;
         this.min = min;
         this.max = max;
         this.step = step;
+        this.loop = loop;
 
         this.startY = 0;
         this.moved = false;
+
 
         this.attachEvents();
     }
@@ -15,14 +17,23 @@ export class Numbin {
         return parseInt(this.input.value, 10) || 0;
     }
 
-    set value(v) {
-        const clamped = Math.max(this.min, Math.min(this.max, v));
-        if (this.input.value !== String(clamped)) {
-            this.input.value = clamped;
-            // Explicitly dispatch an 'input' event
-            this.input.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-    }
+	set value(v) {
+		let newVal = v;
+
+		if (this.loop) {
+			const range = this.max - this.min + 1;
+			if (range > 0) {
+				newVal = ((newVal - this.min) % range + range) % range + this.min;
+			}
+		} else {
+			newVal = Math.max(this.min, Math.min(this.max, v));
+		}
+
+		if (this.input.value !== String(newVal)) {
+			this.input.value = newVal;
+			this.input.dispatchEvent(new Event("input", { bubbles: true }));
+		}
+	}
 
 
     attachEvents() {
@@ -56,8 +67,9 @@ export class Numbin {
 
         this.input.addEventListener('wheel', e => {
             e.preventDefault();
-            if (e.deltaY > 0) this.value = this.value - this.step;
-            else this.value = this.value + this.step;
+            e.stopPropagation(); // stop native input increment
+            const dir = Math.sign(e.deltaY); // -1 for up, +1 for down
+            if (dir !== 0) this.value = this.value - dir * this.step;
         });
     }
 }

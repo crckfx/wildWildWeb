@@ -18,8 +18,12 @@
     --header-text: white;
     /* --footer-bg: radial-gradient(circle at bottom right,var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
     /* --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
-    --color-bulb-on: hsl(60, 100%, 50%);
-    --color-bulb-off: hsla(60, 100%, 50%, 0.133);
+    --hsl-bulb: 22 93% 54%;
+    --color-bulb-on: hsl(22, 93%, 54%);
+    --color-bulb-off: hsla(var(--hsl-bulb) / 0.133);
+
+    --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
 
 }
 
@@ -28,7 +32,7 @@
     --color-bg-2: hsl(220, 23%, 12%);
     --color-bg-3: hsl(220, 23%, 18%);
 
-    --color-text-1: hsl(191, 20%, 98%);
+    --color-text-1: hsl(191, 20%, 88%);
     --color-text-2: hsl(191, 28%, 80%);
     --color-text-3: hsl(0, 0%, 81%);
     --color-feature-1: hsl(66, 40%, 80%);
@@ -42,9 +46,45 @@
     --header-text: white;
 
     --color-bulb-on: #00ddff;
-    --color-bulb-off: #00ddff22;}
+    --color-bulb-off: #00ddff22;
 
-* {
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
     --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+}
+
+[data-theme="gen"] {
+    --gen-h-1: 200;
+    --gen-h-2: 191;
+
+    --color-bg-1: hsl(var(--gen-h-1), 40%, 96%);
+    --color-bg-2: hsl(var(--gen-h-1), 20%, 98%);
+    --color-bg-3: hsl(var(--gen-h-1), 10%, 88%);
+
+    --color-text-1: hsl(var(--gen-h-1), 26%, 14%);
+    --color-text-2: hsl(var(--gen-h-1), 58%, 16%);
+    --color-text-3: hsl(var(--gen-h-1), 0%, 25%);
+    --color-feature-1: hsl(var(--gen-h-1), 49%, 31%);
+    --color-feature-2: hsl(var(--gen-h-1), 20%, 38%);
+
+    --color-footer-1: hsl(var(--gen-h-1), 83%, 24%);
+    --color-footer-2: hsl(var(--gen-h-1), 55%, 22%);
+    --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+
+    --color-bulb-on: hsl(var(--gen-h-1), 98%, 55%);
+    --color-bulb-off: hsl(var(--gen-h-1), 38%, 89%);
+
+    --footer-text: white;
+    --header-text: white;
+}
+
+
+#genColorPicker {
+    display: none;
+    padding: 8px;
+    background-color: #888;
+}
+
+[data-theme="gen"] #genColorPicker {
+    display: block;
 }

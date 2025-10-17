@@ -12,21 +12,44 @@
             "js",
             "resources",
             "assets/favicon.ico",
-            "misc",
-            "pages/home/scroller-LOL.css"
+            "misc"
         ],
         "styles": [
             "/css/merrygoround.css",
             "/css/testimonial-card.css",
             "/css/feature-card.css",
-            "/scroller-LOL.css",
+            "/misc/crckoutlaws/scroller-LOL.css",
             "/misc/crckoutlaws/meddle.css",
+            "/misc/crckoutlaws/crckordion.css",
             "/misc/crckoutlaws/lachordion.css",
-            "/misc/crckoutlaws/persona.css"
+            "/misc/crckoutlaws/persona.css",
+            "/css/header-menu-LF.css"
         ],
         "modules": [
             "/js/global.js",
-            "/js/merrygoround/addHomepageCarousel.js"
+            "/js/merrygoround/addHomepageCarousel.js",
+            "/misc/crckoutlaws/LOL-tracking.js"
+        ],
+        "fragments": {
+            "header": "components/header/header_LF.html"
+        },
+        "scripts": "/js/LF/header-menu.js"
+    },
+    "crckoutlaws": {
+        "title": "crckoutlaws",
+        "contentPath": [
+            "pages/crckoutlaws/col.html",
+            "pages/home/LOL-scrolling-thing.html",
+            "pages/crckoutlaws/crckoutlaws.html",
+            "pages/home/LOL-feature-thing.html"
+        ],
+        "styles": [
+            "/misc/crckoutlaws/scroller-LOL.css",
+            "/misc/crckoutlaws/meddle.css",
+            "/misc/crckoutlaws/crckordion.css",
+            "/misc/crckoutlaws/lachordion.css",
+            "/css/feature-card.css",
+            "/misc/crckoutlaws/persona.css"
         ]
     },
     "away": {
@@ -108,7 +131,6 @@
                     "/misc/numbin/numbin.css"
                 ],
                 "modules": [
-                    "/misc/numbin/Numbin.js",
                     "/svgapp/svgapp.js"
                 ]
             }
@@ -128,11 +150,11 @@
             "/misc/numbin/numbin.css"
         ],
         "modules": [
-            "/misc/numbin/Numbin.js",
             "svgapp.js"
         ]
     },
     "feature": {
+        "contentPath": "pages/feature/feature.html",
         "children": {
             "dragger": {
                 "title": "Dragger",
@@ -140,12 +162,17 @@
             },
             "accordion": {
                 "title": "Accordion",
-                "contentPath": "pages/feature/accordion/accordion.html",
+                "contentPath": [
+                    "pages/feature/accordion/accordion.html",
+                    "pages/feature/accordion/crckordion.html"
+                ],
                 "imports": [
                     "pages/feature/accordion/Accordion.css",
                     "pages/feature/accordion/AccordionES6.js"
                 ],
-                "styles": "./Accordion.css"
+                "styles": [
+                    "/misc/crckoutlaws/crckordion.css"
+                ]
             },
             "digitslider": {
                 "title": "Digit Slider",
@@ -161,8 +188,7 @@
                 ],
                 "scripts": "./digitslider.js",
                 "modules": [
-                    "./numbin_launcher.js",
-                    "/misc/numbin/Numbin.js"
+                    "./numbin_launcher.js"
                 ]
             },
             "nothing": {

@@ -1,4 +1,4 @@
-export const validThemes = ['light', 'dark', 'system'];
+export const validThemes = ['light', 'dark', 'system', 'gen'];
 const select = document.querySelector('.color-picker select');
 
 function getSystemTheme() {
@@ -16,6 +16,7 @@ function applyTheme(choice) {
     localStorage.setItem('theme', choice);
     // update the UI
     if (select) select.value = choice;
+
 }
 
 export function loadTheme() {

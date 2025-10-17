@@ -1,76 +1,21 @@
-.accordionContainer {
-    display: grid;
-    overflow: hidden;
-    width: 100%;
-    border-radius: 8px;
-    gap: 2px;
-    border: 2px solid transparent;
-}
-
-.accordionPanel {
+.accordion-panel {
     background-color: #e9e0e0;
-    padding: 0;
-    border: none;
 }
 
 
-.accordionButton {
-    background: transparent;
-    border: 0;
-    font: inherit;
-    color: inherit;
-    text-align: left;
-    width: 100%;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    position: relative;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.accordionButton .chevron {
-    display: inline-block;
-    transition: transform 0.3s ease;
-    transform: rotate(0deg);
-    margin-left: auto;
-}
-
-/* When the accordion is open */
-.accordionButton[aria-expanded="true"] .chevron {
-    transform: rotate(180deg);
-}
-
-.accordionContent {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 500ms;
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-.accordionContent[aria-hidden="false"] {
-    grid-template-rows: 1fr;
-}
-
-.accordionContent>div {
-    overflow: hidden;
-}
-
-.accordionButton h2 {
+/* lachoutlaws */
+.accordion-trigger h2 {
     color: var(--Headings, #262626);
     font-family: Inter, sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: 30px;
-    margin: 0;
+    text-transform: uppercase;
 }
 
-.accordionContent p {
+
+.accordion-content p {
     color: var(--BodyCopy, #4C4C4D);
     padding: 0 20px;
     font-family: Urbanist, sans-serif;
@@ -81,30 +26,6 @@
     margin: 0 0 1rem;
 }
 
-/* Accordion — mobile type (≤720px) */
-@media (max-width: 720px) {
-    .accordionButton {
-        padding: 10px 14px;
-    }
-
-    .accordionButton h2 {
-        font-size: 16px;
-        line-height: 24px;
-    }
-
-    .accordionContent {
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
-    .accordionContent p {
-        font-size: 14px;
-        line-height: 22px;
-        padding: 0 8px;
-        margin: 0 0 .75rem;
-    }
-
-    .accordionButton .chevron {
-        margin-left: 12px;
-    }
+.accordion.chevron .accordion-trigger::after {
+    background-color: var(--Headings, #262626);
 }

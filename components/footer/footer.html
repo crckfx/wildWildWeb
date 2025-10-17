@@ -1,16 +1,25 @@
 <footer class="site-footer">
 	<div class="wrap">
-        <div class="full-width">
-            <p>Footer Component</p>
-            <form class="color-picker">
-                <fieldset>
-                    <select name="theme" id="theme" aria-label="Select Theme">
-                        <option value="system">💻 System</option>
-                        <option value="light">☀️ Light</option>
-                        <option value="dark">🌑 Dark</option>
-                    </select>
-                </fieldset>
-            </form>
-        </div>
+		<div class="full-width" style="display: flex; align-items: center;">
+			<form class="color-picker">
+				<fieldset>
+                    <label>select theme</label>
+					<select name="theme" id="theme" aria-label="Select Theme">
+						<option value="system">💻 System</option>
+						<option value="light">☀️ Light</option>
+						<option value="dark">🌑 Dark</option>
+						<option value="gen">🎨 Generative</option>
+					</select>
+				</fieldset>
+			</form>
+
+            <!-- unhidden for "gen" theme -->
+			<div id="genColorPicker">
+				<label>gen colour</label>
+                <button>save</button>
+                <input type="number" class="numbin" value="0" min="0" max="359" step="1" />
+                <button>more</button>
+            </div>
+		</div>
 	</div>
 </footer>

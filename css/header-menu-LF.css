@@ -35,11 +35,7 @@ nav[aria-expanded="true"] .nav-container {
 
 /* logo home link */
 .logo {
-    /* width: 192px; */
     max-width: 500px;
-    /* display: flex; */
-    /* justify-content: center; */
-    /* align-items: center; */
 }
 
 .logo .logo-image {
@@ -51,7 +47,7 @@ nav[aria-expanded="true"] .nav-container {
 .menu-toggle {
     background: none;
     border: none;
-    color: var(--color-text-1);
+    color: var(--header-text);
     cursor: pointer;
     margin-left: auto;
     transition: color 0.3s ease;
@@ -59,7 +55,7 @@ nav[aria-expanded="true"] .nav-container {
 }
 
 .menu-toggle:hover {
-    color: var(--lf-turquoise);
+    color: var(--color-accent);
 }
 
 .menu-toggle .icon {
@@ -106,7 +102,7 @@ nav[aria-expanded="true"] .menu-wrapper {
     flex-direction: column;
     list-style: none;
     /* font-size: 18px; */
-    color: var(--color-primary);
+    color: var(--header-text);
     margin-top: 1em;
     padding: 0;
     margin: 0;
@@ -148,7 +144,7 @@ nav[aria-expanded="true"] .menu-wrapper {
 .menu-item>a {
     text-decoration: none;
     flex: 1;
-    color: var(--color-primary);
+    color: var(--header-text);
     padding: 18px 36px;
     outline: none;
     transition: color 0.3s ease;
@@ -157,7 +153,7 @@ nav[aria-expanded="true"] .menu-wrapper {
 
 .menu-item>a:hover,
 .menu-item>a:focus {
-    color: var(--lf-turquoise);
+    color: var(--color-accent);
 }
 
 .has-children>.menu-item>a {
@@ -185,7 +181,7 @@ nav[aria-expanded="true"] .menu-wrapper {
     right: 0;
     bottom: -8px;
     height: 2px;
-    background-color: var(--lf-turquoise);
+    background-color: var(--color-accent);
 }
 
 
@@ -248,7 +244,7 @@ nav[aria-expanded="true"] .menu-wrapper {
 .submenu a:hover,
 .submenu a:focus {
     box-shadow: var(--inset-preset-2);
-    color: var(--lf-turquoise);
+    color: var(--color-accent);
 }
 
 
@@ -270,7 +266,7 @@ nav[aria-expanded="true"] .menu-wrapper {
     right: 0;
     bottom: -8px;
     height: 2px;
-    background-color: var(--lf-turquoise);
+    background-color: var(--color-accent);
 }
 
 
@@ -387,7 +383,7 @@ nav[aria-expanded="true"] .menu-wrapper {
         right: 0;
         bottom: -8px;
         height: 2px;
-        background-color: var(--lf-turquoise);
+        background-color: var(--color-accent);
     }
 
 
@@ -428,9 +424,11 @@ nav[aria-expanded="true"] .menu-wrapper {
     .submenu {
         /* background: none; */
         /* background-color: var(--color-bg-2); */
-        background-color: var(--color-bg-1);
+        background-color: var(--color-bg-3);
+        color: var(--header-text);
         border: none;
         padding: 0 4px;
+        min-width: 300px;
     }
 
     .submenu li {
@@ -469,7 +467,7 @@ nav[aria-expanded="true"] .menu-wrapper {
         outline: none;
         margin: 0;
         border-radius: 16px;
-        background-color: var(--color-bg-1);
+        /* background-color: var(--color-bg-1); */
     }
 
 

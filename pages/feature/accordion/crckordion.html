@@ -1,0 +1,46 @@
+<div class="wrap">
+	<div style="max-width: 600px;">
+
+		<div class="accordion chevron" id="acc_3">
+
+		</div>
+
+		<script type="module">
+			import {
+				Accordion
+			} from "/feature/accordion/AccordionES6.js";
+
+			const somePanels = [{
+					expanded: true,
+					title: "Why do I smell burnt toast?",
+					content: "<p>Smelling smoky or burning smells — including burnt toast — is a common type of phantosmia. Phantosmia is a condition that causes you to smell things that aren’t there. It’s also called olfactory hallucination.</p><p>The smells may always be present, come and go, be temporary, or last for a long time. While smelling burnt toast in particular is not diagnostic, smelling something that isn’t there can be a sign of a more serious condition.</p>"
+				},
+
+				{
+					title: "Why aren't I getting help?",
+					content: `
+                    <p>I make my way toward the phone and go to pick it up to make a call.
+						Unfortunately, the phone is made of cake. Somebody has made a cake in the shape of my own phone.
+						The phone squishes in my hand; delicious digits ooze from betwixt my fingers...Alas, I cannot dial these numbers.</p>`
+				},
+				{
+					title: "Why does this keep happening?",
+					content: `<p>I read somewhere that it might have something to do with not getting a nutritious breakfast. Something about sugar being bad for you or something, I can't remember.</p>`
+				}
+			];
+
+			new Accordion(
+				document.getElementById("acc_3"), {
+					rounding: "36px",
+					animationDuration: "0.5s",
+					scrollOnExpand: false,
+					addPanels: somePanels,
+					exclusive: true
+				}
+			);
+		</script>
+		<!-- accordion 1 end -->
+	</div>
+</div>
+
+<div style="height: 100px;"></div>

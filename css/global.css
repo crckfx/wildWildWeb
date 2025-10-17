@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -36,6 +39,7 @@ main {
     min-height: 100svh;
     display: flex;
     flex-direction: column;
+    overflow-x: clip;
 }
 
 .site-footer {
@@ -44,6 +48,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 12px;
 }
 
 
