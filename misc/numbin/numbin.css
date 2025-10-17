@@ -36,6 +36,7 @@ input[type="number"].numbin::-webkit-inner-spin-button {
 
     color: var(--color-text-1);
     padding: 8px;
+    touch-action: none;
 
 }
 .numbin:hover {
