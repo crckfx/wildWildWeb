@@ -155,6 +155,7 @@
     },
     "feature": {
         "contentPath": "pages/feature/feature.html",
+        "styles": "/css/feature-card.css",
         "children": {
             "dragger": {
                 "title": "Dragger",
@@ -179,17 +180,13 @@
                 "contentPath": "pages/feature/digitslider/digitslider_minimal.html",
                 "imports": [
                     "pages/feature/digitslider/digitslider.css",
-                    "pages/feature/digitslider/digitslider.js",
-                    "pages/feature/digitslider/numbin_launcher.js"
+                    "pages/feature/digitslider/digitslider.js"
                 ],
                 "styles": [
                     "/misc/numbin/numbin.css",
                     "./digitslider.css"
                 ],
-                "scripts": "./digitslider.js",
-                "modules": [
-                    "./numbin_launcher.js"
-                ]
+                "scripts": "./digitslider.js"
             },
             "nothing": {
                 "imports": "assets/favicon.ico"

@@ -48,11 +48,22 @@
 		<h1>hello wildWildWeb</h1>
 
 		<h2>hello Numbin</h2>
-		<p>more experimental class-based one</p>
+		<p><s>more experimental</s> class-based one</p>
 		<!-- New number input -->
 		<div>
-			<input type="number" class="numbin" value="512" min="0" max="9999" step="1" />
-			<input type="number" class="numbin" value="256" min="0" max="9999" step="1" />
+			<input type="number" class="numbin" value="420" min="0" max="9999" step="1" />
+			<input type="number" class="numbin" value="69" min="0" max="9999" step="1" data-loop="true" />
+		</div>
+
+		<p>these ones loop around</p>
+		<div>
+			<input type="number" class="numbin bigger" value="5" min="0" max="12" step="1" data-loop="true" />
+			<label>0-12</label>
+		</div>
+        <br>
+		<div>
+			<input type="number" class="numbin bigger" value="0" min="-10" max="10" step="1" data-loop="true" />
+			<label>-10 to +10</label>
 		</div>
 	</div>
 </div>

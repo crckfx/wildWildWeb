@@ -9,17 +9,17 @@ input[type="number"].numbin {
   outline: none;
   border: none;
   text-align: center;
-  font: inherit;
 }
 
 input[type="number"].numbin::-webkit-outer-spin-button,
 input[type="number"].numbin::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 
 .numbin {
+    font: inherit;
     display: inline-block;
     min-width: 5ch;
     /* height: 70px; */
@@ -43,5 +43,7 @@ input[type="number"].numbin::-webkit-inner-spin-button {
     cursor: ns-resize;
 }
 
-
+.numbin.bigger {
+    font-size: 2em;
+}
 

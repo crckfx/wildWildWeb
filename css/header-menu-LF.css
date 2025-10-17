@@ -328,7 +328,7 @@ nav[aria-expanded="true"] .menu-wrapper {
         flex-direction: row;
         font-size: 14px;
         justify-content: space-between;
-        width: 100%;
+        width: max-content;
         box-shadow: none;
         margin-top: 0;
         overflow: visible;
