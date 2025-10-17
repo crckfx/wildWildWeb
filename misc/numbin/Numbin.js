@@ -45,6 +45,7 @@ export class Numbin {
         });
 
         this.input.addEventListener('pointermove', e => {
+            e.preventDefault();
             if (e.buttons === 1) {
                 const deltaY = e.clientY - this.startY;
                 if (Math.abs(deltaY) > 10) {
