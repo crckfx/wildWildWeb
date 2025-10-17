@@ -11,8 +11,7 @@
     ],
     "profiles": {
         "default": {
-            "templatePath": "templates/page.ejs",
-            "modules": "/misc/numbin/Numbin.js"
+            "templatePath": "templates/page.ejs"
         },
         "lachoutlaws": {
             "templatePath": "LOL/lachoutlaws_template.ejs",

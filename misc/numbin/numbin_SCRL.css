@@ -1,0 +1,75 @@
+/* ===============================
+   Numbin (div + inserted input)
+   =============================== */
+
+/* Disable pull-to-refresh / scroll chaining */
+html,
+body {
+    overscroll-behavior: contain;
+}
+
+/* Outer container — gesture surface */
+.numbin {
+    display: inline-block;
+    position: relative;
+    touch-action: none;
+    /* block UA pan/zoom */
+    user-select: none;
+    font: inherit;
+    text-align: center;
+    color: var(--color-text-1);
+    background-color: var(--color-bg-3);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    min-width: 5ch;
+    padding: 8px;
+}
+
+/* Hover feedback identical to old control */
+.numbin:hover {
+    background-color: var(--color-bg-3);
+    cursor: ns-resize;
+}
+
+/* Larger variant keeps same geometry logic */
+.numbin.bigger {
+    font-size: 2em;
+}
+
+/* ===============================
+   Inserted input styling
+   =============================== */
+
+/* The input created by JS inside .numbin */
+.numbin>input[type="number"] {
+    display: block;
+    width: 100%;
+    height: 100%;
+    font: inherit;
+    text-align: center;
+    color: inherit;
+    background: transparent;
+    /* inherit container bg */
+    border: none;
+    outline: none;
+    -moz-appearance: textfield;
+    /* Firefox */
+    appearance: textfield;
+    /* other browsers */
+    user-select: text;
+    pointer-events: auto;
+    /* allow focus/edit when clicked */
+    box-sizing: border-box;
+}
+
+/* Remove native spin buttons */
+.numbin>input[type="number"]::-webkit-outer-spin-button,
+.numbin>input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Ensure inner input inherits rounded shape */
+.numbin>input[type="number"] {
+    border-radius: inherit;
+}

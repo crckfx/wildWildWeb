@@ -188,6 +188,10 @@
                 ],
                 "scripts": "./digitslider.js"
             },
+            "numbin_new": {
+                "title": "Different Numbin",
+                "contentPath": "pages/feature/digitslider/numbers.html"
+            },
             "nothing": {
                 "imports": "assets/favicon.ico"
             }
