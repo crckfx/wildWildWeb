@@ -235,7 +235,7 @@ body {
   gap: 64px;
 }
 
-section {
+.rightContainer section {
   width: 100%;
   min-height: 120px;
   display: flex;

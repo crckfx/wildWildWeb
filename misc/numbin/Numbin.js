@@ -81,5 +81,17 @@ export class Numbin {
             },
             { passive: false }
         );
+
+        // override default input behaviour to let user push on the min / max (for looping)
+        this.input.addEventListener("keydown", e => {
+            if (e.key === "ArrowUp") {
+                e.preventDefault();
+                this.value = this.value + this.step;
+            } else if (e.key === "ArrowDown") {
+                e.preventDefault();
+                this.value = this.value - this.step;
+            }
+        });
+
     }
 }

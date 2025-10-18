@@ -3,8 +3,7 @@
         "title": "Home",
         "contentPath": [
             "pages/home/home.html",
-            "pages/home/LOL-feature-thing.html",
-            "pages/home/LOL-scrolling-thing.html"
+            "pages/home/LOL-feature-thing.html"
         ],
         "outDir": "/",
         "imports": [
@@ -18,22 +17,11 @@
             "/css/merrygoround.css",
             "/css/testimonial-card.css",
             "/css/feature-card.css",
-            "/misc/crckoutlaws/scroller-LOL.css",
-            "/misc/crckoutlaws/meddle.css",
-            "/misc/crckoutlaws/crckordion.css",
-            "/misc/crckoutlaws/lachordion.css",
-            "/misc/crckoutlaws/persona.css",
-            "/css/header-menu-LF.css"
+            "/misc/accordion/crckordion.css"
         ],
         "modules": [
-            "/js/global.js",
-            "/js/merrygoround/addHomepageCarousel.js",
-            "/misc/crckoutlaws/LOL-tracking.js"
-        ],
-        "fragments": {
-            "header": "components/header/header_LF.html"
-        },
-        "scripts": "/js/LF/header-menu.js"
+            "/js/merrygoround/addHomepageCarousel.js"
+        ]
     },
     "crckoutlaws": {
         "title": "crckoutlaws",
@@ -49,8 +37,12 @@
             "/misc/crckoutlaws/crckordion.css",
             "/misc/crckoutlaws/lachordion.css",
             "/css/feature-card.css",
-            "/misc/crckoutlaws/persona.css"
-        ]
+            "/misc/crckoutlaws/persona.css",
+            "/misc/crckoutlaws/hero.css"
+        ],
+        "modules": [
+            "/misc/crckoutlaws/LOL-tracking.js"
+        ]        
     },
     "away": {
         "title": "Away",
@@ -166,10 +158,6 @@
                 "contentPath": [
                     "pages/feature/accordion/accordion.html",
                     "pages/feature/accordion/crckordion.html"
-                ],
-                "imports": [
-                    "pages/feature/accordion/Accordion.css",
-                    "pages/feature/accordion/AccordionES6.js"
                 ],
                 "styles": [
                     "/misc/crckoutlaws/crckordion.css"

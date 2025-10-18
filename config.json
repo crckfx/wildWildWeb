@@ -11,7 +11,8 @@
     ],
     "profiles": {
         "default": {
-            "templatePath": "templates/page.ejs"
+            "templatePath": "templates/page.ejs",
+            "scripts": "/js/LF/header-menu.js"
         },
         "lachoutlaws": {
             "templatePath": "LOL/lachoutlaws_template.ejs",
@@ -24,7 +25,7 @@
         }
     },
     "fragments": {
-        "header": "components/header/header.html",
+        "header": "components/header/header_LF.html",
         "footer": "components/footer/footer.html",
         "global": "components/global.html",
         "head": "components/head-content.html"

@@ -20,6 +20,12 @@
             "metle": {
                 "title": "Metle",
                 "contentPath": "LOL/metle.html"
+            },
+            "workPlay": {
+                "title": "workPlay",
+                "contentPath": "LOL/workPlay.html",
+                "scripts": "/lachoutlaws/js/workPlay.js",
+                "styles": "/lachoutlaws/css/workPlay.css"
             }
         }
     }

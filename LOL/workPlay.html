@@ -1,0 +1,94 @@
+<!-- /* ========== MAIN ========== */ -->
+<main>
+
+	<!-- /* ========== WORK/PLAY BUTTONS ========== */ -->
+	<div class="mainHeader" role="tablist" aria-label="Content switcher">
+		<button class="tabBtn" data-mode="work" aria-selected="true" id="tab-work">WORK</button>
+		<button class="tabBtn" data-mode="play" aria-selected="false" id="tab-play">PLAY</button>
+	</div>
+
+	<!-- /* ========== WORK SECTION ========== */ -->
+	<section id="workPanel" role="tabpanel" aria-labelledby="tab-work" data-panel="work">
+		<div class="gallery" role="region" aria-label="Image gallery">
+
+			<!-- /* ========== LEFT PANEL ========== */ -->
+			<div class="pane left">
+				<img class="side-img left-img" src="" alt="Previous image preview">
+				<button class="arrow arrow-left" aria-label="Previous">
+					<svg class="navArrow" aria-hidden="true" focusable="false">
+						<use href="#arrow-long-left"></use>
+					</svg>
+				</button>
+			</div>
+			<!-- /* ========== CENTER PANEL ========== */ -->
+			<div class="pane center"></div>
+
+			<!-- /* ========== RIGHT PANEL ========== */ -->
+			<div class="pane right">
+				<img class="side-img right-img" src="" alt="Next image preview">
+				<button class="arrow arrow-right" aria-label="Next">
+					<svg class="navArrow" aria-hidden="true" focusable="false">
+						<use href="#arrow-long-right"></use>
+					</svg>
+				</button>
+			</div>
+
+			<div class="navEdge edge-left" aria-hidden="true"></div>
+			<div class="navEdge edge-right" aria-hidden="true"></div>
+		</div>
+	</section>
+
+	<!-- /* ========== PLAY SECTION ========== */ -->
+	<section id="playPanel" role="tabpanel" aria-labelledby="tab-play" hidden>
+		<div class="playViewport">
+			<div class="playGrid"></div>
+		</div>
+	</section>
+
+
+	<!-- /* ========== QUESTIONAIRRE ========== */ -->
+	<!-- <div class="questionTimeContainer">
+      <div class="questionTime">
+        <div class="questionSubText">QUESTION</div>
+        <h2>Do You Prefer Case Studies That Are?</h2>
+        <div class="question">
+          <button class="iconBtn" type="button" aria-label="Yes">
+            <svg class="iconSvg" viewBox="0 0 26 85" aria-hidden="true" focusable="false">
+              <path
+                d="M12.0099 63.3199L8.70988 63.2999L7.28988 61.7099C6.12988 47.3099 1.20988 31.9999 0.219882 17.7799C-0.200118 11.6199 -0.710118 4.81989 5.71988 1.53989C14.7099 -3.05011 24.6799 3.21989 25.1799 12.8999L12.0099 63.3199Z"
+                fill="currentColor" />
+              <path
+                d="M7.87012 67.58C14.9101 66.68 21.3601 75.23 15.6401 81.45C5.01012 93 -7.73988 69.58 7.87012 67.58Z"
+                fill="currentColor" />
+            </svg>
+          </button>
+          <button class="iconBtn" type="button" aria-label="No">
+            <svg class="iconSvg" viewBox="0 0 76 74" aria-hidden="true" focusable="false">
+              <path
+                d="M10.8899 11.2199C46.3599 -24.2501 100.95 32.8699 61.0099 64.8399C25.1299 93.5899 -21.4601 43.5699 10.8899 11.2199ZM39.5399 15.8699C20.9999 15.2199 10.4199 36.18 22.0499 50.84L39.5399 15.8699ZM35.5399 57.86C53.5199 60.14 65.8599 37.0799 53.0299 23.8799L35.5399 57.86Z"
+                fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div> -->
+
+</main>
+
+
+
+<!-- /* ========== ARROWS ========== */ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+
+	<!-- /* ========== LEFT ARROW ========== */ -->
+	<symbol id="arrow-long-left" viewBox="0 0 58 16">
+		<path d="M0.292893 7.29289C-0.097631 7.68341 -0.0976311 8.31658 0.292893 8.7071L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6568L2.41421 8L8.07107 2.34314C8.46159 1.95262 8.46159 1.31945 8.07107 0.928928C7.68054 0.538403 7.04738 0.538403 6.65685 0.928928L0.292893 7.29289ZM58 8L58 7L1 7L1 8L1 9L58 9L58 8Z" fill="currentColor" />
+	</symbol>
+
+	<!-- /* ========== RIGHT ARROW ========== */ -->
+	<symbol id="arrow-long-right" viewBox="0 0 58 16">
+		<g transform="scale(-1,1) translate(-58,0)">
+			<path d="M0.292893 7.29289C-0.097631 7.68341 -0.0976311 8.31658 0.292893 8.7071L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6568L2.41421 8L8.07107 2.34314C8.46159 1.95262 8.46159 1.31945 8.07107 0.928928C7.68054 0.538403 7.04738 0.538403 6.65685 0.928928L0.292893 7.29289ZM58 8L58 7L1 7L1 8L1 9L58 9L58 8Z" fill="currentColor" />
+		</g>
+	</symbol>
+</svg>
