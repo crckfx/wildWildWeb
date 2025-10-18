@@ -1,3 +1,11 @@
+:root {
+    --shadow-preset-A: #00000040 0px 12px 13px, #00000038 4px 6px 7px;
+    --shadow-preset-B: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+    --drop-shadow-1: drop-shadow(4px 4px 8px #00000044);
+
+}
+
 /* Theme tokens */
 [data-theme="light"] {
     --color-bg-1: hsl(60, 20%, 96%);

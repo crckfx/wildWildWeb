@@ -19,9 +19,13 @@
 		}
 		// apply the theme
 		document.documentElement.dataset.theme = theme;
+
+        const storedValue = localStorage.getItem('gen-h-1');
+        if (storedValue) document.documentElement.style.setProperty("--gen-h-1", storedValue);
+
 	}
 </script>
 
-<script type="module" src="/js/global.js"></script>
+<!-- <script type="module" src="/js/global.js"></script> -->
 
 <link rel="stylesheet" href="/misc/numbin/numbin.css">

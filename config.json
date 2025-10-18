@@ -12,7 +12,8 @@
     "profiles": {
         "default": {
             "templatePath": "templates/page.ejs",
-            "scripts": "/js/LF/header-menu.js"
+            "scripts": "/js/LF/header-menu.js",
+            "modules": "/js/global.js"
         },
         "lachoutlaws": {
             "templatePath": "LOL/lachoutlaws_template.ejs",

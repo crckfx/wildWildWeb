@@ -34,7 +34,7 @@
         "styles": [
             "/misc/crckoutlaws/scroller-LOL.css",
             "/misc/crckoutlaws/meddle.css",
-            "/misc/crckoutlaws/crckordion.css",
+            "/misc/accordion/crckordion.css",
             "/misc/crckoutlaws/lachordion.css",
             "/css/feature-card.css",
             "/misc/crckoutlaws/persona.css",
@@ -160,7 +160,7 @@
                     "pages/feature/accordion/crckordion.html"
                 ],
                 "styles": [
-                    "/misc/crckoutlaws/crckordion.css"
+                    "/misc/accordion/crckordion.css"
                 ]
             },
             "digitslider": {

@@ -10,7 +10,7 @@ function resolveTheme(choice) {
 }
 
 function applyTheme(choice) {
-    // apply the theme
+    // apply the theme (falls back to system if fail)
     document.documentElement.dataset.theme = resolveTheme(choice);
     // save the choice
     localStorage.setItem('theme', choice);
