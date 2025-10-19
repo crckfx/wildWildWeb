@@ -1,10 +1,11 @@
 /* From Uiverse.io by BishalSaini */
 .custom-tooltip-container {
     position: relative;
-    display: inline-flex;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* display: inline-flex; */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    display: inline-block;
 }
 
 .custom-tooltip-btn {
@@ -18,7 +19,6 @@
     border-radius: 8px;
     /* cursor: pointer; */
     transition: background-color 0.3s ease, outline 0.1s;
-    /* box-shadow: 0 8px 15px rgba(0, 123, 255, 0.4); */
     box-shadow: var(--shadow-preset-B);
     outline: 4px solid transparent;
 
@@ -32,20 +32,21 @@
 .ct-content-container {
     display: flex;
     position: absolute;
-    bottom: 140%;
+    bottom: 120%;
     left: 50%;
     transform: translateX(-50%);
     visibility: hidden;
     opacity: 0;
-    transition: all 0.4s ease;
+    transition: opacity .4s ease, transform .4s ease; /* not 'all' */
     border-radius: 15px;
     z-index: 1;
-    box-shadow: 0px 10px 20px rgba(0, 123, 255, 0.3);
-    /* width: 240px; */
-    width: min-content;
+    box-shadow: var(--shadow-preset-B);
+    width: max-content;              /* stable intrinsic width */
+    white-space: nowrap;             /* prevent rewrap during resize */
     background: #007bff;
     padding: 8px;
     justify-content: space-evenly;
+
 }
 
 .custom-tooltip-content {
@@ -85,14 +86,14 @@
 
 .custom-tooltip-arrow {
     position: absolute;
-    top: 98%;
+    top: 100%;
     left: 50%;
     margin-left: -10px;
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 20px solid #007bff;
+    border-top: 10px solid #007bff;
 }
 
 .custom-tooltip-text {
