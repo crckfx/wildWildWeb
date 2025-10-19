@@ -32,7 +32,7 @@
 .ct-content-container {
     display: flex;
     position: absolute;
-    bottom: 120%;
+    bottom: 100%;
     left: 50%;
     transform: translateX(-50%);
     visibility: hidden;
@@ -41,8 +41,7 @@
     border-radius: 15px;
     z-index: 1;
     box-shadow: var(--shadow-preset-B);
-    width: max-content;              /* stable intrinsic width */
-    white-space: nowrap;             /* prevent rewrap during resize */
+    /* width: 240px; */
     background: #007bff;
     padding: 8px;
     justify-content: space-evenly;
@@ -79,21 +78,21 @@
 .custom-tooltip-container:focus-within .ct-content-container {
     visibility: visible;
     opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateX(-50%);
 }
 
 
 
 .custom-tooltip-arrow {
     position: absolute;
-    top: 100%;
+    top: 95%;
     left: 50%;
     margin-left: -10px;
     width: 0;
     height: 0;
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
-    border-top: 10px solid #007bff;
+    border-top: 24px solid #007bff;
 }
 
 .custom-tooltip-text {
