@@ -119,7 +119,8 @@
                 "styles": [
                     "/misc/ploder/ploder.css",
                     "/svgapp/svgapp.css",
-                    "/misc/numbin/numbin.css"
+                    "/misc/numbin/numbin.css",
+                    "/misc/fab/fab-crckfx.css"
                 ],
                 "modules": [
                     "/svgapp/svgapp.js"

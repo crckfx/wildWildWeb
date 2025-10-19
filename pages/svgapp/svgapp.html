@@ -118,29 +118,42 @@
 		applet.classList.add(name);
 	}
 
-	function initFabs(root = document) {
-		const margin = 8;
-		const vw = document.documentElement.clientWidth;
+function initFabs(root = document) {
+  const margin = 8;
 
-		root.querySelectorAll('.custom-tooltip-container').forEach(host => {
-			const panel = host.querySelector('.ct-content-container');
-			if (!panel) return;
+  function positionTooltip(host, panel) {
+    const vw = document.documentElement.clientWidth;
+    const hb = host.getBoundingClientRect();
+    const pw = panel.offsetWidth;
+    const ph = panel.offsetHeight;
 
-			const r = panel.getBoundingClientRect();
-			let shift = 0;
+    // Center horizontally in viewport space
+    let left = hb.left + hb.width / 2 - pw / 2;
+    if (left < margin) left = margin;
+    if (left + pw > vw - margin) left = vw - pw - margin;
 
-			if (r.left < margin) shift = margin - r.left;
-			else if (r.right > vw - margin) shift = (vw - margin) - r.right;
+    // Pin bottom of tooltip to top of host
+    let top = hb.top - ph;
+    if (top < margin) top = hb.bottom; // flip below if offscreen
 
-			// apply inline corrections
-			if (shift !== 0) {
-				panel.style.left = `calc(50% + ${shift}px)`;
-				const arrow = panel.querySelector('.custom-tooltip-arrow');
-				if (arrow) arrow.style.left = `calc(50% - ${shift}px)`;
-			}
-		});
-	}
-	window.addEventListener('load', () => {
-		initFabs();
-	})
+    panel.style.left = `${Math.round(left)}px`;
+    panel.style.top = `${Math.round(top)}px`;
+  }
+
+  root.querySelectorAll('.custom-tooltip-container').forEach(host => {
+    const panel = host.querySelector('.ct-content-container');
+    if (!panel) return;
+
+    const show = () => requestAnimationFrame(() => positionTooltip(host, panel));
+    const hide = () => {}; // no reset needed; next show repositions
+
+    host.addEventListener('mouseenter', show);
+    host.addEventListener('focusin', show);
+    host.addEventListener('mouseleave', hide);
+    host.addEventListener('focusout', hide);
+  });
+}
+
+window.addEventListener('load', () => initFabs(document));
+
 </script>
