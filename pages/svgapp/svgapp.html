@@ -8,6 +8,17 @@
 	<!-- controls -->
 	<div class="controls">
 		<div class="control">
+			<div class="custom-tooltip-container">
+				<button class="custom-tooltip-btn">Hover me</button>
+				<div class="ct-content-container">
+					<a class="custom-tooltip-content" href="https://github.com/crckfx">'crckfx' github</a>
+					<a class="custom-tooltip-content" href="https://github.com/Lachoutlaws">'Lachoutlaws' github</a>
+					<span class="custom-tooltip-arrow"></span>
+				</div>
+			</div>
+		</div>
+
+		<div class="control">
 			<span id="svgploder" class="ploder">
 				<svg fill="none" class="icon" stroke="currentColor" stroke-width="2" viewBox="0 0 48 48">
 					<use href="#icon-paperclip"></use>
@@ -57,7 +68,16 @@
 				<input id="bgColorInput" type="color" value="#ffffff">
 			</span>
 		</div>
-
+		<div class="control">
+			<div class="custom-tooltip-container">
+				<button class="custom-tooltip-btn">Hover me</button>
+				<div class="ct-content-container">
+					<a class="custom-tooltip-content" href="https://github.com/crckfx">'crckfx' github</a>
+					<a class="custom-tooltip-content" href="https://github.com/Lachoutlaws">'Lachoutlaws' github</a>
+					<span class="custom-tooltip-arrow"></span>
+				</div>
+			</div>
+		</div>
 	</div>
 
 
@@ -97,4 +117,30 @@
 		validLayoutNames.forEach(layout => applet.classList.remove(layout));
 		applet.classList.add(name);
 	}
+
+	function initFabs(root = document) {
+		const margin = 8;
+		const vw = document.documentElement.clientWidth;
+
+		root.querySelectorAll('.custom-tooltip-container').forEach(host => {
+			const panel = host.querySelector('.ct-content-container');
+			if (!panel) return;
+
+			const r = panel.getBoundingClientRect();
+			let shift = 0;
+
+			if (r.left < margin) shift = margin - r.left;
+			else if (r.right > vw - margin) shift = (vw - margin) - r.right;
+
+			// apply inline corrections
+			if (shift !== 0) {
+				panel.style.left = `calc(50% + ${shift}px)`;
+				const arrow = panel.querySelector('.custom-tooltip-arrow');
+				if (arrow) arrow.style.left = `calc(50% - ${shift}px)`;
+			}
+		});
+	}
+	document.addEventListener('DOMContentLoaded', () => {
+		initFabs();
+	})
 </script>

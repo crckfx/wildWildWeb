@@ -412,6 +412,7 @@ nav[aria-expanded="true"] .menu-wrapper {
         border-radius: 24px;
         opacity: 0;
         grid-template-rows: 0fr;
+        background-color: var(--color-footer-1);
     }
 
 
@@ -424,7 +425,7 @@ nav[aria-expanded="true"] .menu-wrapper {
     .submenu {
         /* background: none; */
         /* background-color: var(--color-bg-2); */
-        background-color: var(--color-bg-3);
+        background-color: var(--color-footer-1);
         color: var(--header-text);
         border: none;
         padding: 0 4px;

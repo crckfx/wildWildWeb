@@ -3,7 +3,14 @@
     --shadow-preset-B: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 
     --drop-shadow-1: drop-shadow(4px 4px 8px #00000044);
+    --inset-preset-1: inset 0 10px 10px -4px var(--color-shadow-bgopp);
+    --inset-preset-2: inset 0 10px 10px -4px var(--color-shadow-shine);
+    --inset-preset-3: inset 0 10px 10px -4px var(--color-shadow-shine-half);
 
+    --color-shadow-bgopp: rgba(0, 0, 0, 0.2);
+    --color-shadow-shine: rgba(255, 255, 255, 1);
+    --color-shadow-shine-half: rgba(255, 255, 255, 0.5);
+    --color-subtle-divider: #E3E3E3;
 }
 
 /* Theme tokens */
@@ -24,14 +31,18 @@
     --color-footer-2: hsl(345, 34%, 22%);
     --footer-text: white;
     --header-text: white;
-    /* --footer-bg: radial-gradient(circle at bottom right,var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
-    /* --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
+
     --hsl-bulb: 22 93% 54%;
     --color-bulb-on: hsl(22, 93%, 54%);
     --color-bulb-off: hsla(var(--hsl-bulb) / 0.133);
 
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
     --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+
+    --color-shadow-bgopp: rgba(0, 0, 0, 0.2);
+    --color-shadow-shine: rgba(255, 255, 255, 1);
+    --color-subtle-divider: #E3E3E3;
+
 
 }
 
@@ -58,6 +69,10 @@
 
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
     --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+
+    --color-shadow-bgopp: rgba(255, 255, 255, 0.2);
+    --color-shadow-shine: rgba(255, 255, 255, 0.2);
+    --color-subtle-divider: #3a3a3a;
 }
 
 [data-theme="gen"] {
@@ -74,6 +89,9 @@
     --color-feature-1: hsl(var(--gen-h-1), 49%, 31%);
     --color-feature-2: hsl(var(--gen-h-1), 20%, 38%);
 
+    --color-accent: hsl(var(--gen-h-1), 100%, 74%);
+
+
     --color-footer-1: hsl(var(--gen-h-1), 83%, 24%);
     --color-footer-2: hsl(var(--gen-h-1), 55%, 22%);
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
@@ -84,6 +102,10 @@
 
     --footer-text: white;
     --header-text: white;
+
+    --color-shadow-bgopp: rgba(255, 255, 255, 0.2);
+    --color-shadow-shine: rgba(255, 255, 255, 0.2);
+    --color-subtle-divider: hsl(var(--gen-h-1), 51%, 32%); 
 }
 
 

@@ -84,8 +84,7 @@
             "/css/header-menu-LF.css",
             "./splat.css"
         ],
-        "modules": "splat.js",
-        "scripts": "/js/LF/header-menu.js"
+        "modules": "splat.js"
     },
     "calculator": {
         "title": "Calculator",
@@ -139,7 +138,8 @@
         "styles": [
             "svgapp.css",
             "/misc/ploder/ploder.css",
-            "/misc/numbin/numbin.css"
+            "/misc/numbin/numbin.css",
+            "/misc/fab/fab-crckfx.css"
         ],
         "modules": [
             "svgapp.js"
@@ -175,6 +175,12 @@
                 ],
                 "scripts": "./digitslider.js"
             },
+            "gallery": {
+                "title": "Gallery",
+                "contentPath": [
+                    "pages/feature/gallery/gallery.html"
+                ]
+            },            
             "nothing": {
                 "imports": "assets/favicon.ico"
             }

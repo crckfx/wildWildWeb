@@ -17,3 +17,7 @@
     margin-top: 48px;
     margin-bottom: 48px;
 }
+
+.grow {
+    flex-grow: 1;
+}
