@@ -9,8 +9,6 @@ const ctx = canvas.getContext('2d');
 // controls
 const bgColorInput = document.getElementById('bgColorInput');
 const bgToggle = document.getElementById('bgToggle');
-const renderWidth = document.getElementById('renderWidth');
-const renderHeight = document.getElementById('renderHeight');
 const toggle_fitToPage = document.getElementById('toggle_fitToPage');
 const toggle_showOutline = document.getElementById('toggle_showOutline');
 const toggle_showTextView = document.getElementById('toggle_showTextView');
@@ -28,6 +26,9 @@ const urlDialog = document.getElementById('urlDialog');
 const urlForm = document.getElementById('urlForm');
 const urlField = document.getElementById('urlField');
 
+// numbins: make sure they have their numbins existing in the HTML so that these instant queries work
+const renderWidth = document.getElementById('_renderWidth').querySelector('input');
+const renderHeight = document.getElementById('_renderHeight').querySelector('input');
 
 // --- state ---
 let currentSVGText = null;
@@ -238,13 +239,13 @@ new Ploder(document.getElementById('svgploder'), {
 // --- DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', async () => {
 
-    // admit width / height numbins
-    document.querySelectorAll('input.numbin').forEach(input => {
-        const min = parseInt(input.getAttribute('min'), 10) || 0;
-        const max = parseInt(input.getAttribute('max'), 10) || 9999;
-        const step = parseInt(input.getAttribute('step'), 10) || 1;
-        new Numbin(input, { min, max, step });
-    });
+    // // admit width / height numbins
+    // document.querySelectorAll('input.numbin').forEach(input => {
+    //     const min = parseInt(input.getAttribute('min'), 10) || 0;
+    //     const max = parseInt(input.getAttribute('max'), 10) || 9999;
+    //     const step = parseInt(input.getAttribute('step'), 10) || 1;
+    //     new Numbin(input, { min, max, step });
+    // });
 
     // init canvas state
     canvasState.showBackground = bgToggle.checked;

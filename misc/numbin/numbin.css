@@ -43,7 +43,7 @@ body {
 /* The input created by JS inside .numbin */
 .numbin>input[type="number"] {
     display: block;
-    width: 100%;
+    width: min-content;
     height: 100%;
     font: inherit;
     text-align: center;
@@ -60,6 +60,7 @@ body {
     pointer-events: none;
     /* allow focus/edit when clicked */
     box-sizing: border-box;
+    /* min-width: 5ch; */
 }
 
 /* Remove native spin buttons */

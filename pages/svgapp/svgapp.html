@@ -33,18 +33,19 @@
 
 
 		<div class="control">
-			<span class="numbin-container">
-				<label for="renderWidth">w</label>
-				<input id="renderWidth" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
-			</span>
+            <div id="_renderWidth" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
+                <!-- keep a manual container for the app early init -->
+                <input type="number">
+            </div>
 			<span>
-				<label for="toggle_sizeLock">lock</label>
+                <label for="toggle_sizeLock">lock</label>
 				<input id="toggle_sizeLock" type="checkbox" checked />
-			</span>
-			<span class="numbin-container">
-				<label for="renderHeight">h</label>
-				<input id="renderHeight" type="number" class="numbin" value="512" min="0" max="9999" step="1" />
-			</span>
+			</span>            
+            <div id="_renderHeight" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
+                <!-- keep a manual container for the app early init -->
+                <input type="number">
+            </div>
+
 		</div>
 
 		<div class="control">

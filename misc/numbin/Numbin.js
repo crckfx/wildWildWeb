@@ -3,9 +3,13 @@ export class Numbin {
         // el is the <div class="numbin"> gesture surface
         this.el = el;
 
-        // create the input once; append inside the div
-        const input = document.createElement("input");
-        input.type = "number";
+        // reuse existing input if any, otherwise create one
+        let input = el.querySelector("input[type=number]");
+        if (!input) {
+            input = document.createElement("input");
+            input.type = "number";
+            el.appendChild(input);
+        }
         input.min = min;
         input.max = max;
         input.step = step;

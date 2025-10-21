@@ -7,9 +7,9 @@
     padding: 12px 25px;
     font-size: 18px;
     font-weight: bold;
-    background: var(--color-header);
-    border: none;
-    border-radius: 8px;
+    background-color: red;
+    /* border: none; */
+    /* border-radius: 8px; */
     box-shadow: var(--shadow-preset-B);
 }
 
