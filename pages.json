@@ -120,7 +120,7 @@
                     "/misc/ploder/ploder.css",
                     "/svgapp/svgapp.css",
                     "/misc/numbin/numbin.css",
-                    "/misc/fab/fab-crckfx.css"
+                    "/misc/toolt/toolt.css"
                 ],
                 "modules": [
                     "/svgapp/svgapp.js"
@@ -140,11 +140,12 @@
             "svgapp.css",
             "/misc/ploder/ploder.css",
             "/misc/numbin/numbin.css",
-            "/misc/fab/fab-crckfx.css"
+            "/misc/toolt/toolt.css"
         ],
         "modules": [
             "svgapp.js"
-        ]
+        ],
+        "scripts": "/misc/toolt/toolt.js"
     },
     "feature": {
         "contentPath": "pages/feature/feature.html",

@@ -1,0 +1,72 @@
+.toolt-container {
+    position: relative;
+    display: inline-block;
+}
+
+.toolt-btn {
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    box-shadow: var(--shadow-preset-B);
+}
+
+.toolt-floater {
+    position: absolute;
+    bottom: 100%;          /* above trigger */
+    left: 50%;             /* base anchor */
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity .4s ease;
+    z-index: 999;
+    
+    padding-bottom: 16px;
+
+    pointer-events: none;   /* not hittable */
+    
+}
+
+.toolt-content {
+    background: #007bff;
+    border-radius: 15px;
+    padding: 8px;
+    display: flex;
+}
+
+.toolt-container:hover .toolt-btn::after,
+.toolt-container:focus-within .toolt-btn::after,
+.toolt-container:hover .toolt-floater,
+.toolt-container:focus-within .toolt-floater {
+    opacity: 1;
+    pointer-events: auto;   /* hittable while visible */    
+}
+
+.toolt-item {
+    color: inherit;
+    padding: 8px;
+    margin: 8px;
+    font-size: 14px;
+    flex: 1;
+    background-color: var(--color-bg-2);
+    border-radius: 12px;
+}
+
+.toolt-btn::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 100%;                 /* attach to bottom edge of button box */
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    border-top-color: #007bff; /* match tooltip background */
+    opacity: 0;
+    transition: opacity .4s ease;
+    pointer-events: none;      
+}
+
+.toolt-floater {
+  --tx: -50%;
+  --ty: 0;
+  transform: translate(var(--tx), var(--ty));
+}

@@ -230,7 +230,13 @@ urlDialog.addEventListener('click', (e) => {
 
 
 // --- Ploder initialization ---
-new Ploder(document.getElementById('svgploder'), {
+new Ploder(document.getElementById('uploder'), {
+    accept: '.svg',
+    pattern: /^image\/svg\+xml$/,
+    onUpload: async (files) => handleSVGUpload(files[0]),
+    click: false
+});
+new Ploder(document.getElementById('attachmentInput'), {
     accept: '.svg',
     pattern: /^image\/svg\+xml$/,
     onUpload: async (files) => handleSVGUpload(files[0])
@@ -238,14 +244,6 @@ new Ploder(document.getElementById('svgploder'), {
 
 // --- DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', async () => {
-
-    // // admit width / height numbins
-    // document.querySelectorAll('input.numbin').forEach(input => {
-    //     const min = parseInt(input.getAttribute('min'), 10) || 0;
-    //     const max = parseInt(input.getAttribute('max'), 10) || 9999;
-    //     const step = parseInt(input.getAttribute('step'), 10) || 1;
-    //     new Numbin(input, { min, max, step });
-    // });
 
     // init canvas state
     canvasState.showBackground = bgToggle.checked;

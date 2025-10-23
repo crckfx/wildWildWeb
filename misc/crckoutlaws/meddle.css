@@ -85,7 +85,7 @@ section {
   gap: 24px;
   align-self: stretch;
   border-radius: 16px;
-  background-color: var(--Gray-50, #FAFAFA);
+  background-color: var(--color-bg-3, #FAFAFA);
 }
 
 /* Russels Model */

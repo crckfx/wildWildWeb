@@ -3,7 +3,8 @@ export class Ploder {
         accept = '*/*',
         pattern = /.*/,
         multiple = true,
-        onUpload = null
+        onUpload = null,
+        click = true,
     } = {}) {
         this.pattern = pattern;
 
@@ -33,9 +34,8 @@ export class Ploder {
         };
 
         // Event bindings
-        zone.addEventListener('click', () => fileInput.click());
+        if (click) zone.addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', () => handle(fileInput.files));
-
         zone.addEventListener('dragover', e => {
             e.preventDefault();
             zone.classList.add('dragover');

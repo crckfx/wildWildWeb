@@ -8,24 +8,29 @@
 	<!-- controls -->
 	<div class="controls">
 		<div class="control">
-			<div class="custom-tooltip-container">
-				<button class="custom-tooltip-btn">Hover me</button>
-				<div class="ct-content-container">
-					<a class="custom-tooltip-content" href="https://github.com/crckfx">'crckfx' github</a>
-					<a class="custom-tooltip-content" href="https://github.com/Lachoutlaws">'Lachoutlaws' github</a>
-					<!-- <span class="custom-tooltip-arrow"></span> -->
-				</div>
+			<div class="toolt-container" data-toolt-root="#applet_svg2png">
+				<button id="uploder" class="toolt-btn ploder">
+					<svg fill="none" class="icon" stroke="currentColor" stroke-width="2">
+						<use href="#icon-paperclip"></use>
+					</svg>
+				</button>
+                <div class="toolt-floater">
+                    <div class="toolt-content">
+                        <button id="urlInput" class="toolt-item">URL...</button>
+                        <button id="attachmentInput" class="toolt-item ploder">File...</button>
+                    </div>
+                </div>
 			</div>
 		</div>
 
 		<div class="control">
 			<span id="svgploder" class="ploder">
-				<svg fill="none" class="icon" stroke="currentColor" stroke-width="2" viewBox="0 0 48 48">
+				<svg fill="none" class="icon" stroke="currentColor" stroke-width="2">
 					<use href="#icon-paperclip"></use>
 				</svg>
 				Upload
 			</span>
-			<button id="urlInput">URL</button>
+			
 			<button id="toggle_showTextView">Edit</button>
 			<button>Export</button>
 
@@ -33,18 +38,18 @@
 
 
 		<div class="control">
-            <div id="_renderWidth" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
-                <!-- keep a manual container for the app early init -->
-                <input type="number">
-            </div>
+			<div id="_renderWidth" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
+				<!-- keep a manual container for the app early init -->
+				<input type="number">
+			</div>
 			<span>
-                <label for="toggle_sizeLock">lock</label>
+				<label for="toggle_sizeLock">lock</label>
 				<input id="toggle_sizeLock" type="checkbox" checked />
-			</span>            
-            <div id="_renderHeight" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
-                <!-- keep a manual container for the app early init -->
-                <input type="number">
-            </div>
+			</span>
+			<div id="_renderHeight" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
+				<!-- keep a manual container for the app early init -->
+				<input type="number">
+			</div>
 
 		</div>
 
@@ -70,13 +75,15 @@
 			</span>
 		</div>
 		<div class="control">
-			<div class="custom-tooltip-container">
-				<button class="custom-tooltip-btn">Hover me</button>
-				<div class="ct-content-container">
-					<a class="custom-tooltip-content" href="https://github.com/crckfx">'crckfx' github</a>
-					<a class="custom-tooltip-content" href="https://github.com/Lachoutlaws">'Lachoutlaws' github</a>
-					<!-- <span class="custom-tooltip-arrow"></span> -->
-				</div>
+			<div class="toolt-container">
+				<button class="toolt-btn">Hover me</button>
+                <div class="toolt-floater">
+                    <div class="toolt-content">
+                        <a class="toolt-item" href="https://github.com/crckfx">'crckfx' github</a>
+                        <a class="toolt-item" href="https://github.com/Lachoutlaws">'Lachoutlaws' github</a>
+                        <!-- <span class="toolt-arrow"></span> -->
+                    </div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -104,6 +111,7 @@
 
 </div>
 
+<script src="/misc/toolt/toolt.js"></script>
 
 <script>
 	const applet = document.getElementById('applet_svg2png');
@@ -118,43 +126,4 @@
 		validLayoutNames.forEach(layout => applet.classList.remove(layout));
 		applet.classList.add(name);
 	}
-
-function initFabs(root = document) {
-  const margin = 8;
-
-  function positionTooltip(host, panel) {
-    const vw = document.documentElement.clientWidth;
-    const hb = host.getBoundingClientRect();
-    const pw = panel.offsetWidth;
-    const ph = panel.offsetHeight;
-
-    // Center horizontally in viewport space
-    let left = hb.left + hb.width / 2 - pw / 2;
-    if (left < margin) left = margin;
-    if (left + pw > vw - margin) left = vw - pw - margin;
-
-    // Pin bottom of tooltip to top of host
-    let top = hb.top - ph;
-    if (top < margin) top = hb.bottom; // flip below if offscreen
-
-    panel.style.left = `${Math.round(left)}px`;
-    panel.style.top = `${Math.round(top)}px`;
-  }
-
-  root.querySelectorAll('.custom-tooltip-container').forEach(host => {
-    const panel = host.querySelector('.ct-content-container');
-    if (!panel) return;
-
-    const show = () => requestAnimationFrame(() => positionTooltip(host, panel));
-    const hide = () => {}; // no reset needed; next show repositions
-
-    host.addEventListener('mouseenter', show);
-    host.addEventListener('focusin', show);
-    host.addEventListener('mouseleave', hide);
-    host.addEventListener('focusout', hide);
-  });
-}
-
-window.addEventListener('load', () => initFabs(document));
-
 </script>
