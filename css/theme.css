@@ -15,7 +15,7 @@
 
 /* Theme tokens */
 [data-theme="light"] {
-    --color-bg-1: hsl(60, 20%, 96%);
+    --color-bg-1: hsl(60, 20%, 94%);
     --color-bg-2: hsl(60, 20%, 98%);
     --color-bg-3: hsl(60, 10%, 88%);
 
@@ -59,8 +59,8 @@
 
     --color-accent: #79ffe1;
 
-    --color-footer-1: hsl(66, 45%, 44%);
-    --color-footer-2: hsl(60, 34%, 25%);
+    --color-footer-1: hsl(0, 45%, 44%);
+    --color-footer-2: hsl(0, 34%, 25%);
     --footer-text: white;
     --header-text: white;
 

@@ -8,82 +8,121 @@
 	<!-- controls -->
 	<div class="controls">
 		<div class="control">
+			<!-- www -->
+			<div class="toolt-container" data-toolt-root="#applet_svg2png">
+				<button class="toolt-btn">
+					<img src="/favicon.ico">
+				</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<a class="toolt-item" href="/">back to wildWildWeb</a>
+						<button class="toolt-item">yy</button>
+
+						<form class="color-picker">
+							<fieldset>
+								<label>select theme</label>
+								<select name="theme" id="theme" aria-label="Select Theme">
+									<option value="system">💻 System</option>
+									<option value="light">☀️ Light</option>
+									<option value="dark">🌑 Dark</option>
+									<option value="gen">🎨 Generative</option>
+								</select>
+							</fieldset>
+						</form>
+						<!-- unhidden for "gen" theme -->
+						<div id="genColorPicker">
+							<label>gen colour</label>
+							<!-- <button>save</button> -->
+							<div class="numbin" data-value="0" data-min="0" data-max="359" data-step="1" data-loop="true"></div>
+							<!-- <button>more</button> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- upload -->
 			<div class="toolt-container" data-toolt-root="#applet_svg2png">
 				<button id="uploder" class="toolt-btn ploder">
 					<svg fill="none" class="icon" stroke="currentColor" stroke-width="2">
 						<use href="#icon-paperclip"></use>
 					</svg>
 				</button>
-                <div class="toolt-floater">
-                    <div class="toolt-content">
-                        <button id="urlInput" class="toolt-item">URL...</button>
-                        <button id="attachmentInput" class="toolt-item ploder">File...</button>
-                    </div>
-                </div>
-			</div>
-		</div>
-
-		<div class="control">
-			<span id="svgploder" class="ploder">
-				<svg fill="none" class="icon" stroke="currentColor" stroke-width="2">
-					<use href="#icon-paperclip"></use>
-				</svg>
-				Upload
-			</span>
-			
-			<button id="toggle_showTextView">Edit</button>
-			<button>Export</button>
-
-		</div>
-
-
-		<div class="control">
-			<div id="_renderWidth" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
-				<!-- keep a manual container for the app early init -->
-				<input type="number">
-			</div>
-			<span>
-				<label for="toggle_sizeLock">lock</label>
-				<input id="toggle_sizeLock" type="checkbox" checked />
-			</span>
-			<div id="_renderHeight" class="numbin" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
-				<!-- keep a manual container for the app early init -->
-				<input type="number">
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<button id="urlInput" class="toolt-item">URL...</button>
+						<button id="attachmentInput" class="toolt-item ploder">File...</button>
+					</div>
+				</div>
 			</div>
 
-		</div>
+			<!-- edit -->
+			<button class="toolt-btn" id="toggle_showTextView">Edit</button>
 
-		<div class="control">
-			<span>
-				<input id="toggle_fitToPage" type="checkbox">
-				<label for="toggle_fitToPage">fit preview</label>
-			</span>
-			<span>
-				<input id="toggle_showOutline" type="checkbox" checked>
-				<label for="toggle_showOutline">show outline</label>
-			</span>
-		</div>
+			<!-- canvas -->
+			<div class="toolt-container" data-toolt-root="#applet_svg2png">
+				<button id="resizer" class="toolt-btn">
+					<svg fill="none" class="icon" stroke="currentColor">
+						<use href="#icon-resize"></use>
+					</svg>
+				</button>
+				<div class="toolt-floater">
+					<div class="toolt-content vertical">
+                        <label>Size</label>
+                        <div class="group">
+							<div id="_renderWidth" class="numbin toolt-item" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
+								<input type="number">
+							</div>
+							<button class="bulbtn toolt-item">
+								<input id="toggle_sizeLock" type="checkbox" checked />
+								<label>LOCK</label>
+							</button>
+							<div id="_renderHeight" class="numbin toolt-item" data-value="512" data-min="1" data-max="9999" data-step="1" data-loop="false">
+								<input type="number">
+							</div>
+						</div>
+                        <label>Background</label>
+						<div class="group">
+							<button class="bulbtn toolt-item">
+								<input id="bgToggle" type="checkbox">
+								<label for="bgToggle" style="font-size: 14px;">background on/off</label>
+							</button>
+							<span>
+								<label for="bgColorInput">colour</label>
+								<input id="bgColorInput" type="color" value="#ffffff">
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- preview -->
+			<div class="toolt-container" data-toolt-root="#applet_svg2png">
+				<button class="toolt-btn">
+					Preview
+				</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<button class="bulbtn toolt-item">
+							<input id="toggle_fitToPage" type="checkbox">
+							<label for="toggle_fitToPage">fit preview</label>
+						</button>
+						<button class="bulbtn toolt-item">
+							<input id="toggle_showOutline" type="checkbox" checked>
+							<label for="toggle_showOutline">show outline</label>
 
-		<div class="control">
-			<span>
-				<input id="bgToggle" type="checkbox">
-				<label for="bgToggle">background on/off</label>
-			</span>
-			<span>
-				<label for="bgColorInput">background colour</label>
-				<input id="bgColorInput" type="color" value="#ffffff">
-			</span>
-		</div>
-		<div class="control">
-			<div class="toolt-container">
-				<button class="toolt-btn">Hover me</button>
-                <div class="toolt-floater">
-                    <div class="toolt-content">
-                        <a class="toolt-item" href="https://github.com/crckfx">'crckfx' github</a>
-                        <a class="toolt-item" href="https://github.com/Lachoutlaws">'Lachoutlaws' github</a>
-                        <!-- <span class="toolt-arrow"></span> -->
-                    </div>
-                </div>
+						</button>
+					</div>
+				</div>
+			</div>
+			<!-- export -->
+			<div class="toolt-container" data-toolt-root="#applet_svg2png">
+				<button class="toolt-btn">
+					Export
+				</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<button class="toolt-item">SVG...</button>
+						<button class="toolt-item">PNG...</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

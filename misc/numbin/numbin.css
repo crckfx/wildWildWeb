@@ -10,6 +10,9 @@ body {
 
 /* Outer container — gesture surface */
 .numbin {
+    --bg-base: var(--color-bg-2);
+    --bg-hover: var(--color-bg-3);
+
     display: inline-block;
     position: relative;
     touch-action: none;
@@ -18,17 +21,17 @@ body {
     font: inherit;
     text-align: center;
     color: var(--color-text-1);
-    background-color: var(--color-bg-3);
+    background-color: var(--bg-base);
     border: 1px solid transparent;
     border-radius: 8px;
     min-width: 5ch;
     padding: 8px;
+    cursor: ns-resize;
 }
 
 /* Hover feedback identical to old control */
 .numbin:hover {
-    background-color: var(--color-bg-3);
-    cursor: ns-resize;
+    background-color: var(--bg-hover);
 }
 
 /* Larger variant keeps same geometry logic */

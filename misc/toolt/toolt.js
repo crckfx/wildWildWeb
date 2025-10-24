@@ -25,7 +25,7 @@ function initFabs(root = document) {
         const lid = lidSel ? document.querySelector(lidSel) : document;
 
         const show = () => requestAnimationFrame(() => positionX(host, panel, lid));
-        host.addEventListener('mouseenter', show);
+        // host.addEventListener('mouseenter', show);
         host.addEventListener('focusin', show);
     });
 }

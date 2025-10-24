@@ -1,0 +1,85 @@
+.applet .toolt-container {
+    --content-bg: var(--color-bg-3);
+    --item-bg: var(--color-bg-2);
+    height: 100%;
+}
+
+.applet .toolt-btn {
+    height: 100%;
+    min-width: 8ch;
+}
+
+.applet .toolt-btn>img {
+    width: 36px;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* .applet .toolt-content {
+    gap: 20px;
+} */
+
+
+
+
+.applet .numbin {
+    font-size: 20px;
+    display: inline-flex;
+    justify-content: center;
+    /* numbin's own styles */
+    --bg-base: var(--color-bg-2);
+    --bg-hover: var(--color-bg-1);
+}
+
+
+
+.applet .bulbtn {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    /* font-size: 16px; */
+    background-color: var(--color-bg-3);
+}
+
+.applet .toolt-btn:hover,
+.applet .toolt-btn:focus-within {
+    background-color: var(--color-bg-1);
+}
+.applet .bulbtn:hover {
+    background-color: var(--color-bg-2);
+}
+
+/* hide input */
+.applet .bulbtn>input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    cursor: pointer;
+}
+
+/* bulb indicator */
+.applet .bulbtn::before {
+    content: "";
+    width: 8px;
+    height: 100%;
+    background-color: var(--color-bulb-off);
+    transition: background-color 200ms;
+    margin-right: 8px;
+}
+
+
+/* bulb checked state */
+.applet .bulbtn:has(> input:checked)::before {
+    background-color: var(--color-bulb-on);
+}
+
+/* possibly irrelevant override for default label styles */
+.applet .bulbtn>label {
+    font: inherit;
+}
+
+/* for groups in toolts */
+.applet .toolt-content label {
+    text-align: center;
+}

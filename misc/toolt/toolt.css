@@ -1,6 +1,9 @@
 .toolt-container {
     position: relative;
     display: inline-block;
+
+    --content-bg: inherit;
+    --item-bg: var(--color-bg-2);
 }
 
 .toolt-btn {
@@ -12,32 +15,35 @@
 
 .toolt-floater {
     position: absolute;
-    bottom: 100%;          /* above trigger */
-    left: 50%;             /* base anchor */
+    bottom: 100%;
+    /* above trigger */
+    left: 50%;
+    /* base anchor */
     transform: translateX(-50%);
     opacity: 0;
-    transition: opacity .4s ease;
-    z-index: 999;
-    
-    padding-bottom: 16px;
+    transition: opacity 200ms ease;
+    z-index: 2;
 
-    pointer-events: none;   /* not hittable */
-    
+    padding-bottom: 24px;
+
+    pointer-events: none;
+    /* not hittable */
+
 }
 
 .toolt-content {
-    background: #007bff;
     border-radius: 15px;
     padding: 8px;
     display: flex;
+    background-color: var(--content-bg);
 }
 
-.toolt-container:hover .toolt-btn::after,
+/* .toolt-container:hover .toolt-btn::after, */
 .toolt-container:focus-within .toolt-btn::after,
-.toolt-container:hover .toolt-floater,
+/* .toolt-container:hover .toolt-floater, */
 .toolt-container:focus-within .toolt-floater {
     opacity: 1;
-    pointer-events: auto;   /* hittable while visible */    
+    pointer-events: auto;
 }
 
 .toolt-item {
@@ -46,7 +52,7 @@
     margin: 8px;
     font-size: 14px;
     flex: 1;
-    background-color: var(--color-bg-2);
+    background-color: var(--item-bg);
     border-radius: 12px;
 }
 
@@ -54,19 +60,27 @@
     content: "";
     position: absolute;
     left: 50%;
-    bottom: 100%;                 /* attach to bottom edge of button box */
+    bottom: 100%;
     transform: translateX(-50%);
     width: 0;
     height: 0;
-    border: 8px solid transparent;
-    border-top-color: #007bff; /* match tooltip background */
+    border: 12px solid transparent;
+    border-top-color: var(--content-bg);
     opacity: 0;
     transition: opacity .4s ease;
-    pointer-events: none;      
+    pointer-events: none;
 }
 
 .toolt-floater {
-  --tx: -50%;
-  --ty: 0;
-  transform: translate(var(--tx), var(--ty));
+    --tx: -50%;
+    --ty: 0;
+    transform: translate(var(--tx), var(--ty));
+}
+
+.toolt-content.vertical {
+    flex-direction: column;
+}
+
+.toolt-content>.group {
+    display: flex;
 }
