@@ -32,35 +32,30 @@
     width: 100%;
 }
 
-.applet .controls {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    font-size: 12px;
-    padding: 8px;
-    gap: 8px;
-}
-
 .applet button {
-    /* padding: 8px; */
     background-color: transparent;
     border-radius: 8px;
     color: inherit;
 }
 
-
-.applet .controls>.control {
-    flex: 1;
-    background-color: var(--control-bg);
-    padding: 8px;
-    /* margin: 8px; */
+.applet .controls {
     display: flex;
-    gap: 4px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 12px;
+    padding: 4px 12px;
+    gap: 8px;
+    background-color: var(--control-bg);
     align-items: center;
+    justify-content: space-evenly;
 }
 
+.applet .controls>* {
+    flex: 1 1 42px;
+    max-width: 120px;
+}
 
-.applet .controls>.control .icon {
+.applet .controls .icon {
     font-size: 32px;
 }
 
@@ -85,7 +80,7 @@
     /* width: 100%; */
     image-rendering: pixelated;
     width: var(--fit-width);
-    height: var(--fit-height);    
+    height: var(--fit-height);
 }
 
 /* Webkit-based browsers (Chrome, Edge, Safari) */

@@ -7,7 +7,7 @@
 }
 
 .toolt-btn {
-    padding: 12px 25px;
+    /* padding: 12px 25px; */
     font-size: 18px;
     font-weight: bold;
     box-shadow: var(--shadow-preset-B);

@@ -1,12 +1,14 @@
 .applet .toolt-container {
     --content-bg: var(--color-bg-3);
     --item-bg: var(--color-bg-2);
-    height: 100%;
+}
+
+.applet .ploder {
+    padding: 1px 4px;
 }
 
 .applet .toolt-btn {
-    height: 100%;
-    min-width: 8ch;
+    width: 100%;
 }
 
 .applet .toolt-btn>img {
@@ -82,4 +84,8 @@
 /* for groups in toolts */
 .applet .toolt-content label {
     text-align: center;
+}
+
+.applet .toolt-btn>label {
+    /* display: none; */
 }

@@ -6,12 +6,9 @@
     /* width: 200px; */
     /* flex: 1; */
     text-align: center;
-    display: flex;
-    justify-content: center;
     align-items: center;
     border: 2px dashed #aaa8;
     border-radius: 8px;
-    flex-direction: column;
     cursor: pointer;
     box-sizing: border-box;
 }

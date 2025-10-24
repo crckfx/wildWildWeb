@@ -3,7 +3,8 @@
         "title": "Home",
         "contentPath": [
             "pages/home/home.html",
-            "pages/home/LOL-feature-thing.html"
+            "pages/home/LOL-feature-thing.html",
+            "pages/home/iconspunch.html"
         ],
         "outDir": "/",
         "imports": [
