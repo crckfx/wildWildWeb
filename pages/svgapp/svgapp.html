@@ -5,6 +5,21 @@
 		<canvas id="svgPreview"></canvas>
 	</div>
 
+	<div class="splitter"></div>
+
+	<div id="textView">
+		<div class="head">
+			<span class="name">put a filename here</span>
+			<span class="exit">x</span>
+		</div>
+		<div class="textBox" contenteditable="true">
+			feed me some code
+		</div>
+		<div class="submitBar">
+			<button id="submitTextView">Apply</button>
+		</div>
+	</div>
+
 	<!-- controls -->
 	<div class="panel-container">
 		<div class="controls">
@@ -132,18 +147,7 @@
 		</div>
 	</div>
 
-	<div id="textView">
-		<div class="head">
-			<span class="name">put a filename here</span>
-			<span class="exit">x</span>
-		</div>
-		<div class="textBox" contenteditable="true">
-			feed me some code
-		</div>
-		<div class="submitBar">
-			<button id="submitTextView">Apply</button>
-		</div>
-	</div>
+
 
 	<dialog id="urlDialog">
 		<form method="dialog" id="urlForm">

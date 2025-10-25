@@ -1,5 +1,5 @@
 import { Ploder } from '/misc/ploder/Ploder.js';
-import { Numbin } from '/misc/numbin/Numbin.js';
+import { Splitter } from '/misc/splitter/Splitter.js';
 
 const MAX_SIZE = 9999;
 
@@ -30,6 +30,10 @@ const urlField = document.getElementById('urlField');
 const renderWidth = document.getElementById('_renderWidth').querySelector('input');
 const renderHeight = document.getElementById('_renderHeight').querySelector('input');
 
+const viewSplitter = document.querySelector('.splitter');
+new Splitter(viewSplitter, textView);
+
+
 // --- state ---
 let currentSVGText = null;
 let currentFilename = null;
@@ -42,7 +46,10 @@ const canvasState = {
     backgroundColor: '#ffffff'
 };
 
-async function closeTextView() { textView.classList.remove('show'); }
+function closeTextView() { 
+    textView.classList.remove('show'); 
+    viewSplitter.classList.remove('show'); 
+}
 
 function drawCanvas(img, opts = {}) {
     const { width, height, showBackground, backgroundColor } = opts;
@@ -189,6 +196,7 @@ toggle_sizeLock.addEventListener('input', () => {
 
 toggle_showTextView.addEventListener('click', () => {
     textView.classList.add('show');
+    viewSplitter.classList.add('show');
     textView_name.textContent = currentFilename || 'untitled.svg';
 });
 textView_exit.addEventListener('click', closeTextView);
