@@ -8,7 +8,7 @@
     flex-direction: column;
     background-color: var(--applet-bg);
     position: relative;
-    height: "100svh";
+    /* height: 100svh; */
     /* min-height: 100svh; */
     max-height: 100svh;
     margin: 0;
@@ -18,17 +18,17 @@
 }
 
 .applet.small {
-    height: 800px;
+    max-height: 800px;
     width: 400px;
 }
 
 .applet.big {
-    height: 90svh;
+    max-height: 90svh;
     width: 85%;
 }
 
 .applet.full {
-    height: 100svh;
+    max-height: 100svh;
     width: 100%;
 }
 
