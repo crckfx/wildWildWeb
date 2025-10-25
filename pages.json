@@ -149,7 +149,8 @@
             "/misc/toolt/toolt.css"
         ],
         "modules": [
-            "svgapp.js"
+            "svgapp.js",
+            "/misc/resizer/Resizer.js"
         ],
         "scripts": "/misc/toolt/toolt.js"
     },

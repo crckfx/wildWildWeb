@@ -228,3 +228,21 @@
 .splitter.show {
     display: block;
 }
+
+.applet[data-orientation="portrait"], 
+.applet[data-orientation="landscape"] {
+    opacity: 1;
+}
+.applet:not([data-orientation]) { opacity: 0.35; }
+.applet[data-orientation=""] { opacity: 0.35; }
+
+#someLachiePicture {
+    transform: rotate(180deg);
+}
+
+.applet[data-orientation="portrait"] #someLachiePicture {
+    transform: rotate(0deg);
+}
+.applet[data-orientation="landscape"] #someLachiePicture {
+    transform: rotate(-90deg);
+}

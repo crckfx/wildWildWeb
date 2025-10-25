@@ -1,4 +1,4 @@
-<div id="applet_svg2png" class="applet full">
+<div id="applet_svg2png" class="applet full" data-orientation="">
 
 	<!-- viewport -->
 	<div id="preview">
@@ -26,7 +26,7 @@
 			<!-- www -->
 			<div class="toolt-container" data-toolt-root="#applet_svg2png">
 				<button class="toolt-btn">
-					<img src="/favicon.ico">
+					<img id="someLachiePicture" src="/favicon.ico">
 				</button>
 				<div class="toolt-floater">
 					<div class="toolt-content">
@@ -160,7 +160,9 @@
 
 <script src="/misc/toolt/toolt.js"></script>
 
-<script>
+<script type="module">
+    import {Resizer} from "/misc/resizer/Resizer.js";
+
 	const applet = document.getElementById('applet_svg2png');
 
 	const validLayoutNames = [
@@ -172,5 +174,45 @@
 		if (!validLayoutNames.includes(name)) return; // sanity check
 		validLayoutNames.forEach(layout => applet.classList.remove(layout));
 		applet.classList.add(name);
+	}
+
+	const w = window.innerWidth;
+	const h = window.innerHeight;
+	const aspect = w / h;
+
+	let landscape = false;
+	let mobile = false;
+	if (w < 700 || h < 600) mobile = true;
+	if (aspect > 1.2) landscape = true;
+
+
+	console.log(`w: ${w}`);
+	console.log(`h: ${h}`);
+	console.log(`aspect-ratio: ${aspect}`);
+	console.log(`mobile: ${mobile}`);
+	console.log(`orientation: ${landscape ? "landscape" : "portrait"}`);
+
+	applet.dataset.orientation = landscape ? "landscape" : "portrait";
+
+	const someApplet = document.querySelector(".applet");
+	let resizeTimer;
+
+	function handleResize() {
+		const {
+			innerWidth: w,
+			innerHeight: h
+		} = window;
+		const mobile = (w < 700 || h < 600);
+		const aspect = (w / h) > 1.2 ? "landscape" : "portrait";
+		// const landscape = aspect;
+		someApplet.setAttribute("data-orientation", aspect);
+		someApplet.setAttribute("data-mobile", mobile);
+		console.log(`aspect-ratio: ${aspect}, w: ${w}, h:${h}`);
+	}
+
+	if (!someApplet) {
+		console.error("no applet dawg");
+	} else {
+		const resize = new Resizer(handleResize, 100);
 	}
 </script>
