@@ -119,9 +119,7 @@
     height: 100%;
     left: 0;
     top: 0;
-    /* transform: translateX(-50%) translateY(-50%); */
-    border: 2px solid var(--color-text-1);
-    /* padding: 12px; */
+    padding: 12px;
     z-index: 5;
     display: none;
     word-wrap: break-word;
