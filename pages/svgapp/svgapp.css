@@ -38,6 +38,12 @@
     color: inherit;
 }
 
+.applet .panel-container {
+    display: flex;
+    width: 100%;
+    justify-content: center
+}
+
 .applet .controls {
     display: flex;
     flex-direction: row;
@@ -47,12 +53,14 @@
     gap: 8px;
     background-color: var(--control-bg);
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
 }
 
 .applet .controls>* {
     flex: 1 1 42px;
-    max-width: 120px;
+    max-width: 200px;
 }
 
 .applet .controls .icon {

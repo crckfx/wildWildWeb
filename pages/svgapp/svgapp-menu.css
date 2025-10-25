@@ -86,6 +86,9 @@
     text-align: center;
 }
 
-.applet .toolt-btn>label {
-    /* display: none; */
+.applet .toolt-container { container-type: inline-size; }
+.applet .toolt-btn > label { display: none; }
+
+@container (min-width: 130px) {
+  .applet .toolt-btn > label { display: inline; }
 }
