@@ -67,9 +67,11 @@
     font-size: 32px;
 }
 
-
-/* class to place a canvas inside  */
-.applet #preview {
+/********************************************
+/   --- preview / canvas ---
+********************************************/
+/* preview box to place a canvas inside  */
+#preview {
     flex: 1;
     display: grid;
     place-items: center;
@@ -77,28 +79,28 @@
     min-height: 200px;
 }
 
-.applet #preview, 
-.applet #textView .textBox {
+#preview,
+#textView .textBox {
     scrollbar-width: thin;
 }
 
-.applet #preview.outline>canvas {
+#preview>canvas {
+    object-fit: contain;
+}
+
+#preview.outline>canvas {
     outline: 1px dotted #8888;
 }
 
-.applet #preview.fit>canvas {
-    max-width: 100%;
-    max-height: 100%;
-    /* height: auto; */
-    /* width: 100%; */
+#preview.fit>canvas {
     image-rendering: pixelated;
     width: var(--fit-width);
     height: var(--fit-height);
 }
 
 /* Webkit-based browsers (Chrome, Edge, Safari) */
-.applet #textView .textBox::-webkit-scrollbar,
-.applet #preview::-webkit-scrollbar {
+#textView .textBox::-webkit-scrollbar,
+#preview::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
@@ -106,7 +108,7 @@
 /********************************************
 /   --- textview ---
 ********************************************/
-.applet #textView {
+#textView {
     position: absolute;
     background: var(--color-bg-1);
     width: 100%;
@@ -121,34 +123,34 @@
 }
 
 
-.applet #textView.show {
+#textView.show {
     display: flex;
     flex-direction: column;
 }
 
 
-.applet #textView .head {
+#textView .head {
     /* padding: 8px; */
     display: flex;
     width: 100%;
     /* justify-content: right; */
 }
 
-.applet #textView .head>.name {
+#textView .head>.name {
     padding: 8px;
     flex: 1;
     text-align: center;
 }
 
-.applet #textView .head>.exit {
+#textView .head>.exit {
     padding: 8px 16px;
 }
 
-.applet #textView .head>.exit:hover {
+#textView .head>.exit:hover {
     background-color: red;
 }
 
-.applet #textView .textBox {
+#textView .textBox {
     font-family: monospace;
     margin: 12px;
     overflow: auto;
@@ -157,79 +159,50 @@
     /* border: 2px solid transparent; */
 }
 
-.applet #textView .textBox.edited {
+#textView .textBox.edited {
     outline: 2px solid orange;
 }
 
 /* last submit attempt failed */
-.applet #textView .textBox.error {
+#textView .textBox.error {
     outline: 2px solid red;
 }
 
-.applet #textView .submitBar {
+#textView .submitBar {
     flex: 0 0 auto;
     padding: 12px;
 }
 
 
-/********************************************
-/   --- modal dialogue ---
-********************************************/
-#urlDialog {
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0008;
+
+
+
+/********************************************/
+.applet .splitter {
+    height: 6px;
+    cursor: row-resize;
+    background: #888;
     display: none;
-    justify-content: center;
-    align-items: center;
-    color: inherit;
-    border: none;
 }
 
-#urlDialog[open] {
-    display: flex;
-}
-
-#urlForm {
-    background-color: var(--color-bg-3);
-    padding: 16px;
-    width: 90%;
-}
-
-#urlForm>label {
+.applet .splitter.show {
     display: block;
-    font-size: 1.5em;
-    line-height: 2em;
-}
-
-#urlForm>input {
-    width: 100%;
-    font-size: 1.2em;
-    line-height: 2em;
 }
 
 /********************************************/
 
-
-.splitter {
-	height: 6px;
-	cursor: row-resize;
-	background: #888;
-    display: none;
-}
-
-.splitter.show {
-    display: block;
-}
-
-.applet[data-orientation="portrait"], 
+.applet[data-orientation="portrait"],
 .applet[data-orientation="landscape"] {
     opacity: 1;
 }
-.applet:not([data-orientation]) { opacity: 0.35; }
-.applet[data-orientation=""] { opacity: 0.35; }
+
+.applet:not([data-orientation]) {
+    opacity: 0.35;
+}
+
+.applet[data-orientation=""] {
+    opacity: 0.35;
+}
 
 #someLachiePicture {
     transform: rotate(180deg);
@@ -238,6 +211,7 @@
 .applet[data-orientation="portrait"] #someLachiePicture {
     transform: rotate(0deg);
 }
+
 .applet[data-orientation="landscape"] #someLachiePicture {
     transform: rotate(-90deg);
 }
@@ -248,8 +222,8 @@
     width: 100%;
     height: var(--tv-height);
     border: 2px solid var(--color-text-1);
-    padding: 12px;
     display: none;
+    padding: 12px;
     word-wrap: break-word;
     position: relative;
     z-index: 0;

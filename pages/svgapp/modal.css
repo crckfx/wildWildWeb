@@ -1,0 +1,39 @@
+/********************************************
+/   --- modal dialogue ---
+********************************************/
+#urlDialog {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0008;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    color: inherit;
+    border: none;
+}
+
+#urlDialog[open] {
+    display: flex;
+}
+
+#urlForm {
+    background-color: var(--color-bg-3);
+    padding: 16px;
+    width: 90%;
+}
+
+#urlForm>label {
+    display: block;
+    font-size: 1.5em;
+    line-height: 2em;
+}
+
+#urlForm>input {
+    width: 100%;
+    font-size: 1.2em;
+    line-height: 2em;
+}
+
+/********************************************/

@@ -1,8 +1,10 @@
+import { Resizer } from '../../misc/resizer/Resizer.js';
 import { Ploder } from '/misc/ploder/Ploder.js';
 import { Splitter } from '/misc/splitter/Splitter.js';
+import { getSVGFromFile, getSVGFromURL, filenameFromURL, loadSVGImage } from './app-helpers.js';
 
 const MAX_SIZE = 9999;
-
+const applet = document.getElementById('applet_svg2png');
 const canvas = document.getElementById('svgPreview');
 const ctx = canvas.getContext('2d');
 
@@ -29,27 +31,32 @@ const urlField = document.getElementById('urlField');
 // numbins: make sure they have their numbins existing in the HTML so that these instant queries work
 const renderWidth = document.getElementById('_renderWidth').querySelector('input');
 const renderHeight = document.getElementById('_renderHeight').querySelector('input');
-
-const viewSplitter = document.querySelector('.splitter');
-new Splitter(viewSplitter, textView, {prop: '--tv-height', min: 200});
-
-
 // --- state ---
 let currentSVGText = null;
 let currentFilename = null;
 let lockedRatio = null;
-
 const canvasState = {
     width: 512,
     height: 512,
     showBackground: true,
     backgroundColor: '#ffffff'
 };
-
-function closeTextView() { 
-    textView.classList.remove('show'); 
-    viewSplitter.classList.remove('show'); 
-}
+// 
+const viewSplitter = document.querySelector('.splitter');
+new Splitter(viewSplitter, textView, { prop: '--tv-height', min: 200 });
+new Resizer(handleResize, 50);
+new Ploder(document.getElementById('uploder'), {
+    accept: '.svg',
+    pattern: /^image\/svg\+xml$/,
+    onUpload: async (files) => handleSVGUpload(files[0]),
+    click: false
+});
+new Ploder(document.getElementById('attachmentInput'), {
+    accept: '.svg',
+    pattern: /^image\/svg\+xml$/,
+    onUpload: async (files) => handleSVGUpload(files[0])
+});
+// ***********************************************************************
 
 function drawCanvas(img, opts = {}) {
     const { width, height, showBackground, backgroundColor } = opts;
@@ -72,23 +79,10 @@ function drawCanvas(img, opts = {}) {
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 }
 
-async function renderAndSyncState(svgText) {
-    const img = await loadSVGImage(svgText);
-    
-    // Update canvasState and input elements
-    canvasState.width = img.naturalWidth;
-    canvasState.height = img.naturalHeight;
-    renderWidth.value = canvasState.width;
-    renderHeight.value = canvasState.height;
-    
-    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
-    drawCanvas(img, canvasState);
-}
-
 // --- render from inputs without overwriting them ---
 async function renderSVGToCanvas(svgText, opts = {}) {
     if (!svgText) return;
-    
+
     const renderOpts = {
         width: canvasState.width,
         height: canvasState.height,
@@ -96,16 +90,41 @@ async function renderSVGToCanvas(svgText, opts = {}) {
         backgroundColor: canvasState.backgroundColor,
         ...opts
     };
-    
-    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
 
     const img = await loadSVGImage(svgText);
     drawCanvas(img, renderOpts);
 }
 
+function updateFitDimensions(w, h, container) {
+    const scale = Math.min(
+        container.clientWidth / w,
+        container.clientHeight / h
+    );
+
+    canvas.style.setProperty('--fit-width', w * scale + 'px');
+    canvas.style.setProperty('--fit-height', h * scale + 'px');
+}
+
+
+function closeTextView() {
+    textView.classList.remove('show');
+    viewSplitter.classList.remove('show');
+}
 
 // ------------------------------------------------------------------------------------------------
 // ----- handlers -----
+function handleResize() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    // the app's opinions about what constitutes 1. mobile/big 2. portrait/landscape
+    const mobile = (w < 700 || h < 600);
+    const aspect = (w / h) > 1.2 ? "landscape" : "portrait";
+    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
+    // set the app's css --guys 
+    applet.setAttribute("data-orientation", aspect);
+    applet.setAttribute("data-mobile", mobile);
+    console.log(`aspect-ratio: ${aspect}, w: ${w}, h:${h}`);
+}
 
 // load up from svg source text
 async function handleSVGSource(svgText, filename = "untitled.svg") {
@@ -114,12 +133,19 @@ async function handleSVGSource(svgText, filename = "untitled.svg") {
     currentFilename = filename;
     currentSVGText = svgText;
 
-    await renderAndSyncState(svgText);
+    const img = await loadSVGImage(svgText);
+    canvasState.width = img.naturalWidth;
+    canvasState.height = img.naturalHeight;
+    renderWidth.value = canvasState.width;
+    renderHeight.value = canvasState.height;
+
+    await renderSVGToCanvas(svgText);
     textBox.textContent = svgText;
 
     if (toggle_sizeLock.checked) {
         lockedRatio = canvasState.width / canvasState.height;
     }
+    handleResize();
 }
 
 // handle toggling 'fit to screen'
@@ -160,6 +186,7 @@ function handleDimensionInput(key) {
 
     canvasState.width = newWidth;
     canvasState.height = newHeight;
+    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
     if (currentSVGText) renderSVGToCanvas(currentSVGText);
 }
 
@@ -237,31 +264,21 @@ urlDialog.addEventListener('click', (e) => {
 });
 
 
-// --- Ploder initialization ---
-new Ploder(document.getElementById('uploder'), {
-    accept: '.svg',
-    pattern: /^image\/svg\+xml$/,
-    onUpload: async (files) => handleSVGUpload(files[0]),
-    click: false
-});
-new Ploder(document.getElementById('attachmentInput'), {
-    accept: '.svg',
-    pattern: /^image\/svg\+xml$/,
-    onUpload: async (files) => handleSVGUpload(files[0])
-});
+
 
 // --- DOMContentLoaded ---
 document.addEventListener('DOMContentLoaded', async () => {
-
     // init canvas state
     canvasState.showBackground = bgToggle.checked;
     canvasState.backgroundColor = bgColorInput.value;
     canvasState.width = parseInt(renderWidth.value, 10) || canvasState.width;
     canvasState.height = parseInt(renderHeight.value, 10) || canvasState.height;
-
     toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
+    // some more init
+    // handleResize();
 
+    // load a default file
     const defaultURL = '/resources/images/svg/snkbx_Boosh.svg';
     try {
         const defaultSVG = await getSVGFromURL(defaultURL);
@@ -269,65 +286,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (err) {
         console.error("Failed to load default SVG:", err);
     }
-
 });
 
-// --- helper functions ---
-function getSVGFromFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = e => resolve(e.target.result);
-        reader.onerror = reject;
-        reader.readAsText(file);
-    });
-}
-
-async function getSVGFromURL(url) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(res.statusText);
-    return res.text();
-}
-
-function inspectSVG(svgText) {
-    const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
-    const svg = doc.documentElement;
-    if (!svg || svg.nodeName.toLowerCase() !== 'svg') return null;
-    return {
-        width: svg.getAttribute('width'),
-        height: svg.getAttribute('height'),
-        viewBox: svg.getAttribute('viewBox'),
-        preserveAspectRatio: svg.getAttribute('preserveAspectRatio')
-    };
-}
-
-function filenameFromURL(url) {
-    const parts = url.split('/');
-    return parts[parts.length - 1] || 'untitled.svg';
-}
 
 
-function loadSVGImage(svgText) {
-    return new Promise((resolve, reject) => {
-        const blob = new Blob([svgText], { type: 'image/svg+xml' });
-        const url = URL.createObjectURL(blob);
-        const img = new Image();
 
-        img.onload = () => {
-            URL.revokeObjectURL(url);
-            resolve(img);
-        };
 
-        img.onerror = reject;
-        img.src = url;
-    });
-}
-
-function updateFitDimensions(w, h, container) {
-    const scale = Math.min(
-        container.clientWidth / w,
-        container.clientHeight / h
-    );
-
-    canvas.style.setProperty('--fit-width', w * scale + 'px');
-    canvas.style.setProperty('--fit-height', h * scale + 'px');
-}

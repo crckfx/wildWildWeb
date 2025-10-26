@@ -136,14 +136,17 @@
         "templatePath": "templates/blank_with_global.ejs",
         "imports": [
             "pages/svgapp/svgapp.js",
+            "pages/svgapp/app-helpers.js",
             "pages/svgapp/svgapp.css",
             "pages/svgapp/svgapp-menu.css",
-            "pages/svgapp/fullscreen.css"
+            "pages/svgapp/fullscreen.css",
+            "pages/svgapp/modal.css"
         ],
         "styles": [
             "svgapp.css",
             "svgapp-menu.css",
             "fullscreen.css",
+            "modal.css",
             "/misc/ploder/ploder.css",
             "/misc/numbin/numbin.css",
             "/misc/toolt/toolt.css"
