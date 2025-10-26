@@ -31,7 +31,7 @@ const renderWidth = document.getElementById('_renderWidth').querySelector('input
 const renderHeight = document.getElementById('_renderHeight').querySelector('input');
 
 const viewSplitter = document.querySelector('.splitter');
-new Splitter(viewSplitter, textView);
+new Splitter(viewSplitter, textView, {prop: '--tv-height', min: 200});
 
 
 // --- state ---
