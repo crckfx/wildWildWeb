@@ -28,7 +28,7 @@ const urlDialog = document.getElementById('urlDialog');
 const urlForm = document.getElementById('urlForm');
 const urlField = document.getElementById('urlField');
 
-// numbins: make sure they have their numbins existing in the HTML so that these instant queries work
+// numbins (auto inited): make sure they have their numbins existing in the HTML so that these instant queries work for the app
 const renderWidth = document.getElementById('_renderWidth').querySelector('input');
 const renderHeight = document.getElementById('_renderHeight').querySelector('input');
 // --- state ---
@@ -41,7 +41,7 @@ const canvasState = {
     showBackground: true,
     backgroundColor: '#ffffff'
 };
-// 
+// --- --- ---
 const viewSplitter = document.querySelector('.splitter');
 new Splitter(viewSplitter, textView, { prop: '--tv-height', min: 200 });
 new Resizer(handleResize, 50);
@@ -57,7 +57,8 @@ new Ploder(document.getElementById('attachmentInput'), {
     onUpload: async (files) => handleSVGUpload(files[0])
 });
 // ***********************************************************************
-
+// ------------------------------------------------------------------------------------------------
+// ----- app functions -----
 function drawCanvas(img, opts = {}) {
     const { width, height, showBackground, backgroundColor } = opts;
 
@@ -113,6 +114,8 @@ function closeTextView() {
 
 // ------------------------------------------------------------------------------------------------
 // ----- handlers -----
+
+// feed this function to the Resizer class as a callback
 function handleResize() {
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -126,13 +129,12 @@ function handleResize() {
     console.log(`aspect-ratio: ${aspect}, w: ${w}, h:${h}`);
 }
 
-// load up from svg source text
+// load up from svg source text and write some values and load it to canvas
 async function handleSVGSource(svgText, filename = "untitled.svg") {
     if (!svgText) return;
-
     currentFilename = filename;
     currentSVGText = svgText;
-
+    // todo: should really try the load image checking for success before overwriting anything
     const img = await loadSVGImage(svgText);
     canvasState.width = img.naturalWidth;
     canvasState.height = img.naturalHeight;
@@ -142,10 +144,8 @@ async function handleSVGSource(svgText, filename = "untitled.svg") {
     await renderSVGToCanvas(svgText);
     textBox.textContent = svgText;
 
-    if (toggle_sizeLock.checked) {
-        lockedRatio = canvasState.width / canvasState.height;
-    }
-    handleResize();
+    if (toggle_sizeLock.checked) lockedRatio = canvasState.width / canvasState.height;
+    
 }
 
 // handle toggling 'fit to screen'
@@ -170,10 +170,12 @@ function handleCanvasPropertyInput() {
     renderSVGToCanvas(currentSVGText);
 }
 
+// modify WIDTH / HEIGHT via numbins
 function handleDimensionInput(key) {
     let newWidth = parseInt(renderWidth.value, 10) || canvasState.width;
     let newHeight = parseInt(renderHeight.value, 10) || canvasState.height;
 
+    // bind width and height if a lock is set (update the other value and write to its numbin)
     if (lockedRatio != null) {
         if (key === 'width') {
             newHeight = Math.round(newWidth / lockedRatio);
@@ -183,7 +185,6 @@ function handleDimensionInput(key) {
             renderWidth.value = newWidth;
         }
     }
-
     canvasState.width = newWidth;
     canvasState.height = newHeight;
     updateFitDimensions(canvasState.width, canvasState.height, previewBox);
@@ -203,20 +204,19 @@ async function handleTextViewSubmit() {
 }
 // ------------------------------------------------------------------------------------------------
 
+// ------------------------------------------------------------------------------------------------
+// ----- listeners -----
 renderWidth.addEventListener('input', () => handleDimensionInput('width'));
 renderHeight.addEventListener('input', () => handleDimensionInput('height'));
 bgColorInput.addEventListener('input', handleCanvasPropertyInput);
 bgToggle.addEventListener('input', handleCanvasPropertyInput);
 
 
-// --- toggles ---
+// ----- --- toggles --- -----
 toggle_fitToPage.addEventListener('input', handleFitToggle);
-
 toggle_showOutline.addEventListener('input', () =>
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline')
 );
-
-
 toggle_sizeLock.addEventListener('input', () => {
     lockedRatio = toggle_sizeLock.checked ? canvasState.width / canvasState.height : null;
 });
@@ -226,6 +226,8 @@ toggle_showTextView.addEventListener('click', () => {
     viewSplitter.classList.add('show');
     textView_name.textContent = currentFilename || 'untitled.svg';
 });
+
+// ----- --- textview --- -----
 textView_exit.addEventListener('click', closeTextView);
 textBox.addEventListener('input', () => {
     // User changed text
@@ -275,8 +277,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     canvasState.height = parseInt(renderHeight.value, 10) || canvasState.height;
     toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
-    // some more init
-    // handleResize();
+    handleResize();
 
     // load a default file
     const defaultURL = '/resources/images/svg/snkbx_Boosh.svg';
