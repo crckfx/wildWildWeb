@@ -18,7 +18,9 @@ export class Splitter {
 
 	onDrag(e) {
 		const dy = e.clientY - this.startY;
-		this.target.style.height = `${this.startHeight - dy}px`;
+		// this.target.style.height = `${this.startHeight - dy}px`;
+        const newHeight = Math.max(this.startHeight - dy, 200)
+        this.target.style.setProperty('--tv-height', `${newHeight}px`);
 	}
 
 	endDrag() {
