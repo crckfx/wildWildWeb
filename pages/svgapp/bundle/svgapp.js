@@ -1,4 +1,4 @@
-import { Resizer } from '../../misc/resizer/Resizer.js';
+import { Resizer } from '/misc/resizer/Resizer.js';
 import { Ploder } from '/misc/ploder/Ploder.js';
 import { Splitter } from '/misc/splitter/Splitter.js';
 import { getSVGFromFile, getSVGFromURL, filenameFromURL, loadSVGImage } from './app-helpers.js';
@@ -56,6 +56,12 @@ new Ploder(document.getElementById('attachmentInput'), {
     pattern: /^image\/svg\+xml$/,
     onUpload: async (files) => handleSVGUpload(files[0])
 });
+const previewObserver = new ResizeObserver(() => {
+	updateFitDimensions(canvasState.width, canvasState.height, previewBox);
+});
+previewObserver.observe(previewBox);
+
+
 // ***********************************************************************
 // ------------------------------------------------------------------------------------------------
 // ----- app functions -----
@@ -101,7 +107,6 @@ function updateFitDimensions(w, h, container) {
         container.clientWidth / w,
         container.clientHeight / h
     );
-
     canvas.style.setProperty('--fit-width', w * scale + 'px');
     canvas.style.setProperty('--fit-height', h * scale + 'px');
 }
@@ -122,7 +127,7 @@ function handleResize() {
     // the app's opinions about what constitutes 1. mobile/big 2. portrait/landscape
     const mobile = (w < 700 || h < 600);
     const aspect = (w / h) > 1.2 ? "landscape" : "portrait";
-    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
+    // updateFitDimensions(canvasState.width, canvasState.height, previewBox);
     // set the app's css --guys 
     applet.setAttribute("data-orientation", aspect);
     applet.setAttribute("data-mobile", mobile);
@@ -202,32 +207,33 @@ async function handleTextViewSubmit() {
         textBox.classList.add('error');
     }
 }
-// ------------------------------------------------------------------------------------------------
 
 // ------------------------------------------------------------------------------------------------
 // ----- listeners -----
-renderWidth.addEventListener('input', () => handleDimensionInput('width'));
-renderHeight.addEventListener('input', () => handleDimensionInput('height'));
-bgColorInput.addEventListener('input', handleCanvasPropertyInput);
-bgToggle.addEventListener('input', handleCanvasPropertyInput);
 
-
-// ----- --- toggles --- -----
+// ----- controls behind 'preview' toolt -----
 toggle_fitToPage.addEventListener('input', handleFitToggle);
 toggle_showOutline.addEventListener('input', () =>
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline')
 );
+
+// ----- --- canvas --- -----
+renderWidth.addEventListener('input', () => handleDimensionInput('width'));
+renderHeight.addEventListener('input', () => handleDimensionInput('height'));
 toggle_sizeLock.addEventListener('input', () => {
     lockedRatio = toggle_sizeLock.checked ? canvasState.width / canvasState.height : null;
 });
+bgColorInput.addEventListener('input', handleCanvasPropertyInput);
+bgToggle.addEventListener('input', handleCanvasPropertyInput);
 
+// ----- --- textview --- -----
+// **it's special because it doesn't have a toolt**
 toggle_showTextView.addEventListener('click', () => {
+    // todo: handle "close if open" here
     textView.classList.add('show');
     viewSplitter.classList.add('show');
     textView_name.textContent = currentFilename || 'untitled.svg';
 });
-
-// ----- --- textview --- -----
 textView_exit.addEventListener('click', closeTextView);
 textBox.addEventListener('input', () => {
     // User changed text
@@ -236,7 +242,7 @@ textBox.addEventListener('input', () => {
 });
 textView_submit.addEventListener('click', handleTextViewSubmit);
 
-
+// ----- --- url upload  --- -----
 urlBtn.addEventListener('click', () => {
     urlDialog.show();
     urlField.focus();
@@ -264,7 +270,7 @@ urlDialog.addEventListener('click', (e) => {
         urlDialog.close();
     }
 });
-
+// ------------------------------------------------------------------------------------------------
 
 
 

@@ -26,7 +26,10 @@
 			<!-- www -->
 			<div class="toolt-container" data-toolt-root="#applet_svg2png">
 				<button class="toolt-btn">
-					<img id="someLachiePicture" src="/favicon.ico">
+					<!-- <img id="someLachiePicture" src="/favicon.ico"> -->
+					<svg class="icon" stroke="currentColor">
+						<use href="#icon-mobile-portrait"></use>
+					</svg>                    
 				</button>
 				<div class="toolt-floater">
 					<div class="toolt-content">
@@ -163,6 +166,7 @@
 
 <script src="/misc/toolt/toolt.js"></script>
 <script>
+    // for the "layout switcher" alternate in-page app view
 	const applet = document.getElementById('applet_svg2png');
 	const validLayoutNames = [
 		"small", "big", "full"
