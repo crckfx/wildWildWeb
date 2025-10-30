@@ -17,20 +17,7 @@
     color: var(--applet-text);
 }
 
-.applet.small {
-    max-height: 800px;
-    width: 400px;
-}
 
-.applet.big {
-    max-height: 90svh;
-    width: 85%;
-}
-
-.applet.full {
-    max-height: 100svh;
-    width: 100%;
-}
 
 .applet button {
     background-color: transparent;
@@ -203,19 +190,6 @@
 .applet[data-orientation=""] {
     opacity: 0.35;
 }
-
-#someLachiePicture {
-    transform: rotate(180deg);
-}
-
-.applet[data-orientation="portrait"] #someLachiePicture {
-    transform: rotate(0deg);
-}
-
-.applet[data-orientation="landscape"] #someLachiePicture {
-    transform: rotate(-90deg);
-}
-
 
 .applet[data-mobile="false"] #textView {
     background: var(--color-bg-1);

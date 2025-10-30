@@ -44,7 +44,7 @@ const canvasState = {
 // --- --- ---
 const viewSplitter = document.querySelector('.splitter');
 new Splitter(viewSplitter, textView, { prop: '--tv-height', min: 200 });
-new Resizer(handleResize, 50);
+new Resizer(document.documentElement, handleResize, 50);
 new Ploder(document.getElementById('uploder'), {
     accept: '.svg',
     pattern: /^image\/svg\+xml$/,
@@ -57,7 +57,7 @@ new Ploder(document.getElementById('attachmentInput'), {
     onUpload: async (files) => handleSVGUpload(files[0])
 });
 const previewObserver = new ResizeObserver(() => {
-	updateFitDimensions(canvasState.width, canvasState.height, previewBox);
+    updateFitDimensions(canvasState.width, canvasState.height, previewBox);
 });
 previewObserver.observe(previewBox);
 
@@ -122,12 +122,12 @@ function closeTextView() {
 
 // feed this function to the Resizer class as a callback
 function handleResize() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    const rect = applet.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
     // the app's opinions about what constitutes 1. mobile/big 2. portrait/landscape
     const mobile = (w < 700 || h < 600);
     const aspect = (w / h) > 1.2 ? "landscape" : "portrait";
-    // updateFitDimensions(canvasState.width, canvasState.height, previewBox);
     // set the app's css --guys 
     applet.setAttribute("data-orientation", aspect);
     applet.setAttribute("data-mobile", mobile);
@@ -150,7 +150,7 @@ async function handleSVGSource(svgText, filename = "untitled.svg") {
     textBox.textContent = svgText;
 
     if (toggle_sizeLock.checked) lockedRatio = canvasState.width / canvasState.height;
-    
+
 }
 
 // handle toggling 'fit to screen'
@@ -283,7 +283,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     canvasState.height = parseInt(renderHeight.value, 10) || canvasState.height;
     toggle_fitToPage.checked ? previewBox.classList.add('fit') : previewBox.classList.remove('fit');
     toggle_showOutline.checked ? previewBox.classList.add('outline') : previewBox.classList.remove('outline');
-    handleResize();
 
     // load a default file
     const defaultURL = '/resources/images/svg/snkbx_Boosh.svg';

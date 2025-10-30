@@ -118,14 +118,17 @@
                     "pages/svgapp/svgapp.html"
                 ],
                 "styles": [
-                    "/svgapp/svgapp.css",
-                    "/svgapp/svgapp-menu.css",
+                    "/svgapp/bundle/svgapp.css",
+                    "/svgapp/bundle/svgapp-menu.css",
+                    "/svgapp/bundle/modal.css",
+                    "/svgapp/bundle/sizetests.css",
+                    "/svgapp/bundle/icon.css",
                     "/misc/ploder/ploder.css",
                     "/misc/numbin/numbin.css",
                     "/misc/toolt/toolt.css"
                 ],
                 "modules": [
-                    "/svgapp/svgapp.js"
+                    "/svgapp/bundle/svgapp.js"
                 ]
             }
         }
@@ -140,6 +143,7 @@
             "bundle/svgapp-menu.css",
             "bundle/fullscreen.css",
             "bundle/modal.css",
+            "bundle/icon.css",
             "/misc/ploder/ploder.css",
             "/misc/numbin/numbin.css",
             "/misc/toolt/toolt.css"
