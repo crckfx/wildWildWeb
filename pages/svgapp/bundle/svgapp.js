@@ -132,6 +132,11 @@ function handleResize() {
     applet.setAttribute("data-orientation", aspect);
     applet.setAttribute("data-mobile", mobile);
     console.log(`aspect-ratio: ${aspect}, w: ${w}, h:${h}`);
+
+    const edge = (mobile && aspect === "landscape") ? "right" : "top";
+    document.querySelectorAll('.toolt-container').forEach(el => {
+        el.dataset.edge = edge;
+    });
 }
 
 // load up from svg source text and write some values and load it to canvas

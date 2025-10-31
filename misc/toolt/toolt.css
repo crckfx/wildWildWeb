@@ -1,49 +1,44 @@
 .toolt-container {
     position: relative;
     display: inline-block;
-
-    --content-bg: inherit;
+    /* --content-bg: inherit; */
     --item-bg: var(--color-bg-2);
 }
 
 .toolt-btn {
-    /* padding: 12px 25px; */
     font-size: 18px;
     font-weight: bold;
     box-shadow: var(--shadow-preset-B);
 }
 
+/* Base floater: only transform; no fixed anchors */
 .toolt-floater {
     position: absolute;
-    bottom: 100%;
-    /* above trigger */
-    left: 50%;
-    /* base anchor */
-    transform: translateX(-50%);
     opacity: 0;
     transition: opacity 200ms ease;
     z-index: 2;
-
-    padding-bottom: 24px;
-
     pointer-events: none;
-    /* not hittable */
 
+    --tx: 0;
+    --ty: 0;
+    transform: translate(var(--tx), var(--ty));
 }
 
+/* Visibility */
+.toolt-container:hover .toolt-btn::after,
+.toolt-container:hover .toolt-floater,
+.toolt-container:focus-within .toolt-floater,
+.toolt-container:focus-within .toolt-btn::after {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Tooltip content box */
 .toolt-content {
     border-radius: 15px;
     padding: 8px;
     display: flex;
     background-color: var(--content-bg);
-}
-
-/* .toolt-container:hover .toolt-btn::after, */
-.toolt-container:focus-within .toolt-btn::after,
-/* .toolt-container:hover .toolt-floater, */
-.toolt-container:focus-within .toolt-floater {
-    opacity: 1;
-    pointer-events: auto;
 }
 
 .toolt-item {
@@ -56,27 +51,19 @@
     border-radius: 12px;
 }
 
+/* Arrow */
 .toolt-btn::after {
     content: "";
     position: absolute;
-    left: 50%;
-    bottom: 100%;
-    transform: translateX(-50%);
     width: 0;
     height: 0;
     border: 12px solid transparent;
-    border-top-color: var(--content-bg);
     opacity: 0;
     transition: opacity .4s ease;
     pointer-events: none;
 }
 
-.toolt-floater {
-    --tx: -50%;
-    --ty: 0;
-    transform: translate(var(--tx), var(--ty));
-}
-
+/* Helpers */
 .toolt-content.vertical {
     flex-direction: column;
 }
@@ -84,3 +71,72 @@
 .toolt-content>.group {
     display: flex;
 }
+
+/* *************************************************** */
+/* direction-specific stuff */
+/* --------------------------------------------------- */
+
+/* floater edge stuff */
+.toolt-container:not([data-edge]) .toolt-floater,
+.toolt-container[data-edge="top"] .toolt-floater {
+    bottom: 100%;
+    left: 50%;
+    --tx: -50%;
+    --ty: 0;
+    padding-bottom: 24px;
+}
+
+.toolt-container[data-edge="bottom"] .toolt-floater {
+    top: 100%;
+    left: 50%;
+    --tx: -50%;
+    --ty: 0;
+    padding-top: 24px;
+}
+
+.toolt-container[data-edge="left"] .toolt-floater {
+    right: 100%;
+    top: 50%;
+    --tx: 0;
+    --ty: -50%;
+    padding-right: 24px;
+}
+
+.toolt-container[data-edge="right"] .toolt-floater {
+    left: 100%;
+    top: 50%;
+    --tx: 0;
+    --ty: -50%;
+    padding-left: 24px;
+}
+
+/* floater ::after stuff */
+.toolt-container:not([data-edge]) .toolt-btn::after,
+.toolt-container[data-edge="top"] .toolt-btn::after {
+    border-top-color: var(--content-bg);
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.toolt-container[data-edge="bottom"] .toolt-btn::after {
+    border-bottom-color: var(--content-bg);
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.toolt-container[data-edge="left"] .toolt-btn::after {
+    border-left-color: var(--content-bg);
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.toolt-container[data-edge="right"] .toolt-btn::after {
+    border-right-color: var(--content-bg);
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+/* --------------------------------------------------- */

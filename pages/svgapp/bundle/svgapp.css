@@ -220,8 +220,12 @@
 
 .applet[data-mobile="true"][data-orientation="landscape"] .panel-container {
     display: flex;
-    width: 200px;
-    /* justify-content: center; */
+    order: 0;
+    width: min-content;
+}
+
+.applet[data-mobile="true"][data-orientation="landscape"] #preview {
+    order: 1;
 }
 
 .applet[data-mobile="true"][data-orientation="landscape"] .controls {

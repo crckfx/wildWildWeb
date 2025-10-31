@@ -1,0 +1,92 @@
+<style>
+	.toolt-demo-container {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex: 1;
+
+        --content-bg: red;
+	}
+
+	.toolt-demo-main {
+		display: grid;
+		grid-template-columns: repeat(3, auto);
+		grid-template-rows: repeat(3, auto);
+        width: 100%;
+		gap: 20px;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.toolt-container {
+		position: relative;
+	}
+
+	.toolt-btn {
+		border-radius: 50%;
+		width: 5em;
+		height: 5em;
+	}
+
+    .toolt-btn::after {
+        color: var(--content-bg)
+    }
+
+	.toolt-content {
+		padding: 8px;
+		background-color: var(--content-bg);
+	}
+</style>
+
+<div class="toolt-demo-container">
+	<div class="wrap">
+		<div class="toolt-demo-main">
+			<!-- row 1 -->
+			<div class="blank"></div>
+			<div class="toolt-container" data-edge="bottom">
+				<button class="toolt-btn">bottom</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<p>sample text</p>
+						<p>sample text</p>
+					</div>
+				</div>
+			</div>
+			<div class="blank"></div>
+			<!-- row 2 -->
+			<div class="toolt-container" data-edge="right">
+				<button class="toolt-btn">right</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<p>sample text</p>
+						<p>sample text</p>
+					</div>
+				</div>
+			</div>
+			<div class="blank"></div>
+			<div class="toolt-container" data-edge="left">
+				<button class="toolt-btn">left</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<p>sample text</p>
+						<p>sample text</p>
+					</div>
+				</div>
+			</div>
+			<!-- row 3 -->
+			<div class="blank"></div>
+			<div class="toolt-container" data-edge="top">
+				<button class="toolt-btn">top</button>
+				<div class="toolt-floater">
+					<div class="toolt-content">
+						<p>sample text</p>
+						<p>sample text</p>
+					</div>
+				</div>
+			</div>
+			<div class="blank"></div>
+		</div>
+	</div>
+</div>

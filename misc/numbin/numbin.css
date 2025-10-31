@@ -55,13 +55,13 @@ body {
     /* inherit container bg */
     border: none;
     outline: none;
-    -moz-appearance: textfield;
     /* Firefox */
-    appearance: textfield;
+    -moz-appearance: textfield;
     /* other browsers */
+    appearance: textfield;
     user-select: text;
-    pointer-events: none;
-    /* allow focus/edit when clicked */
+    /* muted pointer events in hope it's not essential; allows us to use blur() properly */
+    /* pointer-events: none;  */
     box-sizing: border-box;
     /* min-width: 5ch; */
 }

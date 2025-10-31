@@ -112,7 +112,7 @@
 #genColorPicker {
     display: none;
     padding: 8px;
-    background-color: #888;
+    background-color: var(--color-footer);
 }
 
 [data-theme="gen"] #genColorPicker {

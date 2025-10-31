@@ -157,6 +157,14 @@
         "contentPath": "pages/feature/feature.html",
         "styles": "/css/feature-card.css",
         "children": {
+            "toolt": {
+                "title": "Toolt",
+                "contentPath": [
+                    "pages/feature/toolt/toolt.html"
+                ],
+                "scripts": "/misc/toolt/toolt.js",
+                "styles": "/misc/toolt/toolt.css"
+            },
             "edger": {
                 "title": "Edger",
                 "contentPath": [
