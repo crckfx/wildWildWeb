@@ -50,5 +50,5 @@ issue: export buttons still do nothing.
 todo: add more options to the global menu:
 - 'change layout' (perhaps make it launch a modal)
 
-todo: add popout button 
+todo: add popout button on code view
 - 

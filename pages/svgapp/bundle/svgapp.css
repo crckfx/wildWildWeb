@@ -210,3 +210,37 @@
 .applet[data-mobile="true"] #textView.show {
     height: 100%;
 }
+
+
+
+/********************************************/
+.applet[data-mobile="true"][data-orientation="landscape"] {
+    flex-direction: row;
+}
+
+.applet[data-mobile="true"][data-orientation="landscape"] .panel-container {
+    display: flex;
+    width: 200px;
+    /* justify-content: center; */
+}
+
+.applet[data-mobile="true"][data-orientation="landscape"] .controls {
+    display: flex;
+    flex-direction: column;
+    /* flex-wrap: wrap; */
+    font-size: 12px;
+    padding: 4px 12px;
+    gap: 8px;
+    background-color: var(--control-bg);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.applet[data-mobile="true"][data-orientation="landscape"] .controls>*{
+    width: 100%;
+    flex: 0;
+}
+
+    
