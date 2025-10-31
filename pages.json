@@ -43,7 +43,7 @@
         ],
         "modules": [
             "/misc/crckoutlaws/LOL-tracking.js"
-        ]        
+        ]
     },
     "away": {
         "title": "Away",
@@ -157,9 +157,11 @@
         "contentPath": "pages/feature/feature.html",
         "styles": "/css/feature-card.css",
         "children": {
-            "dragger": {
-                "title": "Dragger",
-                "contentPath": "pages/feature/dragger/dragger.html"
+            "edger": {
+                "title": "Edger",
+                "contentPath": [
+                    "pages/feature/splitter/edger.html"
+                ]
             },
             "accordion": {
                 "title": "Accordion",
@@ -188,7 +190,7 @@
                 "contentPath": [
                     "pages/feature/gallery/gallery.html"
                 ]
-            },            
+            },
             "nothing": {
                 "imports": "assets/favicon.ico"
             }

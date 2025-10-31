@@ -1,3 +1,13 @@
+# features
+### toolt
+for expanding floating tooltips off of UI buttons
+
+### numbin
+extends number inputs
+
+### splitter
+for making divs share and be resizable
+
 # MENU (draft)
 > this is a draft to help sort out the menu structure for this applet
 
@@ -5,6 +15,7 @@ APP PANEL 1
 - [toolt] wildWildWeb (sitewide main menu)
     - [a] go back
     - [select] change site theme
+        - [ ] [button] change layout (ie. portrait/landscape, mobile/desktop)
 - [toolt] UPLOAD
     - [button] from file
     - [button] from URL
@@ -29,6 +40,15 @@ APP PANEL 1
 - got the menu stuff into categories.
 - disabled toolt hover functionality for now. (2 styles in toolt.css, 1 line in toolt.js)
 
-issue: bottom menu panel now overflows without scroll and without flex-wrap.
-
+<!-- issue: bottom menu panel now overflows without scroll and without flex-wrap. -->
 issue: export buttons still do nothing.
+
+- dealt with resizing on both:
+    - ***body*** (for debounced CSS changes), uses class *Resizer*. could be changed to use ***.applet*** later
+    - **#previewBox** (for the canvas view), immediately updates
+
+todo: add more options to the global menu:
+- 'change layout' (perhaps make it launch a modal)
+
+todo: add popout button 
+- 

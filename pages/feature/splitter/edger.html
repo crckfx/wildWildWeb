@@ -1,0 +1,179 @@
+<style>
+	/* some random test containers - not feature-based decisions just test crap */
+	.demo-1 {
+		height: 400px;
+		border: 2px solid green;
+		margin-bottom: 20px;
+
+        --edger-size: 50%;
+        
+	}
+    
+	.demo-2 {
+        height: 400px;
+		border: 2px solid blue;
+		flex-direction: column;
+		margin-bottom: 20px;
+        --edger-size: 50%;
+	}
+
+	.demo-3p {
+		height: 90svh;
+		width: 100%;
+	}
+
+	.demo-3c {
+		height: 100%;
+		border: 2px solid red;
+		margin-bottom: 20px;
+
+        --edger-size: 50%;
+	}
+
+	.demo-4p {
+		display: flex;
+		flex-direction: column;
+        width: 100%;
+        height: 100%;
+        --edger-size: 150px;
+	}
+
+	.demo-4c1 {
+		height: var(--edger-size);
+		background: rgba(255, 255, 0, 0.1);
+	}
+
+	.demo-4c2 {
+		background: rgba(0, 255, 255, 0.1);
+	}
+
+	/* feature-based styles */
+	.pane-container {
+		display: flex;
+		overflow: hidden;
+		width: 100%;
+		/* current rule: must specify a height elsewhere */
+	}
+
+	.pane {
+		position: relative;
+		min-width: 100px;
+		min-height: 100px;
+	}
+
+	.edger-edge {
+		touch-action: none;
+		background: green;
+		flex: 0 0 6px;
+        user-select: none;
+        -webkit-user-drag: none;
+        pointer-events: auto;
+	}
+
+	.edger-right {
+		cursor: ew-resize;
+		width: 6px;
+	}
+
+	.edger-left {
+		cursor: ew-resize;
+		width: 6px;
+	}
+
+	.edger-top {
+		cursor: ns-resize;
+		height: 6px;
+	}
+
+	.edger-bottom {
+		cursor: ns-resize;
+		height: 6px;
+	}
+</style>
+
+<div class="wrap">
+	<!-- horizontal pair -->
+	<div class="pane-container demo-1">
+		<div class="pane A" id="leftPane" style="width: var(--edger-size);"></div>
+		<div class="edger-edge edger-right" id="leftEdge" aria-hidden="true"></div>
+		<div class="pane B" style="flex: 1 1 auto;"></div>
+	</div>
+
+	<!-- vertical pair -->
+	<div class="pane-container demo-2">
+		<div class="pane A" id="topPane" style="height: var(--edger-size)"></div>
+		<div class="edger-edge edger-bottom" id="topEdge" aria-hidden="true"></div>
+		<div class="pane B" style="flex: 1 1 auto;"></div>
+	</div>
+
+	<div class="demo-3p">
+		<!-- nested: left/right, and right contains up/down -->
+		<div class="pane-container demo-3c">
+			<div class="pane A" id="outerLeft" style="width: var(--edger-size)"></div>
+			<div class="edger-edge edger-right" id="outerLeftEdge" aria-hidden="true"></div>
+
+			<div class="pane B" id="outerRight" style="flex: 1 1 auto;">
+                <div class="demo-4p">
+                    <div class="pane C demo-4c1" id="innerTop"></div>
+                    <div class="edger-edge edger-bottom" id="innerTopEdge" aria-hidden="true"></div>
+                    <div class="pane D demo-4c2" style="flex: 1 1 auto;"></div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="module">
+	import {
+		Edger
+	} from '/misc/splitter/Edger.js';
+
+	// horizontal example
+	new Edger(
+		document.getElementById('leftEdge'),
+		document.getElementById('leftPane'), {
+			container: document.querySelectorAll('.pane-container')[0],
+			axis: 'x',
+			side: 'right',
+			// prop: 'width',
+			prop: '--edger-size',
+			min: 120
+		}
+	);
+
+	// vertical example
+	new Edger(
+		document.getElementById('topEdge'),
+		document.getElementById('topPane'), {
+			container: document.querySelectorAll('.pane-container')[1],
+			axis: 'y',
+			side: 'bottom',
+			prop: '--edger-size',
+			min: 100
+		}
+	);
+
+	// nested horizontal (outer)
+	new Edger(
+		document.getElementById('outerLeftEdge'),
+		document.getElementById('outerLeft'), {
+			container: document.querySelector('.demo-3c'),
+			axis: 'x',
+			side: 'right',
+			prop: '--edger-size',
+			min: 100
+		}
+	);
+
+	// nested vertical (inner, inside right pane)
+	new Edger(
+		document.getElementById('innerTopEdge'),
+		document.getElementById('innerTop'), {
+			container: document.querySelector('.demo-4p'),
+			axis: 'y',
+			side: 'bottom',
+			prop: '--edger-size',
+			min: 100
+		}
+	);
+</script>
