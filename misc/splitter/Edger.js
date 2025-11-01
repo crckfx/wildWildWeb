@@ -47,8 +47,16 @@ export class Edger {
         const isVar = this.prop.startsWith('--');
         const cs = getComputedStyle(this.target);
 
-        if (isVar) this.container.style.setProperty(prop, `${this._measure()}px`); // convert to pixels if var to avoid problems
-            
+        // if (isVar) this.container.style.setProperty(prop, `${this._measure()}px`); // convert to pixels if var to avoid problems
+
+        if (isVar) {
+            const m = this._measure();
+            if (m >= this.min && m <= (this.maxOpt ?? Infinity)) {
+                this.container.style.setProperty(prop, `${m}px`);
+            }
+        }
+
+
         this._read = isVar
             ? () => parseFloat(cs.getPropertyValue(this.prop)) || this._measure()
             : () => parseFloat(cs[this.prop]) || this._measure();

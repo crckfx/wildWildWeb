@@ -2,6 +2,7 @@
     --applet-bg: var(--color-bg-2);
     --applet-text: var(--color-text-1);
     --control-bg: var(--color-bg-3);
+    --tv-height: 200px;
 
     width: 100%;
     display: flex;
@@ -99,7 +100,7 @@
     position: absolute;
     background: var(--color-bg-1);
     width: 100%;
-    --tv-height: 200px;
+    
     height: var(--tv-height);
     left: 0;
     top: 0;

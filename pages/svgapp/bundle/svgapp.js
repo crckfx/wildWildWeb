@@ -1,6 +1,7 @@
 import { Resizer } from '/misc/resizer/Resizer.js';
 import { Ploder } from '/misc/ploder/Ploder.js';
 import { Splitter } from '/misc/splitter/Splitter.js';
+import { Edger } from '/misc/splitter/Edger.js';
 import { getSVGFromFile, getSVGFromURL, filenameFromURL, loadSVGImage } from './app-helpers.js';
 
 const MAX_SIZE = 9999;
@@ -43,7 +44,12 @@ const canvasState = {
 };
 // --- --- ---
 const viewSplitter = document.querySelector('.splitter');
-new Splitter(viewSplitter, textView, { prop: '--tv-height', min: 200 });
+// new Splitter(viewSplitter, textView, { prop: '--tv-height', min: 200 });
+new Edger(viewSplitter, textView, { 
+    container: applet,
+    axis: 'y',
+    side: 'top',
+    prop: '--tv-height', min: 200 });
 new Resizer(document.documentElement, handleResize, 50);
 new Ploder(document.getElementById('uploder'), {
     accept: '.svg',
