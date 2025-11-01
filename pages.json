@@ -168,7 +168,7 @@
             "edger": {
                 "title": "Edger",
                 "contentPath": [
-                    "pages/feature/splitter/edger.html"
+                    "pages/feature/edger/edger.html"
                 ]
             },
             "accordion": {

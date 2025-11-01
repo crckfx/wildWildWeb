@@ -166,14 +166,14 @@
 
 
 /********************************************/
-.applet .splitter {
+.applet .edger-edge {
     height: 6px;
     cursor: row-resize;
     background: #888;
     display: none;
 }
 
-.applet .splitter.show {
+.applet .edger-edge.show {
     display: block;
 }
 

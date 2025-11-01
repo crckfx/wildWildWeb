@@ -5,7 +5,7 @@ for expanding floating tooltips off of UI buttons
 ### numbin
 extends number inputs
 
-### splitter
+### edger
 for making divs share and be resizable
 
 # MENU (draft)
