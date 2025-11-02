@@ -15,8 +15,8 @@
 .toolt-floater {
     position: absolute;
     opacity: 0;
-    transition: opacity 200ms ease;
-    z-index: 2;
+    transition: opacity 400ms ease-in-out;
+    z-index: 3;
     pointer-events: none;
 
     --tx: 0;
@@ -24,11 +24,10 @@
     transform: translate(var(--tx), var(--ty));
 }
 
+
 /* Visibility */
-.toolt-container:hover .toolt-btn::after,
-.toolt-container:hover .toolt-floater,
-.toolt-container:focus-within .toolt-floater,
-.toolt-container:focus-within .toolt-btn::after {
+.toolt-container.active .toolt-btn::after,
+.toolt-container.active .toolt-floater {
     opacity: 1;
     pointer-events: auto;
 }
@@ -49,18 +48,6 @@
     flex: 1;
     background-color: var(--item-bg);
     border-radius: 12px;
-}
-
-/* Arrow */
-.toolt-btn::after {
-    content: "";
-    position: absolute;
-    width: 0;
-    height: 0;
-    border: 12px solid transparent;
-    opacity: 0;
-    transition: opacity .4s ease;
-    pointer-events: none;
 }
 
 /* Helpers */
@@ -110,33 +97,55 @@
     padding-left: 24px;
 }
 
-/* floater ::after stuff */
-.toolt-container:not([data-edge]) .toolt-btn::after,
-.toolt-container[data-edge="top"] .toolt-btn::after {
-    border-top-color: var(--content-bg);
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-}
 
-.toolt-container[data-edge="bottom"] .toolt-btn::after {
-    border-bottom-color: var(--content-bg);
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.toolt-container[data-edge="left"] .toolt-btn::after {
-    border-left-color: var(--content-bg);
-    right: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.toolt-container[data-edge="right"] .toolt-btn::after {
-    border-right-color: var(--content-bg);
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-}
 /* --------------------------------------------------- */
+
+.toolt-floater {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, .25));
+}
+
+.toolt-content {
+    position: relative;
+}
+
+.toolt-content::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    pointer-events: none;
+}
+
+/* TOP (floater above → arrow on bottom pointing down) */
+.toolt-container[data-edge="top"] .toolt-content::after,
+.toolt-container:not([data-edge]) .toolt-content::after {
+    border-top-color: var(--content-bg);
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%) translateX(calc(-1 * var(--shift-x)));
+}
+
+/* BOTTOM (floater below → arrow on top pointing up) */
+.toolt-container[data-edge="bottom"] .toolt-content::after {
+    border-bottom-color: var(--content-bg);
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%) translateX(calc(-1 * var(--shift-x)));
+}
+
+/* LEFT (floater left → arrow on right pointing right) */
+.toolt-container[data-edge="left"] .toolt-content::after {
+    border-left-color: var(--content-bg);
+    right: -24px;
+    top: 50%;
+    transform: translateY(-50%) translateY(calc(-1 * var(--shift-y)));
+}
+
+/* RIGHT (floater right → arrow on left pointing left) */
+.toolt-container[data-edge="right"] .toolt-content::after {
+    border-right-color: var(--content-bg);
+    left: -24px;
+    top: 50%;
+    transform: translateY(-50%) translateY(calc(-1 * var(--shift-y)));
+}
