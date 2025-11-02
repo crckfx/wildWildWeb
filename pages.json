@@ -181,12 +181,15 @@
                     "/misc/accordion/crckordion.css"
                 ]
             },
-            "digitslider": {
-                "title": "Digit Slider",
-                "contentPath": "pages/feature/digitslider/digitslider_minimal.html",
+            "numbin": {
+                "title": "NUMBER INPUT STUFF",
+                "contentPath": [
+                    "pages/feature/numbin/digitslider_minimal.html",
+                    "pages/feature/numbin/numbintrain.html"
+                ],
                 "imports": [
-                    "pages/feature/digitslider/digitslider.css",
-                    "pages/feature/digitslider/digitslider.js"
+                    "pages/feature/numbin/digitslider.css",
+                    "pages/feature/numbin/digitslider.js"
                 ],
                 "styles": [
                     "./digitslider.css"
