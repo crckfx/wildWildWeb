@@ -6,12 +6,12 @@ export class Numbin {
         if (!input) {
             input = document.createElement("input");
             input.type = "number";
-            el.appendChild(input);
+            // el.appendChild(input);
         }
         input.min = min;
         input.max = max;
         input.step = step;
-        input.value = el.dataset.value || 0;
+        input.value = el.dataset.value || null;
         el.appendChild(input);
         this.input = input;
 
@@ -21,7 +21,8 @@ export class Numbin {
         this.loop = loop;
         this.startY = 0;
         this.moved = false;
-        this.lastValid = parseInt(input.value, 10) || min;
+        const v = parseInt(input.value, 10);
+        this.lastValid = Number.isFinite(v) ? v : min;
 
         this.attachEvents();
     }
@@ -67,11 +68,12 @@ export class Numbin {
             const dy = e.clientY - this.startY;
             if (Math.abs(dy) > 10) {
                 this.moved = true;
-                const current = this.value;
-                if (current !== null)
-                    this.value = current + (dy < 0 ? this.step : -this.step);
+                this.value = this.value === null
+                    ? 0
+                    : this.value + (dy < 0 ? this.step : -this.step);
                 this.startY = e.clientY;
             }
+
         });
 
         el.addEventListener("pointerup", e => {
@@ -86,9 +88,7 @@ export class Numbin {
             e.preventDefault();
             const dir = Math.sign(e.deltaY);
             if (dir) {
-                const current = this.value;
-                if (current !== null)
-                    this.value = current - dir * this.step;
+                this.value = this.value === null ? 0 : this.value - dir * this.step;
             }
         }, { passive: false });
 
@@ -96,13 +96,13 @@ export class Numbin {
             switch (e.key) {
                 case "ArrowUp":
                     e.preventDefault();
-                    if (this.value !== null)
-                        this.value = this.value + this.step;
+                    this.value = this.value === null ? 0 : this.value + this.step;
+
                     break;
                 case "ArrowDown":
                     e.preventDefault();
-                    if (this.value !== null)
-                        this.value = this.value - this.step;
+                    this.value = this.value === null ? 0 : this.value - this.step;
+
                     break;
                 case "Enter":
                     e.preventDefault();
@@ -112,13 +112,17 @@ export class Numbin {
         });
 
         this.input.addEventListener('blur', () => {
-            const n = parseInt(this.input.value, 10);
+            const raw = this.input.value;
+            if (raw === '') return; // leave blank untouched
+
+            const n = this.value;
             if (!Number.isFinite(n) || n < this.min || n > this.max) {
-                const fallback = this.lastValid ?? this.min;
-                this.value = fallback; // go through setter: clamp/loop + 'input' event
-            } else {
-                this.value = n;        // setter updates lastValid + emits 'input'
+                const fb = this.lastValid;
+                if (fb !== null && fb !== undefined) this.value = fb;
+            } else if (n !== this.lastValid) {
+                this.value = n;
             }
         });
+
     }
 }

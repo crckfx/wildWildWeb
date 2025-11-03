@@ -6,12 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // init any numbins
     document.querySelectorAll('.numbin').forEach(div => {
-        new Numbin(div, {
+        const numbin = new Numbin(div, {
             min: +div.dataset.min || 0,         // default: 0
             max: +div.dataset.max || 9999,      // default: 9999
             step: +div.dataset.step || 1,       // default: interactions move by 1
-            loop: div.dataset.loop === 'true'   // default: false ( <<---- don't freak, out it's a boolean)
+            loop: div.dataset.loop === 'true'   // default: false ( <<---- don't freak out, it's just a boolean)
         });
+        div.__numbinInstance = numbin; // attach for later retrieval
     });
 
     // init the footer's generative theme options
