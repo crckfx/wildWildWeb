@@ -69,22 +69,27 @@
 		// console.log(arr);
 		let str = "";
 		for (let i = 0; i < arr.length; i++) {
-			if (arr[i] === null) return;
+			if (arr[i] === null) {
+                testDisplay.innerHTML = '____';
+                return;
+            };
 			str += arr[i];
 		}
 		testDisplay.innerHTML = str;
 	}
 
 	function resetInputs() {
-		slots.forEach((slot) => {
-			const input = slot.querySelector('input');
-			input.value = 0;
-		});
+		// slots.forEach((slot) => {
+		// 	const input = slot.querySelector('input');
+		// 	input.value = '';
+        //     numset[i] = null;
+        //     printSet();
+		// });
 
 		for (let i = 0; i < slots.length; i++) {
 			const input = slots[i].querySelector('input');
-			input.value = 0;
-			numset[i] = 0;
+			input.value = '';
+			numset[i] = null;
 			printSet();
 		}
 	}
@@ -97,7 +102,7 @@
 	btn_toSolve.onclick = () => printSet();
 	btn_toReset.onclick = () => resetInputs();
 
-	let numset = new Array(4).fill(0);
+	let numset = new Array(4).fill(null);
 
 
 	document.addEventListener("DOMContentLoaded", () => {
@@ -134,22 +139,33 @@
 					keep = digits[digits.length - 1];
 				}
 
-				// replace field value with the chosen digit
+				// override normal behaviour
 				e.preventDefault();
 				e.target.value = keep;
-				e.target.dispatchEvent(new Event('input', {
-					bubbles: true
-				}));
-
+				e.target.dispatchEvent(
+					new InputEvent("input", {
+						bubbles: true,
+						inputType: "insertText"
+					})
+				);
 			});
 
 
 			// rawdog the event here seeing as how we cut it off above
-			input.addEventListener("input", () => {
+			input.addEventListener("input", e => {
 				const value = parseInt(input.value);
 				numset[i] = value;
 				// console.log(numset);
 				printSet();
+
+				if (e.inputType === "insertText" && input.value !== "" && i < slots.length - 1) {
+					const nextNb = slots[i + 1].__numbinInstance;
+					if (nextNb && nextNb.value === null)
+						setTimeout(() => nextNb.input.focus({
+							preventScroll: true
+						}), 0);
+				}
+
 			});
 		}
 
