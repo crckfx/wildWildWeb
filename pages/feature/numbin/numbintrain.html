@@ -36,9 +36,7 @@
 				</div>
 			</div>
 
-			<div class="test-display marge1">
-				____
-			</div>
+			<div class="test-display marge1">____</div>
 
 			<div class="buttonsDiv">
 				<button class="toSolve" tabindex="1">Solve</button>
@@ -115,7 +113,7 @@
 			const slot = slots[i];
 			const input = slot.querySelector('input');
 			input.setAttribute('inputmode', 'numeric');
-			input.setAttribute('pattern', '[0-9]*');
+			// input.setAttribute('pattern', '[0-9]*');
 
 			input.addEventListener('beforeinput', e => {
 				if (e.isComposing) return;
