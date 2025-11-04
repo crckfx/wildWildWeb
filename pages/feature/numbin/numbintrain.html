@@ -4,6 +4,10 @@
 		font-size: 32px;
 		min-width: 0;
 	}
+
+	.test-display {
+		text-align: center;
+	}
 </style>
 
 <div class="wrap marge1">
@@ -32,7 +36,7 @@
 				</div>
 			</div>
 
-			<div class="test_display marge1" style="text-align: center;">
+			<div class="test-display marge1">
 				____
 			</div>
 
@@ -70,9 +74,9 @@
 		let str = "";
 		for (let i = 0; i < arr.length; i++) {
 			if (arr[i] === null) {
-                testDisplay.innerHTML = '____';
-                return;
-            };
+				testDisplay.innerHTML = '____';
+				return;
+			};
 			str += arr[i];
 		}
 		testDisplay.innerHTML = str;
@@ -82,8 +86,8 @@
 		// slots.forEach((slot) => {
 		// 	const input = slot.querySelector('input');
 		// 	input.value = '';
-        //     numset[i] = null;
-        //     printSet();
+		//     numset[i] = null;
+		//     printSet();
 		// });
 
 		for (let i = 0; i < slots.length; i++) {
@@ -96,7 +100,7 @@
 
 
 	const slots = document.querySelectorAll('.numbin.traingame');
-	const testDisplay = document.querySelector('.test_display');
+	const testDisplay = document.querySelector('.test-display');
 	const btn_toSolve = document.querySelector('.toSolve');
 	const btn_toReset = document.querySelector('.toReset');
 	btn_toSolve.onclick = () => printSet();
@@ -160,10 +164,11 @@
 
 				if (e.inputType === "insertText" && input.value !== "" && i < slots.length - 1) {
 					const nextNb = slots[i + 1].__numbinInstance;
-					if (nextNb && nextNb.value === null)
+					if (nextNb && nextNb.value === null) {
 						setTimeout(() => nextNb.input.focus({
 							preventScroll: true
 						}), 0);
+					}
 				}
 
 			});
@@ -178,7 +183,6 @@
 			const nb = div.__numbinInstance;
 			if (!nb) continue; // still safe if missing
 			const input = nb.input;
-			// input.addEventListener('beforeinput', clampToSingleDigit);
 			console.log(input);
 		}
 	});

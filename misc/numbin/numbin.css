@@ -39,10 +39,6 @@ body {
     font-size: 2em;
 }
 
-/* ===============================
-   Inserted input styling
-   =============================== */
-
 /* The input created by JS inside .numbin */
 .numbin>input[type="number"] {
     display: block;
@@ -55,13 +51,8 @@ body {
     /* inherit container bg */
     border: none;
     outline: none;
-    /* Firefox */
-    -moz-appearance: textfield;
-    /* other browsers */
     appearance: textfield;
     user-select: text;
-    /* muted pointer events in hope it's not essential; allows us to use blur() properly */
-    /* pointer-events: none;  */
     box-sizing: border-box;
     /* min-width: 5ch; */
 }
