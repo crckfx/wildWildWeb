@@ -124,5 +124,7 @@ export class Numbin {
             }
         });
 
+        // patch for "don't scroll-on-drag" for the numbin's <input>        
+        this.input.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
     }
 }
