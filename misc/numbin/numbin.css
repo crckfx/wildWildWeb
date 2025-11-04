@@ -1,13 +1,3 @@
-/* ===============================
-   Numbin (div + inserted input)
-   =============================== */
-
-/* Disable pull-to-refresh / scroll chaining */
-html,
-body {
-    overscroll-behavior: contain;
-}
-
 /* Outer container — gesture surface */
 .numbin {
     --bg-base: var(--color-bg-2);
