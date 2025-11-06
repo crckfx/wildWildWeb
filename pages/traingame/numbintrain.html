@@ -17,17 +17,54 @@
 	.numbin:has(input:focus) {
 		outline-color: red;
 	}
+
+    
+	.slots_container {
+        width: 100%;
+		/* height: 100px; */
+		/* display: flex; */
+		/* align-items: center; */
+		/* justify-content: center; */
+		/* touch-action: none; */
+	}
+    .numberSlots {
+        flex: 1;
+        max-width: 500px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .numbin.targetNumber {
+        height: 100px;
+        font-size: 40px;
+    }
+
+    .targetDiv {
+        text-align: center;
+        margin-bottom: 48px;
+    }
+    .solutionsList {
+        font-family: monospace;
+    }
 </style>
 
-<div class="wrap marge1">
+<div class="wrap-small marge1">
 	<div class="full-width">
 		<h1>Train Game</h1>
 		<!-- SOLVE THE TRAIN START -->
 		<div class="trainContainer">
 			<!-- TRAINNNNN GAME -->
-
+            <div class="targetDiv">
+                <h3>Target to reach:</h3>
+                <div class="numbin targetNumber" data-value="21" data-min="0" data-max="999">
+                    <input type="number">
+                </div>
+            </div>
 			<!-- functional parent for slots -->
 			<div class="slots_container">
+                <h3>carriage digits</h3>
 				<!-- cosmetic extra parent layer for slots -->
 				<div class="numberSlots bg-2">
 					<div class="numbin traingame" data-min="0" data-max="9" data-loop="true">
@@ -52,7 +89,13 @@
 				<button class="toReset" tabindex="1">Reset</button>
 			</div>
 
-			<div>
+
+
+			<div class="solutions">
+                <div class="numberOfSolutions"></div>
+
+                <ol class="solutionsList"></ol>                
+                <!-- <div class="numberOfSolutions"></div> -->
 				<div class="howToSolve"></div>
 
 				<div class="solutions">
@@ -67,4 +110,4 @@
 	</div>
 </div>
 
-<script src="/traingame/bundle/traingame.js"></script>
+<script type="module" src="/traingame/bundle/traingame.js"></script>
