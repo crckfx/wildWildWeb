@@ -131,7 +131,6 @@
                     "/svgapp/bundle/svgapp.js"
                 ],
                 "scripts": "/misc/toolt/toolt.js"
-
             }
         }
     },
@@ -187,7 +186,7 @@
                 "title": "NUMBER INPUT STUFF",
                 "contentPath": [
                     "pages/feature/numbin/digitslider_minimal.html",
-                    "pages/feature/numbin/numbintrain.html"
+                    "pages/traingame/numbintrain.html"
                 ],
                 "imports": [
                     "pages/feature/numbin/digitslider.css",
@@ -208,5 +207,12 @@
                 "imports": "assets/favicon.ico"
             }
         }
+    },
+    "traingame": {
+        "title": "Train Game",
+        "contentPath": "pages/traingame/numbintrain.html",
+        "imports": [
+            "pages/traingame/bundle"
+        ]
     }
 }
