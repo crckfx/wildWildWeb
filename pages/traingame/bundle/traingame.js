@@ -22,8 +22,8 @@ const numset = new Array(slots.length).fill(null);
 function printSet() {
     // prints "____" until all 4 values exist
     testDisplay.textContent = numset.includes(null)
-        ? '____'
-        : numset.join('');
+        ? ''
+        : ': ' + numset.join('');
 }
 
 // set a numeric slot value (centralized)
