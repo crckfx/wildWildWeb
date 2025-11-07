@@ -1,10 +1,13 @@
-
 export function countdownSolve(numbers, target, opts = {}) {
-    const { allowDecimal = false, maxSolutions = 500 } = opts;
+    const {
+        allowDecimal = false,
+        maxSolutions = 500,
+        allowNegativeIntermediate = false // dCode toggle: default off
+    } = opts;
+
     const tol = 1e-9;
     const results = new Set();
 
-    // Canonical representation for commutative ops
     function canonical(aExpr, bExpr, op) {
         if (op === '+' || op === '*') {
             return (aExpr < bExpr)
@@ -20,8 +23,7 @@ export function countdownSolve(numbers, target, opts = {}) {
 
         if (n === 1) {
             const v = vals[0];
-            if (Math.abs(v - target) < tol)
-                results.add(exprs[0]);
+            if (Math.abs(v - target) < tol) results.add(exprs[0]);
             return;
         }
 
@@ -39,49 +41,37 @@ export function countdownSolve(numbers, target, opts = {}) {
                 const push = (val, ex) => {
                     if (!Number.isFinite(val)) return;
                     if (!allowDecimal && Math.abs(val - Math.round(val)) > tol) return;
+                    if (!allowNegativeIntermediate && val < -tol) return; // NEW
                     reduce([...restVals, val], [...restExprs, ex]);
                 };
 
-                // Operations with canonicalized expressions
+                // try all ops; +/* canonicalize only by operand order
                 push(a + b, canonical(ea, eb, '+'));
                 push(a * b, canonical(ea, eb, '*'));
                 push(a - b, `(${ea}-${eb})`);
                 push(b - a, `(${eb}-${ea})`);
-                if (b !== 0) push(a / b, `(${ea}/${eb})`);
-                if (a !== 0) push(b / a, `(${eb}/${ea})`);
+                if (b !== 0) {
+                    const q = a / b;
+                    if (allowDecimal || Math.abs(q - Math.round(q)) < tol)
+                        push(q, `(${ea}/${eb})`);
+                }
+                if (a !== 0) {
+                    const q = b / a;
+                    if (allowDecimal || Math.abs(q - Math.round(q)) < tol)
+                        push(q, `(${eb}/${ea})`);
+                }
             }
         }
     }
 
-    // Enumerate all subsets (allow discard)
     const n = numbers.length;
     for (let mask = 1; mask < (1 << n); mask++) {
+        if ((mask & (mask - 1)) === 0) continue; // need at least 2 tiles
         const subset = [];
-        for (let i = 0; i < n; i++)
-            if (mask & (1 << i)) subset.push(numbers[i]);
-        if (subset.length < 2) continue;
+        for (let i = 0; i < n; i++) if (mask & (1 << i)) subset.push(numbers[i]);
         reduce(subset, subset.map(String));
+        if (results.size >= maxSolutions) break;
     }
 
     return Array.from(results);
 }
-
-// ---------------- Demo tests ----------------
-(function runTests() {
-    // console.clear();
-    console.log("Countdown Numbers Solver — v4 (ordered +/*)");
-
-    const tests = [
-        { nums: [4, 9, 10, 11], target: 36, allowDecimal: false },
-        { nums: [1, 3, 7, 10], target: 21, allowDecimal: false },
-    ];
-
-    for (const t of tests) {
-        const opts = { allowDecimal: t.allowDecimal, maxSolutions: 500 };
-        const sols = countdownSolve(t.nums, t.target, opts);
-        console.group(`nums=${t.nums.join(',')} target=${t.target} decimals=${opts.allowDecimal}`);
-        console.log(`Total solutions: ${sols.length}`);
-        console.log(sols);
-        console.groupEnd();
-    }
-})();
