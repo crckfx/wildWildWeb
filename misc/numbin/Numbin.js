@@ -56,6 +56,7 @@ export class Numbin {
         const el = this.el;
 
         el.addEventListener("pointerdown", e => {
+            this.input.focus();
             e.preventDefault();
             this.startY = e.clientY;
             this.moved = false;

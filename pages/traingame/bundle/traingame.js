@@ -1,5 +1,5 @@
 // traingame.js
-import { countdownSolve } from "./solver_x.js";
+import { countdownSolve } from "./solver_x2.js";
 
 // ---------- DOM references ----------
 const slots = document.querySelectorAll('.numbin.traingame');
@@ -49,8 +49,6 @@ function printSolutions(numset, target, sols) {
         html+= `<li>${sols[i]} = ${target}</li>`;
     }
     
-    
-    
     numberOfSolutions.textContent = `Found ${sols.length} solutions`;
     solutionsList.innerHTML = html;
     
@@ -58,6 +56,7 @@ function printSolutions(numset, target, sols) {
 
 function clearSolutions() {
     numberOfSolutions.textContent = '';
+    solutionsList.innerHTML = '';
 }
 
 // ---------- Numbin input event overrides ----------
@@ -134,7 +133,7 @@ btn_toReset.onclick = () => resetInputs();
 btn_toSolve.onclick = () => {
     if (numset.includes(null)) return;
 
-    const target = targetNumberInput.value;
+    const target = Number(targetNumberInput.value);
 
     const sols = countdownSolve(numset, target);
     console.group(`nums=${numset.join(',')} target=${target}`);
