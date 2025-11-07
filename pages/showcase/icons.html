@@ -1,0 +1,67 @@
+<style>
+	.iconShowcase {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+		gap: 16px;
+		list-style: none;
+		padding: 0;
+	}
+
+	.iconShowcase li {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.iconShowcase svg {
+		width: 48px;
+		height: 48px;
+	}
+</style>
+
+<div class="wrap">
+
+	<h1>see all the icons we use on the site maybe?</h1>
+
+	<ul class="iconShowcase">
+
+	</ul>
+
+</div>
+
+<script>
+	function doAllIconSomething() {
+
+
+		const showcase = document.querySelector('.iconShowcase');
+		const defs = document.querySelector('#global-icons defs');
+
+		if (showcase && defs) {
+			const symbols = defs.querySelectorAll('symbol');
+			symbols.forEach(sym => {
+				const id = sym.id;
+				if (!id) return;
+
+				const li = document.createElement('li');
+				const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+				const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+
+				use.setAttribute('href', `#${id}`);
+				svg.classList.add('icon');
+				// svg.setAttribute('fill', 'currentColor');
+				svg.appendChild(use);
+				li.appendChild(svg);
+
+				const label = document.createElement('div');
+				label.textContent = id.replace(/^icon-/, '');
+				label.style.fontSize = '12px';
+				label.style.textAlign = 'center';
+				li.appendChild(label);
+
+				showcase.appendChild(li);
+			});
+		}
+	}
+
+    document.addEventListener("DOMContentLoaded", doAllIconSomething);
+</script>
