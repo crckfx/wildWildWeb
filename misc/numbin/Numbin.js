@@ -56,8 +56,8 @@ export class Numbin {
         const el = this.el;
 
         el.addEventListener("pointerdown", e => {
-            this.input.focus();
             e.preventDefault();
+            // this.input.focus();
             this.startY = e.clientY;
             this.moved = false;
             el.setPointerCapture(e.pointerId);
