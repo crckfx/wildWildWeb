@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="/countdownGame/bundle/countdownGame.css">
+<div class="wrap">
+	<div class="wrap-small marge1">
+		<div class="full-width">
+			<h1>Train Game</h1>
+			<!-- SOLVE THE TRAIN START -->
+			<div class="trainContainer">
+				<!-- TRAINNNNN GAME -->
+				<div class="targetDiv">
+					<h3>Target to reach:</h3>
+					<div class="numbin targetNumber" data-value="000" data-min="001" data-max="999">
+						<input type="number">
+					</div>
+				</div>
+				<!-- functional parent for slots -->
+				<div class="slots_container marge1">
+					<h3>carriage digits<span class="test-display"></span></h3>
+					<!-- cosmetic extra parent layer for slots -->
+					<div class="numberSlots bg-2">
+						<div class="numbin countdownGame" data-min="1" data-max="100">
+							<input type="number">
+						</div>
+						<div class="numbin countdownGame" data-min="1" data-max="100">
+							<input type="number">
+						</div>
+						<div class="numbin countdownGame" data-min="1" data-max="100">
+							<input type="number">
+						</div>
+						<div class="numbin countdownGame" data-min="1" data-max="100">
+							<input type="number">
+						</div>
+						<div class="numbin countdownGame" data-min="1" data-max="100">
+							<input type="number">
+						</div>
+						<div class="numbin countdownGame" data-min="1" data-max="100">
+							<input type="number">
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="test-display marge1">____</div> -->
+
+				<div class="buttonsDiv">
+					<button class="toSolve" tabindex="0">Solve</button>
+					<button class="toReset" tabindex="0">Reset</button>
+				</div>
+
+
+
+				<div class="solutions marge1">
+					<div class="numberOfSolutions"></div>
+					<ol class="solutionsList"></ol>
+					<!-- <div class="howToSolve"></div> -->
+				</div>
+
+			</div>
+			<!-- SOLVE THE TRAIN END -->
+		</div>
+	</div>
+</div>
+<script type="module" src="/countdownGame/bundle/countdownGame.js"></script>

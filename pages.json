@@ -214,5 +214,12 @@
         "imports": [
             "pages/traingame/bundle"
         ]
+    },
+    "countdownGame": {
+        "title": "Countdown Game",
+        "contentPath": "pages/countdownGame/countdownGame.html",
+        "imports": [
+            "pages/countdownGame/bundle"
+        ]
     }
 }
