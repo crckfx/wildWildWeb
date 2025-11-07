@@ -1,20 +1,25 @@
 // traingame.js
-import { countdownSolve } from "./solver_x2.js";
+import { countdownSolve } from "/misc/tweakage/solver_x2.js";
+import { runTests } from "/misc/tweakage/tester_lily.js";
 
 // ---------- DOM references ----------
-const slots = document.querySelectorAll('.numbin.traingame');
+const slots = document.querySelectorAll('.numbin.solverGame');
 const nbs = new Array(slots.length);      // pre-sized, filled at init
 const inputs = new Array(slots.length);   // pre-sized, filled at init
 const testDisplay = document.querySelector('.test-display');
 const btn_toSolve = document.querySelector('.toSolve');
 const btn_toReset = document.querySelector('.toReset');
-const numberOfSolutions = document.querySelector('.numberOfSolutions');
-const solutionsList = document.querySelector('.solutionsList');
 const targetNumberNumbin = document.querySelector('.numbin.targetNumber');
 const targetNumberInput = targetNumberNumbin.querySelector('input');
 
+const solutionsDiv = document.querySelector('.solutionsDiv');
+const solutionsList = document.querySelector('.solutionsList');
+const numberOfSolutions = document.querySelector('.numberOfSolutions');
+const solvedNumset = document.querySelector('.solvedNumset');
+
 // ---------- State ----------
 const numset = new Array(slots.length).fill(null);
+let solvedSet = null;
 
 // ---------- Core helpers ----------
 
@@ -30,6 +35,11 @@ function printSet() {
 function setNum(i, val) {
     numset[i] = val;
     printSet();
+
+    if (!solvedSet) return;
+    const same = numset.every((v, j) => v === solvedSet[j]);
+    if (same) markSolved();
+    else markEdited();
 }
 
 // clear all inputs + state
@@ -43,20 +53,35 @@ function resetInputs() {
 }
 
 function printSolutions(numset, target, sols) {
-    
     let html = '';
-    for (let i=0; i<sols.length; i++) {
-        html+= `<li>${sols[i]} = ${target}</li>`;
+    for (let i = 0; i < sols.length; i++) {
+        html += `<li>${sols[i]} = ${target}</li>`;
     }
-    
-    numberOfSolutions.textContent = `Found ${sols.length} solutions`;
+
+    numberOfSolutions.textContent = `${sols.length} `;
+    solvedNumset.textContent = numset.join(', ');
     solutionsList.innerHTML = html;
-    
+
+    // solutionsDiv.classList.remove('hidden');
+    markSolved();
 }
 
 function clearSolutions() {
+    solutionsDiv.classList.add('hidden');
+    solutionsDiv.classList.remove('solved');
     numberOfSolutions.textContent = '';
     solutionsList.innerHTML = '';
+    solvedSet = null;
+}
+
+function markSolved() {
+    solutionsDiv.classList.remove('hidden');
+    solutionsDiv.classList.add('solved');
+    solvedSet = [...numset];
+}
+
+function markEdited() {
+    solutionsDiv.classList.remove('solved');
 }
 
 // ---------- Numbin input event overrides ----------
@@ -111,9 +136,22 @@ function handleInput(e, i) {
     }
 }
 
+function handleSolve() {
+    if (numset.includes(null)) return;
+
+    const target = Number(targetNumberInput.value);
+
+    const sols = countdownSolve(numset, target);
+    console.group(`nums=${numset.join(',')} target=${target}`);
+    console.log(`Total solutions: ${sols.length}`);
+    console.log(sols);
+    console.groupEnd();
+    printSolutions(numset, target, sols);
+}
+
 // ---------- Initialization ----------
 function initTrainGame() {
-    runTests();
+    runTests(these_tests, countdownSolve);
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
         nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
@@ -130,48 +168,18 @@ function initTrainGame() {
 
 // ---------- Button bindings ----------
 btn_toReset.onclick = () => resetInputs();
-btn_toSolve.onclick = () => {
-    if (numset.includes(null)) return;
-
-    const target = Number(targetNumberInput.value);
-
-    const sols = countdownSolve(numset, target);
-    console.group(`nums=${numset.join(',')} target=${target}`);
-    console.log(`Total solutions: ${sols.length}`);
-    console.log(sols);
-    console.groupEnd();
-    printSolutions(numset, target, sols);
-}
+btn_toSolve.onclick = () => handleSolve();
 
 
 
 // ---------- Loader ----------
 document.addEventListener('DOMContentLoaded', initTrainGame);
 
-
-function runTests() {
-    // console.clear();
-    console.log("Countdown Numbers Solver");
-    const t0 = performance.now();
-    
-    const tests = [
-        { nums: [4, 9, 10, 11], target: 36, expected: 7},
-        { nums: [1, 3, 7, 10], target: 21, expected: 24 },
-        { nums: [4, 2, 3, 9], target: 10, expected: 33 },
-        { nums: [2, 5, 7, 10], target: 17 },    // overlapping additive/multiplicative paths
-        { nums: [3, 4, 6, 8], target: 24 },     // factorial-like, multiple 24s via ×/+
-        { nums: [2, 3, 5, 8], target: 9 },      // nested division, bracket depth differences        
-    ];
-    
-    for (const t of tests) {
-        const opts = { allowDecimal: t.allowDecimal ?? false, maxSolutions: 500 };
-        const sols = countdownSolve(t.nums, t.target, opts);
-        console.group(`nums=${t.nums.join(',')} target=${t.target} decimals=${opts.allowDecimal}`);
-        console.log(`Total solutions: ${sols.length}`);
-        console.log(sols);
-        console.groupEnd();
-    }
-    const t1 = performance.now();
-    console.log(`Total time: ${(t1-t0).toFixed(1)} ms`);
-
-}
+const these_tests = [
+    { nums: [4, 9, 10, 11], target: 36, expected: 7 },
+    { nums: [1, 3, 7, 10], target: 21, expected: 24 },
+    { nums: [4, 2, 3, 9], target: 10, expected: 33 },
+    { nums: [2, 5, 7, 10], target: 17 },    // overlapping additive/multiplicative paths
+    { nums: [3, 4, 6, 8], target: 24 },     // factorial-like, multiple 24s via ×/+
+    { nums: [2, 3, 5, 8], target: 9 },      // nested division, bracket depth differences        
+];

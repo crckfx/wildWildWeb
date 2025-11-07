@@ -17,16 +17,16 @@
 					<h3>carriage digits<span class="test-display"></span></h3>
 					<!-- cosmetic extra parent layer for slots -->
 					<div class="numberSlots bg-2">
-						<div class="numbin traingame" data-min="0" data-max="9" data-loop="true">
+						<div class="numbin solverGame" data-min="0" data-max="9" data-loop="true">
 							<input type="number">
 						</div>
-						<div class="numbin traingame" data-min="0" data-max="9" data-loop="true">
+						<div class="numbin solverGame" data-min="0" data-max="9" data-loop="true">
 							<input type="number">
 						</div>
-						<div class="numbin traingame" data-min="0" data-max="9" data-loop="true">
+						<div class="numbin solverGame" data-min="0" data-max="9" data-loop="true">
 							<input type="number">
 						</div>
-						<div class="numbin traingame" data-min="0" data-max="9" data-loop="true">
+						<div class="numbin solverGame" data-min="0" data-max="9" data-loop="true">
 							<input type="number">
 						</div>
 					</div>
@@ -41,8 +41,13 @@
 
 
 
-				<div class="solutions marge1">
-					<div class="numberOfSolutions"></div>
+				<div class="solutionsDiv hidden marge1">
+					<div class="message">
+                        <span>Found </span>
+                        <span class="numberOfSolutions">_</span>
+                        <span>solutions for</span>
+                        <span class="solvedNumset">____</span>
+                    </div>
 					<ol class="solutionsList"></ol>
 					<!-- <div class="howToSolve"></div> -->
 				</div>

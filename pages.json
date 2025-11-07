@@ -220,6 +220,15 @@
         "contentPath": "pages/countdownGame/countdownGame.html",
         "imports": [
             "pages/countdownGame/bundle"
-        ]
+        ],
+        "styles": "/countdownGame/bundle/countdownGame.css"
+    },
+    "showcase": {
+        "children": {
+            "icons": {
+                "title": "Icon Showcase",
+                "contentPath": "pages/showcase/icons.html"
+            }
+        }
     }
 }

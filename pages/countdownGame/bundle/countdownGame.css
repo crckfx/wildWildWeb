@@ -13,7 +13,7 @@
 }
 
 /* --- numbins --- */
-.numbin.countdownGame {
+.numbin.solverGame {
     height: 80px;
     font-size: 24px;
     min-width: 0;
@@ -88,3 +88,17 @@
     background-color: var(--color-bg-2);
 }
 
+
+.solutionsDiv {
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.solutionsDiv.hidden {
+    display: none;
+}
+
+.solutionsDiv.solved {
+    opacity: 1;
+    /* pointer-events: none; */
+}

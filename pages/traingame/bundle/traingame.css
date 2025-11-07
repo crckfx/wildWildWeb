@@ -13,7 +13,7 @@
 }
 
 /* --- numbins --- */
-.numbin.traingame {
+.numbin.solverGame {
     height: 80px;
     font-size: 32px;
     min-width: 0;
@@ -85,4 +85,18 @@
     border-color: var(--color-footer-1);
     color: var(--color-footer-1);
     background-color: var(--color-bg-2);
+}
+
+.solutionsDiv {
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.solutionsDiv.hidden {
+    display: none;
+}
+
+.solutionsDiv.solved {
+    opacity: 1;
+    /* pointer-events: none; */
 }
