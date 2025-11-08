@@ -5,15 +5,14 @@ export class Numbin {
         let input = el.querySelector("input");
         if (!input) {
             input = document.createElement("input");
-            input.type = "number";
+            // input.type = "number";
             // el.appendChild(input);
         }
         input.min = min;
         input.max = max;
         input.step = step;
         input.value = el.dataset.value || null;
-        input.setAttribute('inputmode', 'decimal');
-        
+        input.setAttribute('inputmode', 'numeric');
         input.type = "text";
         el.appendChild(input);
         this.input = input;
