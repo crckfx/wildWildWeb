@@ -29,10 +29,6 @@ export class Numbin {
         this.attachEvents();
     }
 
-    handleEnterKey(e) {
-        this.input.blur();
-    }
-
     get value() {
         const n = parseInt(this.input.value, 10);
         return Number.isFinite(n) ? n : null;
@@ -58,39 +54,56 @@ export class Numbin {
         this.lastValid = n;
     }
 
+    handleEnterKey(e) {
+        this.input.blur();
+    }
+
+    handleBeforeInput(e) {
+        if (e.isComposing) return;
+
+        const t = e.inputType;
+        if (t.startsWith("delete")) return;
+        if (!(t.startsWith("insert") || t === "insertReplacementText" || t === "insertFromPaste")) return;
+
+        const data = e.data ?? "";
+        // block anything that's not digits
+        if (/\D/.test(data)) {
+            e.preventDefault();
+            return;
+        }
+    }
+
+
     attachEvents() {
         const el = this.el;
+        let active = false;
 
         el.addEventListener("pointerdown", e => {
-            e.preventDefault();
-            // this.input.focus();
+            if (e.button !== 0) return;
+            active = true;
             this.startY = e.clientY;
             this.moved = false;
             el.setPointerCapture(e.pointerId);
         });
 
         el.addEventListener("pointermove", e => {
-            if (!(e.buttons & 1)) return;
-            e.preventDefault();
+            if (!active || !(e.buttons & 1)) return;
             const dy = e.clientY - this.startY;
             if (Math.abs(dy) > 10) {
                 this.moved = true;
-                this.value = this.value === null
-                    ? 0
-                    : this.value + (dy < 0 ? this.step : -this.step);
+                this.value = this.value === null ? 0 : this.value + (dy < 0 ? this.step : -this.step);
                 this.startY = e.clientY;
             }
-
         });
 
         el.addEventListener("pointerup", e => {
+            active = false;
             el.releasePointerCapture(e.pointerId);
             if (!this.moved) {
                 this.input.focus({ preventScroll: true });
                 this.input.select?.();
             }
         });
-
         el.addEventListener("wheel", e => {
             e.preventDefault();
             const dir = Math.sign(e.deltaY);
@@ -117,6 +130,8 @@ export class Numbin {
                     break;
             }
         });
+
+        this.input.addEventListener("beforeinput", e => this.handleBeforeInput(e));
 
         // this should probably be handled upstream wherever possible
         this.input.addEventListener('blur', () => {

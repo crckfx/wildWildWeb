@@ -18,6 +18,8 @@ function initNumbins() {
     }
 }
 
+import { beforeInput_range } from "/misc/numbin/numbinHandlers.js";
+
 // ---------- Theme setup ----------
 function initThemeNumbin() {
     const html = document.documentElement;
@@ -37,6 +39,13 @@ function initThemeNumbin() {
 
     numbinput.value = initValue;
     html.style.setProperty("--gen-h-1", initValue);
+
+    const gen_nb = gen_h_numbin.__numbinInstance;
+    console.log("hi from", gen_nb);
+
+    // gen_nb.handleBeforeInput = beforeInput_range;
+    gen_nb.handleBeforeInput = e => beforeInput_range(e, gen_nb);
+
 }
 
 // ---------- Run immediately or on ready ----------

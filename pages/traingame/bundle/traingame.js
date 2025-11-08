@@ -37,7 +37,7 @@ function printSet() {
 }
 
 // set a numeric slot value (centralized)
-function setNum(i, val) {
+function updateUI(i, val) {
     numset[i] = val;
     printSet();
 
@@ -92,11 +92,11 @@ function markEdited() {
 // ---------- Numbin input event overrides ----------
 
 // rawdog the event here seeing as how we cut it off above
-function handleInput(e, i) {
+function handleInput(e, i, nb) {
     const input = inputs[i];
     const val = input.value.trim();
     const value = val === '' ? null : parseInt(val, 10);
-    setNum(i, value);
+    updateUI(i, value);
 
     // create autoskip behaviour for typing only
     if (e.inputType === 'insertText' && val !== '' && i < inputs.length - 1) {
@@ -133,15 +133,16 @@ function initTrainGame() {
 
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
-        nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
-        inputs[i] = slot.querySelector('input');    // resolve the input node
+        const nb = nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
+        const input = inputs[i] = nb.input;    // resolve the input node
+
 
         // use number keyboard on touchscreen
-        inputs[i].setAttribute('inputmode', 'numeric');
+        input.setAttribute('inputmode', 'numeric');
 
         // apply the input overrides to the numbin
-        inputs[i].addEventListener('beforeinput', e => beforeInput_singleDigit(e));
-        inputs[i].addEventListener('input', e => handleInput(e, i));
+        input.addEventListener('beforeinput', e => beforeInput_singleDigit(e));
+        input.addEventListener('input', e => handleInput(e, i, nb));
     }
 
     runTests(these_tests, countdownSolve);

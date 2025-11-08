@@ -115,6 +115,10 @@
     background-color: var(--color-footer);
 }
 
+#genColorPicker>.numbin {
+    width: 7ch;
+}
+
 [data-theme="gen"] #genColorPicker {
     display: block;
 }

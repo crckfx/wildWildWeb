@@ -37,7 +37,8 @@ function printSet() {
         : ': ' + numset.join(', ');
 }
 
-function setNum(i, val) {
+// 
+function updateUI(i, val) {
     numset[i] = val;
     printSet();
 
@@ -49,8 +50,9 @@ function setNum(i, val) {
 
 // clear all inputs + state
 function resetInputs() {
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].value = '';
+    for (let i = 0; i < nbs.length; i++) {
+        const nb = nbs[i];
+        nb.input.value = '';
         numset[i] = null;
     }
     printSet(); // single call at end
@@ -91,15 +93,28 @@ function markEdited() {
 
 
 // ---------- Numbin input event overrides ----------
-// see how necessary it is to trim and etc given the before handler. this is necessary for updating the UI with setNum, at least.
-function handleInput(e, i) {
-    const input = inputs[i];
-    const val = input.value.trim();
-    const value = val === '' ? null : parseInt(val, 10);
-    setNum(i, value);
-
+// update the
+function handleInput(nb, i) {
+    updateUI(i, nb.value);
     // no autoskip for this UI mode
 }
+
+// skip
+function handleEnterKey(i) {
+    // disallow Enter action if this one's value is null
+    if (nbs[i].value === null) return;
+    // validate the index first
+    if (i >= 0 && i < nbs.length) {
+        const next = nbs[i + 1];
+        //
+        if (next) {
+            next.input.focus({ preventScroll: true });
+        } else {
+            nbs[i].input.blur();
+        }
+    }
+}
+
 
 // ---------- Initialization ----------
 function initSolverGame() {
@@ -121,40 +136,23 @@ function initSolverGame() {
     const target_input = targetNumberNumbin.querySelector('input');
     target_input.addEventListener("beforeinput", e => beforeInput_range(e, targetNumber_numbinstance));
 
-    // target_input.addEventListener('input', e => onInput_range(e, targetNumber_numbinstance));
-
-
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
-        const nb = nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
-        inputs[i] = slot.querySelector('input');    // resolve the input node
-
-
         // given the following code, it is likely unnecessary to store 3 separate arrays (slots, inputs, nbs).
         // the local handleInput override still relies on passing 'i', so for now we'll leave it for convenience.
-
+        const nb = nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
         if (nb === null) {
             console.error('some issue with init, no numbin instance for', slot);
             return;
         }
-        const input = nb.input;
+        const input = inputs[i] = nb.input; // resolve the input node
+
         // apply the input overrides to the numbin
-        input.addEventListener('beforeinput', e => beforeInput_range(e, nb));
-        input.addEventListener('input', e => handleInput(e, i));
+        // input.addEventListener('beforeinput', e => beforeInput_range(e, nb));
+        nb.handleBeforeInput = e => beforeInput_range(e, nb);
+        nb.handleEnterKey = () => handleEnterKey(i); // overwrite the numbin's enter key handler
 
-
-        // overwrite the numbin's enter key handler
-        nb.handleEnterKey = e => {
-            if (i >= 0 && i < nbs.length) {
-                const next = nbs[i + 1];
-                if (next) {
-                    next.input.focus({ preventScroll: true });
-                } else {
-                    input.blur();
-                }
-            }
-        };
-
+        input.addEventListener('input', e => handleInput(nb, i));
     }
     runTests(these_tests, countdownSolve);
 
@@ -166,7 +164,10 @@ btn_toSolve.onclick = () => {
     if (numset.includes(null)) return;
 
     const target = Number(targetNumberInput.value);
-    if (target < target_min || target > target_max) return;
+    if (target < target_min || target > target_max) {
+        targetNumberInput.focus();
+        return;
+    }
 
     const sols = countdownSolve(numset, target);
     console.group(`nums=${numset.join(',')} target=${target}`);
