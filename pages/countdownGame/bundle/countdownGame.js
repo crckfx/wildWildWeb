@@ -110,9 +110,17 @@ function markEdited() {
 }
 
 function randomiseTarget() {
-    // console.log("randomiseTarget - implement me");
-    console.log(`solvedTarget:${solvedTarget}, current_targetNumber:${current_targetNumber},`);
+    const nb = targetNumber_numbinstance;
+    if (!nb) return;
+
+    const { min, max } = nb;
+    const rand = Math.floor(Math.random() * (max - min + 1)) + min;
+    nb.value = rand;
+
+    current_targetNumber = rand;
+    revalidateSolvedState();
 }
+
 // ---------- Numbin input event overrides ----------
 // update the UI
 function handleInput(nb, i) {
@@ -151,11 +159,12 @@ function initSolverGame() {
     const target_input = targetNumberNumbin.querySelector('input');
     target_input.addEventListener("beforeinput", e => beforeInput_range(e, targetNumber_numbinstance));
     target_input.addEventListener("input", e => {
+        // update the current guy
         current_targetNumber = targetNumber_numbinstance.value;
         revalidateSolvedState();
-        console.log(`current_targetNumber:${current_targetNumber},`);
     });
-    
+    btn_randomiseTarget.addEventListener('click', randomiseTarget);
+
 
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
@@ -171,9 +180,28 @@ function initSolverGame() {
         // apply the input overrides to the numbin
         nb.handleBeforeInput = e => beforeInput_range(e, nb);
         nb.handleEnterKey = () => handleEnterKey(i); // overwrite the numbin's enter key handler
+        nb.dragIncrement = 30;
 
         nb.input.addEventListener('input', e => handleInput(nb, i));
-        btn_randomiseTarget.addEventListener('click', randomiseTarget);
+
+
+        nb.increment = function (dir) {
+            const seq = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
+
+            // if empty/null, always start at first element
+            if (this.value == null) {
+                this.value = seq[0];
+                return;
+            }
+
+            const i = seq.indexOf(this.value);
+            if (i === -1) return; // safety
+
+            const next = Math.min(seq.length - 1, Math.max(0, i + dir));
+            this.value = seq[next];
+        };
+
+
     }
     runTests(these_tests, countdownSolve);
 

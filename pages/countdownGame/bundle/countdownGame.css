@@ -1,4 +1,8 @@
 /* --- containers --- */
+.trainContainer {
+    display: block;    
+}
+
 .slots_container {
     width: 100%;
 }
@@ -19,6 +23,11 @@
 }
 
 /* --- numbins --- */
+.trainContainer .numbin {
+    box-shadow: var(--shadow-preset-B);
+}
+
+/* --- slots numbins --- */
 .numbin.solverGame {
     height: 80px;
     font-size: 24px;
@@ -45,8 +54,9 @@
 .numbin.targetNumber {
     height: 100px;
     font-size: 40px;
+    font-weight: 600;
     transition: background-color .4s ease;
-    width: 5ch;
+    width: 7ch;
 }
 
 /* --- stuff --- */
@@ -77,12 +87,11 @@
     border-radius: 16px;
     cursor: pointer;
     outline:none;
+    box-shadow: var(--shadow-preset-B);
 
 }
 .buttonsDiv>button:hover {
     background-color: var(--color-bg-3);
-    /* color: var(--color-accent); */
-    border-color: var(--color-bg-1);
 }
 
 .buttonsDiv>button:focus-visible {

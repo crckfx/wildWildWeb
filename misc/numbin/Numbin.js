@@ -1,5 +1,5 @@
 export class Numbin {
-    constructor(el, { min = 0, max = 9999, step = 1, loop = false } = {}) {
+    constructor(el, { min = 0, max = 9999, step = 1, loop = false, dragIncrement = 10 } = {}) {
         this.el = el;
 
         let input = el.querySelector("input");
@@ -23,6 +23,7 @@ export class Numbin {
         this.loop = loop;
         this.startY = 0;
         this.moved = false;
+        this.dragIncrement = dragIncrement;
         const v = parseInt(input.value, 10);
         this.lastValid = Number.isFinite(v) ? v : min;
 
@@ -73,6 +74,21 @@ export class Numbin {
         }
     }
 
+    increment(dir) {
+        const v = this.value ?? 0;
+        let n = v + dir * this.step;
+
+        // clamp/loop logic centralized here
+        if (this.loop) {
+            const range = this.max - this.min + 1;
+            if (range > 0)
+                n = ((n - this.min) % range + range) % range + this.min;
+        } else {
+            n = Math.max(this.min, Math.min(this.max, n));
+        }
+
+        this.value = n;
+    }
 
     attachEvents() {
         const el = this.el;
@@ -89,9 +105,10 @@ export class Numbin {
         el.addEventListener("pointermove", e => {
             if (e.pointerId !== activeId) return;
             const dy = e.clientY - this.startY;
-            if (Math.abs(dy) > 10) {
+            if (Math.abs(dy) > this.dragIncrement) {
                 this.moved = true;
-                this.value = this.value === null ? 0 : this.value + (dy < 0 ? this.step : -this.step);
+                // this.value = this.value === null ? 0 : this.value + (dy < 0 ? this.step : -this.step);
+                this.increment(dy < 0 ? +1 : -1);
                 this.startY = e.clientY;
             }
         });
@@ -113,18 +130,21 @@ export class Numbin {
         el.addEventListener("wheel", e => {
             e.preventDefault();
             const dir = Math.sign(e.deltaY);
-            if (dir) this.value = this.value === null ? 0 : this.value - dir * this.step;
+            // if (dir) this.value = this.value === null ? 0 : this.value - dir * this.step;
+            if (dir) this.increment(-dir);
         }, { passive: false });
+
         this.input.addEventListener("keydown", e => {
             switch (e.key) {
                 case "ArrowUp":
                     e.preventDefault();
-                    this.value = this.value === null ? 0 : this.value + this.step;
-
+                    // this.value = this.value === null ? 0 : this.value + this.step;
+                    this.increment(+1);
                     break;
                 case "ArrowDown":
                     e.preventDefault();
-                    this.value = this.value === null ? 0 : this.value - this.step;
+                    // this.value = this.value === null ? 0 : this.value - this.step;
+                    this.increment(-1);
 
                     break;
                 case "Enter":

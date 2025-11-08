@@ -10,6 +10,12 @@ it takes in:
 
 and tries to make a maths out of the bunch of numbers to solve for the target, using simple math operations (```+ - * /```)
 
+## todo
+
+yeah we got some stuff to do on the solver
+
+- [ ] implement ***kitchenSink*** flag
+
 # interface(s)
 
 there's 2 different UIs being developed in parallel that use *solver*:
