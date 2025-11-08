@@ -12,7 +12,8 @@ export class Numbin {
         input.max = max;
         input.step = step;
         input.value = el.dataset.value || null;
-        input.setAttribute('inputmode', 'numeric');
+        input.setAttribute('inputmode', 'decimal');
+        
         input.type = "text";
         el.appendChild(input);
         this.input = input;
