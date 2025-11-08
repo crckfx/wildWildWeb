@@ -141,6 +141,20 @@ function initSolverGame() {
         // apply the input overrides to the numbin
         input.addEventListener('beforeinput', e => beforeInput_range(e, nb));
         input.addEventListener('input', e => handleInput(e, i));
+
+
+        // overwrite the numbin's enter key handler
+        nb.handleEnterKey = e => {
+            if (i >= 0 && i < nbs.length) {
+                const next = nbs[i + 1];
+                if (next) {
+                    next.input.focus({ preventScroll: true });
+                } else {
+                    input.blur();
+                }
+            }
+        };
+
     }
     runTests(these_tests, countdownSolve);
 

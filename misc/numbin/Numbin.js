@@ -29,6 +29,10 @@ export class Numbin {
         this.attachEvents();
     }
 
+    handleEnterKey(e) {
+        this.input.blur();
+    }
+
     get value() {
         const n = parseInt(this.input.value, 10);
         return Number.isFinite(n) ? n : null;
@@ -109,11 +113,12 @@ export class Numbin {
                     break;
                 case "Enter":
                     e.preventDefault();
-                    this.input.blur();
+                    this.handleEnterKey(e);
                     break;
             }
         });
 
+        // this should probably be handled upstream wherever possible
         this.input.addEventListener('blur', () => {
             const raw = this.input.value;
             if (raw === '') return; // leave blank untouched
