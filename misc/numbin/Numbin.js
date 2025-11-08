@@ -76,18 +76,18 @@ export class Numbin {
 
     attachEvents() {
         const el = this.el;
-        let active = false;
+        let activeId = null;
 
         el.addEventListener("pointerdown", e => {
-            if (e.button !== 0) return;
-            active = true;
+            if (e.button !== 0 || activeId !== null) return;
+            activeId = e.pointerId;
             this.startY = e.clientY;
             this.moved = false;
             el.setPointerCapture(e.pointerId);
         });
 
         el.addEventListener("pointermove", e => {
-            if (!active || !(e.buttons & 1)) return;
+            if (e.pointerId !== activeId) return;
             const dy = e.clientY - this.startY;
             if (Math.abs(dy) > 10) {
                 this.moved = true;
@@ -97,21 +97,24 @@ export class Numbin {
         });
 
         el.addEventListener("pointerup", e => {
-            active = false;
+            if (e.pointerId !== activeId) return;
             el.releasePointerCapture(e.pointerId);
             if (!this.moved) {
                 this.input.focus({ preventScroll: true });
                 this.input.select?.();
             }
+            activeId = null;
         });
+
+        el.addEventListener("pointercancel", e => {
+            if (e.pointerId === activeId) activeId = null;
+        });
+
         el.addEventListener("wheel", e => {
             e.preventDefault();
             const dir = Math.sign(e.deltaY);
-            if (dir) {
-                this.value = this.value === null ? 0 : this.value - dir * this.step;
-            }
+            if (dir) this.value = this.value === null ? 0 : this.value - dir * this.step;
         }, { passive: false });
-
         this.input.addEventListener("keydown", e => {
             switch (e.key) {
                 case "ArrowUp":

@@ -28,6 +28,8 @@ export function beforeInput_range(e, numbin) {
     if (nextLen > maxDigits || parseInt(candidate, 10) > numericMax) {
         e.preventDefault();
     }
+
+    // allow it to dispatch the event???
 }
 
 // --- type: DIGIT ---
