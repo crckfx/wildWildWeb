@@ -1,6 +1,7 @@
 // countdownGame.js
 import { countdownSolve } from "/misc/tweakage/solver_x2.js";
 import { runTests } from "/misc/tweakage/tester_lily.js";
+import { beforeInput_range } from "/misc/numbin/numbinHandlers.js";
 
 
 // ---------- DOM references ----------
@@ -90,61 +91,26 @@ function markEdited() {
 
 
 // ---------- Numbin input event overrides ----------
-
-// allow only digits via regex, 
-function handleBeforeInput(e, i) {
-    if (e.isComposing) return;
-
-    const t = e.inputType;
-    if (t.startsWith('delete')) return;
-    if (!t.startsWith('insert')) return;
-
-    const data = e.data ?? '';
-    const digits = data.replace(/\D/g, '');
-    if (!digits) {
-        e.preventDefault();
-        return;
-    }
-
-    const input = inputs[i];
-    const nb = nbs[i];
-    if (!nb) return;
-
-    const min = nb.min;
-    const max = nb.max;
-
-    // accumulate typed digits
-    const next = (input.value + digits).replace(/\D/g, '').slice(0, 3);
-    const n = parseInt(next, 10);
-
-    // clamp within valid range
-    const clipped = Math.min(Math.max(n, min), max);
-    const str = Number.isFinite(clipped) ? String(clipped) : '';
-
-    e.preventDefault();
-    input.value = str;
-    input.dispatchEvent(
-        new InputEvent('input', { bubbles: true, inputType: 'insertText' })
-    );
-}
-
-
-// rawdog the event here seeing as how we cut it off above
+// see how necessary it is to trim and etc given the before handler. this is necessary for updating the UI with setNum, at least.
 function handleInput(e, i) {
     const input = inputs[i];
     const val = input.value.trim();
     const value = val === '' ? null : parseInt(val, 10);
     setNum(i, value);
 
-    // no autoskip for countdown
+    // no autoskip for this UI mode
 }
 
 // ---------- Initialization ----------
 function initSolverGame() {
     // runTests();
-    
+
 
     targetNumber_numbinstance = targetNumberNumbin.__numbinInstance;
+    if (!targetNumber_numbinstance) {
+        console.error("some issue with init, couldn't find targetNumber's numbin instance", targetNumber_numbinstance);
+        return;
+    }
     target_min = targetNumber_numbinstance.min;
     target_max = targetNumber_numbinstance.max;
 
@@ -152,17 +118,29 @@ function initSolverGame() {
     console.log(`target_min`, target_min);
     console.log(`target_max`, target_max);
 
+    const target_input = targetNumberNumbin.querySelector('input');
+    target_input.addEventListener("beforeinput", e => beforeInput_range(e, targetNumber_numbinstance));
+
+    // target_input.addEventListener('input', e => onInput_range(e, targetNumber_numbinstance));
+
+
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
-        nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
+        const nb = nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
         inputs[i] = slot.querySelector('input');    // resolve the input node
 
-        // use number keyboard on touchscreen
-        inputs[i].setAttribute('inputmode', 'numeric');
 
+        // given the following code, it is likely unnecessary to store 3 separate arrays (slots, inputs, nbs).
+        // the local handleInput override still relies on passing 'i', so for now we'll leave it for convenience.
+
+        if (nb === null) {
+            console.error('some issue with init, no numbin instance for', slot);
+            return;
+        }
+        const input = nb.input;
         // apply the input overrides to the numbin
-        inputs[i].addEventListener('beforeinput', e => handleBeforeInput(e, i));
-        inputs[i].addEventListener('input', e => handleInput(e, i));
+        input.addEventListener('beforeinput', e => beforeInput_range(e, nb));
+        input.addEventListener('input', e => handleInput(e, i));
     }
     runTests(these_tests, countdownSolve);
 
@@ -172,10 +150,10 @@ function initSolverGame() {
 btn_toReset.onclick = () => resetInputs();
 btn_toSolve.onclick = () => {
     if (numset.includes(null)) return;
-    
+
     const target = Number(targetNumberInput.value);
     if (target < target_min || target > target_max) return;
-    
+
     const sols = countdownSolve(numset, target);
     console.group(`nums=${numset.join(',')} target=${target}`);
     console.log(`Total solutions: ${sols.length}`);
@@ -190,38 +168,8 @@ btn_toSolve.onclick = () => {
 document.addEventListener('DOMContentLoaded', initSolverGame);
 
 
-// function runTests() {
-//     // console.clear();
-//     console.log("Countdown Numbers Solver");
-//     const t0 = performance.now();
-    
-//     const tests = [
-//         { nums: [4, 9, 10, 11], target: 36, expected: 7},
-//         { nums: [1, 3, 7, 10], target: 21, expected: 24 },
-//         { nums: [4, 2, 3, 9], target: 10, expected: 33 },
-//         { nums: [2, 5, 7, 10], target: 17 },    // overlapping additive/multiplicative paths
-//         { nums: [3, 4, 6, 8], target: 24 },     // factorial-like, multiple 24s via ×/+
-//         { nums: [2, 3, 5, 8], target: 9 },      // nested division, bracket depth differences        
-//     ];
-    
-//     for (const t of tests) {
-//         const opts = { allowDecimal: t.allowDecimal ?? false, maxSolutions: 500 };
-//         const sols = countdownSolve(t.nums, t.target, opts);
-//         console.group(`nums=${t.nums.join(',')} target=${t.target} decimals=${opts.allowDecimal}`);
-//         console.log(`Total solutions: ${sols.length}`);
-//         console.log(sols);
-//         console.groupEnd();
-//     }
-//     const t1 = performance.now();
-//     console.log(`Total time: ${(t1-t0).toFixed(1)} ms`);
-
-// }
-
 const these_tests = [
     { nums: [25, 100, 4, 9, 10, 4], target: 361 },
     { nums: [25, 75, 1, 3, 7, 10], target: 621 },
     { nums: [25, 50, 4, 2, 3, 9], target: 817 },
-    // { nums: [2, 5, 7, 10], target: 17 },    // overlapping additive/multiplicative paths
-    // { nums: [3, 4, 6, 8], target: 24 },     // factorial-like, multiple 24s via ×/+
-    // { nums: [2, 3, 5, 8], target: 9 },      // nested division, bracket depth differences        
 ];

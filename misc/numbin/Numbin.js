@@ -2,7 +2,7 @@ export class Numbin {
     constructor(el, { min = 0, max = 9999, step = 1, loop = false } = {}) {
         this.el = el;
 
-        let input = el.querySelector("input[type=number]");
+        let input = el.querySelector("input");
         if (!input) {
             input = document.createElement("input");
             input.type = "number";
@@ -12,6 +12,8 @@ export class Numbin {
         input.max = max;
         input.step = step;
         input.value = el.dataset.value || null;
+        input.setAttribute('inputmode', 'numeric');
+        input.type = "text";
         el.appendChild(input);
         this.input = input;
 

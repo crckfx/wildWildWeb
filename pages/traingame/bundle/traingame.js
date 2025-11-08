@@ -1,6 +1,7 @@
 // traingame.js
 import { countdownSolve } from "/misc/tweakage/solver_x2.js";
 import { runTests } from "/misc/tweakage/tester_lily.js";
+import { beforeInput_singleDigit, beforeInput_range } from "/misc/numbin/numbinHandlers.js";
 
 // ---------- DOM references ----------
 const slots = document.querySelectorAll('.numbin.solverGame');
@@ -11,6 +12,10 @@ const btn_toSolve = document.querySelector('.toSolve');
 const btn_toReset = document.querySelector('.toReset');
 const targetNumberNumbin = document.querySelector('.numbin.targetNumber');
 const targetNumberInput = targetNumberNumbin.querySelector('input');
+let targetNumber_numbinstance = null;
+let target_min = -1; // useless values
+let target_max = -1; // useless values
+
 
 const solutionsDiv = document.querySelector('.solutionsDiv');
 const solutionsList = document.querySelector('.solutionsList');
@@ -86,38 +91,6 @@ function markEdited() {
 
 // ---------- Numbin input event overrides ----------
 
-// interruptions for single-digit mode including paste (and autoskip?)
-// possibly inefficient but it works
-function handleBeforeInput(e) {
-    if (e.isComposing) return;
-
-    const t = e.inputType;
-    if (t.startsWith('delete')) return; // allow deletes
-    if (!t.startsWith('insert')) return;
-
-    const data = e.data ?? '';
-    const digits = data.replace(/\D/g, '');
-    if (digits.length === 0) {
-        e.preventDefault(); // ignore letters or symbols
-        return;
-    }
-
-    // decide what to keep
-    const keep = t === 'insertFromPaste'
-        ? digits[0]               // paste: keep first numeric char
-        : digits[digits.length - 1]; // normal typing: keep last numeric char
-
-    // override normal behaviour
-    e.preventDefault();
-    e.target.value = keep;
-    e.target.dispatchEvent(
-        new InputEvent('input', {
-            bubbles: true,
-            inputType: 'insertText'
-        })
-    );
-}
-
 // rawdog the event here seeing as how we cut it off above
 function handleInput(e, i) {
     const input = inputs[i];
@@ -151,7 +124,13 @@ function handleSolve() {
 
 // ---------- Initialization ----------
 function initTrainGame() {
-    runTests(these_tests, countdownSolve);
+
+    targetNumber_numbinstance = targetNumberNumbin.__numbinInstance;
+
+    const target_input = targetNumberNumbin.querySelector('input');
+    target_input.addEventListener("beforeinput", e => beforeInput_range(e, targetNumber_numbinstance));
+
+
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
         nbs[i] = slot.__numbinInstance || null;     // resolve attached instance
@@ -161,9 +140,11 @@ function initTrainGame() {
         inputs[i].setAttribute('inputmode', 'numeric');
 
         // apply the input overrides to the numbin
-        inputs[i].addEventListener('beforeinput', handleBeforeInput);
+        inputs[i].addEventListener('beforeinput', e => beforeInput_singleDigit(e));
         inputs[i].addEventListener('input', e => handleInput(e, i));
     }
+
+    runTests(these_tests, countdownSolve);
 }
 
 // ---------- Button bindings ----------

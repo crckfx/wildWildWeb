@@ -17,6 +17,7 @@
     min-width: 5ch;
     padding: 8px;
     cursor: ns-resize;
+    width: 5ch;
 }
 
 /* Hover feedback identical to old control */
@@ -30,9 +31,9 @@
 }
 
 /* The input created by JS inside .numbin */
-.numbin>input[type="number"] {
+.numbin>input {
     display: block;
-    width: min-content;
+    width: 100%;
     height: 100%;
     font: inherit;
     text-align: center;
@@ -41,20 +42,27 @@
     /* inherit container bg */
     border: none;
     outline: none;
+
+    /* remove native styles */
     appearance: textfield;
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+
     user-select: text;
     box-sizing: border-box;
     /* min-width: 5ch; */
 }
 
-/* Remove native spin buttons */
-.numbin>input[type="number"]::-webkit-outer-spin-button,
+
+
+/* Remove native spin buttons - possibly obsolete? */
+/* .numbin>input[type="number"]::-webkit-outer-spin-button,
 .numbin>input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-}
+} */
 
 /* Ensure inner input inherits rounded shape */
-.numbin>input[type="number"] {
+.numbin>input {
     border-radius: inherit;
 }
