@@ -47,8 +47,8 @@ function printSet() {
 // 
 function updateNumset(i, value) {
     numset[i] = value;
-    const complete = !(numset.includes(null));
-    console.log(`numset is complete: ${complete}`);
+    const complete = (!(numset.includes(null)) && current_targetNumber !== null);
+    // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);
     if (complete) {
         btn_toSolve.classList.add('ready');
     } else {
@@ -180,6 +180,16 @@ function initSolverGame() {
         // update the current guy
         current_targetNumber = targetNumber_numbinstance.value;
         revalidateSolvedState();
+
+
+        const complete = (!(numset.includes(null)) && current_targetNumber !== null);
+        // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);
+        if (complete) {
+            btn_toSolve.classList.add('ready');
+        } else {
+            btn_toSolve.classList.remove('ready');
+        }
+
     });
     btn_randomiseTarget.addEventListener('click', randomiseTarget);
 
@@ -202,7 +212,7 @@ function initSolverGame() {
                 nb.input.value = '';
                 slot.classList.remove('valid');
                 updateNumset(i, null);
-            }            
+            }
         })
 
         // apply the input overrides to the numbin
