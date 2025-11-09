@@ -45,10 +45,15 @@
     transition: background-color .4s ease;
     padding: 0;
     width: 100%;
-    min-width: 4ch;
+    min-width: 80px;
     background-color: var(--slot-color);
     color: var(--tile-text);
     font-weight: 600;
+    border-radius: 4px;
+    border: 4px solid turquoise;
+    cursor: unset;
+    touch-action: auto;
+
 }
 
 .numbin {
@@ -176,14 +181,13 @@
     align-items: center;
     justify-content: center;
     grid-column-end: span 2;
-    box-shadow: var(--shadow-preset-B);
+    box-shadow: var(--shadow-preset-B), var(--inset-preset-3);
     user-select: none;
-    cursor: grab;
     touch-action: none;
 }
 
 .tile:active {
-    cursor: grabbing;
+    box-shadow: var(--shadow-preset-B);
 }
 
 .tile:nth-child(11) {
@@ -201,4 +205,9 @@
 .numbin.solverGame.dragover {
     outline: 4px dashed grey;
     background-color: var(--slot-color-2);
+}
+
+.tile.drag-clone {
+    background-color: red;
+    box-shadow: var(--inset-preset-3), var(--shadow-preset-A);
 }

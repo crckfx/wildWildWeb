@@ -146,6 +146,15 @@ function handleEnterKey(i) {
     }
 }
 
+function findAvailableSlot() {
+    for (let i = 0; i < nbs.length; i++) {
+        const nb = nbs[i];
+        if (!nb.value)
+            return i;
+    }
+    return -1;
+}
+
 
 // ---------- Initialization ----------
 function initSolverGame() {
@@ -271,10 +280,32 @@ function enableTilePointerDrag(tile, value) {
     let clone = null;
     let offsetX = 0;
     let offsetY = 0;
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
 
     let lastTarget = null;
-    let rafPending = false;
     let latestEvent = null;
+    let rafId = null;
+
+    const DRAG_THRESHOLD = 8;        // pixels
+    const DRAG_THRESHOLD_SQ = DRAG_THRESHOLD * DRAG_THRESHOLD;
+
+    tile.addEventListener('click', e => {
+        const slot = findAvailableSlot();
+        let msg;
+        if (slot > -1) {
+            msg = `the first available slot is ${slot}`
+            // console.log(nbs[slot]);
+            const nb = nbs[slot];
+            nb.value = Number(value);
+        } else {
+            msg = `there are no available slots`;
+        }
+        console.log(msg);
+        // console.log('clickity');
+        // console.log(findAvailableSlot());
+    });
 
     tile.addEventListener('pointerdown', e => {
         e.preventDefault();
@@ -282,97 +313,112 @@ function enableTilePointerDrag(tile, value) {
         id = e.pointerId;
         tile.setPointerCapture(id);
 
-        const rect = tile.getBoundingClientRect();
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-
-        clone = tile.cloneNode(true);
-        clone.style.position = 'fixed';
-        clone.style.left = `${rect.left}px`;
-        clone.style.top = `${rect.top}px`;
-        clone.style.width = `${rect.width}px`;
-        clone.style.height = `${rect.height}px`;
-        clone.style.pointerEvents = 'none';
-        clone.style.opacity = '1';
-        clone.style.zIndex = '9999';
-        clone.classList.add('drag-clone');
-
-        document.body.appendChild(clone);
-        console.log(`cloned ${value}`);
+        startX = e.clientX;
+        startY = e.clientY;
+        dragging = false;
     });
 
     tile.addEventListener('pointermove', e => {
         e.preventDefault();
-        if (e.pointerId !== id || !clone) return;
+        if (e.pointerId !== id) return;
 
         latestEvent = e;
-        if (!rafPending) {
-            rafPending = true;
-            requestAnimationFrame(() => {
-                rafPending = false;
-                if (!latestEvent) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        const distSq = dx * dx + dy * dy;
 
-                const x = latestEvent.clientX - offsetX;
-                const y = latestEvent.clientY - offsetY;
-                clone.style.left = `${x}px`;
-                clone.style.top = `${y}px`;
+        // initiate drag if threshold crossed and clone not yet created
+        if (!dragging && distSq > DRAG_THRESHOLD_SQ) {
+            const rect = tile.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
 
-                const dropTarget = document.elementFromPoint(latestEvent.clientX, latestEvent.clientY);
-                const nb = dropTarget ? dropTarget.closest('.numbin') : null;
-
-                if (nb !== lastTarget) {
-                    lastTarget?.classList.remove('dragover');
-                    nb?.classList.add('dragover');
-                    lastTarget = nb;
-                }
-
-                // console.log(`drag over `, dropTarget);
-            });
+            clone = tile.cloneNode(true);
+            clone.style.position = 'fixed';
+            clone.style.left = `${rect.left}px`;
+            clone.style.top = `${rect.top}px`;
+            clone.style.width = `${rect.width}px`;
+            clone.style.height = `${rect.height}px`;
+            clone.style.pointerEvents = 'none';
+            clone.style.opacity = '1';
+            clone.style.zIndex = '9999';
+            clone.classList.add('drag-clone');
+            document.body.appendChild(clone);
+            console.log(`cloned ${value}`);
+            dragging = true;
         }
+
+        if (!dragging || !clone) return;
+
+        // cancel any previously queued frame
+        if (rafId !== null) cancelAnimationFrame(rafId);
+
+        rafId = requestAnimationFrame(() => {
+            rafId = null;
+            const ev = latestEvent;
+            if (!clone || !ev) return;
+
+            const x = ev.clientX - offsetX;
+            const y = ev.clientY - offsetY;
+            clone.style.left = `${x}px`;
+            clone.style.top = `${y}px`;
+
+            const dropTarget = document.elementFromPoint(ev.clientX, ev.clientY);
+            const nb = dropTarget ? dropTarget.closest('.numbin') : null;
+
+            if (nb !== lastTarget) {
+                lastTarget?.classList.remove('dragover');
+                nb?.classList.add('dragover');
+                lastTarget = nb;
+            }
+        });
     }, { passive: false });
 
     tile.addEventListener('pointerup', e => {
         if (e.pointerId !== id) return;
         tile.releasePointerCapture(id);
-        const dropTarget = document.elementFromPoint(latestEvent.clientX, latestEvent.clientY);
-        const nb = dropTarget ? dropTarget.closest('.numbin') : null;
 
-        
-        if (nb) {
-            // console.log(`dropped ${value} on`, nb.__numbinInstance);
-            nb.__numbinInstance.value = Number(value);
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
         }
-        
-        
+
+        if (dragging && clone) {
+            const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+            const nb = dropTarget ? dropTarget.closest('.numbin') : null;
+
+            if (nb) nb.__numbinInstance.value = Number(value);
+        }
+
         lastTarget?.classList.remove('dragover');
         lastTarget = null;
 
-
-        if (clone) {
-            clone.remove();
-            clone = null;
-        }
+        clone?.remove();
+        clone = null;
 
         id = null;
-        rafPending = false;
         latestEvent = null;
+        dragging = false;
     });
 
     tile.addEventListener('pointercancel', e => {
         if (e.pointerId === id) {
             tile.releasePointerCapture(id);
+
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+
             lastTarget?.classList.remove('dragover');
             lastTarget = null;
 
-            if (clone) {
-                clone.remove();
-                clone = null;
-            }
+            clone?.remove();
+            clone = null;
 
             id = null;
-            rafPending = false;
             latestEvent = null;
+            dragging = false;
         }
     });
 }
-
