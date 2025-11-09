@@ -133,10 +133,10 @@ export class Numbin {
     handlePointerUp = (e) => {
         if (e.pointerId !== this.activeId) return;
         this.el.releasePointerCapture(e.pointerId);
-        // if (!this.moved) {
-        //     this.input.focus({ preventScroll: true });
-        //     this.input.select?.();
-        // }
+        if (!this.moved) {
+            // this.input.focus({ preventScroll: true });
+            this.input.select?.();
+        }
         this.activeId = null;
     }
 

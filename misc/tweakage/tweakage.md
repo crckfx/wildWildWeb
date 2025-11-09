@@ -18,10 +18,6 @@ yeah we got some stuff to do on the solver
 
 # interface(s)
 
-## todo
-
-- [ ] for example, typing '0' is allowed in a range 1-100. enter is prevented if the field is empty, and it should be prevented the same way if the field is '0'; don't just reset and carry on: clear it and stay there as if you'd entered "nothing"
-
 there's 2 different UIs being developed in parallel that use *solver*:
 
 - **traingame**
@@ -59,3 +55,7 @@ because there's no way (yet) to specify behaviour in html, UI must overwrite the
 typing '0' in an empty Numbin that doesn't allow 0, it totally updates the UI's array before blur (aka unfocus).
 
 on blur the 0 is deemed invalid and it snaps back to lastValid. but disallowed numbing is peeking through whilst focused.
+
+## todo
+
+- [ ] for example, typing '0' is allowed in a range 1-100. enter is prevented if the field is empty, and it should be prevented the same way if the field is '0'; don't just reset and carry on: clear it and stay there as if you'd entered "nothing"
