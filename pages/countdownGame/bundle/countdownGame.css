@@ -1,3 +1,11 @@
+:root {
+    --tile-color: #2e60aa;
+    --tile-text: #fff;
+    --slot-color: #2222a5;
+    --slot-color-2: #06064b;
+}
+
+
 /* --- containers --- */
 .trainContainer {
     display: block;
@@ -13,14 +21,15 @@
     gap: 8px;
     justify-content: center;
     grid-template-columns: repeat(3, 1fr);
-    flex-wrap: wrap;
-    gap: 8px;
+    /* flex-wrap: wrap; */
     padding: 0 24px;
+    font-size: 24px;
 }
 
-@media (min-width: 540px) {
+@media (min-width: 600px) {
     .numberSlots {
-        grid-template-columns: repeat(auto-fit, minmax(5ch, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(4ch, 1fr));
+        /* font-size: 28px; */
     }
 }
 
@@ -32,11 +41,14 @@
 /* --- slots numbins --- */
 .numbin.solverGame {
     height: 80px;
-    font-size: 24px;
+    font-size: inherit;
     transition: background-color .4s ease;
     padding: 0;
     width: 100%;
     min-width: 4ch;
+    background-color: var(--slot-color);
+    color: var(--tile-text);
+    font-weight: 600;
 }
 
 .numbin {
@@ -60,6 +72,8 @@
     font-weight: 600;
     transition: background-color .4s ease;
     width: 7ch;
+    background-color: var(--slot-color-2);
+    color: var(--tile-text);
 }
 
 /* --- stuff --- */
@@ -140,7 +154,7 @@
     gap: 0.5rem;
     width: 100%;
     max-width: 420px;
-
+    font-size: 24px;
 }
 
 /* exactly 5 per row, grow to fill */
@@ -151,10 +165,10 @@
 
 /* visual tile styling */
 .tile {
-    background: blue;
-    border: 2px solid #999;
-    border-radius: 6px;
-    color: white;
+    background: var(--tile-color);
+    /* border: 2px solid #999; */
+    border-radius: 4px;
+    color: var(--tile-text);
     text-align: center;
     font-size: 1.4rem;
     aspect-ratio: 1 / 1;
@@ -162,14 +176,7 @@
     align-items: center;
     justify-content: center;
     grid-column-end: span 2;
-    ;
-}
-
-.tile:nth-child(11) {
-    grid-column-start: 2;
-}
-
-.tile {
+    box-shadow: var(--shadow-preset-B);
     user-select: none;
     cursor: grab;
 }
@@ -178,10 +185,19 @@
     cursor: grabbing;
 }
 
+.tile:nth-child(11) {
+    grid-column-start: 2;
+}
+
 .dropZone {
     margin-top: 1rem;
     height: 100px;
     border: 2px dashed #999;
     display: grid;
     place-items: center;
+}
+
+.numbin.solverGame.dragover {
+    outline: 4px dashed grey;
+    background-color: var(--slot-color-2);
 }

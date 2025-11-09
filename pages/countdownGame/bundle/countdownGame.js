@@ -149,33 +149,6 @@ function handleEnterKey(i) {
 
 // ---------- Initialization ----------
 function initSolverGame() {
-    // COUNTDOWN TILE STUFF
-    const tiles = document.querySelectorAll('.tile');
-    tiles.forEach(tile => {
-        console.log(tile);
-        tile.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/plain', tile.dataset.value);
-            e.dataTransfer.effectAllowed = 'copy';
-        });
-    });
-    const zone = document.querySelector('.dropZone');
-    zone.addEventListener('dragover', e => {
-        e.preventDefault();              // enables dropping
-        e.dataTransfer.dropEffect = 'copy';
-    });
-    zone.addEventListener('drop', e => {
-        e.preventDefault();
-        const val = e.dataTransfer.getData('text/plain');
-        console.log('dropped', val);
-        // insert visual feedback or call your logic here
-    });
-    const tileContainer = document.querySelector('.tiles');
-    tileContainer.addEventListener('dragover', e => e.preventDefault());
-    const trainContainer = document.querySelector('.trainContainer');
-    trainContainer.addEventListener('dragover', e => e.preventDefault());
-
-
-
     // TARGET NUMBER STUFF
     targetNumber_numbinstance = targetNumberNumbin.__numbinInstance;
     if (!targetNumber_numbinstance) {
@@ -230,11 +203,27 @@ function initSolverGame() {
             this.value = v;
         };
 
-        // activate the Numbin's drag and drop stuff
+        // activate the Numbin's drag and drop stuff (for tiles)
         slot.addEventListener('dragover', e => nb.handleDragover(e));
+        slot.addEventListener('dragleave', e => nb.handleDragEnd(e));
         slot.addEventListener('drop', e => nb.handleDrop(e));
 
     }
+
+    // COUNTDOWN TILE STUFF
+    const tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        console.log(tile);
+        tile.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', tile.dataset.value);
+            e.dataTransfer.effectAllowed = 'copy';
+        });
+    });
+
+    const trainContainer = document.querySelector('.trainContainer');
+    trainContainer.addEventListener('dragover', e => e.preventDefault());
+
+
     // runTests(these_tests, countdownSolve);
 
 }

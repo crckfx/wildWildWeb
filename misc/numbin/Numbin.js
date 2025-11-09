@@ -152,17 +152,25 @@ export class Numbin {
         // todo: factor out of attachEvents into here; attach if scrollable
     }
 
+    // --- drag and drop handlers ---
     handleDragover = (e) => {
         e.preventDefault();              // enables dropping
         e.dataTransfer.dropEffect = 'copy';        
+        this.el.classList.add('dragover');
     }
-
+    handleDragEnd = (e) => {
+        e.preventDefault();              // enables dropping
+        e.dataTransfer.dropEffect = 'copy';
+        this.el.classList.remove('dragover');
+    }
+    
     handleDrop = (e) => {
         // for dropping numbers onto one? like, it does this naturally if typeable, but what if it's not?
         // we might be able to preserve all the non-focus-typing-ey stuff from non-typeable IF we handle drop properly
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
         const val = parseInt(e.dataTransfer.getData('text/plain'), 10);
+        this.el.classList.remove('dragover');
         if (!Number.isFinite(val)) return;
         this.value = val; // runs clamp/loop logic and dispatches input
     }
