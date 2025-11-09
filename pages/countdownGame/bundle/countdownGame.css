@@ -14,9 +14,10 @@
     grid-template-columns: repeat(3, 1fr); 
     flex-wrap: wrap;
     gap: 8px;
+    padding: 0 24px;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 540px) {
     .numberSlots {
         grid-template-columns: repeat(auto-fit, minmax(5ch, 1fr));
     }
@@ -78,12 +79,12 @@
     transition: background-color .2s ease, color .1s ease;
     flex: 1;
     max-width: 400px;
-    height: 80px;
+    height: 70px;
     background-color: var(--color-bg-2);
     /* outline: 2px solid transparent; */
     border: 2px solid var(--color-bg-1);
     color: inherit;
-    font-size: 24px;
+    font-size: 20px;
     border-radius: 16px;
     cursor: pointer;
     outline:none;

@@ -186,19 +186,20 @@ function initSolverGame() {
 
 
         nb.increment = function (dir) {
-            const seq = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
+            const seq = this.sequence ?? [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 25, 50, 75, 100];
+            let v = this.value ?? seq[0];
 
-            // if empty/null, always start at first element
-            if (this.value == null) {
-                this.value = seq[0];
-                return;
+            if (dir > 0) {
+                for (let i = 0; i < seq.length; i++) {
+                    if (seq[i] > v) { v = seq[i]; break; }
+                }
+            } else if (dir < 0) {
+                for (let i = seq.length - 1; i >= 0; i--) {
+                    if (seq[i] < v) { v = seq[i]; break; }
+                }
             }
 
-            const i = seq.indexOf(this.value);
-            if (i === -1) return; // safety
-
-            const next = Math.min(seq.length - 1, Math.max(0, i + dir));
-            this.value = seq[next];
+            this.value = v;
         };
 
 

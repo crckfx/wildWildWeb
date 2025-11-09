@@ -18,6 +18,10 @@ yeah we got some stuff to do on the solver
 
 # interface(s)
 
+## todo
+
+- [ ] for example, typing '0' is allowed in a range 1-100. enter is prevented if the field is empty, and it should be prevented the same way if the field is '0'; don't just reset and carry on: clear it and stay there as if you'd entered "nothing"
+
 there's 2 different UIs being developed in parallel that use *solver*:
 
 - **traingame**

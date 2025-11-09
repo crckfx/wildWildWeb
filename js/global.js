@@ -12,7 +12,9 @@ function initNumbins() {
             min: +div.dataset.min || 0,
             max: +div.dataset.max || 9999,
             step: +div.dataset.step || 1,
-            loop: div.dataset.loop === "true"
+            loop: div.dataset.loop === "true",
+            draggable: !(div.dataset.draggable === "false"), // default to true
+            typeable: !(div.dataset.typeable === "false"), // default to true
         });
         div.__numbinInstance = nb;
     }
