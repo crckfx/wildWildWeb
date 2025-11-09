@@ -15,43 +15,55 @@
 						<input type="text" value="---">
 					</div>
 				</div>
-
 			</div>
 			<!-- functional parent for slots -->
-			<div class="slots_container marge1">
+			<div class="slots_container">
 				<h3>numbers<span class="test-display"></span></h3>
 				<!-- cosmetic extra parent layer for slots -->
 				<div class="numberSlots bg-2">
-					<div class="numbin solverGame" data-min="1" data-max="100">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
 						<input type="number">
 					</div>
-					<div class="numbin solverGame" data-min="1" data-max="100">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
 						<input type="number">
 					</div>
-					<div class="numbin solverGame" data-min="1" data-max="100">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
 						<input type="number">
 					</div>
-					<div class="numbin solverGame" data-min="1" data-max="100">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
 						<input type="number">
 					</div>
-					<div class="numbin solverGame" data-min="1" data-max="100">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
 						<input type="number">
 					</div>
-					<div class="numbin solverGame" data-min="1" data-max="100">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
 						<input type="number">
 					</div>
 				</div>
 			</div>
 
+<div class="dropZone">Drop here</div>
 
-            <div class="someTilesGrid">
-                <div class="small tiles">
-                    2x rows of 5 tiles
-                </div>
-                <div class="large tiles">
-                    1x row of 4 tiles
-                </div>
-            </div>
+			<div class="someTilesGrid">
+				<div class="small tiles">
+					<div class="tile" draggable="true" data-value="1">1</div>
+					<div class="tile" draggable="true" data-value="2">2</div>
+					<div class="tile" draggable="true" data-value="3">3</div>
+					<div class="tile" draggable="true" data-value="4">4</div>
+					<div class="tile" draggable="true" data-value="5">5</div>
+					<div class="tile" draggable="true" data-value="6">6</div>
+					<div class="tile" draggable="true" data-value="7">7</div>
+					<div class="tile" draggable="true" data-value="8">8</div>
+					<div class="tile" draggable="true" data-value="9">9</div>
+					<div class="tile" draggable="true" data-value="10">10</div>
+                    <div class="tile" draggable="true" data-value="25">25</div>
+                    <div class="tile" draggable="true" data-value="50">50</div>
+                    <div class="tile" draggable="true" data-value="75">75</div>
+                    <div class="tile" draggable="true" data-value="100">100</div>
+				</div>
+				<!-- <div class="large tiles">
+				</div> -->
+			</div>
 			<!-- <div class="test-display marge1">____</div> -->
 
 			<div class="buttonsDiv">
@@ -63,14 +75,14 @@
 
 			<div class="solutionsDiv hidden marge1">
 				<div class="message">
-                    <div>
-                        <span>Target: </span>
-                        <span class="solvedTargetPrint">_</span>
-                    </div>
-                    <div>
-                        <span>Numbers:</span>
-                        <span class="solvedNumset">____</span>
-                    </div>
+					<div>
+						<span>Target: </span>
+						<span class="solvedTargetPrint">_</span>
+					</div>
+					<div>
+						<span>Numbers:</span>
+						<span class="solvedNumset">____</span>
+					</div>
 					<div>
 						<span>Solutions: </span>
 						<span class="numberOfSolutions">_</span>

@@ -1,17 +1,18 @@
 /* --- containers --- */
 .trainContainer {
-    display: block;    
+    display: block;
 }
 
 .slots_container {
     width: 100%;
+    margin: 24px 0;
 }
 
 .numberSlots {
     display: grid;
     gap: 8px;
     justify-content: center;
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
     flex-wrap: wrap;
     gap: 8px;
     padding: 0 24px;
@@ -52,6 +53,7 @@
     text-align: center;
     margin-bottom: 48px;
 }
+
 .numbin.targetNumber {
     height: 100px;
     font-size: 40px;
@@ -87,10 +89,11 @@
     font-size: 20px;
     border-radius: 16px;
     cursor: pointer;
-    outline:none;
+    outline: none;
     box-shadow: var(--shadow-preset-B);
 
 }
+
 .buttonsDiv>button:hover {
     background-color: var(--color-bg-3);
 }
@@ -118,4 +121,67 @@
 .solutionsDiv.solved {
     opacity: 1;
     /* pointer-events: none; */
+}
+
+/* --- the tiles to pick from --- */
+/* overall wrapper */
+.someTilesGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    margin: 24px 0;
+}
+
+/* each section: row of tiles */
+.tiles {
+    display: grid;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 420px;
+
+}
+
+/* exactly 5 per row, grow to fill */
+.small.tiles {
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+
+/* visual tile styling */
+.tile {
+    background: blue;
+    border: 2px solid #999;
+    border-radius: 6px;
+    color: white;
+    text-align: center;
+    font-size: 1.4rem;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column-end: span 2;
+    ;
+}
+
+.tile:nth-child(11) {
+    grid-column-start: 2;
+}
+
+.tile {
+    user-select: none;
+    cursor: grab;
+}
+
+.tile:active {
+    cursor: grabbing;
+}
+
+.dropZone {
+    margin-top: 1rem;
+    height: 100px;
+    border: 2px dashed #999;
+    display: grid;
+    place-items: center;
 }

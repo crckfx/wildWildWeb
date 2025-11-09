@@ -149,12 +149,39 @@ function handleEnterKey(i) {
 
 // ---------- Initialization ----------
 function initSolverGame() {
+    // COUNTDOWN TILE STUFF
+    const tiles = document.querySelectorAll('.tile');
+    tiles.forEach(tile => {
+        console.log(tile);
+        tile.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', tile.dataset.value);
+            e.dataTransfer.effectAllowed = 'copy';
+        });
+    });
+    const zone = document.querySelector('.dropZone');
+    zone.addEventListener('dragover', e => {
+        e.preventDefault();              // enables dropping
+        e.dataTransfer.dropEffect = 'copy';
+    });
+    zone.addEventListener('drop', e => {
+        e.preventDefault();
+        const val = e.dataTransfer.getData('text/plain');
+        console.log('dropped', val);
+        // insert visual feedback or call your logic here
+    });
+    const tileContainer = document.querySelector('.tiles');
+    tileContainer.addEventListener('dragover', e => e.preventDefault());
+    const trainContainer = document.querySelector('.trainContainer');
+    trainContainer.addEventListener('dragover', e => e.preventDefault());
+
+
+
+    // TARGET NUMBER STUFF
     targetNumber_numbinstance = targetNumberNumbin.__numbinInstance;
     if (!targetNumber_numbinstance) {
         console.error("some issue with init, couldn't find targetNumber's numbin instance", targetNumber_numbinstance);
         return;
     }
-
     current_targetNumber = targetNumber_numbinstance.value;
     const target_input = targetNumberNumbin.querySelector('input');
     target_input.addEventListener("beforeinput", e => beforeInput_range(e, targetNumber_numbinstance));
@@ -166,6 +193,7 @@ function initSolverGame() {
     btn_randomiseTarget.addEventListener('click', randomiseTarget);
 
 
+    // SLOTS STUFF
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
         // given the following code, it is likely unnecessary to store 3 separate arrays (slots, inputs, nbs).
@@ -202,9 +230,12 @@ function initSolverGame() {
             this.value = v;
         };
 
+        // activate the Numbin's drag and drop stuff
+        slot.addEventListener('dragover', e => nb.handleDragover(e));
+        slot.addEventListener('drop', e => nb.handleDrop(e));
 
     }
-    runTests(these_tests, countdownSolve);
+    // runTests(these_tests, countdownSolve);
 
 }
 

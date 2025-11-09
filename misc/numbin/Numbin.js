@@ -4,7 +4,7 @@ export class Numbin {
             min = 0, max = 9999, step = 1,
             loop = false,
             dragIncrement = 10,
-            draggable = true, typeable = true
+            draggable = true, typeable = true, scrollable = true,
         } = {}
     ) {
         this.el = el;
@@ -37,6 +37,7 @@ export class Numbin {
         this.activeId = null;
         this.draggable = draggable;
         this.typeable = typeable;
+        this.scrollable = scrollable;
 
         this.attachEvents();
 
@@ -147,6 +148,25 @@ export class Numbin {
         }
     }
 
+    handleWheel = (e) => {
+        // todo: factor out of attachEvents into here; attach if scrollable
+    }
+
+    handleDragover = (e) => {
+        e.preventDefault();              // enables dropping
+        e.dataTransfer.dropEffect = 'copy';        
+    }
+
+    handleDrop = (e) => {
+        // for dropping numbers onto one? like, it does this naturally if typeable, but what if it's not?
+        // we might be able to preserve all the non-focus-typing-ey stuff from non-typeable IF we handle drop properly
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        const val = parseInt(e.dataTransfer.getData('text/plain'), 10);
+        if (!Number.isFinite(val)) return;
+        this.value = val; // runs clamp/loop logic and dispatches input
+    }
+
     attachEvents() {
         const el = this.el;
 
@@ -160,12 +180,14 @@ export class Numbin {
             this.input.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
         }
 
-        el.addEventListener("wheel", e => {
-            e.preventDefault();
-            const dir = Math.sign(e.deltaY);
-            // if (dir) this.value = this.value === null ? 0 : this.value - dir * this.step;
-            if (dir) this.increment(-dir);
-        }, { passive: false });
+        if (this.scrollable) {
+            el.addEventListener("wheel", e => {
+                e.preventDefault();
+                const dir = Math.sign(e.deltaY);
+                // if (dir) this.value = this.value === null ? 0 : this.value - dir * this.step;
+                if (dir) this.increment(-dir);
+            }, { passive: false });
+        }
 
         this.input.addEventListener("keydown", e => {
             switch (e.key) {
