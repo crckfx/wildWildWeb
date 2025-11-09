@@ -68,6 +68,7 @@ function resetInputs() {
         const nb = nbs[i];
         nb.input.value = '';
         numset[i] = null;
+        slots[i].classList.remove('valid');
     }
     printSet(); // single call at end
     clearSolutions();
@@ -178,6 +179,7 @@ function initSolverGame() {
     // SLOTS STUFF
     for (let i = 0; i < slots.length; i++) {
         const slot = slots[i];
+
         // given the following code, it is likely unnecessary to store 3 separate arrays (slots, inputs, nbs).
         // the local handleInput override still relies on passing 'i', so for now we'll leave it for convenience.
         // UPDATE: 'inputs' array has been nuked; it's only the 2 arrays now remaining
@@ -186,6 +188,13 @@ function initSolverGame() {
             console.error('some issue with init, no numbin instance for:', slot);
             return;
         }
+
+        slot.addEventListener('click', e => {
+            if (nb.value) {
+                nb.input.value = '';
+                slot.classList.remove('valid');
+            }            
+        })
 
         // apply the input overrides to the numbin
         nb.handleBeforeInput = e => beforeInput_range(e, nb);
@@ -299,6 +308,7 @@ function enableTilePointerDrag(tile, value) {
             // console.log(nbs[slot]);
             const nb = nbs[slot];
             nb.value = Number(value);
+            slots[slot].classList.add('valid');
         } else {
             msg = `there are no available slots`;
         }
@@ -387,7 +397,11 @@ function enableTilePointerDrag(tile, value) {
             const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
             const nb = dropTarget ? dropTarget.closest('.numbin') : null;
 
-            if (nb) nb.__numbinInstance.value = Number(value);
+            if (nb) {
+                nb.__numbinInstance.value = Number(value);
+                nb.classList.add('valid');
+            }
+
         }
 
         lastTarget?.classList.remove('dragover');

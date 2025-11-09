@@ -20,7 +20,7 @@ export class Numbin {
         input.step = step;
         input.value = el.dataset.value || null;
         input.setAttribute('inputmode', 'numeric');
-        input.type = "text";
+        input.type = typeable ? "text" : "number";
 
 
         el.appendChild(input);
@@ -42,12 +42,13 @@ export class Numbin {
         this.attachEvents();
 
         if (!this.typeable) {
-            this.input.readOnly = true;
+            // this.input.readOnly = true;
             this.input.setAttribute('inputmode', 'none');
             // this.input.tabIndex = -1;
             this.input.style.caretColor = 'transparent';
             this.input.style.userSelect = 'none';
             this.input.style.pointerEvents = 'none';   // clicks go to container or page
+            this.input.disabled = true;
         }
 
 
