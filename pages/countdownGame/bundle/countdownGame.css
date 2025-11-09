@@ -213,7 +213,11 @@
 }
 
 .tile.drag-clone {
-    background-color: red;
+    background-color: turquoise;
     box-shadow: var(--inset-preset-3), var(--shadow-preset-A);
 }
 
+
+.buttonsDiv>button.ready {
+    background-color: green;
+}

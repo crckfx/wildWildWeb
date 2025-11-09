@@ -47,6 +47,13 @@ function printSet() {
 // 
 function updateNumset(i, value) {
     numset[i] = value;
+    const complete = !(numset.includes(null));
+    console.log(`numset is complete: ${complete}`);
+    if (complete) {
+        btn_toSolve.classList.add('ready');
+    } else {
+        btn_toSolve.classList.remove('ready');
+    }
     printSet();
     revalidateSolvedState();
 }
@@ -70,6 +77,7 @@ function resetInputs() {
         numset[i] = null;
         slots[i].classList.remove('valid');
     }
+    btn_toSolve.classList.remove('ready');
     printSet(); // single call at end
     clearSolutions();
 }
@@ -193,6 +201,7 @@ function initSolverGame() {
             if (nb.value) {
                 nb.input.value = '';
                 slot.classList.remove('valid');
+                updateNumset(i, null);
             }            
         })
 
