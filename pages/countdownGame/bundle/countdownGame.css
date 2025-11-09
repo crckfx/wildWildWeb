@@ -179,6 +179,7 @@
     box-shadow: var(--shadow-preset-B);
     user-select: none;
     cursor: grab;
+    touch-action: none;
 }
 
 .tile:active {

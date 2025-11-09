@@ -15,6 +15,7 @@ function initNumbins() {
             loop: div.dataset.loop === "true",
             draggable: !(div.dataset.draggable === "false"), // default to true
             typeable: !(div.dataset.typeable === "false"), // default to true
+            scrollable: !(div.dataset.scrollable === "false"), // default to true
         });
         div.__numbinInstance = nb;
     }

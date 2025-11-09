@@ -203,21 +203,24 @@ function initSolverGame() {
             this.value = v;
         };
 
-        // activate the Numbin's drag and drop stuff (for tiles)
-        slot.addEventListener('dragover', e => nb.handleDragover(e));
-        slot.addEventListener('dragleave', e => nb.handleDragEnd(e));
-        slot.addEventListener('drop', e => nb.handleDrop(e));
+        // // activate the Numbin's drag and drop stuff (for tiles)
+        // slot.addEventListener('dragover', e => nb.handleDragover(e));
+        // slot.addEventListener('dragleave', e => nb.handleDragEnd(e));
+        // slot.addEventListener('drop', e => nb.handleDrop(e));
 
     }
 
     // COUNTDOWN TILE STUFF
     const tiles = document.querySelectorAll('.tile');
     tiles.forEach(tile => {
-        console.log(tile);
-        tile.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/plain', tile.dataset.value);
-            e.dataTransfer.effectAllowed = 'copy';
-        });
+        // console.log(tile);
+        const value = tile.dataset.value;
+        // tile.addEventListener('dragstart', e => {
+        //     e.dataTransfer.setData('text/plain', tile.dataset.value);
+        //     e.dataTransfer.effectAllowed = 'copy';
+        // });
+
+        enableTilePointerDrag(tile, value)
     });
 
     const trainContainer = document.querySelector('.trainContainer');
@@ -262,4 +265,114 @@ const these_tests = [
     { nums: [25, 50, 4, 2, 3, 9], target: 817 },
 ];
 
+
+function enableTilePointerDrag(tile, value) {
+    let id = null;
+    let clone = null;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    let lastTarget = null;
+    let rafPending = false;
+    let latestEvent = null;
+
+    tile.addEventListener('pointerdown', e => {
+        e.preventDefault();
+        if (e.button !== 0 || id !== null) return;
+        id = e.pointerId;
+        tile.setPointerCapture(id);
+
+        const rect = tile.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+
+        clone = tile.cloneNode(true);
+        clone.style.position = 'fixed';
+        clone.style.left = `${rect.left}px`;
+        clone.style.top = `${rect.top}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+        clone.style.pointerEvents = 'none';
+        clone.style.opacity = '1';
+        clone.style.zIndex = '9999';
+        clone.classList.add('drag-clone');
+
+        document.body.appendChild(clone);
+        console.log(`cloned ${value}`);
+    });
+
+    tile.addEventListener('pointermove', e => {
+        e.preventDefault();
+        if (e.pointerId !== id || !clone) return;
+
+        latestEvent = e;
+        if (!rafPending) {
+            rafPending = true;
+            requestAnimationFrame(() => {
+                rafPending = false;
+                if (!latestEvent) return;
+
+                const x = latestEvent.clientX - offsetX;
+                const y = latestEvent.clientY - offsetY;
+                clone.style.left = `${x}px`;
+                clone.style.top = `${y}px`;
+
+                const dropTarget = document.elementFromPoint(latestEvent.clientX, latestEvent.clientY);
+                const nb = dropTarget ? dropTarget.closest('.numbin') : null;
+
+                if (nb !== lastTarget) {
+                    lastTarget?.classList.remove('dragover');
+                    nb?.classList.add('dragover');
+                    lastTarget = nb;
+                }
+
+                // console.log(`drag over `, dropTarget);
+            });
+        }
+    }, { passive: false });
+
+    tile.addEventListener('pointerup', e => {
+        if (e.pointerId !== id) return;
+        tile.releasePointerCapture(id);
+        const dropTarget = document.elementFromPoint(latestEvent.clientX, latestEvent.clientY);
+        const nb = dropTarget ? dropTarget.closest('.numbin') : null;
+
+        
+        if (nb) {
+            // console.log(`dropped ${value} on`, nb.__numbinInstance);
+            nb.__numbinInstance.value = Number(value);
+        }
+        
+        
+        lastTarget?.classList.remove('dragover');
+        lastTarget = null;
+
+
+        if (clone) {
+            clone.remove();
+            clone = null;
+        }
+
+        id = null;
+        rafPending = false;
+        latestEvent = null;
+    });
+
+    tile.addEventListener('pointercancel', e => {
+        if (e.pointerId === id) {
+            tile.releasePointerCapture(id);
+            lastTarget?.classList.remove('dragover');
+            lastTarget = null;
+
+            if (clone) {
+                clone.remove();
+                clone = null;
+            }
+
+            id = null;
+            rafPending = false;
+            latestEvent = null;
+        }
+    });
+}
 
