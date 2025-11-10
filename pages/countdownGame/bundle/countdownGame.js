@@ -54,7 +54,7 @@ function updateNumset(i, value) {
     } else {
         btn_toSolve.classList.remove('ready');
     }
-    printSet();
+    // printSet();
     revalidateSolvedState();
 }
 
@@ -78,7 +78,7 @@ function resetInputs() {
         slots[i].classList.remove('valid');
     }
     btn_toSolve.classList.remove('ready');
-    printSet(); // single call at end
+    // printSet(); // single call at end
     clearSolutions();
 }
 
@@ -198,6 +198,11 @@ function initSolverGame() {
         current_targetNumber = targetNumber_numbinstance.value;
         revalidateSolvedState();
 
+        if (current_targetNumber === null) {
+            targetNumberNumbin.classList.remove('valid');
+        } else {
+            targetNumberNumbin.classList.add('valid');
+        }
 
         const complete = (!(numset.includes(null)) && current_targetNumber !== null);
         // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);

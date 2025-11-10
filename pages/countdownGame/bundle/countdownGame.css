@@ -1,9 +1,20 @@
 :root {
+    --bg: var(--color-bg-1);
+
     --tile-color: #2e60aa;
     --tile-color-2: #233f69;
     --tile-text: #fff;
     --slot-color: #2222a5;
     --slot-color-2: #06064b;
+
+    --rand-1: #224d7b;
+
+    --accent: #79DAFF;
+    --accent50: #79DAFFaa;
+}
+
+[data-theme='dark'] {
+    --bg: #0e0e11;
 }
 
 
@@ -12,9 +23,15 @@
     display: block;
 }
 
+.slots_and_targets {
+    /* badly named lol, a parent box from the game show's real layout */
+    background-color: var(--rand-1);
+    margin: 24px 0;
+    padding: 24px 24px;
+}
+
 .slots_container {
     width: 100%;
-    margin: 24px 0;
 }
 
 .numberSlots {
@@ -23,7 +40,7 @@
     justify-content: center;
     grid-template-columns: repeat(3, 1fr);
     /* flex-wrap: wrap; */
-    padding: 0 24px;
+    /* padding: 0 24px; */
     font-size: 24px;
 }
 
@@ -58,10 +75,10 @@
 }
 
 .numbin.solverGame.valid {
-    border-color: turquoise;
+    border-color: var(--accent);
 }
 
-
+/* 
 .numbin {
     outline: 2px solid transparent;
 }
@@ -69,7 +86,7 @@
 .numbin:focus,
 .numbin:has(input:focus) {
     outline-color: var(--color-footer-1);
-}
+} */
 
 /* --- target number numbin --- */
 .targetDiv {
@@ -85,6 +102,12 @@
     width: 7ch;
     background-color: var(--slot-color-2);
     color: var(--tile-text);
+    border-radius: 4px;
+    border: 4px solid grey;
+}
+
+.numbin.targetNumber.valid {
+    border-color: var(--accent);
 }
 
 /* --- stuff --- */
@@ -100,27 +123,42 @@
     display: flex;
     width: 100%;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .buttonsDiv>button {
     transition: background-color .2s ease, color .1s ease;
-    flex: 1;
+    /* flex: 1; */
     max-width: 400px;
-    height: 70px;
+    /* height: 70px; */
     background-color: var(--color-bg-2);
     /* outline: 2px solid transparent; */
-    border: 2px solid var(--color-bg-1);
+    border: none;
+    /* border: 2px solid var(--color-bg-1); */
     color: inherit;
-    font-size: 20px;
+    font-size: 14px;
     border-radius: 16px;
     cursor: pointer;
     outline: none;
     box-shadow: var(--shadow-preset-B);
+    padding: 1.125em 2.5em;
+    border-radius: 999px;
+}
 
+@media (min-width: 600px) {
+    .buttonsDiv>button {
+        font-size: 18px;
+        padding: 1.125em 2.5em;
+    }
 }
 
 .buttonsDiv>button:hover {
     background-color: var(--color-bg-3);
+}
+
+.buttonsDiv>button.ready {
+    background-color: green;
+    color: white;
 }
 
 .buttonsDiv>button:focus-visible {
@@ -181,7 +219,7 @@
     border-radius: 4px;
     color: var(--tile-text);
     text-align: center;
-    font-size: 1.4rem;
+    font-size: inherit;
     aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
@@ -214,19 +252,15 @@
     background-color: var(--slot-color-2);
 }
 
+.tile.drag-clone.pressed,
 .tile.drag-clone {
     background-color: turquoise;
     box-shadow: var(--inset-preset-3), var(--shadow-preset-A);
 }
 
 
-.buttonsDiv>button.ready {
-    background-color: green;
-}
 
 .tile.pressed {
-        background: var(--tile-color-2);
-
-        box-shadow: var(--shadow-preset-A);
-
+    background: var(--tile-color-2);
+    box-shadow: var(--shadow-preset-A);
 }
