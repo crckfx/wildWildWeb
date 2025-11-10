@@ -55,12 +55,12 @@
 
 
 
-/* Remove native spin buttons - possibly obsolete? */
-/* .numbin>input[type="number"]::-webkit-outer-spin-button,
+/* Remove native spin buttons - necessary for numeric centering on chrome */
+.numbin>input[type="number"]::-webkit-outer-spin-button,
 .numbin>input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-} */
+}
 
 /* Ensure inner input inherits rounded shape */
 .numbin>input {
