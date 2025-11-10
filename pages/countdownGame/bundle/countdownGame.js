@@ -164,6 +164,23 @@ function findAvailableSlot() {
     return -1;
 }
 
+function handleTileClick(value) {
+    // not for real clicks but for ones sent from the pointer handling
+    const slot = findAvailableSlot();
+    let msg;
+    if (slot > -1) {
+        msg = `the first available slot is ${slot}`
+        // console.log(nbs[slot]);
+        const nb = nbs[slot];
+        nb.value = Number(value);
+        slots[slot].classList.add('valid');
+    } else {
+        msg = `there are no available slots`;
+    }
+    console.log(msg);
+    // console.log('clickity');
+    // console.log(findAvailableSlot());
+}
 
 // ---------- Initialization ----------
 function initSolverGame() {
@@ -319,29 +336,12 @@ function enableTilePointerDrag(tile, value) {
     const DRAG_THRESHOLD = 8;        // pixels
     const DRAG_THRESHOLD_SQ = DRAG_THRESHOLD * DRAG_THRESHOLD;
 
-    tile.addEventListener('click', e => {
-        const slot = findAvailableSlot();
-        let msg;
-        if (slot > -1) {
-            msg = `the first available slot is ${slot}`
-            // console.log(nbs[slot]);
-            const nb = nbs[slot];
-            nb.value = Number(value);
-            slots[slot].classList.add('valid');
-        } else {
-            msg = `there are no available slots`;
-        }
-        console.log(msg);
-        // console.log('clickity');
-        // console.log(findAvailableSlot());
-    });
-
     tile.addEventListener('pointerdown', e => {
         e.preventDefault();
         if (e.button !== 0 || id !== null) return;
         id = e.pointerId;
         tile.setPointerCapture(id);
-
+        tile.classList.add('pressed');
         startX = e.clientX;
         startY = e.clientY;
         dragging = false;
@@ -358,6 +358,7 @@ function enableTilePointerDrag(tile, value) {
 
         // initiate drag if threshold crossed and clone not yet created
         if (!dragging && distSq > DRAG_THRESHOLD_SQ) {
+
             const rect = tile.getBoundingClientRect();
             offsetX = e.clientX - rect.left;
             offsetY = e.clientY - rect.top;
@@ -406,7 +407,7 @@ function enableTilePointerDrag(tile, value) {
     tile.addEventListener('pointerup', e => {
         if (e.pointerId !== id) return;
         tile.releasePointerCapture(id);
-
+        tile.classList.remove('pressed');
         if (rafId !== null) {
             cancelAnimationFrame(rafId);
             rafId = null;
@@ -420,8 +421,12 @@ function enableTilePointerDrag(tile, value) {
                 nb.__numbinInstance.value = Number(value);
                 nb.classList.add('valid');
             }
-
+        } else if (!dragging && !clone) {
+            console.log(`one might call that a click`);
+            handleTileClick(value);
         }
+
+
 
         lastTarget?.classList.remove('dragover');
         lastTarget = null;
@@ -437,6 +442,7 @@ function enableTilePointerDrag(tile, value) {
     tile.addEventListener('pointercancel', e => {
         if (e.pointerId === id) {
             tile.releasePointerCapture(id);
+            tile.classList.remove('pressed');
 
             if (rafId !== null) {
                 cancelAnimationFrame(rafId);

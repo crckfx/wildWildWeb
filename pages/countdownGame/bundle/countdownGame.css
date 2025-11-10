@@ -1,5 +1,6 @@
 :root {
     --tile-color: #2e60aa;
+    --tile-color-2: #233f69;
     --tile-text: #fff;
     --slot-color: #2222a5;
     --slot-color-2: #06064b;
@@ -191,9 +192,10 @@
     touch-action: none;
 }
 
+/* .tile:focus:active,
 .tile:active {
     box-shadow: var(--shadow-preset-B);
-}
+} */
 
 .tile:nth-child(11) {
     grid-column-start: 2;
@@ -220,4 +222,11 @@
 
 .buttonsDiv>button.ready {
     background-color: green;
+}
+
+.tile.pressed {
+        background: var(--tile-color-2);
+
+        box-shadow: var(--shadow-preset-A);
+
 }
