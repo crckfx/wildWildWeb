@@ -230,5 +230,9 @@
                 "contentPath": "pages/showcase/icons.html"
             }
         }
+    },
+    "tweakage": {
+        "title": "Tweakage",
+        "contentPath": "pages/tweakage/tweakage.html"
     }
 }

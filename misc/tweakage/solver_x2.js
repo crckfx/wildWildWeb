@@ -14,7 +14,7 @@
 // ============================================================
 
 export function countdownSolve(numbers, target, opts = {}) {
-    const { maxSolutions = 500 } = opts;
+    const { maxSolutions = 500, kitchenSink = false } = opts;
 
     // ------------------------------------------------------------
     // Normalize all inputs to numeric form.
@@ -117,6 +117,7 @@ export function countdownSolve(numbers, target, opts = {}) {
     const n = numbers.length;
     for (let mask = 1; mask < (1 << n); mask++) {
         if ((mask & (mask - 1)) === 0) continue; // skip single-element subsets
+        if (kitchenSink && mask !== (1 << n) - 1) continue; // skip partial subsets
 
         // Collect numbers present in this subset bitmask
         const subset = [];

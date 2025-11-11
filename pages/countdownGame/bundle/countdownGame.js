@@ -286,7 +286,7 @@ function initSolverGame() {
     trainContainer.addEventListener('dragover', e => e.preventDefault());
 
 
-    // runTests(these_tests, countdownSolve);
+    runTests(these_tests, countdownSolve);
 
 }
 
@@ -303,7 +303,7 @@ btn_toSolve.onclick = () => {
         return;
     }
 
-    const sols = countdownSolve(numset, target);
+    const sols = countdownSolve(numset, target, {kitchenSink: true});
     solvedTarget = target;
     console.group(`nums=${numset.join(',')} target=${target}`);
     console.log(`Total solutions: ${sols.length}`);
@@ -322,6 +322,7 @@ const these_tests = [
     { nums: [25, 100, 4, 9, 10, 4], target: 361 },
     { nums: [25, 75, 1, 3, 7, 10], target: 621 },
     { nums: [25, 50, 4, 2, 3, 9], target: 817 },
+    { nums: [2, 3, 4, 10], target: 55 },
 ];
 
 
