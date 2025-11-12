@@ -117,22 +117,11 @@
 }
 
 .buttonsDiv>button {
-    transition: background-color .2s ease, color .1s ease;
-    /* flex: 1; */
-    max-width: 400px;
-    /* height: 70px; */
     background-color: var(--color-bg-2);
-    /* outline: 2px solid transparent; */
-    border: none;
-    /* border: 2px solid var(--color-bg-1); */
-    color: inherit;
-    font-size: 14px;
-    border-radius: 16px;
-    cursor: pointer;
-    outline: none;
     box-shadow: var(--shadow-preset-B);
     padding: 1.125em 2.5em;
-    border-radius: 999px;
+    font-size: 14px;
+    max-width: 400px;
 }
 
 @media (min-width: 600px) {
@@ -142,24 +131,6 @@
     }
 }
 
-.buttonsDiv>button:hover {
-    background-color: var(--color-bg-3);
-}
-
-.buttonsDiv>button.ready {
-    background-color: green;
-    color: white;
-}
-
-.buttonsDiv>button:focus-visible {
-    outline: 2px solid var(--color-feature-1);
-}
-
-.buttonsDiv>button:active {
-    border-color: var(--color-footer-1);
-    color: var(--color-footer-1);
-    background-color: var(--color-bg-2);
-}
 
 
 .solutionsDiv {

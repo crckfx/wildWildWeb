@@ -1,0 +1,27 @@
+.buttonsDiv>button {
+    border: none;
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+    color: inherit;
+    transition: background-color .2s ease, color .1s ease;
+}
+
+.buttonsDiv>button:hover {
+    background-color: var(--color-bg-3);
+}
+
+.buttonsDiv>button.ready {
+    background-color: green;
+    color: white;
+}
+
+.buttonsDiv>button:focus-visible {
+    outline: 2px solid var(--color-feature-1);
+}
+
+.buttonsDiv>button:active {
+    border-color: var(--color-footer-1);
+    color: var(--color-footer-1);
+    background-color: var(--color-bg-2);
+}

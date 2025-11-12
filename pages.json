@@ -221,7 +221,10 @@
         "imports": [
             "pages/countdownGame/bundle"
         ],
-        "styles": "/countdownGame/bundle/countdownGame.css"
+        "styles": [
+            "/countdownGame/bundle/countdownGame.css",
+            "/countdownGame/bundle/someButton.css"
+        ]
     },
     "showcase": {
         "children": {
