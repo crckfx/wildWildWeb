@@ -32,8 +32,6 @@ let solvedSet = null;
 let solvedTarget = null;
 let current_targetNumber = null;
 
-
-
 // ---------- Core helpers ----------
 
 // update crude print as text
@@ -54,9 +52,29 @@ function updateNumset(i, value) {
     } else {
         btn_toSolve.classList.remove('ready');
     }
-    // printSet();
     revalidateSolvedState();
 }
+
+function updateTargetNum() {
+        // update the current guy
+        current_targetNumber = targetNumber_numbinstance.value;
+        revalidateSolvedState();
+
+        if (current_targetNumber === null) {
+            targetNumberNumbin.classList.remove('valid');
+        } else {
+            targetNumberNumbin.classList.add('valid');
+        }
+
+        const complete = (!(numset.includes(null)) && current_targetNumber !== null);
+        // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);
+        if (complete) {
+            btn_toSolve.classList.add('ready');
+        } else {
+            btn_toSolve.classList.remove('ready');
+        }
+
+    }
 
 function revalidateSolvedState() {
     if (!solvedSet) return;
@@ -78,7 +96,6 @@ function resetInputs() {
         slots[i].classList.remove('valid');
     }
     btn_toSolve.classList.remove('ready');
-    // printSet(); // single call at end
     clearSolutions();
 }
 
@@ -170,16 +187,33 @@ function handleTileClick(value) {
     let msg;
     if (slot > -1) {
         msg = `the first available slot is ${slot}`
-        // console.log(nbs[slot]);
         const nb = nbs[slot];
         nb.value = Number(value);
         slots[slot].classList.add('valid');
     } else {
         msg = `there are no available slots`;
     }
-    console.log(msg);
-    // console.log('clickity');
-    // console.log(findAvailableSlot());
+    // console.log(msg);
+}
+
+function solvePuzzle() {
+    if (numset.includes(null)) return;
+
+    const target = targetNumber_numbinstance.value;
+
+    // exit if out of bounds
+    if (target < targetNumber_numbinstance.min || target > targetNumber_numbinstance.max) {
+        targetNumberInput.focus();
+        return;
+    }
+
+    const sols = countdownSolve(numset, target, {kitchenSink: true});
+    solvedTarget = target;
+    console.group(`nums=${numset.join(',')} target=${target}`);
+    console.log(`Total solutions: ${sols.length}`);
+    console.log(sols);
+    console.groupEnd();
+    printSolutions(numset, target, sols);
 }
 
 // ---------- Initialization ----------
@@ -193,26 +227,7 @@ function initSolverGame() {
     current_targetNumber = targetNumber_numbinstance.value;
     const target_input = targetNumberNumbin.querySelector('input');
     target_input.addEventListener("beforeinput", e => beforeInput_range(e, targetNumber_numbinstance));
-    target_input.addEventListener("input", e => {
-        // update the current guy
-        current_targetNumber = targetNumber_numbinstance.value;
-        revalidateSolvedState();
-
-        if (current_targetNumber === null) {
-            targetNumberNumbin.classList.remove('valid');
-        } else {
-            targetNumberNumbin.classList.add('valid');
-        }
-
-        const complete = (!(numset.includes(null)) && current_targetNumber !== null);
-        // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);
-        if (complete) {
-            btn_toSolve.classList.add('ready');
-        } else {
-            btn_toSolve.classList.remove('ready');
-        }
-
-    });
+    target_input.addEventListener('input', updateTargetNum);
     btn_randomiseTarget.addEventListener('click', randomiseTarget);
 
 
@@ -261,56 +276,25 @@ function initSolverGame() {
 
             this.value = v;
         };
-
-        // // activate the Numbin's drag and drop stuff (for tiles)
-        // slot.addEventListener('dragover', e => nb.handleDragover(e));
-        // slot.addEventListener('dragleave', e => nb.handleDragEnd(e));
-        // slot.addEventListener('drop', e => nb.handleDrop(e));
-
     }
 
     // COUNTDOWN TILE STUFF
     const tiles = document.querySelectorAll('.tile');
     tiles.forEach(tile => {
-        // console.log(tile);
         const value = tile.dataset.value;
-        // tile.addEventListener('dragstart', e => {
-        //     e.dataTransfer.setData('text/plain', tile.dataset.value);
-        //     e.dataTransfer.effectAllowed = 'copy';
-        // });
-
         enableTilePointerDrag(tile, value)
     });
 
-    const trainContainer = document.querySelector('.trainContainer');
-    trainContainer.addEventListener('dragover', e => e.preventDefault());
-
+    const gameContainer = document.querySelector('.gameContainer');
+    gameContainer.addEventListener('dragover', e => e.preventDefault());
 
     runTests(these_tests, countdownSolve);
 
 }
 
 // ---------- Button bindings ----------
-btn_toReset.onclick = () => resetInputs();
-btn_toSolve.onclick = () => {
-    if (numset.includes(null)) return;
-
-    const target = targetNumber_numbinstance.value;
-
-    // exit if out of bounds
-    if (target < targetNumber_numbinstance.min || target > targetNumber_numbinstance.max) {
-        targetNumberInput.focus();
-        return;
-    }
-
-    const sols = countdownSolve(numset, target, {kitchenSink: true});
-    solvedTarget = target;
-    console.group(`nums=${numset.join(',')} target=${target}`);
-    console.log(`Total solutions: ${sols.length}`);
-    console.log(sols);
-    console.groupEnd();
-    printSolutions(numset, target, sols);
-}
+btn_toReset.addEventListener('click', resetInputs);
+btn_toSolve.addEventListener('click', solvePuzzle);
 
 
 
@@ -431,8 +415,6 @@ function enableTilePointerDrag(tile, value) {
             console.log(`one might call that a click`);
             handleTileClick(value);
         }
-
-
 
         lastTarget?.classList.remove('dragover');
         lastTarget = null;

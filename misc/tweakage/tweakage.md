@@ -10,11 +10,15 @@ it takes in:
 
 and tries to make a maths out of the bunch of numbers to solve for the target, using simple math operations (```+ - * /```)
 
+it also takes some some options:
+- max solutions (default 500)
+- kitchenSink (boolean for "must use all numbers")
+
 ## todo
 
 yeah we got some stuff to do on the solver
 
-- [ ] implement ***kitchenSink*** flag
+- [x] implement ***kitchenSink*** flag
 
 # interface(s)
 
@@ -26,7 +30,7 @@ there's 2 different UIs being developed in parallel that use *solver*:
 ### an interface uses several numbins
 
 - always 1x for the **targetNumber** (1-999)
-- ***traingame*** uses 4x digits (0-9)
+- ***traingame*** uses all 4x digits (0-9)
 - ***countdown*** uses 6x numbers (1-100)
 
 ### event overrides: why we're trying to get them out of the UI scripts

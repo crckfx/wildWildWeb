@@ -19,7 +19,7 @@
 
 
 /* --- containers --- */
-.trainContainer {
+.gameContainer {
     display: block;
 }
 
@@ -52,7 +52,7 @@
 }
 
 /* --- numbins --- */
-.trainContainer .numbin {
+.gameContainer .numbin {
     box-shadow: var(--shadow-preset-B);
 }
 
@@ -77,16 +77,6 @@
 .numbin.solverGame.valid {
     border-color: var(--accent);
 }
-
-/* 
-.numbin {
-    outline: 2px solid transparent;
-}
-
-.numbin:focus,
-.numbin:has(input:focus) {
-    outline-color: var(--color-footer-1);
-} */
 
 /* --- target number numbin --- */
 .targetDiv {
@@ -173,7 +163,7 @@
 
 
 .solutionsDiv {
-    opacity: 0.5;
+    opacity: 0.35;
     transition: opacity 0.2s;
 }
 
