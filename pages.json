@@ -206,7 +206,7 @@
             "rord": {
                 "title": "Rord",
                 "contentPath": "pages/feature/reorder/rord.html",
-                "imports": "pages/feature/reorder/bundle"
+                "styles": "/misc/rord/rord.css"
             },
             "nothing": {
                 "imports": "assets/favicon.ico"
