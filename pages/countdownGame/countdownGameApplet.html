@@ -1,0 +1,119 @@
+<style>
+	.applet {
+		--applet-bg: var(--color-bg-1);
+		--applet-text: var(--color-text-1);
+		--control-bg: var(--color-bg-3);
+
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		background-color: var(--applet-bg);
+		position: relative;
+		/* height: 100svh; */
+		/* min-height: 100svh; */
+		max-height: 100svh;
+		margin: 0;
+		overflow-x: clip;
+		/* overflow-y: clip; */
+		color: var(--applet-text);
+	}
+
+    .slots_container {
+        display: flex;
+        justify-content: center;
+    }
+	.numberSlots {
+        max-width: 640px;
+    }
+</style>
+
+<div class="applet">
+	<!-- game or whatever main thing -->
+	<div class="gameContainer">
+		<div class="slots_and_targets">
+			<div class="targetContainer">
+				<div class="targetDiv">
+					<span class="targetRandomise">
+						<button class="randomise">Randomise!</button>
+					</span>
+					<div class="numbin targetNumber" data-min="1" data-max="999">
+						<input type="text" placeholder="---">
+					</div>
+				</div>
+			</div>
+			<!-- functional parent for slots -->
+			<div class="slots_container">
+				<!-- cosmetic extra parent layer for slots -->
+				<div class="numberSlots bg-2">
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
+						<input type="number">
+					</div>
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
+						<input type="number">
+					</div>
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
+						<input type="number">
+					</div>
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
+						<input type="number">
+					</div>
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
+						<input type="number">
+					</div>
+					<div class="numbin solverGame" data-min="1" data-max="100" data-draggable="false" data-scrollable="false" data-typeable="false">
+						<input type="number">
+					</div>
+				</div>
+			</div>
+			<div class="buttonsDiv">
+				<button class="toSolve someButton" tabindex="0">Solve</button>
+				<button class="toReset someButton" tabindex="0">Reset</button>
+			</div>
+		</div>
+
+		<div class="someTilesGrid">
+			<div class="small tiles">
+				<div class="tile" data-value="1">1</div>
+				<div class="tile" data-value="2">2</div>
+				<div class="tile" data-value="3">3</div>
+				<div class="tile" data-value="4">4</div>
+				<div class="tile" data-value="5">5</div>
+				<div class="tile" data-value="6">6</div>
+				<div class="tile" data-value="7">7</div>
+				<div class="tile" data-value="8">8</div>
+				<div class="tile" data-value="9">9</div>
+				<div class="tile" data-value="10">10</div>
+				<div class="tile" data-value="25">25</div>
+				<div class="tile" data-value="50">50</div>
+				<div class="tile" data-value="75">75</div>
+				<div class="tile" data-value="100">100</div>
+			</div>
+			<!-- <div class="large tiles">
+				</div> -->
+		</div>
+		<!-- <div class="test-display marge1">____</div> -->
+
+
+
+
+
+		<div class="solutionsDiv hidden marge1">
+			<div class="message">
+				<div>
+					<span>Target: </span>
+					<span class="solvedTargetPrint">_</span>
+				</div>
+				<div>
+					<span>Numbers:</span>
+					<span class="solvedNumset">____</span>
+				</div>
+				<div>
+					<span>Solutions: </span>
+					<span class="numberOfSolutions">_</span>
+				</div>
+			</div>
+			<ol class="solutionsList"></ol>
+		</div>
+	</div>
+</div>
+<script type="module" src="/countdownGame/bundle/countdownGame.js"></script>

@@ -51,7 +51,7 @@ nav[aria-expanded="true"] .nav-container {
     cursor: pointer;
     margin-left: auto;
     transition: color 0.3s ease;
-    padding: 6px 12px 0px 12px;
+    /* padding: 6px 12px 0px 12px; */
 }
 
 .menu-toggle:hover {
@@ -279,12 +279,6 @@ nav[aria-expanded="true"] .menu-wrapper {
     .menu-toggle .icon {
         width: 32px;
         height: 32px;
-    }
-
-    .menu-toggle {
-        /* top: 24px; */
-        /* right: 0px; */
-        padding: 12px 12px 0px 12px;
     }
 
 }

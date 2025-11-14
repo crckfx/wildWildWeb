@@ -1,7 +1,7 @@
 .applet {
-    --applet-bg: var(--color-bg-2);
+    --applet-bg: var(--color-bg-1);
     --applet-text: var(--color-text-1);
-    --control-bg: var(--color-bg-3);
+    --control-bg: var(--color-bg-2);
     --tv-height: 200px;
 
     width: 100%;

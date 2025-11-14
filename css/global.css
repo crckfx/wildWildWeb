@@ -18,6 +18,11 @@ a:visited {
     color: inherit;
 }
 
+a:hover,
+a:active {
+    color: var(--color-accent);
+}
+
 main {
     display: flex;
     align-items: center;

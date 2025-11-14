@@ -68,18 +68,27 @@
     justify-content: center;
     padding: 16px 18px;
     border-radius: 999px;
-    background: var(--color-feature-1);
+    background: var(--color-feature-3);
     color: var(--color-bg-1);
     text-decoration: none;
-    font: 600 15px/1 Inter, system-ui, sans-serif;
-    box-shadow: 0 12px 24px rgba(10, 21, 71, .15);
+    /* font: 600 15px/1 Inter, system-ui, sans-serif; */
+    font-weight: 600;
+    /* box-shadow: 0 12px 24px rgba(10, 21, 71, .15); */
     transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
     max-width: 300px;
+
+    transition: background 0.4s;
 }
 
 a.featureBtn {
     /* set the text color to override default 'a' styles */
     color: var(--color-bg-1); 
+}
+a.featureBtn:hover {
+    /* set the text color to override default 'a' styles */
+    background-color: var(--color-accent);
+    /* color: var(--color-bg-1);  */
+    box-shadow: var(--shadow-preset-B);
 }
 
 .featureBtn:hover {

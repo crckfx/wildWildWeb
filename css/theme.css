@@ -25,6 +25,7 @@
     --color-text-3: hsl(220, 0%, 25%);
     --color-feature-1: #0a1547;
     --color-feature-2: #2a3340;
+    --color-feature-3: hsl(215, 50%, 31%);
 
     --color-accent: #0070f3;
 
@@ -48,28 +49,32 @@
 }
 
 [data-theme="dark"] {
-    --color-bg-1: hsl(219, 24%, 7%);
-    --color-bg-2: hsl(220, 23%, 12%);
-    --color-bg-3: hsl(220, 23%, 18%);
+    --color-bg-1: hsl(113, 24%, 4%);
+    --color-bg-2: hsl(144, 23%, 7%);
+    --color-bg-3: hsl(167, 23%, 15%);
 
-    --color-text-1: hsl(191, 20%, 88%);
-    --color-text-2: hsl(191, 28%, 80%);
-    --color-text-3: hsl(0, 0%, 81%);
-    --color-feature-1: hsl(66, 40%, 80%);
-    --color-feature-2: hsl(60, 20%, 70%);
+    --color-text-1: hsl(167, 20%, 88%);
+    --color-text-2: hsl(167, 28%, 80%);
+    --color-text-3: hsl(167, 0%, 81%);
+    --color-feature-1: hsl(113, 48%, 85%);
+    --color-feature-2: hsl(113, 25%, 75%);
+    --color-feature-3: hsl(113, 48%, 55%);
+    
+    --color-accent: hsl(167, 100%, 74%);
 
-    --color-accent: #79ffe1;
-
-    --color-footer-1: hsl(0, 45%, 44%);
-    --color-footer-2: hsl(0, 34%, 25%);
-    --footer-text: white;
-    --header-text: white;
+    --color-footer-1: hsl(113, 45%, 28%);
+    --color-footer-2: hsl(113, 34%, 22%);
+    /* --footer-text: white; */
+    --footer-text: var(--color-text-2);
+    --header-text: var(--color-text-2);
 
     --color-bulb-on: #00ddff;
     --color-bulb-off: #00ddff22;
 
-    --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
-    --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    /* --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
+    --footer-bg: var(--color-bg-3);
+    /* --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
+    --header-bg: none;
 
     --color-shadow-bgopp: rgba(255, 255, 255, 0.2);
     --color-shadow-shine: rgba(255, 255, 255, 0.2);
@@ -89,8 +94,9 @@
     --color-text-3: hsl(var(--gen-h-1), 0%, 25%);
     --color-feature-1: hsl(var(--gen-h-1), 49%, 31%);
     --color-feature-2: hsl(var(--gen-h-1), 20%, 38%);
+    --color-feature-3: hsl(var(--gen-h-1), 59%, 41%);
 
-    --color-accent: hsl(var(--gen-h-1), 100%, 74%);
+    --color-accent: hsl(var(--gen-h-1), 100%, 64%);
 
 
     --color-footer-1: hsl(var(--gen-h-1), 83%, 24%);
