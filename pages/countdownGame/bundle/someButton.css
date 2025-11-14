@@ -1,4 +1,6 @@
-.buttonsDiv>button {
+/* a button that's meant to have some different states */
+
+.someButton {
     border: none;
     border-radius: 999px;
     outline: none;
@@ -7,20 +9,20 @@
     transition: background-color .2s ease, color .1s ease;
 }
 
-.buttonsDiv>button:hover {
+.someButton:hover {
     background-color: var(--color-bg-3);
 }
 
-.buttonsDiv>button.ready {
+.someButton.ready {
     background-color: green;
     color: white;
 }
 
-.buttonsDiv>button:focus-visible {
+.someButton:focus-visible {
     outline: 2px solid var(--color-feature-1);
 }
 
-.buttonsDiv>button:active {
+.someButton:active {
     border-color: var(--color-footer-1);
     color: var(--color-footer-1);
     background-color: var(--color-bg-2);

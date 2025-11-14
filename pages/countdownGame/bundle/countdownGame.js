@@ -34,54 +34,35 @@ let current_targetNumber = null;
 
 // ---------- Core helpers ----------
 
-// update crude print as text
-function printSet() {
-    // prints "____" until all 4 values exist
-    testDisplay.textContent = numset.includes(null)
-        ? ''
-        : ': ' + numset.join(', ');
-}
-
-// 
 function updateNumset(i, value) {
     numset[i] = value;
-    const complete = (!(numset.includes(null)) && current_targetNumber !== null);
-    // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);
+    updateSolveReadyState();
+    revalidateSolvedState();
+}
+
+function updateTargetNum() {
+    // update the current guy
+    current_targetNumber = targetNumber_numbinstance.value;
+    revalidateSolvedState();
+    current_targetNumber === null ? targetNumberNumbin.classList.remove('valid') : targetNumberNumbin.classList.add('valid');
+    updateSolveReadyState();
+}
+
+
+function updateSolveReadyState() {
+    const complete = (!numset.includes(null) && current_targetNumber !== null);
     if (complete) {
         btn_toSolve.classList.add('ready');
     } else {
         btn_toSolve.classList.remove('ready');
     }
-    revalidateSolvedState();
 }
 
-function updateTargetNum() {
-        // update the current guy
-        current_targetNumber = targetNumber_numbinstance.value;
-        revalidateSolvedState();
-
-        if (current_targetNumber === null) {
-            targetNumberNumbin.classList.remove('valid');
-        } else {
-            targetNumberNumbin.classList.add('valid');
-        }
-
-        const complete = (!(numset.includes(null)) && current_targetNumber !== null);
-        // console.log(`numset is complete: ${complete} and current_targetNumber: ${current_targetNumber}`);
-        if (complete) {
-            btn_toSolve.classList.add('ready');
-        } else {
-            btn_toSolve.classList.remove('ready');
-        }
-
-    }
 
 function revalidateSolvedState() {
     if (!solvedSet) return;
-
     const sameNums = numset.every((v, j) => v === solvedSet[j]);
     const sameTarget = current_targetNumber === solvedTarget;
-
     if (sameNums && sameTarget) markSolved();
     else markEdited();
 }
@@ -111,7 +92,6 @@ function printSolutions(numset, target, sols) {
 
     solvedTargetPrint.textContent = `${target}`;
 
-    // solutionsDiv.classList.remove('hidden');
     markSolved();
 }
 
@@ -147,29 +127,10 @@ function randomiseTarget() {
     revalidateSolvedState();
 }
 
-// ---------- Numbin input event overrides ----------
+// ---------- local event routes ----------
 // update the UI
 function handleInput(nb, i) {
     updateNumset(i, nb.value);
-    // autoskip for this UI mode is handled by handleEnterKey
-}
-
-// for solverGame - autoskip if next exists; unfocus if not. doesn't care about empty
-function handleEnterKey(i) {
-    // disallow Enter action if this numbin's value is null
-    if (nbs[i].value === null) return;
-    // validate the index first
-    if (i >= 0 && i < nbs.length) {
-        // see if there's a next numbin in the set
-        const next = nbs[i + 1];
-        if (next) {
-            // move to next if exists
-            next.input.focus({ preventScroll: true });
-        } else {
-            // unfocus if no next (it's likely the last of the set)
-            nbs[i].input.blur();
-        }
-    }
 }
 
 function findAvailableSlot() {
@@ -207,7 +168,7 @@ function solvePuzzle() {
         return;
     }
 
-    const sols = countdownSolve(numset, target, {kitchenSink: true});
+    const sols = countdownSolve(numset, target, { maxSolutions: 300, kitchenSink: false });
     solvedTarget = target;
     console.group(`nums=${numset.join(',')} target=${target}`);
     console.log(`Total solutions: ${sols.length}`);
@@ -252,9 +213,7 @@ function initSolverGame() {
             }
         })
 
-        // apply the input overrides to the numbin
-        nb.handleBeforeInput = e => beforeInput_range(e, nb);
-        nb.handleEnterKey = () => handleEnterKey(i); // overwrite the numbin's enter key handler
+
         nb.dragIncrement = 30;
 
         nb.input.addEventListener('input', e => handleInput(nb, i));
@@ -326,6 +285,27 @@ function enableTilePointerDrag(tile, value) {
     const DRAG_THRESHOLD = 8;        // pixels
     const DRAG_THRESHOLD_SQ = DRAG_THRESHOLD * DRAG_THRESHOLD;
 
+    const clearDragState = () => {
+        tile.releasePointerCapture(id);
+        tile.classList.remove('pressed');
+
+        if (rafId !== null) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+        }
+
+        lastTarget?.classList.remove('dragover');
+        lastTarget = null;
+
+        clone?.remove();
+        clone = null;
+
+        id = null;
+        latestEvent = null;
+        dragging = false;
+    }
+
+    
     tile.addEventListener('pointerdown', e => {
         e.preventDefault();
         if (e.button !== 0 || id !== null) return;
@@ -396,12 +376,6 @@ function enableTilePointerDrag(tile, value) {
 
     tile.addEventListener('pointerup', e => {
         if (e.pointerId !== id) return;
-        tile.releasePointerCapture(id);
-        tile.classList.remove('pressed');
-        if (rafId !== null) {
-            cancelAnimationFrame(rafId);
-            rafId = null;
-        }
 
         if (dragging && clone) {
             const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
@@ -416,36 +390,13 @@ function enableTilePointerDrag(tile, value) {
             handleTileClick(value);
         }
 
-        lastTarget?.classList.remove('dragover');
-        lastTarget = null;
-
-        clone?.remove();
-        clone = null;
-
-        id = null;
-        latestEvent = null;
-        dragging = false;
+        clearDragState();
     });
 
     tile.addEventListener('pointercancel', e => {
         if (e.pointerId === id) {
-            tile.releasePointerCapture(id);
-            tile.classList.remove('pressed');
-
-            if (rafId !== null) {
-                cancelAnimationFrame(rafId);
-                rafId = null;
-            }
-
-            lastTarget?.classList.remove('dragover');
-            lastTarget = null;
-
-            clone?.remove();
-            clone = null;
-
-            id = null;
-            latestEvent = null;
-            dragging = false;
+            clearDragState();
         }
     });
+    
 }

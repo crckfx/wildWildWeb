@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2D Grid Reordering – banded, Sortable-style</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 1.5rem;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #111;
+    color: #eee;
+  }
+  h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .help {
+    margin-top: 0.4rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+
+  .grids {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .grid-container {
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: #181818;
+    user-select: none;
+  }
+
+  .grid-label {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    grid-auto-rows: 60px;
+    gap: 0.5rem;
+  }
+
+  .grid.grid-wide {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    grid-auto-rows: 80px;
+  }
+
+  .card {
+    border-radius: 6px;
+    background: #272727;
+    border: 1px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: grab;
+    transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+    touch-action: none;
+  }
+
+  .card:active {
+    cursor: grabbing;
+  }
+
+  .card.placeholder {
+    opacity: 0.3;
+    border-style: dashed;
+    background: #333;
+    cursor: default;
+  }
+
+  .card.dragging {
+    opacity: 0.9;
+    background: #3a3a3a;
+    border-color: #88f;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    cursor: grabbing;
+    transition: none;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>2D Grid Reordering (banded, Sortable-style)</h1>
+  <div class="help">
+    Drag any card. Row “bands” are detected by vertical overlap; within a row, insertion is decided by horizontal midpoints of cards (SortableJS-style).
+  </div>
+
+  <div class="grids">
+    <!-- Grid A: compact cells -->
+    <div class="grid-container">
+      <div class="grid-label">Grid A – compact cells</div>
+      <div id="gridA" class="grid">
+        <div class="card">A1</div>
+        <div class="card">A2</div>
+        <div class="card">A3</div>
+        <div class="card">A4</div>
+        <div class="card">A5</div>
+        <div class="card">A6</div>
+        <div class="card">A7</div>
+        <div class="card">A8</div>
+        <div class="card">A9</div>
+        <div class="card">A10</div>
+        <div class="card">A11</div>
+        <div class="card">A12</div>
+      </div>
+    </div>
+
+    <!-- Grid B: wider cells -->
+    <div class="grid-container">
+      <div class="grid-label">Grid B – wider cells</div>
+      <div id="gridB" class="grid grid-wide">
+        <div class="card">B1</div>
+        <div class="card">B2</div>
+        <div class="card">B3</div>
+        <div class="card">B4</div>
+        <div class="card">B5</div>
+        <div class="card">B6</div>
+        <div class="card">B7</div>
+        <div class="card">B8</div>
+        <div class="card">B9</div>
+        <div class="card">B10</div>
+        <div class="card">B11</div>
+        <div class="card">B12</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  let dragItem = null;
+  let placeholder = null;
+  let sourceContainer = null;
+  let currentContainer = null;
+  let pointerId = null;
+  let offsetX = 0;
+  let offsetY = 0;
+  let dragging = false;
+
+  function makeGridSortable(container) {
+    const cards = Array.from(container.querySelectorAll('.card'));
+    cards.forEach(card => {
+      card.addEventListener('pointerdown', onPointerDown);
+    });
+  }
+
+  function onPointerDown(e) {
+    if (e.button !== 0) return; // left button only
+    const card = e.currentTarget;
+    const container = card.parentElement;
+
+    pointerId = e.pointerId;
+    dragItem = card;
+    sourceContainer = container;
+    currentContainer = container;
+
+    if (dragItem.setPointerCapture) {
+      try { dragItem.setPointerCapture(pointerId); } catch (_) {}
+    }
+
+    const rect = dragItem.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    // create placeholder
+    placeholder = document.createElement('div');
+    placeholder.className = 'card placeholder';
+    placeholder.textContent = dragItem.textContent;
+
+    // insert placeholder where card was
+    container.insertBefore(placeholder, dragItem.nextSibling);
+
+    // promote dragged card to fixed layer
+    dragItem.classList.add('dragging');
+    dragItem.style.position = 'fixed';
+    dragItem.style.left = rect.left + 'px';
+    dragItem.style.top = rect.top + 'px';
+    dragItem.style.width = rect.width + 'px';
+    dragItem.style.height = rect.height + 'px';
+    dragItem.style.zIndex = '10000';
+    dragItem.style.pointerEvents = 'none';
+
+    document.body.appendChild(dragItem);
+
+    dragging = true;
+
+    window.addEventListener('pointermove', onPointerMove, { passive: false });
+    window.addEventListener('pointerup', onPointerUp);
+    window.addEventListener('pointercancel', onPointerCancel);
+  }
+
+  function onPointerMove(e) {
+    if (!dragging || e.pointerId !== pointerId) return;
+    e.preventDefault();
+
+    const x = e.clientX;
+    const y = e.clientY;
+
+    dragItem.style.left = (x - offsetX) + 'px';
+    dragItem.style.top = (y - offsetY) + 'px';
+
+    // same container only (no cross-grid moves in this demo)
+    updatePlaceholderPosition(currentContainer, x, y);
+  }
+
+  function onPointerUp(e) {
+    if (!dragging || e.pointerId !== pointerId) return;
+    finishDrag(false);
+  }
+
+  function onPointerCancel(e) {
+    if (!dragging || e.pointerId !== pointerId) return;
+    finishDrag(true);
+  }
+
+  function finishDrag(cancelled) {
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+    window.removeEventListener('pointercancel', onPointerCancel);
+
+    if (!dragItem) return;
+
+    if (!cancelled && placeholder && placeholder.parentElement) {
+      const container = placeholder.parentElement;
+      container.insertBefore(dragItem, placeholder);
+    } else if (sourceContainer) {
+      sourceContainer.appendChild(dragItem);
+    }
+
+    dragItem.classList.remove('dragging');
+    dragItem.style.position = '';
+    dragItem.style.left = '';
+    dragItem.style.top = '';
+    dragItem.style.width = '';
+    dragItem.style.height = '';
+    dragItem.style.zIndex = '';
+    dragItem.style.pointerEvents = '';
+
+    if (placeholder && placeholder.parentElement) {
+      placeholder.parentElement.removeChild(placeholder);
+    }
+
+    if (dragItem.hasPointerCapture && pointerId != null) {
+      try { dragItem.releasePointerCapture(pointerId); } catch (_) {}
+    }
+
+    dragItem = null;
+    placeholder = null;
+    sourceContainer = null;
+    currentContainer = null;
+    pointerId = null;
+    dragging = false;
+  }
+
+  // --- 2D banded hit-test, Sortable-style midpoints, with placeholder excluded ---
+
+  function updatePlaceholderPosition(container, x, y) {
+    if (!placeholder || !container) return;
+
+    const allChildren = Array.from(container.children);
+
+    // REAL grid items only: exclude placeholder and dragged card
+    const realCards = allChildren.filter(el =>
+      el.classList.contains('card') &&
+      el !== placeholder &&
+      el !== dragItem
+    );
+
+    if (realCards.length === 0) return;
+
+    // Build ordered list of rects
+    const rects = realCards.map(el => ({ el, rect: el.getBoundingClientRect() }));
+    rects.sort((a, b) =>
+      a.rect.top - b.rect.top || a.rect.left - b.rect.left
+    );
+
+    // Group into vertical "bands" (rows) by overlap
+    const rowGapThreshold = 5;
+    const rows = [];
+    for (const { el, rect } of rects) {
+      if (rows.length === 0) {
+        rows.push({ items: [el], top: rect.top, bottom: rect.bottom });
+      } else {
+        const last = rows[rows.length - 1];
+        if (rect.top <= last.bottom + rowGapThreshold) {
+          last.items.push(el);
+          last.bottom = Math.max(last.bottom, rect.bottom);
+        } else {
+          rows.push({ items: [el], top: rect.top, bottom: rect.bottom });
+        }
+      }
+    }
+
+    // Choose row by pointer Y
+    let rowIndex = -1;
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      if (y >= row.top && y <= row.bottom) {
+        rowIndex = i;
+        break;
+      }
+    }
+    if (rowIndex === -1) {
+      if (y < rows[0].top) rowIndex = 0;
+      else rowIndex = rows.length - 1;
+    }
+
+    const row = rows[rowIndex];
+    const rowItems = row.items.slice(); // maintain visual order
+
+    // Horizontal midpoint logic within chosen row
+    let insertIndexInRow = rowItems.length; // default is after last in row
+    for (let i = 0; i < rowItems.length; i++) {
+      const el = rowItems[i];
+      const r = el.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      if (x < cx) {
+        insertIndexInRow = i;
+        break;
+      }
+    }
+
+    // Convert row-local index to "global" index in realCards
+    let globalIndex = 0;
+    for (let i = 0; i < rowIndex; i++) {
+      globalIndex += rows[i].items.length;
+    }
+    globalIndex += insertIndexInRow;
+
+    // Reference card (in DOM) to insert before
+    const referenceCard = realCards[globalIndex] || null;
+
+    if (referenceCard) {
+      // If already immediately before referenceCard, no need to move
+      if (placeholder.nextSibling === referenceCard) return;
+      container.insertBefore(placeholder, referenceCard);
+    } else {
+      // append at end of grid
+      if (placeholder === container.lastElementChild) return;
+      container.appendChild(placeholder);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    makeGridSortable(document.getElementById('gridA'));
+    makeGridSortable(document.getElementById('gridB'));
+  });
+})();
+</script>
+</body>
+</html>

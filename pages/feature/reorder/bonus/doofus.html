@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Vertical Reorder Demo (Pointer Events)</title>
+	<style>
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #1e1e24;
+			color: #f5f5f5;
+		}
+
+		.app {
+			width: 420px;
+			max-width: 95vw;
+			background: #2a2a33;
+			border-radius: 10px;
+			padding: 16px 16px 20px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+		}
+
+		h1 {
+			margin: 0 0 12px;
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+		p {
+			margin: 0 0 12px;
+			font-size: 13px;
+			color: #c0c0c8;
+		}
+
+		.list {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			user-select: none;
+		}
+
+		.item {
+			position: relative;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px 12px;
+			border-radius: 8px;
+			background: #343442;
+			border: 1px solid #444458;
+			font-size: 14px;
+			cursor: grab;
+			touch-action: none; /* allow custom pointer handling on touch */
+			transition: background 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+		}
+
+		.item span.label {
+			pointer-events: none;
+		}
+
+		.item .handle {
+			font-size: 16px;
+			opacity: 0.8;
+			margin-left: 8px;
+			pointer-events: none;
+		}
+
+		.item:hover {
+			background: #3b3b4a;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+		}
+
+		.item.dragging {
+			cursor: grabbing;
+			z-index: 1000;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+			background: #45455a;
+			transition: none; /* no animation while actively dragging */
+		}
+
+		.placeholder {
+			border-radius: 8px;
+			border: 1px dashed #8888ff;
+			background: rgba(110, 110, 180, 0.18);
+		}
+	</style>
+</head>
+<body>
+	<div class="app">
+		<h1>Reorder the boxes</h1>
+		<p>Press and drag a row to change its order. Only vertical movement matters.</p>
+
+		<div class="list" id="reorder-list">
+			<div class="item">
+				<span class="label">Item A</span>
+				<span class="handle">⋮⋮</span>
+			</div>
+			<div class="item">
+				<span class="label">Item B</span>
+				<span class="handle">⋮⋮</span>
+			</div>
+			<div class="item">
+				<span class="label">Item C</span>
+				<span class="handle">⋮⋮</span>
+			</div>
+			<div class="item">
+				<span class="label">Item D</span>
+				<span class="handle">⋮⋮</span>
+			</div>
+			<div class="item">
+				<span class="label">Item E</span>
+				<span class="handle">⋮⋮</span>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		(function () {
+			const list = document.getElementById('reorder-list');
+			const items = Array.from(list.querySelectorAll('.item'));
+
+			items.forEach(item => enableVerticalReorder(item, list));
+
+			function enableVerticalReorder(item, container) {
+				let pointerId = null;
+				let startY = 0;
+				let offsetY = 0;
+				let dragging = false;
+
+				let placeholder = null;
+				let containerRect = null;
+				let itemRect = null;
+
+				const DRAG_THRESHOLD = 4; // pixels before we commit to a drag
+
+				item.addEventListener('pointerdown', onPointerDown);
+
+				function onPointerDown(e) {
+					if (e.button !== 0) return;
+
+					pointerId = e.pointerId;
+					item.setPointerCapture(pointerId);
+
+					containerRect = container.getBoundingClientRect();
+					itemRect = item.getBoundingClientRect();
+
+					startY = e.clientY;
+					offsetY = e.clientY - itemRect.top;
+
+					dragging = false;
+				}
+
+				item.addEventListener('pointermove', onPointerMove, { passive: false });
+				item.addEventListener('pointerup', onPointerUp);
+				item.addEventListener('pointercancel', onPointerCancel);
+
+				function onPointerMove(e) {
+					if (e.pointerId !== pointerId) return;
+
+					// prevent scrolling on touch during drag
+					e.preventDefault();
+
+					const deltaY = e.clientY - startY;
+
+					// Only commit to "dragging mode" once the threshold is passed
+					if (!dragging && Math.abs(deltaY) > DRAG_THRESHOLD) {
+						beginDrag();
+					}
+
+					if (!dragging) return;
+
+					updateDragPosition(e.clientY);
+					updatePlaceholderPosition(e.clientY);
+				}
+
+				function onPointerUp(e) {
+					if (e.pointerId !== pointerId) return;
+
+					if (dragging) {
+						finishDrag();
+					}
+
+					cleanupPointer();
+				}
+
+				function onPointerCancel(e) {
+					if (e.pointerId !== pointerId) return;
+
+					if (dragging) {
+						cancelDrag();
+					}
+
+					cleanupPointer();
+				}
+
+				function beginDrag() {
+					dragging = true;
+
+					itemRect = item.getBoundingClientRect();
+					containerRect = container.getBoundingClientRect();
+
+					// Create placeholder to keep layout stable
+					placeholder = document.createElement('div');
+					placeholder.className = 'placeholder';
+					placeholder.style.height = itemRect.height + 'px';
+					placeholder.style.margin = getComputedStyle(item).margin;
+					container.insertBefore(placeholder, item.nextSibling);
+
+					// Switch dragged item to absolute positioning within container
+					item.classList.add('dragging');
+					item.style.position = 'absolute';
+					item.style.width = itemRect.width + 'px';
+					item.style.left = (itemRect.left - containerRect.left) + 'px';
+					item.style.top = (itemRect.top - containerRect.top) + 'px';
+				}
+
+				function updateDragPosition(clientY) {
+					const newTop = clientY - containerRect.top - offsetY;
+					item.style.top = newTop + 'px';
+				}
+
+				function updatePlaceholderPosition(clientY) {
+					const draggedCenterY = clientY;
+
+					const children = Array.from(container.children)
+						.filter(node => node !== item && node !== placeholder);
+
+					for (const child of children) {
+						const rect = child.getBoundingClientRect();
+						const childCenterY = rect.top + rect.height / 2;
+
+						if (draggedCenterY < childCenterY) {
+							if (placeholder.nextSibling !== child) {
+								container.insertBefore(placeholder, child);
+							}
+							return;
+						}
+					}
+
+					// If we didn't insert before any child, move placeholder to the end
+					if (placeholder !== container.lastElementChild) {
+						container.appendChild(placeholder);
+					}
+				}
+
+				function finishDrag() {
+					// Place the item where the placeholder is
+					if (placeholder && placeholder.parentNode === container) {
+						container.insertBefore(item, placeholder);
+					}
+					resetDragVisuals();
+				}
+
+				function cancelDrag() {
+					// On cancel, just snap back to wherever the placeholder is
+					if (placeholder && placeholder.parentNode === container) {
+						container.insertBefore(item, placeholder);
+					}
+					resetDragVisuals();
+				}
+
+				function resetDragVisuals() {
+					item.classList.remove('dragging');
+					item.style.position = '';
+					item.style.width = '';
+					item.style.left = '';
+					item.style.top = '';
+
+					if (placeholder && placeholder.parentNode) {
+						placeholder.parentNode.removeChild(placeholder);
+					}
+					placeholder = null;
+				}
+
+				function cleanupPointer() {
+					try {
+						item.releasePointerCapture(pointerId);
+					} catch (_) {
+						// ignore if capture was never set or already released
+					}
+					pointerId = null;
+					dragging = false;
+				}
+			}
+		})();
+	</script>
+</body>
+</html>

@@ -203,6 +203,11 @@
                     "pages/feature/gallery/gallery.html"
                 ]
             },
+            "rord": {
+                "title": "Rord",
+                "contentPath": "pages/feature/reorder/rord.html",
+                "imports": "pages/feature/reorder/bundle"
+            },
             "nothing": {
                 "imports": "assets/favicon.ico"
             }

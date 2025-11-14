@@ -116,7 +116,7 @@
     flex-wrap: wrap;
 }
 
-.buttonsDiv>button {
+.someButton {
     background-color: var(--color-bg-2);
     box-shadow: var(--shadow-preset-B);
     padding: 1.125em 2.5em;
@@ -125,7 +125,7 @@
 }
 
 @media (min-width: 600px) {
-    .buttonsDiv>button {
+    .someButton {
         font-size: 18px;
         padding: 1.125em 2.5em;
     }
@@ -134,7 +134,7 @@
 
 
 .solutionsDiv {
-    opacity: 0.35;
+    opacity: 0.25;
     transition: opacity 0.2s;
 }
 

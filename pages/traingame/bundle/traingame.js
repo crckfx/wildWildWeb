@@ -114,7 +114,7 @@ function handleSolve() {
 
     const target = Number(targetNumberInput.value);
 
-    const sols = countdownSolve(numset, target);
+    const sols = countdownSolve(numset, target, {kitchenSink: true});
     console.group(`nums=${numset.join(',')} target=${target}`);
     console.log(`Total solutions: ${sols.length}`);
     console.log(sols);
