@@ -1,4 +1,4 @@
-function createRord(grid) {
+export function createRord(grid) {
 
     let items = [...grid.children];
 
@@ -10,6 +10,7 @@ function createRord(grid) {
     let floating = null;
     let startIndex = -1;
 
+    // helper functions
     function captureOriginalRects() {
         originalRects = items.map(el => {
             const r = el.getBoundingClientRect();
@@ -56,7 +57,13 @@ function createRord(grid) {
         );
     }
 
-    grid.addEventListener("pointerdown", e => {
+    function moveFloating(e) {
+        floating.style.left = e.clientX + "px";
+        floating.style.top = e.clientY + "px";
+    }
+
+    // event functions
+    function startDrag(e) {
         const t = e.target.closest(".item");
         if (!t) return;
 
@@ -83,9 +90,9 @@ function createRord(grid) {
         dragging.setPointerCapture(e.pointerId);
 
         moveFloating(e);
-    });
+    }
 
-    grid.addEventListener("pointermove", e => {
+    function moveDrag(e) {
         if (!dragging) return;
 
         moveFloating(e);
@@ -94,7 +101,6 @@ function createRord(grid) {
             // strict snap back
             items = [...originalOrder];
             items.forEach(el => el.style.transform = "");
-            // FIX: reset startIndex to match restored order
             startIndex = items.indexOf(dragging);
             return;
         }
@@ -107,10 +113,11 @@ function createRord(grid) {
         startIndex = idx;
 
         applyTransforms();
-    });
+    }
 
     function endDrag(e) {
         if (!dragging) return;
+        const inside = isInsideGrid(e.clientX, e.clientY);
 
         dragging.releasePointerCapture(e.pointerId);
 
@@ -126,17 +133,27 @@ function createRord(grid) {
 
         dragging = null;
         startIndex = -1;
+
+        // detect if this pointer truly changed the order and fire something if it did
+        if (inside) {
+            let changed = false;
+            for (let i = 0; i < items.length; i++) {
+                if (items[i] !== originalOrder[i]) {
+                    changed = true;
+                    break;
+                }
+            }
+
+            if (changed) {
+                console.log("confirmed reorder:", items.map(el => el.textContent));
+            }
+        }
+
     }
 
+    grid.addEventListener("pointerdown", startDrag);
+    grid.addEventListener("pointermove", moveDrag);
     grid.addEventListener("pointerup", endDrag);
     grid.addEventListener("pointercancel", endDrag);
 
-    function moveFloating(e) {
-        floating.style.left = e.clientX + "px";
-        floating.style.top = e.clientY + "px";
-    }
 }
-
-
-createRord(document.getElementById('grid1'));
-createRord(document.getElementById('grid2'));

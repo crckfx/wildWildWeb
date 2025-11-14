@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>1D Rord Reorder Demo (Clamped + Correct Virtual Pointer)</title>
+	<style>
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			font-family: system-ui, sans-serif;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #1e1e24;
+			color: #f5f5f5;
+		}
+
+		.app {
+			width: 420px;
+			max-width: 95vw;
+			background: #2a2a33;
+			border-radius: 10px;
+			padding: 16px 16px 20px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+		}
+
+		h1 {
+			margin: 0 0 12px;
+			font-size: 18px;
+			font-weight: 600;
+		}
+
+		p {
+			margin: 0 0 12px;
+			font-size: 13px;
+			color: #c0c0c8;
+		}
+
+		.list {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+			user-select: none;
+		}
+
+		.item {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 10px 12px;
+			border-radius: 8px;
+			background: #343442;
+			border: 1px solid #444458;
+			font-size: 14px;
+			cursor: grab;
+			touch-action: none;
+			transition: transform 160ms ease, background 120ms ease, box-shadow 120ms ease;
+		}
+
+		.item:hover {
+			background: #3b3b4a;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+		}
+
+		.item.drag-src {
+			opacity: 0.25;
+			cursor: grabbing;
+			background: #45455a;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+			transition: none;
+		}
+
+		.floating {
+			position: fixed;
+			pointer-events: none;
+			z-index: 1000;
+			background: #565672;
+			border-radius: 8px;
+			border: 1px solid #8888ff;
+			padding: 10px 12px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+		}
+	</style>
+</head>
+<body>
+	<div class="app">
+		<h1>1D Rord Reorder Demo (Clamped + Correct Virtual Pointer)</h1>
+		<p>Drag to reorder. Floating item is visually clamped and logic clamps to nearest slot instead of reverting mid-drag.</p>
+
+		<div class="list" id="rord-list">
+			<div class="item"><span>Item A</span><span>⋮⋮</span></div>
+			<div class="item"><span>Item B</span><span>⋮⋮</span></div>
+			<div class="item"><span>Item C</span><span>⋮⋮</span></div>
+			<div class="item"><span>Item D</span><span>⋮⋮</span></div>
+			<div class="item"><span>Item E</span><span>⋮⋮</span></div>
+		</div>
+	</div>
+
+	<script>
+		function createRord1D(list) {
+
+			let items = [...list.children];
+
+			let originalRects = [];
+			let originalOrder = [];
+			let listRect;
+
+			let dragging = null;
+			let floating = null;
+			let startIndex = -1;
+			let dragOffsetY = 0;
+			let itemHeight = 0;
+
+			function captureOriginalRects() {
+				originalRects = items.map(el => {
+					const r = el.getBoundingClientRect();
+					return {
+						top: r.top,
+						cy: r.top + r.height / 2
+					};
+				});
+			}
+
+			function nearestIndex1D(y) {
+				let best = 0;
+				let bestDist = Infinity;
+				for (let i = 0; i < originalRects.length; i++) {
+					const dy = originalRects[i].cy - y;
+					const d = dy * dy;
+					if (d < bestDist) {
+						bestDist = d;
+						best = i;
+					}
+				}
+				return best;
+			}
+
+			function applyTransforms() {
+				for (let i = 0; i < items.length; i++) {
+					const el = items[i];
+					const tRect = originalRects[i];
+					const oRect = el.__origPos;
+					const dy = tRect.top - oRect.top;
+					el.style.transform = `translateY(${dy}px)`;
+				}
+			}
+
+			function insideList(y) {
+				return (y >= listRect.top && y <= listRect.bottom);
+			}
+
+			function moveFloating(e) {
+				if (!floating) return;
+
+				let y = e.clientY - dragOffsetY;
+
+				const minY = listRect.top;
+				const maxY = listRect.bottom - itemHeight;
+
+				if (y < minY) y = minY;
+				else if (y > maxY) y = maxY;
+
+				floating.style.left = listRect.left + "px";
+				floating.style.width = listRect.width + "px";
+				floating.style.top = y + "px";
+			}
+
+			function startDrag(e) {
+				const t = e.target.closest(".item");
+				if (!t) return;
+
+				e.preventDefault();
+				dragging = t;
+				startIndex = items.indexOf(dragging);
+
+				originalOrder = [...items];
+				listRect = list.getBoundingClientRect();
+
+				const r = dragging.getBoundingClientRect();
+				dragOffsetY = e.clientY - r.top;
+				itemHeight = r.height;
+
+				captureOriginalRects();
+				items.forEach(el => {
+					const rr = el.getBoundingClientRect();
+					el.__origPos = { top: rr.top };
+				});
+
+				floating = dragging.cloneNode(true);
+				floating.classList.add("floating");
+				document.body.appendChild(floating);
+
+				dragging.classList.add("drag-src");
+				dragging.setPointerCapture(e.pointerId);
+
+				moveFloating(e);
+			}
+
+			function moveDrag(e) {
+				if (!dragging) return;
+
+				e.preventDefault();
+				moveFloating(e);
+
+				// Virtual pointer Y (clamped for logic)
+				let y = e.clientY;
+
+				if (y < listRect.top) {
+					y = listRect.top + itemHeight / 2;
+				}
+				else if (y > listRect.bottom) {
+					y = listRect.bottom - itemHeight / 2;
+				}
+
+				const idx = nearestIndex1D(y);
+				if (idx === startIndex) return;
+
+				const removed = items.splice(startIndex, 1)[0];
+				items.splice(idx, 0, removed);
+				startIndex = idx;
+
+				applyTransforms();
+			}
+
+			function endDrag(e) {
+				if (!dragging) return;
+
+				const dropInside = insideList(e.clientY);
+
+				try { dragging.releasePointerCapture(e.pointerId); } catch (_) {}
+
+				if (floating) floating.remove();
+				floating = null;
+
+				dragging.classList.remove("drag-src");
+
+				items.forEach(el => {
+					el.style.transform = "";
+					list.appendChild(el);
+				});
+
+				if (dropInside) {
+					let changed = false;
+					for (let i = 0; i < items.length; i++) {
+						if (items[i] !== originalOrder[i]) {
+							changed = true;
+							break;
+						}
+					}
+					if (changed) {
+						console.log("confirmed reorder:", items.map(el => el.textContent));
+					}
+				}
+
+				dragging = null;
+				startIndex = -1;
+			}
+
+			list.addEventListener("pointerdown", startDrag);
+			list.addEventListener("pointermove", moveDrag);
+			list.addEventListener("pointerup", endDrag);
+			list.addEventListener("pointercancel", endDrag);
+		}
+
+		createRord1D(document.getElementById("rord-list"));
+	</script>
+</body>
+</html>
