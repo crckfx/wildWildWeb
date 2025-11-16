@@ -12,7 +12,6 @@
     "profiles": {
         "default": {
             "templatePath": "templates/page.ejs",
-            "scripts": "/js/LF/header-menu.js",
             "modules": "/js/global.js"
         },
         "lachoutlaws": {
@@ -30,5 +29,13 @@
         "footer": "components/footer/footer.html",
         "global": "components/global.html",
         "head": "components/head-content.html"
+    },
+    "flags": {
+        "preserve": [
+            "sitemap.json"
+        ],
+        "generate": {
+            "map_JSON": "map.json"
+        }
     }
 }

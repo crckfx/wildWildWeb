@@ -1,0 +1,42 @@
+<div class="wrap marge1 site-header" style="background-color: var(--footer-1);">
+	<nav id="fakeNav" class="wrap" aria-expanded="false">
+		<div class="nav-container">
+			<div class="nav-top">
+				<!-- this is a special kind of section -->
+				<a class="logo" href="/" aria-label="Go to homepage">
+					<h1>WWW</h1>
+				</a>
+				<button class="menu-toggle" aria-label="Open / Close menu" aria-controls="site-nav">
+					<svg class="icon icon-close menu-close" alt="Close menu" fill="currentColor" aria-hidden="true" role="img">
+						<use xlink:href="#icon-close"></use>
+					</svg>
+					<svg class="icon icon-bars menu-ham" alt="Open menu" fill="currentColor" aria-hidden="true" role="img">
+						<use xlink:href="#icon-bars"></use>
+					</svg>
+				</button>
+			</div>
+			<div class="menu-wrapper">
+                <!-- maybe insert here -->
+            </div>
+		</div>
+	</nav>
+</div>
+
+<script type="module">
+    import { loadUrlTree } from "/js/pageGoblin/tree.js";
+    import { bindHeaderMenu } from "/js/LF/headerModule.js";
+    import { createNavFromSitemap } from "/js/pageGoblin/createNavFromSitemap.js";
+
+
+    const fakeNav = document.getElementById('fakeNav');
+    const navMenu = fakeNav.querySelector('.menu-wrapper');
+    
+    const tree = await loadUrlTree('/map.json'); // specify the filename here at call site, get the tree back to keep here
+    // console.log(tree);
+    const fakeMenu = createNavFromSitemap(tree); // give the tree to some imported function, get the html back here
+    console.log(fakeMenu); // crudely just log the html
+    // const navMenu = document.getElementById('site-nav').querySelector('.menu-wrapper');
+    navMenu.innerHTML = fakeMenu;
+    bindHeaderMenu(fakeNav);
+    
+</script>

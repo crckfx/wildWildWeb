@@ -155,6 +155,7 @@
         "scripts": "/misc/toolt/toolt.js"
     },
     "feature": {
+        "title": "Feature",
         "contentPath": "pages/feature/feature.html",
         "styles": "/css/feature-card.css",
         "children": {
@@ -207,6 +208,10 @@
                 "title": "Rord",
                 "contentPath": "pages/feature/reorder/rord.html",
                 "styles": "/misc/rord/rord.css"
+            },
+            "menu": {
+                "title": "LF MENU",
+                "contentPath": "pages/feature/menu/menu.html"
             },
             "nothing": {
                 "imports": "assets/favicon.ico"
