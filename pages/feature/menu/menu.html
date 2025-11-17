@@ -35,7 +35,6 @@
     // console.log(tree);
     const fakeMenu = createNavFromSitemap(tree); // give the tree to some imported function, get the html back here
     console.log(fakeMenu); // crudely just log the html
-    // const navMenu = document.getElementById('site-nav').querySelector('.menu-wrapper');
     navMenu.innerHTML = fakeMenu;
     bindHeaderMenu(fakeNav);
     

@@ -24,83 +24,139 @@
             "/js/merrygoround/addHomepageCarousel.js"
         ]
     },
-    "crckoutlaws": {
-        "title": "crckoutlaws",
-        "contentPath": [
-            "pages/crckoutlaws/col.html",
-            "pages/home/LOL-scrolling-thing.html",
-            "pages/crckoutlaws/crckoutlaws.html",
-            "pages/home/LOL-feature-thing.html"
-        ],
-        "styles": [
-            "/misc/crckoutlaws/scroller-LOL.css",
-            "/misc/crckoutlaws/meddle.css",
-            "/misc/accordion/crckordion.css",
-            "/misc/crckoutlaws/lachordion.css",
-            "/css/feature-card.css",
-            "/misc/crckoutlaws/persona.css",
-            "/misc/crckoutlaws/hero.css"
-        ],
-        "modules": [
-            "/misc/crckoutlaws/LOL-tracking.js"
-        ]
-    },
-    "away": {
-        "title": "Away",
-        "contentPath": "pages/away/away.html",
-        "fragments": {
-            "header": "components/header/header_secondary.html"
-        },
+    "junk": {
+        "title": "Junk",
         "children": {
-            "beach-house": {
-                "title": "Beach House",
-                "contentPath": "pages/away/beach-house/beach-house.html",
-                "imports": "pages/away/beach-house/beach-house.css",
-                "styles": "/away/beach-house/beach-house.css",
-                "templatePath": "templates/page_blank.ejs",
+            "showcase": {
                 "children": {
-                    "dont-tell-michael": {
-                        "title": "Rule #1",
-                        "contentPath": "pages/away/beach-house/dont-tell-michael/dont-tell-michael.html",
-                        "styles": "/away/beach-house/beach-house.css"
-                    },
-                    "stash": {
-                        "imports": "private/3616116-middle-4146237521.png"
+                    "icons": {
+                        "title": "Icon Showcase",
+                        "contentPath": "pages/showcase/icons.html"
+                    }
+                }
+            },
+            "crckoutlaws": {
+                "title": "crckoutlaws",
+                "contentPath": [
+                    "pages/crckoutlaws/col.html",
+                    "pages/home/LOL-scrolling-thing.html",
+                    "pages/crckoutlaws/crckoutlaws.html",
+                    "pages/home/LOL-feature-thing.html"
+                ],
+                "styles": [
+                    "/misc/crckoutlaws/scroller-LOL.css",
+                    "/misc/crckoutlaws/meddle.css",
+                    "/misc/accordion/crckordion.css",
+                    "/misc/crckoutlaws/lachordion.css",
+                    "/css/feature-card.css",
+                    "/misc/crckoutlaws/persona.css",
+                    "/misc/crckoutlaws/hero.css"
+                ],
+                "modules": [
+                    "/misc/crckoutlaws/LOL-tracking.js"
+                ]
+            },
+            "away": {
+                "title": "Away",
+                "contentPath": "pages/away/away.html",
+                "fragments": {
+                    "header": "components/header/header_secondary.html"
+                },
+                "children": {
+                    "beach-house": {
+                        "title": "Beach House",
+                        "contentPath": "pages/away/beach-house/beach-house.html",
+                        "imports": "pages/away/beach-house/beach-house.css",
+                        "styles": "/junk/away/beach-house/beach-house.css",
+                        "templatePath": "templates/page_blank.ejs",
+                        "children": {
+                            "dont-tell-michael": {
+                                "title": "Rule #1",
+                                "contentPath": "pages/away/beach-house/dont-tell-michael/dont-tell-michael.html",
+                                "styles": "/junk/away/beach-house/beach-house.css"
+                            },
+                            "stash": {
+                                "imports": "private/3616116-middle-4146237521.png"
+                            }
+                        }
                     }
                 }
             }
         }
     },
-    "splat": {
-        "title": "Splat",
-        "contentPath": "pages/splat/splat.html",
-        "fragments": {
-            "header": "components/header/header_LF.html"
-        },
-        "imports": [
-            "pages/splat/splat.js",
-            "pages/splat/splat.css"
-        ],
-        "styles": [
-            "/css/header-menu-LF.css",
-            "./splat.css"
-        ],
-        "modules": "splat.js"
-    },
-    "calculator": {
-        "title": "Calculator",
-        "contentPath": "pages/math-is-wild/calculator/calculator.html",
-        "imports": [
-            "pages/math-is-wild/calculator/calc2.css",
-            "pages/math-is-wild/calculator/js"
-        ],
-        "styles": "./calc2.css",
-        "scripts": [
-            "./js/local_Parser.js",
-            "./js/local_Calculator.js",
-            "./js/local_main.js",
-            "./js/local_tester.js"
-        ]
+    "apps": {
+        "title": "Apps",
+        "children": {
+            "calculator": {
+                "title": "Calculator",
+                "contentPath": "pages/math-is-wild/calculator/calculator.html",
+                "imports": [
+                    "pages/math-is-wild/calculator/calc2.css",
+                    "pages/math-is-wild/calculator/js"
+                ],
+                "styles": "./calc2.css",
+                "scripts": [
+                    "./js/local_Parser.js",
+                    "./js/local_Calculator.js",
+                    "./js/local_main.js",
+                    "./js/local_tester.js"
+                ]
+            },
+            "svgapp": {
+                "title": "SVG App",
+                "contentPath": "pages/svgapp/svgapp.html",
+                "templatePath": "templates/blank_with_global.ejs",
+                "imports": "pages/svgapp/bundle",
+                "styles": [
+                    "bundle/svgapp.css",
+                    "bundle/svgapp-menu.css",
+                    "bundle/fullscreen.css",
+                    "bundle/modal.css",
+                    "bundle/icon.css",
+                    "/misc/ploder/ploder.css",
+                    "/misc/numbin/numbin.css",
+                    "/misc/toolt/toolt.css"
+                ],
+                "modules": [
+                    "bundle/svgapp.js"
+                ],
+                "scripts": "/misc/toolt/toolt.js"
+            },
+            "traingame": {
+                "title": "Train Game",
+                "contentPath": "pages/traingame/numbintrain.html",
+                "imports": [
+                    "pages/traingame/bundle"
+                ]
+            },
+            "countdownGame": {
+                "title": "Countdown Game",
+                "contentPath": "pages/countdownGame/countdownGame.html",
+                "imports": [
+                    "pages/countdownGame/bundle"
+                ],
+                "styles": [
+                    "/countdownGame/bundle/countdownGame.css",
+                    "/countdownGame/bundle/someButton.css"
+                ]
+            },
+            "splat": {
+                "title": "Splat",
+                "contentPath": "pages/splat/splat.html",
+                "fragments": {
+                    "header": "components/header/header_LF.html"
+                },
+                "imports": [
+                    "pages/splat/splat.js",
+                    "pages/splat/splat.css"
+                ],
+                "styles": [
+                    "/css/header-menu-LF.css",
+                    "./splat.css"
+                ],
+                "modules": "splat.js"
+            }
+        }
     },
     "converter": {
         "title": "Converters",
@@ -118,41 +174,21 @@
                     "pages/svgapp/svgapp.html"
                 ],
                 "styles": [
-                    "/svgapp/bundle/svgapp.css",
-                    "/svgapp/bundle/svgapp-menu.css",
-                    "/svgapp/bundle/modal.css",
-                    "/svgapp/bundle/sizetests.css",
-                    "/svgapp/bundle/icon.css",
+                    "/apps/svgapp/bundle/svgapp.css",
+                    "/apps/svgapp/bundle/svgapp-menu.css",
+                    "/apps/svgapp/bundle/modal.css",
+                    "/apps/svgapp/bundle/sizetests.css",
+                    "/apps/svgapp/bundle/icon.css",
                     "/misc/ploder/ploder.css",
                     "/misc/numbin/numbin.css",
                     "/misc/toolt/toolt.css"
                 ],
                 "modules": [
-                    "/svgapp/bundle/svgapp.js"
+                    "/apps/svgapp/bundle/svgapp.js"
                 ],
                 "scripts": "/misc/toolt/toolt.js"
             }
         }
-    },
-    "svgapp": {
-        "title": "SVG App",
-        "contentPath": "pages/svgapp/svgapp.html",
-        "templatePath": "templates/blank_with_global.ejs",
-        "imports": "pages/svgapp/bundle",
-        "styles": [
-            "bundle/svgapp.css",
-            "bundle/svgapp-menu.css",
-            "bundle/fullscreen.css",
-            "bundle/modal.css",
-            "bundle/icon.css",
-            "/misc/ploder/ploder.css",
-            "/misc/numbin/numbin.css",
-            "/misc/toolt/toolt.css"
-        ],
-        "modules": [
-            "bundle/svgapp.js"
-        ],
-        "scripts": "/misc/toolt/toolt.js"
     },
     "feature": {
         "title": "Feature",
@@ -217,36 +253,5 @@
                 "imports": "assets/favicon.ico"
             }
         }
-    },
-    "traingame": {
-        "title": "Train Game",
-        "contentPath": "pages/traingame/numbintrain.html",
-        "imports": [
-            "pages/traingame/bundle"
-        ]
-    },
-    "countdownGame": {
-        "title": "Countdown Game",
-        "contentPath": "pages/countdownGame/countdownGame.html",
-
-        "imports": [
-            "pages/countdownGame/bundle"
-        ],
-        "styles": [
-            "/countdownGame/bundle/countdownGame.css",
-            "/countdownGame/bundle/someButton.css"
-        ]
-    },
-    "showcase": {
-        "children": {
-            "icons": {
-                "title": "Icon Showcase",
-                "contentPath": "pages/showcase/icons.html"
-            }
-        }
-    },
-    "tweakage": {
-        "title": "Tweakage",
-        "contentPath": "pages/tweakage/tweakage.html"
     }
 }
