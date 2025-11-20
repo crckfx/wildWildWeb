@@ -1,0 +1,69 @@
+<header class="site-header">
+
+	<nav class="wrap demo-nav" aria-expanded="false">
+		<div class="nav-container">
+			<div class="nav-top">
+				<!-- this is a special kind of section -->
+				<a class="logo" href="/" aria-label="Go to homepage">
+					<h1>WWW</h1>
+				</a>
+				<button class="menu-toggle" aria-label="Open / Close menu" aria-controls="site-nav">
+					<svg class="icon icon-close menu-close" alt="Close menu" fill="currentColor" aria-hidden="true" role="img">
+						<use xlink:href="#icon-close"></use>
+					</svg>
+					<svg class="icon icon-bars menu-ham" alt="Open menu" fill="currentColor" aria-hidden="true" role="img">
+						<use xlink:href="#icon-bars"></use>
+					</svg>
+				</button>
+			</div>
+			<div class="menu-wrapper">
+
+				<ul class="menu menu-root" id="main-menu"></ul>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<script type="module">
+    import {bindSomeMenu} from "/junk/menu3/bundle/menu3.js"
+    import {populateMenu} from "/js/pageGoblin/populateMenu.js"
+    import {loadUrlTree} from "/js/pageGoblin/tree.js"
+
+
+    (async () => {
+        const root = await loadUrlTree("/map.json");
+        if (!root) return;
+
+
+        const navSomething= document.querySelector(".demo-nav");
+        const target = navSomething?.querySelector(".menu-root");
+        populateMenu(root, target);
+
+        // --- --- ---
+        const menuToggle = navSomething.querySelector('.menu-toggle');
+
+        function openMainMenu() {
+            navSomething.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeMainMenu() {
+            navSomething.setAttribute('aria-expanded', 'false');
+            // closeOpenSubmenu();
+        }
+
+        function toggleNavMenu() {
+            navSomething.getAttribute('aria-expanded') === 'true'
+                ? closeMainMenu()
+                : openMainMenu();
+        }
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', toggleNavMenu);
+        }
+
+        // --- --- ---
+
+        bindSomeMenu(navSomething, {exclusive: true});   // IMPORTANT: run AFTER population
+    })();
+</script>
+

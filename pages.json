@@ -103,6 +103,27 @@
                 "contentPath": "pages/menu/menu4/menu4.html",
                 "imports": "pages/menu/menu4/bundle",
                 "styles": "./bundle/menu4.css"
+            },
+            "menu5": {
+                "title": "MENU JUNK 5",
+                "contentPath": [
+                    "pages/menu/menu5.html",
+                    "pages/home/home.html"
+                ],
+                "styles": [
+                    "/css/merrygoround.css",
+                    "/css/testimonial-card.css",
+                    "/css/feature-card.css",
+                    "/misc/accordion/crckordion.css",
+                    "/css/menu5.css"
+                ],
+                "modules": [
+                    "/js/merrygoround/addHomepageCarousel.js"
+                ],
+                "fragments": {
+                    "head": "components/head-content-other.html",
+                    "header": "components/header/header_menu5.html"
+                }
             }
         }
     },
