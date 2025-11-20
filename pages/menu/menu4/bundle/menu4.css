@@ -7,18 +7,6 @@
     --text: #e5e7eb;
 }
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
-    color: var(--text);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    padding: 2rem;
-    box-sizing: border-box;
-}
 
 .demo-nav {
     background: var(--bg);
@@ -26,6 +14,9 @@ body {
     box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
     padding: 1rem 1.25rem;
     width: min(480px, 100%);
+
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    
 }
 
 .demo-nav h2 {
@@ -38,22 +29,21 @@ body {
 
 /* ------------------------------------------------------------ */
 
-.menu-wrapper {
-    /* same trick as your real header: content in a 0fr/1fr grid track */
+.demo-nav .menu-wrapper {
     display: grid;
     grid-template-rows: 1fr;
     /* always open root for this demo */
 }
 
-.menu-root,
-.submenu {
+.demo-nav .menu-root,
+.demo-nav .submenu {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
 /* --- Node row --------------------------------------------------------- */
-.menu-item {
+.demo-nav .menu-item {
     display: flex;
     align-items: center;
     /* gap: 0.5rem; */
@@ -70,12 +60,12 @@ body {
     height: auto;
 }
 
-.menu-item:hover {
+.demo-nav .menu-item:hover {
     background: var(--item-hover);
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.2);
 }
 
-.menu-link {
+.demo-nav .menu-link {
     text-decoration: none;
     color: var(--text);
     /* padding: 0.35rem 0.6rem; */
@@ -85,11 +75,11 @@ body {
     outline: none;
 }
 
-.menu-link:focus-visible {
+.demo-nav .menu-link:focus-visible {
     box-shadow: 0 0 0 2px var(--accent);
 }
 
-.menu-label {
+.demo-nav .menu-label {
     /* flex: 0 0 auto; */
     /* padding: 0.35rem 0.6rem; */
     padding: 0;
@@ -98,7 +88,7 @@ body {
 }
 
 
-.toggle-btn {
+.demo-nav .toggle-btn {
     /* border-radius: 999px; */
     border: 1px solid var(--border);
     background: #020617;
@@ -124,25 +114,25 @@ body {
     border-color: #4b5563;
 } */
 
-.menu-item:active>.toggle-btn,
-.toggle-btn:active {
+.demo-nav .menu-item:active>.toggle-btn,
+.demo-nav .toggle-btn:active {
     transform: scale(0.92);
 }
 
-.toggle-btn:focus-visible {
+.demo-nav .toggle-btn:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
 
 /* --- Children container (grid trick) --------------------------------- */
-.submenu-grid {
+.demo-nav .submenu-grid {
     display: grid;
     grid-template-rows: 0fr;
     overflow: hidden;
     transition: grid-template-rows 0.35s ease;
 }
 
-.submenu-grid>.submenu {
+.demo-nav .submenu-grid>.submenu {
     overflow: hidden;
     padding-left: 1.2em;
     /* indentation per level */
@@ -151,39 +141,51 @@ body {
 }
 
 /* open state: driven only by aria-expanded on the li */
-li.has-children[aria-expanded="true"]>.submenu-grid {
+.demo-nav li.has-children[aria-expanded="true"]>.submenu-grid {
     grid-template-rows: 1fr;
 }
 
 /* depth hinting (optional, just to show variety) */
-li[data-depth="0"] .menu-item {
+.demo-nav li[data-depth="0"] .menu-item {
     font-weight: 600;
 }
 
-li[data-depth="2"] .menu-item {
+.demo-nav li[data-depth="2"] .menu-item {
     font-size: 0.95rem;
 }
 
-li[data-depth="3"] .menu-item {
+.demo-nav li[data-depth="3"] .menu-item {
     font-size: 0.9rem;
     opacity: 0.96;
 }
 
-li[data-depth="4"] .menu-item {
+.demo-nav li[data-depth="4"] .menu-item {
     font-size: 0.85rem;
     opacity: 0.9;
 }
 
 /* Case 4: non-parent with link — make the link fill the whole row */
-li:not(.has-children) > .menu-item > .menu-link {
+.demo-nav li:not(.has-children) > .menu-item > .menu-link {
     flex: 1 1 auto;
     width: 100%;
     min-width: 0;
     display: block;
 }
 
-li.has-children > .menu-item > .menu-link,
-li.has-children > .menu-item > .menu-label {
+.demo-nav li.has-children > .menu-item > .menu-link,
+.demo-nav li.has-children > .menu-item > .menu-label {
     flex: 0 1 auto;   /* does NOT grow, DOES shrink */
     min-width: 0;     /* REQUIRED so shrinking actually works */
+}
+
+@media (hover: none) {
+    .demo-nav .menu-item:hover {
+        background: inherit;
+        box-shadow: none;
+    }
+
+
+    .demo-nav .menu-link:hover {
+        box-shadow: none;
+    }
 }

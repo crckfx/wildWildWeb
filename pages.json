@@ -82,6 +82,27 @@
                         }
                     }
                 }
+            },
+            "menu": {
+                "title": "LF MENU 1",
+                "contentPath": "pages/menu/menu.html"
+            },
+            "menu3": {
+                "title": "MENU JUNK 3",
+                "contentPath": "pages/menu/menu3/menu3.html",
+                "templatePath": "templates/page_blank.ejs",
+                "imports": "pages/menu/menu3/bundle",
+                "styles": "./bundle/menu3.css",
+                "fragments": {
+                    "global": "components/blank.html",
+                    "head": "components/head-content-other.html"
+                }
+            },
+            "menu4": {
+                "title": "MENU JUNK 4",
+                "contentPath": "pages/menu/menu4/menu4.html",
+                "imports": "pages/menu/menu4/bundle",
+                "styles": "./bundle/menu4.css"
             }
         }
     },
@@ -245,22 +266,6 @@
                 "title": "Rord",
                 "contentPath": "pages/feature/reorder/rord.html",
                 "styles": "/misc/rord/rord.css"
-            },
-            "menu": {
-                "title": "LF MENU 1",
-                "contentPath": "pages/feature/menu/menu.html"
-            },
-
-            "menu3": {
-                "title": "MENU JUNK 3",
-                "contentPath": "pages/feature/menu/menu3/menu3.html",
-                "templatePath": "templates/page_blank.ejs",
-                "imports": "pages/feature/menu/menu3/bundle",
-                "styles": "./bundle/menu3.css",
-                "fragments": {
-                    "global": "components/blank.html",
-                    "head": "components/head-content-other.html"
-                }
             },
             "nothing": {
                 "imports": "assets/favicon.ico"

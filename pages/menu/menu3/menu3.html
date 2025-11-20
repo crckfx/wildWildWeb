@@ -14,11 +14,11 @@
     (async () => {
         const root = await loadUrlTree("/map.json");
         if (!root) return;
-
+        
         const target = document.querySelector(".menu-root");
         populateMenu(root, target);
 
-        bindSomeMenu();   // IMPORTANT: run AFTER population
+        bindSomeMenu(target);   // IMPORTANT: run AFTER population
     })();    
 </script>
 

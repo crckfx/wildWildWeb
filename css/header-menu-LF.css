@@ -1,23 +1,23 @@
-nav {
+.lfnav {
     /* background-color: var(--color-bg-1); */
     /* margin: 0.5em 0; */
     position: relative;
     margin: 0.5em 0;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     justify-content: center;
     position: relative;
     flex-direction: column;
 }
 
-.nav-container {
+.lfnav .nav-container {
     display: grid;
     transition: grid-gap 0.4s ease;
     grid-gap: 0;
     width: 100%;
 }
 
-nav[aria-expanded="true"] .nav-container {
+.lfnav[aria-expanded="true"] .nav-container {
     grid-gap: 24px;
 }
 
@@ -27,24 +27,24 @@ nav[aria-expanded="true"] .nav-container {
 /* (small: [logo + hamburger], large: [logo][menu]) */
 /* *************************************************************************************** */
 /* section for the logo-link and hamburger */
-.nav-top {
+.lfnav .nav-top {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
 /* logo home link */
-.logo {
+.lfnav .logo {
     max-width: 500px;
 }
 
-.logo .logo-image {
+.lfnav .logo .logo-image {
     width: 100%;
     content: var(--url-header-logo);
 }
 
 /* mobile menu toggle */
-.menu-toggle {
+.lfnav .menu-toggle {
     background: none;
     border: none;
     color: var(--header-text);
@@ -54,22 +54,22 @@ nav[aria-expanded="true"] .nav-container {
     /* padding: 6px 12px 0px 12px; */
 }
 
-.menu-toggle:hover {
+.lfnav .menu-toggle:hover {
     color: var(--color-accent);
 }
 
-.menu-toggle .icon {
+.lfnav .menu-toggle .icon {
     width: 24px;
     height: 24px;
 }
 
-nav[aria-expanded="false"] .menu-close,
-nav[aria-expanded="true"] .menu-ham {
+.lfnav[aria-expanded="false"] .menu-close,
+.lfnav[aria-expanded="true"] .menu-ham {
     display: none;
 }
 
-nav[aria-expanded="true"] .menu-close,
-nav[aria-expanded="false"] .menu-ham {
+.lfnav[aria-expanded="true"] .menu-close,
+.lfnav[aria-expanded="false"] .menu-ham {
     display: inline-block;
 }
 
@@ -77,7 +77,7 @@ nav[aria-expanded="false"] .menu-ham {
 /* ==== MENU === */
 /* *************************************************************************************** */
 /* menu-wrapper: (on mobile) animates grid-template-rows to slide the drawer open */
-.menu-wrapper {
+.lfnav .menu-wrapper {
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.4s ease, opacity 0.3s ease;
@@ -89,13 +89,13 @@ nav[aria-expanded="false"] .menu-ham {
 }
 
 /* menu expanded state */
-nav[aria-expanded="true"] .menu-wrapper {
+.lfnav[aria-expanded="true"] .menu-wrapper {
     grid-template-rows: 1fr;
     opacity: 1;
 }
 
 
-.menu {
+.lfnav .menu {
     overflow: hidden;
     width: 100%;
     display: flex;
@@ -109,15 +109,15 @@ nav[aria-expanded="true"] .menu-wrapper {
     font-weight: 500;
 }
 
-.menu>li {
+.lfnav .menu>li {
     border-bottom: 1px solid var(--color-subtle-divider);
 }
 
-.menu>li:last-child {
+.lfnav .menu>li:last-child {
     border-bottom: none;
 }
 
-.menu-item {
+.lfnav .menu-item {
     display: flex;
     align-items: center;
     transition: background-color 0.4s ease, box-shadow 0.5s ease, border-radius 0.3s ease;
@@ -131,17 +131,17 @@ nav[aria-expanded="true"] .menu-wrapper {
 }
 
 
-.menu-item:hover,
-.menu-item:has(> a:focus) {
+.lfnav .menu-item:hover,
+.lfnav .menu-item:has(> a:focus) {
     box-shadow: var(--inset-preset-2);
 }
 
-.has-children:hover>.menu-item {
+.lfnav .has-children:hover>.menu-item {
     box-shadow: var(--inset-preset-2);
 }
 
 
-.menu-item>a {
+.lfnav .menu-item>a {
     text-decoration: none;
     flex: 1;
     color: var(--header-text);
@@ -151,30 +151,30 @@ nav[aria-expanded="true"] .menu-wrapper {
 }
 
 
-.menu-item>a:hover,
-.menu-item>a:focus {
+.lfnav .menu-item>a:hover,
+.lfnav .menu-item>a:focus {
     color: var(--color-accent);
 }
 
-.has-children>.menu-item>a {
+.lfnav .has-children>.menu-item>a {
     /* grow the submenu-toggle (if it exists) instead of the <a> */
     flex: 0;
 }
 
-.menu-item>a>span {
+.lfnav .menu-item>a>span {
     white-space: nowrap;
     display: inline-block;
     position: relative;
 }
 
-.menu li:has(.current) .menu-item,
-.menu li.current .menu-item {
+.lfnav .menu li:has(.current) .menu-item,
+.lfnav .menu li.current .menu-item {
     background: var(--gradient-header-fade);
 }
 
 /* the underline for the current top menu item */
-.menu li:has(.current) .menu-item a span::after,
-.menu li.current .menu-item a span::after {
+.lfnav .menu li:has(.current) .menu-item a span::after,
+.lfnav .menu li.current .menu-item a span::after {
     content: '';
     position: absolute;
     left: 0;
@@ -185,7 +185,7 @@ nav[aria-expanded="true"] .menu-wrapper {
 }
 
 
-.submenu-toggle {
+.lfnav .submenu-toggle {
     background: none;
     border: none;
     color: inherit;
@@ -202,27 +202,27 @@ nav[aria-expanded="true"] .menu-wrapper {
 /* ==== SUB-MENU === */
 /* *************************************************************************************** */
 /* === submenu-grid animates same as menu-wrapper === */
-.submenu-grid {
+.lfnav .submenu-grid {
     display: grid;
     grid-template-rows: 0fr;
     overflow: hidden;
     transition: grid-template-rows 0.5s ease, opacity 0.3s ease;
 }
 
-.menu li[aria-expanded="true"] .submenu-grid {
+.lfnav .menu li[aria-expanded="true"] .submenu-grid {
     grid-template-rows: 1fr;
 }
 
 
 
-.submenu {
+.lfnav .submenu {
     list-style: none;
     /* background: #333; */
     overflow: hidden;
     padding: 0;
 }
 
-.submenu li {
+.lfnav .submenu li {
     /* border-top: 1px solid #444; */
     padding: 0;
     border-bottom: none;
@@ -230,7 +230,7 @@ nav[aria-expanded="true"] .menu-wrapper {
     border-top: 1px solid var(--color-subtle-divider);
 }
 
-.submenu a {
+.lfnav .submenu a {
     display: block;
     color: inherit;
     text-decoration: none;
@@ -241,25 +241,25 @@ nav[aria-expanded="true"] .menu-wrapper {
     outline: none;
 }
 
-.submenu a:hover,
-.submenu a:focus {
+.lfnav .submenu a:hover,
+.lfnav .submenu a:focus {
     box-shadow: var(--inset-preset-2);
     color: var(--color-accent);
 }
 
 
-.submenu li.current {
+.lfnav .submenu li.current {
     background: var(--gradient-header-fade);
 }
 
-.submenu a>span {
+.lfnav .submenu a>span {
     white-space: nowrap;
     display: inline-block;
     position: relative;
 }
 
 /* the underline for the current top menu item */
-.submenu li.current a span::after {
+.lfnav .submenu li.current a span::after {
     content: '';
     position: absolute;
     left: 0;
@@ -271,12 +271,12 @@ nav[aria-expanded="true"] .menu-wrapper {
 
 
 @media (min-width: 600px) {
-    .logo {
+    .lfnav .logo {
         width: 256px;
     }
 
     /* the menu button toggling */
-    .menu-toggle .icon {
+    .lfnav .menu-toggle .icon {
         width: 32px;
         height: 32px;
     }
@@ -286,29 +286,29 @@ nav[aria-expanded="true"] .menu-wrapper {
 
 /* === WIDE SCREEN === */
 @media (min-width: 1000px) {
-    .nav-container {
+    .lfnav .nav-container {
         display: flex;
         flex-wrap: nowrap;
     }
 
     /* section for the logo-link and hamburger */
-    .nav-top {
+    .lfnav .nav-top {
         width: auto;
         display: flex;
         justify-content: space-between;
     }
 
-    .logo {
+    .lfnav .logo {
         flex-shrink: 0;
         margin-right: 8vw;
     }
 
 
-    .menu-toggle {
+    .lfnav .menu-toggle {
         display: none;
     }
 
-    .menu-wrapper {
+    .lfnav .menu-wrapper {
         display: block;
         grid-template-rows: none;
         padding: 26px 0 12px 0;
@@ -317,7 +317,7 @@ nav[aria-expanded="true"] .menu-wrapper {
         overflow: visible;
     }
 
-    .menu {
+    .lfnav .menu {
         display: flex;
         flex-direction: row;
         font-size: 14px;
@@ -330,13 +330,13 @@ nav[aria-expanded="true"] .menu-wrapper {
     }
 
 
-    .menu li {
+    .lfnav .menu li {
         position: relative;
         border-bottom: none;
     }
 
 
-    .menu-item {
+    .lfnav .menu-item {
         display: inline-flex;
         height: auto;
         border-radius: 8px;
@@ -344,33 +344,33 @@ nav[aria-expanded="true"] .menu-wrapper {
         font-size: 14px;
     }
 
-    .menu-item,
-    .menu-item:not(:last-child) {
+    .lfnav .menu-item,
+    .lfnav .menu-item:not(:last-child) {
         border: none;
     }
 
-    .menu li#home {
+    .lfnav .menu li#home {
         display: none;
     }
 
-    .menu-item>a {
+    .lfnav .menu-item>a {
         /* display: inline-block; */
         position: relative;
         padding: 16px 20px;
         outline: none;
     }
 
-    .menu-item>a>span {
+    .lfnav .menu-item>a>span {
         position: relative;
     }
 
-    .menu li:has(.current) .menu-item,
-    .menu li.current .menu-item {
+    .lfnav .menu li:has(.current) .menu-item,
+    .lfnav .menu li.current .menu-item {
         background: none;
     }
 
     /* the underline for the current top menu item */
-    .menu li.current .menu-item a span::after {
+    .lfnav .menu li.current .menu-item a span::after {
         content: '';
         position: absolute;
         left: 0;
@@ -382,21 +382,21 @@ nav[aria-expanded="true"] .menu-wrapper {
 
 
 
-    .menu-item:hover,
-    .menu-item:has(> a:focus) {
+    .lfnav .menu-item:hover,
+    .lfnav .menu-item:has(> a:focus) {
         box-shadow: var(--inset-preset-2);
     }
 
-    .has-children:hover>.menu-item {
+    .lfnav .has-children:hover>.menu-item {
         box-shadow: var(--inset-preset-2);
     }
 
-    .submenu-toggle {
+    .lfnav .submenu-toggle {
         display: none;
     }
 
     /* Override grid animation on wide screens */
-    .submenu-grid {
+    .lfnav .submenu-grid {
         position: absolute;
         top: 100%;
         left: 0;
@@ -410,13 +410,13 @@ nav[aria-expanded="true"] .menu-wrapper {
     }
 
 
-    li:hover>.submenu-grid,
-    li:has(a:focus)>.submenu-grid {
+    .lfnav li:hover>.submenu-grid,
+    .lfnav li:has(a:focus)>.submenu-grid {
         grid-template-rows: 1fr;
         opacity: 1;
     }
 
-    .submenu {
+    .lfnav .submenu {
         /* background: none; */
         /* background-color: var(--color-bg-2); */
         background-color: var(--color-footer-1);
@@ -426,7 +426,7 @@ nav[aria-expanded="true"] .menu-wrapper {
         min-width: 300px;
     }
 
-    .submenu li {
+    .lfnav .submenu li {
         /* min-height: 60px; */
         display: flex;
         align-items: center;
@@ -436,11 +436,11 @@ nav[aria-expanded="true"] .menu-wrapper {
         padding: 4px 0;
     }
 
-    .submenu li.current {
+    .lfnav .submenu li.current {
         background: none;
     }
 
-    .submenu li:not(:last-child)::after {
+    .lfnav .submenu li:not(:last-child)::after {
         content: '';
         position: absolute;
         bottom: -2px;
@@ -450,12 +450,12 @@ nav[aria-expanded="true"] .menu-wrapper {
         background-color: var(--color-subtle-divider);
     }
 
-    .submenu li:hover a {
+    .lfnav .submenu li:hover a {
         box-shadow: var(--inset-preset-2);
     }
 
 
-    .submenu li>a {
+    .lfnav .submenu li>a {
         padding: 1em 1em;
         width: 100%;
         height: 100%;
@@ -466,7 +466,7 @@ nav[aria-expanded="true"] .menu-wrapper {
     }
 
 
-    .menu-item.contact-button {
+    .lfnav .menu-item.contact-button {
 
         box-shadow: none;
         /* box-shadow: var(--shadow-preset-A); */
@@ -474,15 +474,15 @@ nav[aria-expanded="true"] .menu-wrapper {
         border-radius: 24px;
     }
 
-    .menu-item.contact-button:hover,
-    .menu-item.contact-button:has(>a:focus) {
+    .lfnav .menu-item.contact-button:hover,
+    .lfnav .menu-item.contact-button:has(>a:focus) {
         /* box-shadow: var(--btn-B-hover-shadow); */
         box-shadow: var(--shadow-preset-A);
         background-color: var(--lf-dark-navy);
         border-radius: 16px;
     }
 
-    .menu-item.contact-button a {
+    .lfnav .menu-item.contact-button a {
         color: var(--color-contact-btn-text);
     }
 
