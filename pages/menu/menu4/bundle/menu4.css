@@ -69,8 +69,6 @@
 .demo-nav .menu-link {
     text-decoration: none;
     color: var(--text);
-    /* padding: 0.35rem 0.6rem; */
-    /* flex: 0 0 auto; */
     padding: 0.35em 0.2em;
     border-radius: 8px;
     outline: none;
@@ -80,6 +78,10 @@
 .demo-nav .menu-link:focus-visible {
     outline: 2px solid var(--accent);
     box-shadow: 0 0 0 2px var(--accent);
+}
+
+.demo-nav .menu-link:hover {
+    color: var(--accent);
 }
 
 
@@ -92,17 +94,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    /* font-size: 0.9rem; */
     font-weight: 600;
     font-size: inherit;
-    /* cursor: pointer; */
     padding: 0;
     transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
     flex: 0 0 auto;
     min-width: 2em;
-    /* stable size */
     height: 2em;
-    /* stable height */
     margin-left: auto;
 }
 
@@ -162,7 +160,13 @@
     opacity: 0.9;
 }
 
-/* Case 4: non-parent with link — make the link fill the whole row */
+.demo-nav li.has-children[aria-expanded="true"]>.menu-item {
+    /* background-color: var(--item-hover); */
+    box-shadow: var(--inset-preset-2);
+
+}
+
+/* if there's no children for the item, make the link expand */
 .demo-nav li:not(.has-children)>.menu-item>.menu-link {
     flex: 1 1 auto;
     width: 100%;
@@ -172,25 +176,20 @@
 
 .demo-nav li.has-children>.menu-item>.menu-link,
 .demo-nav li.has-children>.menu-item>.menu-label {
-    flex: 0 1 auto;
     /* does NOT grow, DOES shrink */
+    flex: 0 1 auto;
+    /* probably obsolete */
     min-width: 0;
-    /* REQUIRED so shrinking actually works */
 }
 
+/* disable hover on device with no true hover */
 @media (hover: none) {
     .demo-nav .menu-item:hover {
         background: inherit;
         box-shadow: none;
     }
 
-
     .demo-nav .menu-link:hover {
         box-shadow: none;
     }
-}
-
-
-.demo-nav li.has-children[aria-expanded="true"]>.menu-item {
-    background-color: var(--item-hover);
 }
