@@ -1,0 +1,189 @@
+:root {
+    --bg: #0f172a;
+    --item-bg: #111827;
+    --item-hover: #1f2937;
+    --border: #374151;
+    --accent: #38bdf8;
+    --text: #e5e7eb;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: radial-gradient(circle at top, #1e293b 0, #020617 60%);
+    color: var(--text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.demo-nav {
+    background: var(--bg);
+    border-radius: 18px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    padding: 1rem 1.25rem;
+    width: min(480px, 100%);
+}
+
+.demo-nav h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #9ca3af;
+}
+
+/* ------------------------------------------------------------ */
+
+.menu-wrapper {
+    /* same trick as your real header: content in a 0fr/1fr grid track */
+    display: grid;
+    grid-template-rows: 1fr;
+    /* always open root for this demo */
+}
+
+.menu-root,
+.submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- Node row --------------------------------------------------------- */
+.menu-item {
+    display: flex;
+    align-items: center;
+    /* gap: 0.5rem; */
+    padding: 0.5rem 0.4rem;
+    /* padding: 0 0.4rem; */
+    /* padding: 0; */
+    border-radius: 12px;
+    background: transparent;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    -webkit-user-select: none;
+    user-select: none;
+    /* height: 3em; */
+    min-height: 3em;
+    height: auto;
+}
+
+.menu-item:hover {
+    background: var(--item-hover);
+    box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.2);
+}
+
+.menu-link {
+    text-decoration: none;
+    color: var(--text);
+    /* padding: 0.35rem 0.6rem; */
+    /* flex: 0 0 auto; */
+    padding: 0.35rem 0;
+    border-radius: 8px;
+    outline: none;
+}
+
+.menu-link:focus-visible {
+    box-shadow: 0 0 0 2px var(--accent);
+}
+
+.menu-label {
+    /* flex: 0 0 auto; */
+    /* padding: 0.35rem 0.6rem; */
+    padding: 0;
+    border-radius: 8px;
+    
+}
+
+
+.toggle-btn {
+    /* border-radius: 999px; */
+    border: 1px solid var(--border);
+    background: #020617;
+    background: transparent;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* font-size: 0.9rem; */
+    font-weight: 600;
+    font-size: inherit;
+    /* cursor: pointer; */
+    padding: 0;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    flex: 0 0 auto;
+    min-width: 2em;      /* stable size */
+    height: 2em;         /* stable height */
+    margin-left: auto;
+}
+/* 
+.toggle-btn:hover {
+    background: #111827;
+    border-color: #4b5563;
+} */
+
+.menu-item:active>.toggle-btn,
+.toggle-btn:active {
+    transform: scale(0.92);
+}
+
+.toggle-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* --- Children container (grid trick) --------------------------------- */
+.submenu-grid {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.35s ease;
+}
+
+.submenu-grid>.submenu {
+    overflow: hidden;
+    padding-left: 1.2em;
+    /* indentation per level */
+    border-left: 1px solid rgba(55, 65, 81, 0.9);
+    margin-left: 0.3rem;
+}
+
+/* open state: driven only by aria-expanded on the li */
+li.has-children[aria-expanded="true"]>.submenu-grid {
+    grid-template-rows: 1fr;
+}
+
+/* depth hinting (optional, just to show variety) */
+li[data-depth="0"] .menu-item {
+    font-weight: 600;
+}
+
+li[data-depth="2"] .menu-item {
+    font-size: 0.95rem;
+}
+
+li[data-depth="3"] .menu-item {
+    font-size: 0.9rem;
+    opacity: 0.96;
+}
+
+li[data-depth="4"] .menu-item {
+    font-size: 0.85rem;
+    opacity: 0.9;
+}
+
+/* Case 4: non-parent with link — make the link fill the whole row */
+li:not(.has-children) > .menu-item > .menu-link {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    display: block;
+}
+
+li.has-children > .menu-item > .menu-link,
+li.has-children > .menu-item > .menu-label {
+    flex: 0 1 auto;   /* does NOT grow, DOES shrink */
+    min-width: 0;     /* REQUIRED so shrinking actually works */
+}

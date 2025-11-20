@@ -32,7 +32,8 @@
     const navMenu = fakeNav.querySelector('.menu-wrapper');
     
     const tree = await loadUrlTree('/map.json'); // specify the filename here at call site, get the tree back to keep here
-    // console.log(tree);
+    const logTree = JSON.stringify(tree);
+    console.log(logTree);
     const fakeMenu = createNavFromSitemap(tree); // give the tree to some imported function, get the html back here
     console.log(fakeMenu); // crudely just log the html
     navMenu.innerHTML = fakeMenu;

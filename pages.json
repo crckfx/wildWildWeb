@@ -28,6 +28,7 @@
         "title": "Junk",
         "children": {
             "showcase": {
+                "title": "Showcase",
                 "children": {
                     "icons": {
                         "title": "Icon Showcase",
@@ -136,8 +137,8 @@
                     "pages/countdownGame/bundle"
                 ],
                 "styles": [
-                    "/countdownGame/bundle/countdownGame.css",
-                    "/countdownGame/bundle/someButton.css"
+                    "/apps/countdownGame/bundle/countdownGame.css",
+                    "/apps/countdownGame/bundle/someButton.css"
                 ]
             },
             "splat": {
@@ -246,8 +247,20 @@
                 "styles": "/misc/rord/rord.css"
             },
             "menu": {
-                "title": "LF MENU",
+                "title": "LF MENU 1",
                 "contentPath": "pages/feature/menu/menu.html"
+            },
+
+            "menu3": {
+                "title": "MENU JUNK 3",
+                "contentPath": "pages/feature/menu/menu3/menu3.html",
+                "templatePath": "templates/page_blank.ejs",
+                "imports": "pages/feature/menu/menu3/bundle",
+                "styles": "./bundle/menu3.css",
+                "fragments": {
+                    "global": "components/blank.html",
+                    "head": "components/head-content-other.html"
+                }
             },
             "nothing": {
                 "imports": "assets/favicon.ico"

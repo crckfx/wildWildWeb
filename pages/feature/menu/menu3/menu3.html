@@ -1,0 +1,24 @@
+
+<div class="demo-nav" aria-label="Recursive example menu">
+    <h2>Demo Menu</h2>
+    <div class="menu-wrapper">
+        <ul class="menu-root"></ul>
+    </div>
+</div>
+
+<script type="module">
+    import {bindSomeMenu} from "./bundle/menu3.js"
+    import {populateMenu} from "/js/pageGoblin/populateMenu.js"
+    import {loadUrlTree} from "/js/pageGoblin/tree.js"
+
+    (async () => {
+        const root = await loadUrlTree("/map.json");
+        if (!root) return;
+
+        const target = document.querySelector(".menu-root");
+        populateMenu(root, target);
+
+        bindSomeMenu();   // IMPORTANT: run AFTER population
+    })();    
+</script>
+
