@@ -7,9 +7,6 @@
     --text: #e5e7eb;
 }
 
-
-.demo-nav {}
-
 .demo-nav .nav-container {
     display: grid;
     transition: grid-gap 0.4s ease;
