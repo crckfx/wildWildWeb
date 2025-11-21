@@ -272,7 +272,11 @@
 }
 
 .desktop.demo-nav .nav-top {
-    width: auto;
+    width: 100%;
+}
+
+.desktop.demo-nav a.logo {
+    margin-right: 100px;
 }
 
 /* disable the mobile menu toggle */
