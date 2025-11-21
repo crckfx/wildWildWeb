@@ -1,12 +1,12 @@
 :root {
-    --nav-bg: var(--color-bg-3, #0f172a);
+    --nav-bg: var(--color-header-1, #0f172a);
     --nav-item-hover: #1f2937;
     --nav-border: var(--color-subtle-divider, #374151);
     --nav-accent: var(--color-accent, #38bdf8);
     --nav-text: #e5e7eb;
 }
 
-.demo-nav .nav-container {
+.wwwNav .nav-container {
     display: grid;
     transition: grid-gap 0.4s ease;
     grid-gap: 0;
@@ -15,14 +15,14 @@
 }
 
 
-.demo-nav .nav-top {
+.wwwNav .nav-top {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
 /* mobile menu toggle */
-.demo-nav .menu-toggle {
+.wwwNav .menu-toggle {
     background: none;
     border: none;
     color: var(--header-text);
@@ -33,30 +33,30 @@
     display: none;
 }
 
-.mobile.demo-nav .menu-toggle {
+.mobile.wwwNav .menu-toggle {
     display: block;
 }
 
-.demo-nav .menu-toggle:hover {
+.wwwNav .menu-toggle:hover {
     color: var(--nav-accent);
 }
 
-.demo-nav .menu-toggle .icon {
+.wwwNav .menu-toggle .icon {
     width: 32px;
     height: 32px;
 }
 
-.demo-nav[aria-expanded="false"] .menu-close,
-.demo-nav[aria-expanded="true"] .menu-ham {
+.wwwNav[aria-expanded="false"] .menu-close,
+.wwwNav[aria-expanded="true"] .menu-ham {
     display: none;
 }
 
-.demo-nav[aria-expanded="true"] .menu-close,
-.demo-nav[aria-expanded="false"] .menu-ham {
+.wwwNav[aria-expanded="true"] .menu-close,
+.wwwNav[aria-expanded="false"] .menu-ham {
     display: inline-block;
 }
 
-.demo-nav h2 {
+.wwwNav h2 {
     margin: 0 0 0.75rem;
     font-size: 1.1rem;
     letter-spacing: 0.04em;
@@ -66,7 +66,7 @@
 
 /* ------------------------------------------------------------ */
 
-.demo-nav .menu-wrapper {
+.wwwNav .menu-wrapper {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 18px;
 
@@ -80,19 +80,19 @@
     width: 100%;
 }
 
-.demo-nav[aria-expanded="true"] .menu-wrapper {
+.wwwNav[aria-expanded="true"] .menu-wrapper {
     grid-template-rows: 1fr;
     opacity: 1;
 }
 
-.demo-nav .menu-root,
-.demo-nav .submenu {
+.wwwNav .menu-root,
+.wwwNav .submenu {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.demo-nav .menu-root {
+.wwwNav .menu-root {
     overflow: hidden;
     width: 100%;
     display: flex;
@@ -107,16 +107,16 @@
 }
 
 /* simulate menu Y-padding without  */
-.mobile.demo-nav .menu-root>li:first-child {
+.mobile.wwwNav .menu-root>li:first-child {
     margin-top: 16px;
 }
-.mobile.demo-nav .menu-root>li:last-child {
+.mobile.wwwNav .menu-root>li:last-child {
     margin-bottom: 16px;
 }
 
 
 /* --- Node row --------------------------------------------------------- */
-.demo-nav .menu-item {
+.wwwNav .menu-item {
     display: flex;
     align-items: center;
     padding: 0.5rem 0.4rem;
@@ -129,13 +129,13 @@
     height: auto;
 }
 
-.demo-nav .menu-item:hover {
+.wwwNav .menu-item:hover {
     background: var(--nav-item-hover);
     box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.2);
 }
 
-.demo-nav .menu-label,
-.demo-nav .menu-link {
+.wwwNav .menu-label,
+.wwwNav .menu-link {
     text-decoration: none;
     color: var(--nav-text);
     padding: 0.35em 0.35em;
@@ -143,18 +143,18 @@
     outline: none;
 }
 
-.demo-nav .menu-label:focus-visible,
-.demo-nav .menu-link:focus-visible {
+.wwwNav .menu-label:focus-visible,
+.wwwNav .menu-link:focus-visible {
     outline: 2px solid var(--nav-accent);
     box-shadow: 0 0 0 2px var(--nav-accent);
 }
 
-.demo-nav .menu-link:hover {
+.wwwNav .menu-link:hover {
     color: var(--nav-accent);
 }
 
 
-.demo-nav .toggle-btn {
+.wwwNav .toggle-btn {
     border: 0;
     background: #020617;
     background: transparent;
@@ -173,25 +173,25 @@
 }
 
 
-.demo-nav .menu-item:active>.toggle-btn,
-.demo-nav .toggle-btn:active {
+.wwwNav .menu-item:active>.toggle-btn,
+.wwwNav .toggle-btn:active {
     transform: scale(0.92);
 }
 
-.demo-nav .toggle-btn:focus-visible {
+.wwwNav .toggle-btn:focus-visible {
     outline: 2px solid var(--nav-accent);
     outline-offset: 2px;
 }
 
 /* --- Children container (grid trick) --------------------------------- */
-.demo-nav .submenu-grid {
+.wwwNav .submenu-grid {
     display: grid;
     grid-template-rows: 0fr;
     overflow: hidden;
     transition: grid-template-rows 0.35s ease;
 }
 
-.demo-nav .submenu-grid>.submenu {
+.wwwNav .submenu-grid>.submenu {
     overflow: hidden;
     padding-left: 0.5em;
     /* indentation per level */
@@ -201,45 +201,45 @@
 }
 
 /* open state: driven only by aria-expanded on the li */
-.demo-nav li.has-children[aria-expanded="true"]>.submenu-grid {
+.wwwNav li.has-children[aria-expanded="true"]>.submenu-grid {
     grid-template-rows: 1fr;
 }
 
 /* depth hinting (optional, just to show variety) */
-.demo-nav li[data-depth="0"] .menu-item {
+.wwwNav li[data-depth="0"] .menu-item {
     font-weight: 600;
 }
 
-.demo-nav li[data-depth="2"] .menu-item {
+.wwwNav li[data-depth="2"] .menu-item {
     font-size: 0.95rem;
 }
 
-.demo-nav li[data-depth="3"] .menu-item {
+.wwwNav li[data-depth="3"] .menu-item {
     font-size: 0.9rem;
     opacity: 0.96;
 }
 
-.demo-nav li[data-depth="4"] .menu-item {
+.wwwNav li[data-depth="4"] .menu-item {
     font-size: 0.85rem;
     opacity: 0.9;
 }
 
-.demo-nav li.has-children[aria-expanded="true"]>.menu-item {
+.wwwNav li.has-children[aria-expanded="true"]>.menu-item {
     /* background-color: var(--nav-item-hover); */
     box-shadow: var(--inset-preset-2);
 
 }
 
 /* if there's no children for the item, make the link expand */
-.demo-nav li:not(.has-children)>.menu-item>.menu-link {
+.wwwNav li:not(.has-children)>.menu-item>.menu-link {
     flex: 1 1 auto;
     width: 100%;
     min-width: 0;
     display: block;
 }
 
-.demo-nav li.has-children>.menu-item>.menu-link,
-.demo-nav li.has-children>.menu-item>.menu-label {
+.wwwNav li.has-children>.menu-item>.menu-link,
+.wwwNav li.has-children>.menu-item>.menu-label {
     /* does NOT grow, DOES shrink */
     flex: 0 1 auto;
     /* probably obsolete */
@@ -248,16 +248,16 @@
 
 /* disable hover on device with no true hover */
 @media (hover: none) {
-    .demo-nav .menu-item:hover {
+    .wwwNav .menu-item:hover {
         background: inherit;
         box-shadow: none;
     }
 
-    .demo-nav .menu-link:hover {
+    .wwwNav .menu-link:hover {
         box-shadow: none;
     }
 
-    .demo-nav .menu-link:hover {
+    .wwwNav .menu-link:hover {
         color: inherit;
     }
 }
@@ -268,26 +268,26 @@
 /* so that widescreen layout might work on an ipad etc.
 /* hover styles are treated as overrides.
 /* ***************************************************************** */
-.desktop.demo-nav .nav-container {
+.desktop.wwwNav .nav-container {
     display: flex;
     flex-wrap: nowrap;
 }
 
-.desktop.demo-nav .nav-top {
+.desktop.wwwNav .nav-top {
     width: 100%;
 }
 
-.desktop.demo-nav a.logo {
+/* .desktop.wwwNav a.logo {
     margin-right: 100px;
-}
+} */
 
 /* disable the mobile menu toggle */
-.desktop.demo-nav .menu-toggle {
+.desktop.wwwNav .menu-toggle {
     display: none;
 }
 
 /* enable the top-level menu */
-.desktop.demo-nav .menu-wrapper {
+.desktop.wwwNav .menu-wrapper {
     grid-template-rows: 1fr;
     opacity: 1;
     overflow: unset;
@@ -296,7 +296,7 @@
 }
 
 /* modify the top-level menu layout for horizontal  */
-.desktop.demo-nav .menu-root {
+.desktop.wwwNav .menu-root {
     overflow: unset;
     width: 100%;
     display: flex;
@@ -312,17 +312,22 @@
     justify-content: space-around;
 }
 
-.desktop.demo-nav .menu-root>li {
+.desktop.wwwNav .menu-root>li {
     /* so that child submenus can anchor to it */
     position: relative;
+    min-width: 80px;
 }
 
-.desktop.demo-nav .menu-root>li>.menu-item>.toggle-btn {
+.desktop.wwwNav .menu-root>li>.menu-item {
+    justify-content: center;
+}
+
+.desktop.wwwNav .menu-root>li>.menu-item>.toggle-btn {
     margin: 0;
 }
 
 /* submenu children are absolutely positioned */
-.desktop.demo-nav .menu-root>li>.submenu-grid {
+.desktop.wwwNav .menu-root>li>.submenu-grid {
     background-color: var(--nav-bg);
     position: absolute;
     z-index: 5;
@@ -331,10 +336,11 @@
     box-shadow: var(--shadow-preset-A);
     transition: grid-template-rows 0.5s ease, opacity 0.35s ease;
     opacity: 0;
+    min-width: 180px;
 }
 
 /* style the submenus for widescreen */
-.desktop.demo-nav .menu-root>li>.submenu-grid>.submenu {
+.desktop.wwwNav .menu-root>li>.submenu-grid>.submenu {
     overflow: hidden;
     padding: 0;
     /* indentation per level */
@@ -345,8 +351,8 @@
 }
 
 /* deep/specific overrides for ensuring widescreen/touch compatibility */
-.desktop.demo-nav li.has-children[aria-expanded="true"]>.submenu-grid,
-.desktop.demo-nav li.has-children[aria-expanded="true"]>.submenu-grid>.submenu {
+.desktop.wwwNav li.has-children[aria-expanded="true"]>.submenu-grid,
+.desktop.wwwNav li.has-children[aria-expanded="true"]>.submenu-grid>.submenu {
     grid-template-rows: 1fr;
     opacity: 1;
 }
@@ -356,37 +362,45 @@
 /* override styles (only for devices that can really hover) */
 /* ***************************************************************** */
 @media (hover: hover) and (pointer: fine) {
-    /* .desktop.demo-nav .menu-root>li:hover>.submenu-grid {
+    /* .desktop.wwwNav .menu-root>li:hover>.submenu-grid {
         grid-template-rows: 1fr;
         opacity: 1;
     } */
 
 
-    /* .mobile.demo-nav .menu-wrapper {
+    /* .mobile.wwwNav .menu-wrapper {
         position: absolute;
         top: 100%;
         background-color: var(--nav-bg);
     }
 
-    .mobile.demo-nav[aria-expanded="true"] .menu-wrapper {
+    .mobile.wwwNav[aria-expanded="true"] .menu-wrapper {
         grid-template-rows: 1fr;
         opacity: 1;
     }
 
-    .mobile.demo-nav li:hover>.submenu-grid {
+    .mobile.wwwNav li:hover>.submenu-grid {
         grid-template-rows: 1fr;
         opacity: 1;
         transition: grid-template-rows 0.75s ease;
     } */
 
+.desktop.wwwNav li.has-children[aria-expanded="true"]>.submenu-grid,
+.desktop.wwwNav li.has-children[aria-expanded="true"]>.submenu-grid>.submenu {
+    grid-template-rows: 0fr;
+    opacity: 0;
+}
 
-    .desktop.demo-nav li:hover>.submenu-grid {
+
+    .desktop.wwwNav li:hover>.submenu-grid {
         grid-template-rows: 1fr;
         opacity: 1;
     }
 
-    .desktop.demo-nav .menu-root>li>.menu-item>.toggle-btn {
+    .desktop.wwwNav .menu-root>li>.menu-item>.toggle-btn {
         display: none;
     }
+
+    
 
 }

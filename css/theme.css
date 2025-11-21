@@ -29,17 +29,22 @@
 
     --color-accent: #0070f3;
 
-    --color-footer-1: hsl(0, 45%, 28%);
-    --color-footer-2: hsl(345, 34%, 22%);
+    /* --color-footer-1: hsl(0, 45%, 28%); */
+    /* --color-footer-2: hsl(345, 34%, 22%); */
+    --color-footer-1: hsl(215, 50%, 31%);
+    --color-footer-2: hsl(215, 60%, 24%);
     --footer-text: white;
     --header-text: white;
+
+    --color-header-1: hsl(215, 50%, 31%);
+    --color-header-2: hsl(215, 60%, 24%);
 
     --hsl-bulb: 22 93% 54%;
     --color-bulb-on: hsl(22, 93%, 54%);
     --color-bulb-off: hsla(var(--hsl-bulb) / 0.133);
 
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
-    --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    --header-bg: radial-gradient(circle at top left, var(--color-header-1) 0%, var(--color-header-2) 100%);
 
     --color-shadow-bgopp: rgba(0, 0, 0, 0.2);
     --color-shadow-shine: rgba(255, 255, 255, 1);
@@ -59,22 +64,26 @@
     --color-feature-1: hsl(113, 48%, 85%);
     --color-feature-2: hsl(113, 25%, 75%);
     --color-feature-3: hsl(113, 48%, 55%);
-    
+
     --color-accent: hsl(167, 100%, 74%);
 
-    --color-footer-1: hsl(113, 45%, 28%);
-    --color-footer-2: hsl(113, 34%, 22%);
+    --color-footer-1: hsl(167, 23%, 15%);
+    --color-footer-2: hsl(167, 28%, 10%);
     /* --footer-text: white; */
     --footer-text: var(--color-text-2);
     --header-text: var(--color-text-2);
 
+    --color-header-1: hsl(167, 23%, 15%);
+    --color-header-2: hsl(113, 34%, 22%);
+
+
     --color-bulb-on: #00ddff;
     --color-bulb-off: #00ddff22;
 
-    /* --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
-    --footer-bg: var(--color-bg-3);
+    --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
+    /* --footer-bg: var(--color-bg-3); */
     /* --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%); */
-    --header-bg: none;
+    --header-bg: transparent;
 
     --color-shadow-bgopp: rgba(255, 255, 255, 0.2);
     --color-shadow-shine: rgba(255, 255, 255, 0.2);
@@ -96,11 +105,13 @@
     --color-feature-2: hsl(var(--gen-h-1), 20%, 38%);
     --color-feature-3: hsl(var(--gen-h-1), 59%, 41%);
 
-    --color-accent: hsl(var(--gen-h-1), 100%, 64%);
+    --color-accent: hsl(var(--gen-h-1), 100%, 54%);
 
-
+    --color-header-1: hsl(var(--gen-h-1), 83%, 24%);
+    --color-header-2: hsl(var(--gen-h-1), 55%, 22%);
     --color-footer-1: hsl(var(--gen-h-1), 83%, 24%);
     --color-footer-2: hsl(var(--gen-h-1), 55%, 22%);
+
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
     --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
 
@@ -112,7 +123,7 @@
 
     --color-shadow-bgopp: rgba(255, 255, 255, 0.2);
     --color-shadow-shine: rgba(255, 255, 255, 0.2);
-    --color-subtle-divider: hsl(var(--gen-h-1), 51%, 32%); 
+    --color-subtle-divider: hsl(var(--gen-h-1), 51%, 32%);
 }
 
 

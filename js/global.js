@@ -69,7 +69,7 @@ async function onReady() {
     // console.log(fakeHeader); // crudely just log the html
     // const navMenu = document.getElementById('site-nav').querySelector('.menu-wrapper');
     // navMenu.innerHTML = fakeHeader;
-    bindHeaderMenu(document.getElementById('site-nav'));
+    // bindHeaderMenu(document.getElementById('site-nav'));
     
 }
 

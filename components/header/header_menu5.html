@@ -1,9 +1,7 @@
 <header class="site-header">
-
-    <nav class="wrap demo-nav" aria-expanded="false">
+    <nav class="wrap wwwNav" aria-expanded="false">
         <div class="nav-container">
             <div class="nav-top">
-                <!-- this is a special kind of section -->
                 <a class="logo" href="/" aria-label="Go to homepage">
                     <h1>WWW</h1>
                 </a>
@@ -33,36 +31,35 @@
 
 
     (async () => {
-        // do the "populate header" stuff
-        const root = await loadUrlTree("/map.json");
-        if (!root) return;
+        // target the nav root
+        const navRoot = document.querySelector(".wwwNav");
+        if (!navRoot) return;
 
-        const navSomething = document.querySelector(".demo-nav");
-        const target = navSomething?.querySelector(".menu-root");
-        populateMenu(root, target);
+        // --- do the "populate menu" stuff using sitemap ---
+        const siteUrlTree = await loadUrlTree("/map.json");
+        if (!siteUrlTree) return;
+        const target = navRoot?.querySelector(".menu-root");
+        populateMenu(siteUrlTree, target);
 
-        // --- --- ---
-        // prepare the menu toggle for mobile
-        const menuToggle = navSomething.querySelector('.menu-toggle');
-
+        //  --- prepare the menu toggle for mobile ---
+        const menuToggle = navRoot.querySelector('.menu-toggle');
         if (menuToggle) menuToggle.addEventListener('click', toggleNavMenu);
 
         function toggleNavMenu() {
-            navSomething.getAttribute('aria-expanded') === 'true'
+            navRoot.getAttribute('aria-expanded') === 'true'
                 ? closeMainMenu()
                 : openMainMenu();
         }
 
         function openMainMenu() {
-            navSomething.setAttribute('aria-expanded', 'true');
+            navRoot.setAttribute('aria-expanded', 'true');
         }
 
         function closeMainMenu() {
-            navSomething.setAttribute('aria-expanded', 'false');
-            // closeOpenSubmenu();
+            navRoot.setAttribute('aria-expanded', 'false');
         }
+        
         // --- --- ---
-
-        bindSomeMenu(navSomething, { exclusive: true });   // IMPORTANT: run AFTER population
+        bindSomeMenu(navRoot, { exclusive: true });   // IMPORTANT: run AFTER population
     })();
 </script>

@@ -115,15 +115,13 @@
                     "/css/testimonial-card.css",
                     "/css/feature-card.css",
                     "/misc/accordion/crckordion.css",
-                    "/css/menu5.css"
+                    "/css/menu5.css",
+                    "/css/someButton/someButton2.css"
                 ],
                 "modules": [
                     "/js/merrygoround/addHomepageCarousel.js"
-                ],
-                "fragments": {
-                    "head": "components/head-content-other.html",
-                    "header": "components/header/header_menu5.html"
-                }
+                ]
+
             }
         }
     },
@@ -186,17 +184,11 @@
             "splat": {
                 "title": "Splat",
                 "contentPath": "pages/splat/splat.html",
-                "fragments": {
-                    "header": "components/header/header_LF.html"
-                },
                 "imports": [
                     "pages/splat/splat.js",
                     "pages/splat/splat.css"
                 ],
-                "styles": [
-                    "/css/header-menu-LF.css",
-                    "./splat.css"
-                ],
+                "styles": "./splat.css",
                 "modules": "splat.js"
             }
         }
