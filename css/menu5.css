@@ -12,6 +12,7 @@
     transition: grid-gap 0.4s ease;
     grid-gap: 0;
     width: 100%;
+    position: relative;
 }
 
 
@@ -96,10 +97,19 @@
     /* font-size: 18px; */
     color: var(--header-text);
     margin-top: 1em;
-    padding: 8px;
+    padding: 0 8px;
     margin: 0;
     font-weight: 500;
 }
+
+/* simulate menu Y-padding without  */
+.mobile.demo-nav .menu-root>li:first-child {
+    margin-top: 16px;
+}
+.mobile.demo-nav .menu-root>li:last-child {
+    margin-bottom: 16px;
+}
+
 
 /* --- Node row --------------------------------------------------------- */
 .demo-nav .menu-item {
@@ -251,6 +261,11 @@
 }
 
 /* ***************************************************************** */
+/* --- WIDESCREEN --- */
+/* by default, we don't disable the toggle buttons.
+/* so that widescreen layout might work on an ipad etc.
+/* hover styles are treated as overrides.
+/* ***************************************************************** */
 .desktop.demo-nav .nav-container {
     display: flex;
     flex-wrap: nowrap;
@@ -260,11 +275,12 @@
     width: auto;
 }
 
-/* mobile menu toggle */
+/* disable the mobile menu toggle */
 .desktop.demo-nav .menu-toggle {
     display: none;
 }
 
+/* enable the top-level menu */
 .desktop.demo-nav .menu-wrapper {
     grid-template-rows: 1fr;
     opacity: 1;
@@ -273,6 +289,7 @@
     font-size: 16px;
 }
 
+/* modify the top-level menu layout for horizontal  */
 .desktop.demo-nav .menu-root {
     overflow: unset;
     width: 100%;
@@ -290,6 +307,7 @@
 }
 
 .desktop.demo-nav .menu-root>li {
+    /* so that child submenus can anchor to it */
     position: relative;
 }
 
@@ -297,6 +315,7 @@
     margin: 0;
 }
 
+/* submenu children are absolutely positioned */
 .desktop.demo-nav .menu-root>li>.submenu-grid {
     background-color: var(--bg);
     position: absolute;
@@ -308,7 +327,7 @@
     opacity: 0;
 }
 
-
+/* style the submenus for widescreen */
 .desktop.demo-nav .menu-root>li>.submenu-grid>.submenu {
     overflow: hidden;
     padding: 0;
@@ -317,14 +336,43 @@
     /* margin-left: 0.3rem; */
     margin: 0;
     padding: 8px;
-
 }
 
+/* deep/specific overrides for ensuring widescreen/touch compatibility */
+.desktop.demo-nav li.has-children[aria-expanded="true"]>.submenu-grid,
+.desktop.demo-nav li.has-children[aria-expanded="true"]>.submenu-grid>.submenu {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+/* ***************************************************************** */
+/* --- WIDESCREEN HOVER --- */
+/* override styles (only for devices that can really hover) */
+/* ***************************************************************** */
 @media (hover: hover) and (pointer: fine) {
-    .desktop.demo-nav .menu-root>li:hover>.submenu-grid {
+    /* .desktop.demo-nav .menu-root>li:hover>.submenu-grid {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    } */
+
+
+    /* .mobile.demo-nav .menu-wrapper {
+        position: absolute;
+        top: 100%;
+        background-color: var(--bg);
+    }
+
+    .mobile.demo-nav[aria-expanded="true"] .menu-wrapper {
         grid-template-rows: 1fr;
         opacity: 1;
     }
+
+    .mobile.demo-nav li:hover>.submenu-grid {
+        grid-template-rows: 1fr;
+        opacity: 1;
+        transition: grid-template-rows 0.75s ease;
+    } */
+
 
     .desktop.demo-nav li:hover>.submenu-grid {
         grid-template-rows: 1fr;
