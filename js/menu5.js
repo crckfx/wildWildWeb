@@ -97,12 +97,8 @@ export function bindSomeMenu(root, { exclusive = false } = {}) {
     }
 
 
-    let isMobile = window.innerWidth < 840;
-    const mediaQuery = window.matchMedia('(min-width: 840px)');
-    mediaQuery.addEventListener('change', e => {
-        isMobile = !e.matches;
-
-        if (isMobile) {
+    function setLayout(small) {
+        if (small) {
             console.log("we are MOBILE");
             root.classList.remove('desktop');
             root.classList.add('mobile');
@@ -110,7 +106,16 @@ export function bindSomeMenu(root, { exclusive = false } = {}) {
             console.log("we are - W I D E - ");
             root.classList.remove('mobile');
             root.classList.add('desktop');
-        }
+        } 
+    }
+
+    let isMobile = window.innerWidth < 840;
+    setLayout(isMobile);
+    const mediaQuery = window.matchMedia('(min-width: 840px)');
+    mediaQuery.addEventListener('change', e => {
+        isMobile = !e.matches;
+        setLayout(isMobile);
+
     });
 
 }
