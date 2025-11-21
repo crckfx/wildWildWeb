@@ -1,3 +1,19 @@
 <div class="wrap">
     <h1>REMEMBER THIS IS JUST A DEMO PAGE FOR A HEADER MENU</h1>
+    <div>
+        <button class="dingusButton mobile" onclick="dirtyMobileDesktop('mobile')">Mobile</button>
+        <button class="dingusButton desktop" onclick="dirtyMobileDesktop('desktop')">Desktop</button>
+    </div>
 </div>
+
+<script>
+    function dirtyMobileDesktop(state) {
+        if (state === "mobile") {
+            document.querySelector('.demo-nav').classList.remove('desktop');
+            document.querySelector('.demo-nav').classList.add('mobile');
+        } else if (state === "desktop") {            
+            document.querySelector('.demo-nav').classList.remove('mobile');
+            document.querySelector('.demo-nav').classList.add('desktop');
+        }
+    }
+</script>

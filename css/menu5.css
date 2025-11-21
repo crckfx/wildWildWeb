@@ -1,5 +1,5 @@
 :root {
-    --bg: #0f172a;
+    --bg: var(--color-footer-1, #0f172a);
     --item-bg: #111827;
     --item-hover: #1f2937;
     --border: var(--color-subtle-divider, #374151);
@@ -8,10 +8,7 @@
 }
 
 
-.demo-nav {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 18px;
-}
+.demo-nav {}
 
 .demo-nav .nav-container {
     display: grid;
@@ -37,6 +34,7 @@
     transition: color 0.3s ease;
     /* padding: 6px 12px 0px 12px; */
 }
+
 .demo-nav .menu-toggle:hover {
     color: var(--accent);
 }
@@ -67,6 +65,9 @@
 /* ------------------------------------------------------------ */
 
 .demo-nav .menu-wrapper {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 18px;
+
     display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.4s ease, opacity 0.3s ease;
@@ -89,7 +90,7 @@
     padding: 0;
 }
 
-.demo-nav .menu {
+.demo-nav .menu-root {
     overflow: hidden;
     width: 100%;
     display: flex;
@@ -250,4 +251,91 @@
     .demo-nav .menu-link:hover {
         color: inherit;
     }
+}
+
+/* ***************************************************************** */
+.desktop.demo-nav .nav-container {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.desktop.demo-nav .nav-top {
+    width: auto;
+}
+
+/* mobile menu toggle */
+.desktop.demo-nav .menu-toggle {
+    display: none;
+}
+
+.desktop.demo-nav .menu-wrapper {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    overflow: unset;
+    box-shadow: none;
+    font-size: 16px;
+}
+
+.desktop.demo-nav .menu-root {
+    overflow: unset;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    /* font-size: 18px; */
+    color: var(--header-text);
+    margin-top: 1em;
+    padding: 8px;
+    margin: 0;
+    font-weight: 500;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.desktop.demo-nav .menu-root>li {
+    position: relative;
+}
+
+.desktop.demo-nav .menu-root>li>.menu-item>.toggle-btn {
+    margin: 0;
+}
+
+.desktop.demo-nav .menu-root>li>.submenu-grid {
+    background-color: var(--bg);
+    position: absolute;
+    z-index: 5;
+    width: max-content;
+    border-radius: 8px;
+    box-shadow: var(--shadow-preset-A);
+    transition: grid-template-rows 0.5s ease, opacity 0.35s ease;
+    opacity: 0;
+}
+
+
+.desktop.demo-nav .menu-root>li>.submenu-grid>.submenu {
+    overflow: hidden;
+    padding: 0;
+    /* indentation per level */
+    border: none;
+    /* margin-left: 0.3rem; */
+    margin: 0;
+    padding: 8px;
+
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .desktop.demo-nav .menu-root>li:hover>.submenu-grid {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+    .desktop.demo-nav li:hover>.submenu-grid {
+        grid-template-rows: 1fr;
+        opacity: 1;
+    }
+
+    .desktop.demo-nav .menu-root>li>.menu-item>.toggle-btn {
+        display: none;
+    }
+
 }
