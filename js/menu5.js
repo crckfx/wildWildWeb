@@ -1,8 +1,8 @@
-export function bindSomeMenu(root, { exclusive = false } = {}) {
+export function bindSomeMenu(navRoot, { exclusive = false } = {}) {
     const map = new Map(); // li → info block
 
     // First pass: collect all has-children nodes
-    const all = [...root.querySelectorAll("li.has-children")];
+    const all = [...navRoot.querySelectorAll("li.has-children")];
 
     all.forEach((li, index) => {
         const btn = li.querySelector(".toggle-btn");
@@ -100,12 +100,12 @@ export function bindSomeMenu(root, { exclusive = false } = {}) {
     function setLayout(small) {
         if (small) {
             console.log("we are MOBILE");
-            root.classList.remove('desktop');
-            root.classList.add('mobile');
+            navRoot.classList.remove('desktop');
+            navRoot.classList.add('mobile');
         } else {
             console.log("we are - W I D E - ");
-            root.classList.remove('mobile');
-            root.classList.add('desktop');
+            navRoot.classList.remove('mobile');
+            navRoot.classList.add('desktop');
         } 
     }
 
