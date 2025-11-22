@@ -34,7 +34,7 @@
     --color-footer-1: hsl(215, 50%, 31%);
     --color-footer-2: hsl(215, 60%, 24%);
     --footer-text: white;
-    --header-text: white;
+    --header-text: hsl(215, 13%, 91%);
 
     --color-header-1: hsl(215, 50%, 31%);
     --color-header-2: hsl(215, 60%, 24%);
@@ -118,7 +118,7 @@
     --color-bulb-on: hsl(var(--gen-h-1), 98%, 55%);
     --color-bulb-off: hsl(var(--gen-h-1), 38%, 89%);
 
-    --footer-text: white;
+    --footer-text: hsl(var(--gen-h-1), 13%, 91%);
     --header-text: white;
 
     --color-shadow-bgopp: rgba(255, 255, 255, 0.2);

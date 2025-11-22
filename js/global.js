@@ -1,7 +1,5 @@
 import { loadTheme } from "./theme.js";
 import { Numbin } from "/misc/numbin/Numbin.js";
-import { loadUrlTree } from "./pageGoblin/tree.js";
-import { bindHeaderMenu } from "./LF/headerModule.js";
 
 // ---------- Numbin setup ----------
 function initNumbins() {
@@ -24,7 +22,6 @@ function initNumbins() {
 }
 
 import { beforeInput_range } from "/misc/numbin/numbinHandlers.js";
-import { createNavFromSitemap } from "./pageGoblin/createNavFromSitemap.js";
 
 // ---------- Theme setup ----------
 function initThemeNumbin() {
@@ -62,15 +59,7 @@ async function onReady() {
     loadTheme();
     initNumbins();
     initThemeNumbin();
-
-    // const tree = await loadUrlTree('/map.json'); // specify the filename here at call site, get the tree back to keep here
-    // console.log(tree);
-    // const fakeHeader = createNavFromSitemap(tree); // give the tree to some imported function, get the html back here
-    // console.log(fakeHeader); // crudely just log the html
-    // const navMenu = document.getElementById('site-nav').querySelector('.menu-wrapper');
-    // navMenu.innerHTML = fakeHeader;
-    // bindHeaderMenu(document.getElementById('site-nav'));
-    
+   
 }
 
 if (document.readyState === "loading")
