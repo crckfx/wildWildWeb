@@ -37,5 +37,35 @@
         "generate": {
             "map_JSON": "map.json"
         }
+    },
+    "providersFile": "components/graftTest/providers.js",
+    "grafts": {
+        "header6": {
+            "template": "components/header/header6.ejs",
+            "inputs": {
+                "menu": {
+                    "type": "function",
+                    "name": "generateMenuHTML"
+                }
+            }
+        },
+        "graftTestText": {
+            "template": "components/graftTest/text.ejs",
+            "inputs": {
+                "hello": {
+                    "type": "text",
+                    "value": "hello friend!"
+                }
+            }
+        },
+        "graftTestFile": {
+            "template": "components/graftTest/file.ejs",
+            "inputs": {
+                "hello": {
+                    "type": "file",
+                    "path": "components/graftTest/file.txt"
+                }
+            }
+        }        
     }
 }

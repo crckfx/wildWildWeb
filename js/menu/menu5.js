@@ -99,11 +99,11 @@ export function bindSomeMenu(navRoot, { exclusive = false } = {}) {
 
     function setLayout(small) {
         if (small) {
-            console.log("we are MOBILE");
+            // console.log("we are MOBILE");
             navRoot.classList.remove('desktop');
             navRoot.classList.add('mobile');
         } else {
-            console.log("we are - W I D E - ");
+            // console.log("we are - W I D E - ");
             navRoot.classList.remove('mobile');
             navRoot.classList.add('desktop');
         } 

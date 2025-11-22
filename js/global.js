@@ -1,3 +1,4 @@
+import { initHeaderMenu } from "/js/menu/initHeaderMenu.js";
 import { loadTheme } from "./theme.js";
 import { Numbin } from "/misc/numbin/Numbin.js";
 
@@ -59,7 +60,7 @@ async function onReady() {
     loadTheme();
     initNumbins();
     initThemeNumbin();
-   
+   await initHeaderMenu();
 }
 
 if (document.readyState === "loading")
