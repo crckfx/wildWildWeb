@@ -40,7 +40,7 @@
     },
     "providersFile": "components/graftTest/providers.js",
     "grafts": {
-        "header6": {
+        "header6.html": {
             "template": "components/header/header6.ejs",
             "inputs": {
                 "menu": {
@@ -49,7 +49,7 @@
                 }
             }
         },
-        "graftTestText": {
+        "graftTestText.html": {
             "template": "components/graftTest/text.ejs",
             "inputs": {
                 "hello": {
@@ -58,7 +58,7 @@
                 }
             }
         },
-        "graftTestFile": {
+        "graftTestFile.html": {
             "template": "components/graftTest/file.ejs",
             "inputs": {
                 "hello": {
@@ -66,6 +66,15 @@
                     "path": "components/graftTest/file.txt"
                 }
             }
-        }        
+        },
+        "graftTestPureText.txt": {
+            "template": "components/graftTest/pureText.ejs",
+            "inputs": {
+                "hello": {
+                    "type": "file",
+                    "path": "components/graftTest/file.txt"
+                }
+            }
+        }
     }
 }

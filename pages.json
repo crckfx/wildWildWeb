@@ -120,8 +120,14 @@
                 ],
                 "modules": [
                     "/js/merrygoround/addHomepageCarousel.js"
-                ]
-
+                ],
+                "fragments": {
+                    "header": "graft:header6.html"
+                }
+            },
+            "goblin": {
+                "title": "pageGoblin",
+                "contentPath": "graft:goblin.html"
             }
         }
     },
