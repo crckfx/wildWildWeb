@@ -119,6 +119,7 @@
                     "/css/someButton/someButton2.css"
                 ],
                 "modules": [
+                    "/js/menu/menu6_initHeaderMenu.js",
                     "/js/merrygoround/addHomepageCarousel.js"
                 ],
                 "fragments": {
@@ -127,7 +128,7 @@
             },
             "goblin": {
                 "title": "pageGoblin",
-                "contentPath": "graft:goblin.html"
+                "contentPath": "pages/demo.html"
             }
         }
     },

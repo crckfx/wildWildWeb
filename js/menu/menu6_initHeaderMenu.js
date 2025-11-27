@@ -1,20 +1,11 @@
 // /js/initHeaderMenu.js
 import { bindSomeMenu } from "/js/menu/menu5.js";
-import { populateMenu } from "/js/pageGoblin/populateMenu.js";
-import { loadUrlTree } from "/js/pageGoblin/tree.js";
+
 
 export async function initHeaderMenu() {
-    const navRoot = document.querySelector(".wwwNav.header5");
+    const navRoot = document.querySelector(".wwwNav");
     if (!navRoot) return;
 
-    // this next step should get removed if we're using header6
-    // ---- populate menu ----
-    const siteUrlTree = await loadUrlTree("/map.json");
-    if (!siteUrlTree) return;
-    const target = navRoot.querySelector(".menu-root");
-    populateMenu(siteUrlTree, target);
-
-    // the rest is normal runtime business
     // ---- menu toggle ----
     const menuToggle = navRoot.querySelector(".menu-toggle");
     if (menuToggle) {
@@ -28,3 +19,5 @@ export async function initHeaderMenu() {
     // ---- interaction logic ----
     bindSomeMenu(navRoot, { exclusive: true });
 }
+
+initHeaderMenu();
