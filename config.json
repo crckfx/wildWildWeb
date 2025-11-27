@@ -25,7 +25,7 @@
         }
     },
     "fragments": {
-        "header": "components/header/header_menu5.html",
+        "header": "graft:header6.html",
         "footer": "components/footer/footer.html",
         "global": "components/global.html",
         "head": "components/head-content.html"

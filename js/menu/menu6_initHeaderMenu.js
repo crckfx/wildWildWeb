@@ -2,7 +2,7 @@
 import { bindSomeMenu } from "/js/menu/menu5.js";
 
 
-export async function initHeaderMenu() {
+export function initHeaderMenu() {
     const navRoot = document.querySelector(".wwwNav");
     if (!navRoot) return;
 
@@ -20,4 +20,4 @@ export async function initHeaderMenu() {
     bindSomeMenu(navRoot, { exclusive: true });
 }
 
-initHeaderMenu();
+// initHeaderMenu();

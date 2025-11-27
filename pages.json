@@ -128,7 +128,8 @@
             },
             "goblin": {
                 "title": "pageGoblin",
-                "contentPath": "pages/demo.html"
+                "contentPath": "pages/demo.html",
+                "outDir": "/goblin/goblin"
             }
         }
     },
