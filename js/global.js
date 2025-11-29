@@ -46,13 +46,8 @@ function initThemeNumbin() {
 
     numbinput.value = initValue;
     html.style.setProperty("--gen-h-1", initValue);
-
-    // const gen_nb = gen_h_numbin.__numbinInstance;
-    console.log("hi from", gen_h_ni);
-
-    // gen_nb.handleBeforeInput = beforeInput_range;
+    // console.log("hi from", gen_h_ni);
     gen_h_ni.handleBeforeInput = e => beforeInput_range(e, gen_h_ni);
-
 }
 
 // ---------- Run immediately or on ready ----------

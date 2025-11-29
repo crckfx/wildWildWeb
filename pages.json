@@ -93,7 +93,8 @@
             "sudoku": {
                 "title": "Sudoku",
                 "contentPath": "pages/sudoku/sudoku.html",
-                "imports": []
+                "imports": "pages/sudoku/sudoku.js",
+                "modules": "./sudoku.js"
             }
         }
     },
