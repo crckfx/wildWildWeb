@@ -1,73 +1,133 @@
 <div class="wrap">
-    <h1>REMEMBER THIS IS JUST A DEMO PAGE FOR A HEADER MENU</h1>
-    <div>
-        <button class="dingusButton mobile" onclick="dirtyMobileDesktop('mobile')">Mobile</button>
-        <button class="dingusButton desktop" onclick="dirtyMobileDesktop('desktop')">Desktop</button>
-    </div>
+	<h1>REMEMBER THIS IS JUST A DEMO PAGE FOR A HEADER MENU</h1>
+	<div>
+		<button class="dingusButton mobile" onclick="dirtyMobileDesktop('mobile')">Mobile</button>
+		<button class="dingusButton desktop" onclick="dirtyMobileDesktop('desktop')">Desktop</button>
+	</div>
 </div>
 
 <script>
-    function dirtyMobileDesktop(state) {
-        if (state === "mobile") {
-            document.querySelector('.demo-nav').classList.remove('desktop');
-            document.querySelector('.demo-nav').classList.add('mobile');
-        } else if (state === "desktop") {            
-            document.querySelector('.demo-nav').classList.remove('mobile');
-            document.querySelector('.demo-nav').classList.add('desktop');
-        }
-    }
+	function dirtyMobileDesktop(state) {
+		if (state === "mobile") {
+			document.querySelector('.demo-nav').classList.remove('desktop');
+			document.querySelector('.demo-nav').classList.add('mobile');
+		} else if (state === "desktop") {
+			document.querySelector('.demo-nav').classList.remove('mobile');
+			document.querySelector('.demo-nav').classList.add('desktop');
+		}
+	}
 </script>
 
 <div class="wrap">
-    <img src="https://xd.adobe.com/ideas/wp-content/uploads/2021/07/1618031628-2.png">
+	<img src="https://xd.adobe.com/ideas/wp-content/uploads/2021/07/1618031628-2.png">
 </div>
 
 <div class="wrap" style="font-size: 18px;">
-    <h2>some buttons</h2>
-    <p>uses 'someButton2'</p>
-    <p style="font-size: 18px;">
-        <button class="someButton2 primary">Some Button</button>
-        <button class="someButton2 primary disabled">Button</button>
-    </p>
-    <p style="font-size: 16px;">
-        <button class="someButton2 secondary">Some Button</button>
-        <button class="someButton2 secondary disabled">Button</button>
-    </p>
+	<h2>some buttons</h2>
+	<p>uses 'someButton2'</p>
+	<p style="font-size: 18px;">
+		<button class="someButton2 primary">Some Button</button>
+		<button class="someButton2 primary disabled">Button</button>
+	</p>
+	<p style="font-size: 16px;">
+		<button class="someButton2 secondary">Some Button</button>
+		<button class="someButton2 secondary disabled">Button</button>
+	</p>
 </div>
 
 <div class="wrap">
-    <div class="cards">
-        <div class="card">
-            <a class="link" href="post-workshop-coaching-is-where-the-gold-comes-from">
-                <img class="thumbnail" src="/resources/images/png/fossilNumbersCalc.png" loading="lazy" alt="">
-                <h2 class="title">Calculator</h2>
-            </a>
-            <p class="blurb">Ayy i'm a calculator <a href="post-workshop-coaching-is-where-the-gold-comes-from">…</a></p>            
-        </div>
-        <div class="card">
-            <a class="link" href="post-workshop-coaching-is-where-the-gold-comes-from">
-                <img class="thumbnail" src="/resources/images/png/fossilNumbersCalc.png" loading="lazy" alt="">
-                <h2 class="title">Calculator</h2>
-            </a>
-            <p class="blurb">Ayy i'm a calculator <a href="post-workshop-coaching-is-where-the-gold-comes-from">…</a></p>            
-        </div>
-        <div class="card">
-            <a class="link" href="post-workshop-coaching-is-where-the-gold-comes-from">
-                <img class="thumbnail" src="/resources/images/png/fossilNumbersCalc.png" loading="lazy" alt="">
-                <h2 class="title">Calculator</h2>
-            </a>
-            <p class="blurb">Ayy i'm a calculator <a href="post-workshop-coaching-is-where-the-gold-comes-from">…</a></p>            
-        </div>
-    </div>
+	<div class="cards">
+		<div class="card">
+			<a class="link" href="/apps/calculator">
+				<img class="thumbnail" src="/resources/images/png/fossilNumbersCalc.png" loading="lazy" alt="">
+				<h2 class="title">Calculator</h2>
+			</a>
+			<p class="blurb">Ayy i'm a calculator <a href="/apps/calculator">…</a></p>
+		</div>
+		<div class="card">
+			<a class="link" href="post-workshop-coaching-is-where-the-gold-comes-from">
+				<img class="thumbnail" src="/resources/images/png/fossilNumbersCalc.png" loading="lazy" alt="">
+				<h2 class="title">Calculator</h2>
+			</a>
+			<p class="blurb">Ayy i'm a calculator <a href="post-workshop-coaching-is-where-the-gold-comes-from">…</a></p>
+		</div>
+		<div class="card">
+			<a class="link" href="post-workshop-coaching-is-where-the-gold-comes-from">
+				<img class="thumbnail" src="/resources/images/png/fossilNumbersCalc.png" loading="lazy" alt="">
+				<h2 class="title">Calculator</h2>
+			</a>
+			<p class="blurb">Ayy i'm a calculator <a href="post-workshop-coaching-is-where-the-gold-comes-from">…</a></p>
+		</div>
+	</div>
 </div>
 
 
 <style>
-    .cards {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
+	.cards {
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 48px;
+	}
 
-    
+
+	@media screen and (min-width: 700px) {
+
+		.cards {
+			/* width: 100%; */
+			grid-template-columns: 1fr 1fr;
+			max-width: 1000px;
+
+		}
+	}
+
+
+	@media screen and (min-width: 1000px) {
+
+		.cards {
+			/* width: 100%; */
+			grid-template-columns: 1fr 1fr 1fr;
+			max-width: none;
+		}
+
+	}
+
+	.cards .card {
+		width: 100%;
+		max-width: 700px;
+		background-size: cover;
+		background-color: white;
+		margin: 0;
+		padding: 0;
+		border-radius: 16px;
+		flex: 1;
+		color: var(--color-text-generic);
+		overflow: clip;
+		box-shadow: var(--shadow-preset-B);
+		background-color: var(--article-card-bgc);
+	}
+
+
+
+	.cards .card .link {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.cards .card .link>img {
+		transition: 0.5s ease;
+		box-sizing: border-box;
+		max-width: 100%;
+		margin-bottom: 24px;
+		padding: 0;
+		height: 21vh;
+		object-fit: cover;
+		width: 100%;
+		border-radius: 8px;
+	}
+
+	.cards .card .link:hover>img {
+		/* opacity: 0.8; */
+		transform: scale(1.0825);
+	}
 </style>

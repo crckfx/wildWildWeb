@@ -24,6 +24,79 @@
             "/js/merrygoround/addHomepageCarousel.js"
         ]
     },
+    "apps": {
+        "title": "Apps",
+        "children": {
+            "calculator": {
+                "title": "Calculator",
+                "contentPath": "pages/math-is-wild/calculator/calculator.html",
+                "imports": [
+                    "pages/math-is-wild/calculator/calc2.css",
+                    "pages/math-is-wild/calculator/js"
+                ],
+                "styles": "./calc2.css",
+                "scripts": [
+                    "./js/local_Parser.js",
+                    "./js/local_Calculator.js",
+                    "./js/local_main.js",
+                    "./js/local_tester.js"
+                ]
+            },
+            "svgapp": {
+                "title": "SVG App",
+                "contentPath": "pages/svgapp/svgapp.html",
+                "templatePath": "templates/blank_with_global.ejs",
+                "imports": "pages/svgapp/bundle",
+                "styles": [
+                    "bundle/svgapp.css",
+                    "bundle/svgapp-menu.css",
+                    "bundle/fullscreen.css",
+                    "bundle/modal.css",
+                    "bundle/icon.css",
+                    "/misc/ploder/ploder.css",
+                    "/misc/numbin/numbin.css",
+                    "/misc/toolt/toolt.css"
+                ],
+                "modules": [
+                    "bundle/svgapp.js"
+                ],
+                "scripts": "/misc/toolt/toolt.js"
+            },
+            "traingame": {
+                "title": "Train Game",
+                "contentPath": "pages/traingame/numbintrain.html",
+                "imports": [
+                    "pages/traingame/bundle"
+                ]
+            },
+            "countdownGame": {
+                "title": "Countdown Game",
+                "contentPath": "pages/countdownGame/countdownGame.html",
+                "imports": [
+                    "pages/countdownGame/bundle"
+                ],
+                "styles": [
+                    "/apps/countdownGame/bundle/countdownGame.css",
+                    "/apps/countdownGame/bundle/someButton.css"
+                ]
+            },
+            "splat": {
+                "title": "Splat",
+                "contentPath": "pages/splat/splat.html",
+                "imports": [
+                    "pages/splat/splat.js",
+                    "pages/splat/splat.css"
+                ],
+                "styles": "./splat.css",
+                "modules": "splat.js"
+            },
+            "sudoku": {
+                "title": "Sudoku",
+                "contentPath": "pages/sudoku/sudoku.html",
+                "imports": []
+            }
+        }
+    },
     "junk": {
         "title": "Junk",
         "children": {
@@ -133,74 +206,6 @@
                     "graft:graftTestText.html",
                     "graft:graftTestFile.html"
                 ]
-            }
-        }
-    },
-    "apps": {
-        "title": "Apps",
-        "children": {
-            "calculator": {
-                "title": "Calculator",
-                "contentPath": "pages/math-is-wild/calculator/calculator.html",
-                "imports": [
-                    "pages/math-is-wild/calculator/calc2.css",
-                    "pages/math-is-wild/calculator/js"
-                ],
-                "styles": "./calc2.css",
-                "scripts": [
-                    "./js/local_Parser.js",
-                    "./js/local_Calculator.js",
-                    "./js/local_main.js",
-                    "./js/local_tester.js"
-                ]
-            },
-            "svgapp": {
-                "title": "SVG App",
-                "contentPath": "pages/svgapp/svgapp.html",
-                "templatePath": "templates/blank_with_global.ejs",
-                "imports": "pages/svgapp/bundle",
-                "styles": [
-                    "bundle/svgapp.css",
-                    "bundle/svgapp-menu.css",
-                    "bundle/fullscreen.css",
-                    "bundle/modal.css",
-                    "bundle/icon.css",
-                    "/misc/ploder/ploder.css",
-                    "/misc/numbin/numbin.css",
-                    "/misc/toolt/toolt.css"
-                ],
-                "modules": [
-                    "bundle/svgapp.js"
-                ],
-                "scripts": "/misc/toolt/toolt.js"
-            },
-            "traingame": {
-                "title": "Train Game",
-                "contentPath": "pages/traingame/numbintrain.html",
-                "imports": [
-                    "pages/traingame/bundle"
-                ]
-            },
-            "countdownGame": {
-                "title": "Countdown Game",
-                "contentPath": "pages/countdownGame/countdownGame.html",
-                "imports": [
-                    "pages/countdownGame/bundle"
-                ],
-                "styles": [
-                    "/apps/countdownGame/bundle/countdownGame.css",
-                    "/apps/countdownGame/bundle/someButton.css"
-                ]
-            },
-            "splat": {
-                "title": "Splat",
-                "contentPath": "pages/splat/splat.html",
-                "imports": [
-                    "pages/splat/splat.js",
-                    "pages/splat/splat.css"
-                ],
-                "styles": "./splat.css",
-                "modules": "splat.js"
             }
         }
     },
