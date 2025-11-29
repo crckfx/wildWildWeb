@@ -54,7 +54,7 @@
             "inputs": {
                 "hello": {
                     "type": "text",
-                    "value": "hello friend!"
+                    "value": "hello from config! 2"
                 }
             }
         },
