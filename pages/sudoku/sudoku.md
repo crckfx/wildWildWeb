@@ -30,4 +30,6 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] use different text colour for 'incorrect' answers
 - [x] track mistakes made
 - [x] add a numpad so keyboard isn't required
-- [ ] know if the game is won
+- [x] know if the game is won
+- [ ] add undo (ie. game history)
+- [ ] add erase button to controls

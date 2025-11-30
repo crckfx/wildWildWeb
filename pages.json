@@ -93,9 +93,12 @@
             "sudoku": {
                 "title": "Sudoku",
                 "contentPath": "pages/sudoku/sudoku.html",
-                "imports": "pages/sudoku/sudoku.js",
-                "modules": "./sudoku.js",
-                "styles": "/css/someButton/someButton2.css"
+                "imports": "pages/sudoku/bundle",
+                "modules": "./bundle/sudoku.js",
+                "styles": [
+                    "./bundle/sudoku.css",
+                    "/css/someButton/someButton2.css"
+                ]
             }
         }
     },

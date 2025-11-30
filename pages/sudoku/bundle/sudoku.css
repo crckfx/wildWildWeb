@@ -1,0 +1,64 @@
+.gameWrap {
+    max-width: 500px;
+}
+
+.sudoku-container {
+    margin-top: 48px;
+}
+
+.numpad-wrapper {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.numpad-wrapper .numpad {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 100%;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+}
+
+
+.numpad-wrapper .numpad-item {
+    transition: background-color .2s;
+    background: transparent;
+    border: 0;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #325aaf;
+    cursor: pointer;
+    flex-basis: 11.1111%;
+    position: relative;
+    text-align: center;
+    transform: translateZ(0);
+    -webkit-tap-highlight-color: transparent;
+    align-items: center;
+    display: flex;
+    /* font-family: Hauss-book, Hauss, "sans-serif"; */
+    font-size: 36px;
+    font-weight: 400;
+    /* height: 42px; */
+    justify-content: center;
+    /* margin: 12px 0 0; */
+    transition: opacity .2s, color .2s, background-color .2s;
+    user-select: none;
+}
+
+#sudokuCanvas {
+    /* background-color: wheat; */
+    background-color: transparent;
+}
+[data-theme="dark"] #sudokuCanvas {
+    background-color: #444;
+}
+
+
+.numpad-wrapper .numpad-item:active {
+    background-color: #d2dae7;
+}
+[data-theme="dark"] .numpad-wrapper .numpad-item:active {
+    background-color: #4f689244;
+}
