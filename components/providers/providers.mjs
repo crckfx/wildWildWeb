@@ -1,6 +1,6 @@
 // providers.js
-import { buildFlatMap, buildTree, filterMenuTree } from "./menu6tree.js";
-import { renderMenuHTML } from "./renderMenuHTML.js";
+import { buildFlatMap, buildTree, filterMenuTree } from "./menu6tree.mjs";
+import { renderMenuHTML } from "./renderMenuHTML.mjs";
 
 export function generateMenuHTML(plan) {
 

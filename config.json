@@ -38,7 +38,7 @@
             "map_JSON": "map.json"
         }
     },
-    "providersFile": "components/providers/providers.js",
+    "providersFile": "components/providers/providers.mjs",
     "grafts": {
         "header6.html": {
             "template": "components/header/header6.ejs",
