@@ -1,3 +1,32 @@
+:root {
+
+    /* --sudoku-hue: var(--theme-hue-primary, 240); */
+    --sudoku-hue: 215;
+
+    /* Discrete colors from same hue family */
+    --selectedCellColor: hsl(var(--sudoku-hue), 70%, 78%);
+    --sameNumberCellColor: hsl(var(--sudoku-hue), 40%, 82%);
+    --neighbourCellColor: hsl(var(--sudoku-hue), 40%, 91%);
+
+    /* Grid */
+    --gridPrimaryColor: hsl(0, 0%, 10%);
+    --gridSecondaryColor: hsl(0, 0%, 60%);
+
+    /* Background */
+    --sudokuCanvasBg: hsl(var(--sudoku-hue), 30%, 97%);
+
+    /* Numbers */
+    --givenNumberColor: hsl(0, 0%, 5%);
+    --userNumberColor: hsl(var(--sudoku-hue), 70%, 30%);
+    /* --userNumberColor: hsl(108, 64%, 22%); */
+    --errorNumberColor: hsl(0, 70%, 45%);
+}
+
+/* 
+[data-theme="dark"] {
+    --sudoku-hue: 60;
+} */
+
 .gameWrap {
     max-width: 500px;
 }
@@ -9,6 +38,9 @@
 .numpad-wrapper {
     width: 100%;
     margin-top: 24px;
+    gap: 24px;
+    display: flex;
+    flex-direction: column;
 }
 
 .numpad-wrapper .numpad {
@@ -23,42 +55,57 @@
 
 
 .numpad-wrapper .numpad-item {
-    transition: background-color .2s;
-    background: transparent;
-    border: 0;
-    border-radius: 5px;
     box-sizing: border-box;
-    color: #325aaf;
     cursor: pointer;
-    flex-basis: 11.1111%;
+
     position: relative;
     text-align: center;
-    transform: translateZ(0);
     -webkit-tap-highlight-color: transparent;
     align-items: center;
     display: flex;
-    /* font-family: Hauss-book, Hauss, "sans-serif"; */
-    font-size: 36px;
-    font-weight: 400;
     /* height: 42px; */
     justify-content: center;
-    /* margin: 12px 0 0; */
     transition: opacity .2s, color .2s, background-color .2s;
     user-select: none;
+    transition: background-color .2s;
+    background: transparent;
+    transform: translateZ(0);
+    border: 0;
+    border-radius: 5px;
+    /* color: #325aaf; */
+    color: var(--userNumberColor);
+    font-size: 36px;
+    font-weight: 400;
 }
+
+.numpad-wrapper .numpad .numpad-item {
+    flex-basis: 11.1111%;
+
+}
+
 
 #sudokuCanvas {
     /* background-color: wheat; */
     background-color: transparent;
 }
+
 [data-theme="dark"] #sudokuCanvas {
     background-color: #444;
 }
 
 
+.numpad-wrapper .numpad-item:hover {
+    background-color: hsl(215, 30%, 88%);
+}
 .numpad-wrapper .numpad-item:active {
-    background-color: #d2dae7;
+    background-color: hsl(215, 30%, 84%);
+}
+
+
+[data-theme="dark"] .numpad-wrapper .numpad-item:hover {
+    background-color: hsla(218, 30%, 33%, 0.267);
 }
 [data-theme="dark"] .numpad-wrapper .numpad-item:active {
-    background-color: #4f689244;
+
+    background-color: hsla(218, 30%, 44%, 0.267);
 }

@@ -2,7 +2,8 @@ const canvas = document.getElementById('sudokuCanvas');
 const ctx = canvas.getContext('2d');
 const mistakesDisplay = document.querySelector('.data')?.querySelector('.mistake');
 const numpad = document.querySelector('#numpad');
-const numpadItems = numpad.querySelectorAll('.numpad-item');
+const numpadWrapper = document.querySelector('.numpad-wrapper');
+const numpadItems = numpadWrapper.querySelectorAll('.numpad-item');
 
 // -------- SIZING -----------
 let size = 480; // default (currently 'max') canvas size
@@ -30,32 +31,50 @@ const H_NEIGHBOUR = 2;
 const H_SAME_NUMBER = 3;
 
 // COLOURS
-const selectedCellColor = "#ff000044";
-const neighbourCellColor = "#ff00ff22";
-const sameNumberCellColor = "#00ffff22";
-const gridPrimaryColor = "#000000";
-const gridSecondaryColor = "#888888";
+// const selectedCellColor = "#ff000044";
+// const neighbourCellColor = "#ff00ff22";
+// const sameNumberCellColor = "#00ffff22";
+// const gridPrimaryColor = "#000000";
+// const gridSecondaryColor = "#888888";
 
-const givenNumberColor = "#000000";
-const userNumberColor = "#0000cc";
-const errorNumberColor = "#cc0000";
+// const givenNumberColor = "#000000";
+// const userNumberColor = "#0000cc";
+// const errorNumberColor = "#cc0000";
 
-// ARRAYS
-const cells = new Uint8Array(81).fill(0);
-const solution = new Uint8Array(81);
-const givens = new Uint8Array(81);
-const cellStatus = new Uint8Array(81);
-const highlightStatus = new Uint8Array(81);
-// row, column coords for quick lookup
-const coords = new Array(81);
-for (let i = 0; i < 81; i++) {
-    coords[i] = cellToCoords(i);
+function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
+
+const selectedCellColor = cssVar("--selectedCellColor");
+const neighbourCellColor = cssVar("--neighbourCellColor");
+const sameNumberCellColor = cssVar("--sameNumberCellColor");
+const gridPrimaryColor = cssVar("--gridPrimaryColor");
+const gridSecondaryColor = cssVar("--gridSecondaryColor");
+const givenNumberColor = cssVar("--givenNumberColor");
+const userNumberColor = cssVar("--userNumberColor");
+const errorNumberColor = cssVar("--errorNumberColor");
+const sudokuCanvasBg = cssVar("--sudokuCanvasBg");
+
 
 
 
 // ******************************************************
 // --------------- GAME ---------------
+// ARRAYS (they're all length 81 because sudoku has 81 cells)
+const cells = new Uint8Array(81).fill(0);       // for the evolving board state
+const solution = new Uint8Array(81);            // for the solution values
+const givens = new Uint8Array(81);              // for "is this cell's value provided in the initial puzzle state?"
+const cellStatus = new Uint8Array(81);          // for "what colour to render the text in this cell?"
+const highlightStatus = new Uint8Array(81);     // for "what colour to render the background for this cell"
+const coords = new Array(81);                   // for a precomputed lookup of "index->coords(as x,y)""
+for (let i = 0; i < 81; i++) {
+    coords[i] = cellToCoords(i);
+}
+// HISTORY (a 'playhead' position and array of history objects: {cell, oldValue, newValue} )
+let historyPos = 0;
+let gameHistory = [];
+
+
 let currentCell = null; // <-- the main pointer guy for the game
 let mistakesMade = 0;
 
@@ -66,6 +85,7 @@ function computeGameState() {
 
     const solved = checkSolved();
     if (solved) {
+        // only run if game finished
         triggerGameEnd();
     } else {
         const selectedVal = cells[currentCell];
@@ -124,15 +144,20 @@ function triggerGameEnd() {
 function inputFromNumpad(n) {
     if (currentCell !== null && !givens[currentCell]) {
         updateCellValue(currentCell, n);
-        selectCell(currentCell); // rerender
+        // selectCell(currentCell); // rerender
     }
 }
 
 // game helpers
 function updateCellValue(cell, value) {
+    // determine if a real write call is made by this 
+    const oldValue = cells[cell]; // store the existing value
+    if (value === oldValue) return; // exit if the value didn't change
     // overwrite value
     cells[cell] = value;
-    // detect mistake
+    addToHistory(cell, oldValue, value)
+    // console.log(`made move, cell: ${cell}, oldValue: ${oldValue}, newValue: ${value}`)
+    // detect mistake (CRUDELY - checking against the real answer; a finer way would be to check against the current board state for contradiction)
     if (value === 0) {
         cellStatus[cell] = STATUS_EMPTY;
     } else if (value !== solution[cell]) {
@@ -142,6 +167,9 @@ function updateCellValue(cell, value) {
     } else {
         cellStatus[cell] = STATUS_CORRECT;
     }
+
+    // call main render
+    selectCell(currentCell);
 }
 
 function cellToCoords(cellNumber) {
@@ -151,7 +179,7 @@ function cellToCoords(cellNumber) {
 }
 
 
-
+// sort of a "do render" thing; it's not super clear yet
 function selectCell(num) {
     if (num < 0 || num > 80) return;
     const oldCell = currentCell;
@@ -236,6 +264,49 @@ function loadPuzzle(puzzle) {
 
 }
 
+function addToHistory(cell, oldValue, newValue) {
+    const currentPos = historyPos;
+
+    gameHistory[currentPos] = { cell, oldValue, newValue };
+
+    console.log(`history write ${currentPos}: cell:${cell}, old:${oldValue}, new:${newValue}`);
+    historyPos++;
+}
+
+function undo() {
+    if (historyPos < 1) return;
+
+    const undoToHistoryPos = historyPos - 1;
+
+    // const someCell = historyIndex[undoToHistoryPos];
+    // const someValue = historyOldValue[undoToHistoryPos];
+
+    const {cell, oldValue, newValue} = gameHistory[undoToHistoryPos];
+    // const someCell = someSomething.cell;
+    // const someValue = someSomething.oldValue;
+
+    console.log(`undo: ${cell} from ${newValue} to ${oldValue}`);
+
+    // overwrite value
+    cells[cell] = oldValue;
+
+    historyPos--;
+   
+
+    if (oldValue === 0) {
+        cellStatus[cell] = STATUS_EMPTY;
+    } else if (oldValue !== solution[cell]) {
+        cellStatus[cell] = STATUS_ERROR;
+        // mistakesMade++;
+        // printMistakes();
+    } else {
+        cellStatus[cell] = STATUS_CORRECT;
+    }
+
+    selectCell(cell);
+
+
+}
 
 // ******************************************************
 // --------------- DRAWING ---------------
@@ -332,6 +403,8 @@ function drawFinishedSudoku() {
 // main draw function
 function drawSudoku() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = sudokuCanvasBg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.font = `${cell * 0.6}px monospace`;
     ctx.textAlign = "center";
@@ -412,7 +485,6 @@ const handledKeys = new Set([
     "ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight",
     "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
     "Backspace", "Delete"
-
 ]);
 function handleKeydown(e) {
     if (handledKeys.has(e.key) && currentCell !== null) {
@@ -423,21 +495,25 @@ function handleKeydown(e) {
         switch (e.key) {
             case "ArrowUp":
                 if (next >= 9) next -= 9;
+                selectCell(next);
                 break;
 
             case "ArrowDown":
                 if (next < 72) next += 9; // 72 = index of row 8 col 0
+                selectCell(next);
                 break;
 
             case "ArrowLeft": {
                 const col = next % 9;
                 if (col > 0) next -= 1;
+                selectCell(next);
                 break;
             }
 
             case "ArrowRight": {
                 const col = next % 9;
                 if (col < 8) next += 1;
+                selectCell(next);
                 break;
             }
 
@@ -462,14 +538,14 @@ function handleKeydown(e) {
             }
         }
 
-        selectCell(next); // this triggers a redraw if a key was handled (fine for now)
+        // selectCell(next); // this triggers a redraw if a key was handled (fine for now)
     }
 }
 
 
 
 // game bind + init
-canvas.addEventListener('click', handleCellClick);
+canvas.addEventListener('mousedown', handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
 // canvas.addEventListener('blur', clearSelectedCell);
 window.addEventListener('keydown', handleKeydown);
 
@@ -478,6 +554,7 @@ numpadItems.forEach(item => {
     item.addEventListener("click", () => inputFromNumpad(n));
 });
 
+document.getElementById('sudokUndo').addEventListener('click', () => undo());
 document.getElementById('getCurrentString').addEventListener('click', () => console.log(getMissionProgress()));
 document.getElementById('puzzle0').addEventListener('click', () => loadPuzzle(puzzles[0]));
 document.getElementById('puzzle1').addEventListener('click', () => loadPuzzle(puzzles[1]));

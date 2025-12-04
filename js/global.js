@@ -35,9 +35,11 @@ function initThemeNumbin() {
     // const numbinput = gen_h_numbin.querySelector("input");
     const numbinput = gen_h_ni.input;
     numbinput.addEventListener("input", () => {
-        const val = numbinput.value;
-        html.style.setProperty("--gen-h-1", val);
-        localStorage.setItem("gen-h-1", val);
+        // remember, this thing is meant to set the value that gets used by our generative theme only. 
+        // light and dark themes are meant to have their own thing going.
+        const val = numbinput.value; // obvious one 
+        html.style.setProperty("--gen-h-1", val); // this should be gated to only affect the gen theme
+        localStorage.setItem("gen-h-1", val); // probably happy to keep this the same 
     });
 
     const storedValue = localStorage.getItem("gen-h-1");
@@ -45,9 +47,8 @@ function initThemeNumbin() {
     const initValue = storedValue ?? cssVal ?? 0;
 
     numbinput.value = initValue;
-    html.style.setProperty("--gen-h-1", initValue);
-    // console.log("hi from", gen_h_ni);
-    gen_h_ni.handleBeforeInput = e => beforeInput_range(e, gen_h_ni);
+    html.style.setProperty("--gen-h-1", initValue); // probably need some gating here
+    gen_h_ni.handleBeforeInput = e => beforeInput_range(e, gen_h_ni); // some numbin init stuff, none of our business here
 }
 
 // ---------- Run immediately or on ready ----------

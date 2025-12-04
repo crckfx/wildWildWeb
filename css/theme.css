@@ -16,6 +16,7 @@
 
 /* Theme tokens */
 [data-theme="light"] {
+    --theme-hue-primary: 215;
     --color-bg-1: hsl(60, 20%, 94%);
     --color-bg-2: hsl(60, 20%, 98%);
     --color-bg-3: hsl(60, 10%, 88%);
@@ -54,6 +55,7 @@
 }
 
 [data-theme="dark"] {
+    --theme-hue-primary: 167;
     --color-bg-1: hsl(113, 24%, 4%);
     --color-bg-2: hsl(144, 23%, 7%);
     --color-bg-3: hsl(167, 23%, 15%);
@@ -93,37 +95,38 @@
 [data-theme="gen"] {
     --gen-h-1: 200;
     --gen-h-2: 191;
+    --theme-hue-primary: var(--gen-h-1);
 
-    --color-bg-1: hsl(var(--gen-h-1), 40%, 96%);
-    --color-bg-2: hsl(var(--gen-h-1), 20%, 98%);
-    --color-bg-3: hsl(var(--gen-h-1), 10%, 88%);
+    --color-bg-1: hsl(var(--theme-hue-primary), 40%, 96%);
+    --color-bg-2: hsl(var(--theme-hue-primary), 20%, 98%);
+    --color-bg-3: hsl(var(--theme-hue-primary), 10%, 88%);
 
-    --color-text-1: hsl(var(--gen-h-1), 26%, 14%);
-    --color-text-2: hsl(var(--gen-h-1), 58%, 16%);
-    --color-text-3: hsl(var(--gen-h-1), 0%, 25%);
-    --color-feature-1: hsl(var(--gen-h-1), 49%, 31%);
-    --color-feature-2: hsl(var(--gen-h-1), 20%, 38%);
-    --color-feature-3: hsl(var(--gen-h-1), 59%, 41%);
+    --color-text-1: hsl(var(--theme-hue-primary), 26%, 14%);
+    --color-text-2: hsl(var(--theme-hue-primary), 58%, 16%);
+    --color-text-3: hsl(var(--theme-hue-primary), 0%, 25%);
+    --color-feature-1: hsl(var(--theme-hue-primary), 49%, 31%);
+    --color-feature-2: hsl(var(--theme-hue-primary), 20%, 38%);
+    --color-feature-3: hsl(var(--theme-hue-primary), 59%, 41%);
 
-    --color-accent: hsl(var(--gen-h-1), 100%, 54%);
+    --color-accent: hsl(var(--theme-hue-primary), 100%, 54%);
 
-    --color-header-1: hsl(var(--gen-h-1), 83%, 24%);
-    --color-header-2: hsl(var(--gen-h-1), 55%, 22%);
-    --color-footer-1: hsl(var(--gen-h-1), 83%, 24%);
-    --color-footer-2: hsl(var(--gen-h-1), 55%, 22%);
+    --color-header-1: hsl(var(--theme-hue-primary), 83%, 24%);
+    --color-header-2: hsl(var(--theme-hue-primary), 55%, 22%);
+    --color-footer-1: hsl(var(--theme-hue-primary), 83%, 24%);
+    --color-footer-2: hsl(var(--theme-hue-primary), 55%, 22%);
 
     --footer-bg: radial-gradient(circle at bottom right, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
     --header-bg: radial-gradient(circle at top left, var(--color-footer-1) 0%, var(--color-footer-2) 100%);
 
-    --color-bulb-on: hsl(var(--gen-h-1), 98%, 55%);
-    --color-bulb-off: hsl(var(--gen-h-1), 38%, 89%);
+    --color-bulb-on: hsl(var(--theme-hue-primary), 98%, 55%);
+    --color-bulb-off: hsl(var(--theme-hue-primary), 38%, 89%);
 
-    --footer-text: hsl(var(--gen-h-1), 13%, 91%);
+    --footer-text: hsl(var(--theme-hue-primary), 13%, 91%);
     --header-text: white;
 
     --color-shadow-bgopp: rgba(255, 255, 255, 0.2);
     --color-shadow-shine: rgba(255, 255, 255, 0.2);
-    --color-subtle-divider: hsl(var(--gen-h-1), 51%, 32%);
+    --color-subtle-divider: hsl(var(--theme-hue-primary), 51%, 32%);
 }
 
 

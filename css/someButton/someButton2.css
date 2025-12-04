@@ -8,8 +8,8 @@
     --adober-colour-border: hsl(159, 56%, 37%);
 
     --btn-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --hue-primary: var(--theme-hue-primary, 159);
 
-    --hue-primary: var(--gen-h-1, 159);
     --btn-primary-text: hsl(var(--hue-primary), 2%, 98%);
     --btn-primary-default: hsl(var(--hue-primary), 61%, 47%);
     --btn-primary-hover: hsl(var(--hue-primary), 55%, 40%);
@@ -44,7 +44,7 @@
 
 .someButton2:hover {
     background-color: var(--btn-primary-hover);
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     box-shadow: var(--btn-shadow);
 }
 

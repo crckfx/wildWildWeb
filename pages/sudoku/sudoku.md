@@ -10,6 +10,31 @@
 }
 ```
 
+### the colour relationships in sudoku.com
+backgrounds
+- none: #ffffff
+- selected: #bbdefb
+- neighbour: #e2ebf3
+- sameValue: #c3d7ea
+
+grid
+- thin line: #cad0db
+- thick line: #344861
+
+text
+- given: #344861
+- user: #325aaf
+
+button (new game)
+- bg: #5a7bc0
+- text: #ffffff
+
+button (numpad large)
+- bg: #eaeef4
+- bg-hover: #dce3ed
+- bg-active: #d2dae7
+- text: #325aaf
+
 
 so, for example, a configuration reads left to right as rows
 zeroes are used for empty ones
@@ -31,5 +56,10 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] track mistakes made
 - [x] add a numpad so keyboard isn't required
 - [x] know if the game is won
-- [ ] add undo (ie. game history)
-- [ ] add erase button to controls
+- [x] add erase button to controls
+- [x] use colours from theme first
+- [x] make mouse clicks snap immediately (ie. make mouse+keyboard combo feel snappy) 
+    - achieved via "mousedown" instead of "click"
+- [x] add undo (ie. game history)
+- [ ] store some memory of puzzle in localStorage?
+<!-- - [ ]  -->
