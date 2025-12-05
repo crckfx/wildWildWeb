@@ -34,6 +34,9 @@
 .sudoku-container {
     margin-top: 48px;
 }
+.canvas-container {
+    margin-top: 12px;
+}
 
 .numpad-wrapper {
     width: 100%;

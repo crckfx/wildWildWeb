@@ -1,5 +1,9 @@
-<div class="wrap grow center">
-	<div class="sudoku-container">
+<div class="wrap grow center sudoku-container">
+    <div class="morePresets gameWrap">
+        <button class="someButton2 primary" id="newPuzzleBtn">New</button>
+    </div>
+
+    <div class="canvas-container">
 		<canvas tabindex="0" id="sudokuCanvas"></canvas>
 	</div>
 
@@ -8,8 +12,6 @@
 		<div class="someSudokuOtherThangy" >
 			<button class="numpad-item" data-value="0" style="font-size:24px; padding: 8px;">erase</button>
             <button id="sudokUndo" style="font-size:24px; padding: 8px;">undo</button>
-		</div>
-		<div class="someSudokuOtherThangy">
 		</div>
 		<div id="numpad" class="numpad">
 			<div class="numpad-item" data-value="1">1</div>

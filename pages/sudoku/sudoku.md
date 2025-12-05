@@ -61,5 +61,9 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] make mouse clicks snap immediately (ie. make mouse+keyboard combo feel snappy) 
     - achieved via "mousedown" instead of "click"
 - [x] add undo (ie. game history)
-- [ ] store some memory of puzzle in localStorage?
-<!-- - [ ]  -->
+- [x] store some memory of puzzle in `localStorage`
+- [x] override puzzle loads with storage loads
+- [x] block inputs on a completed puzzle
+- [ ] render a completed puzzle as completed on load from storage
+- [ ] provide a `reset` button for per-puzzle storage
+- [ ] display more puzzles on the page

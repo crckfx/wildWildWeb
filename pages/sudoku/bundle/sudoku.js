@@ -13,6 +13,11 @@ setGameSize();
 
 
 import { puzzles } from "./puzzles.js";
+import * as storage from "./storage.js";
+// some junk about storage
+let currentPuzzleID = null;
+let currentPuzzleIsCompleted = false;
+
 // thicknesses
 const thin = 1;
 const thick = 2;
@@ -31,20 +36,9 @@ const H_NEIGHBOUR = 2;
 const H_SAME_NUMBER = 3;
 
 // COLOURS
-// const selectedCellColor = "#ff000044";
-// const neighbourCellColor = "#ff00ff22";
-// const sameNumberCellColor = "#00ffff22";
-// const gridPrimaryColor = "#000000";
-// const gridSecondaryColor = "#888888";
-
-// const givenNumberColor = "#000000";
-// const userNumberColor = "#0000cc";
-// const errorNumberColor = "#cc0000";
-
 function cssVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
-
 const selectedCellColor = cssVar("--selectedCellColor");
 const neighbourCellColor = cssVar("--neighbourCellColor");
 const sameNumberCellColor = cssVar("--sameNumberCellColor");
@@ -78,39 +72,113 @@ let gameHistory = [];
 let currentCell = null; // <-- the main pointer guy for the game
 let mistakesMade = 0;
 
-function computeGameState() {
-    highlightStatus.fill(H_NONE);
+const completedDigits = new Uint8Array(9); // for the digits who have all been solved
 
-    if (currentCell === null) return;
+function openPuzzleById(id) {
 
-    const solved = checkSolved();
-    if (solved) {
-        // only run if game finished
-        triggerGameEnd();
-    } else {
-        const selectedVal = cells[currentCell];
+    const puzzle = puzzles.find(p => p.id == id);
+    if (!puzzle) {
+        console.error(`couldn't find puzzle id:${id}`);
+        return;
+    }
 
-        // selected cell
-        highlightStatus[currentCell] = H_SELECTED;
+    currentPuzzleIsCompleted = false;
+    currentPuzzleID = id;
+    currentCell = 0;
 
-        // 2. neighbours (once)
-        const nbs = neighboursOf[currentCell];
-        for (let i = 0; i < nbs.length; i++) {
-            const idx = nbs[i];
-            highlightStatus[idx] = H_NEIGHBOUR;
+    const saved = storage.loadPuzzleState(id);
+    storage.setActivePuzzleID(id);
+
+    // --- baseline load (mission/solution) ---
+    const mission = puzzle.mission;
+    const sol = puzzle.solution;
+
+    mistakesMade = 0;
+    historyPos = 0;
+    gameHistory = [];
+
+    for (let i = 0; i < 81; i++) {
+        const mval = mission.charCodeAt(i) - 48;
+        const sval = sol.charCodeAt(i) - 48;
+
+        solution[i] = sval;
+
+        if (mval === 0) {
+            cells[i] = 0;
+            givens[i] = 0;
+            cellStatus[i] = STATUS_EMPTY;
+        } else {
+            cells[i] = mval;
+            givens[i] = 1;
+            cellStatus[i] = STATUS_GIVEN;
+        }
+    }
+
+    // --- overlay saved history if present ---
+    if (saved) {
+
+        const savedHistory = saved.history;
+        const savedPos = saved.historyPos;
+
+        gameHistory = rebuildRuntimeHistory(savedHistory, mission, savedPos);
+        historyPos = savedPos;
+
+        // restore history into cells (full replay)
+        for (let i = 0; i < historyPos; i++) {
+            const { cell, newValue } = gameHistory[i];
+            cells[cell] = newValue;
         }
 
-        // 3. matching numbers elsewhere
-        if (selectedVal !== 0) {
-            for (let i = 0; i < 81; i++) {
-                if (i !== currentCell && cells[i] === selectedVal) {
-                    highlightStatus[i] = H_SAME_NUMBER;
-                }
+        mistakesMade = saved.mistakes;
+
+        if (saved.completedAt !== null) {
+            triggerGameEnd();
+        }
+
+    } else {
+        storage.startPuzzle(puzzle);
+    }
+
+
+    printMistakes();
+
+
+    computeGameState();
+}
+
+
+function computeGameState() {
+    
+    if (currentPuzzleIsCompleted) {
+        drawFinishedSudoku();
+        return;
+    }
+    
+    highlightStatus.fill(H_NONE);
+    if (currentCell === null) return;
+    const selectedVal = cells[currentCell];
+
+    // selected cell
+    highlightStatus[currentCell] = H_SELECTED;
+
+    // 2. neighbours (once)
+    const nbs = neighboursOf[currentCell];
+    for (let i = 0; i < nbs.length; i++) {
+        const idx = nbs[i];
+        highlightStatus[idx] = H_NEIGHBOUR;
+    }
+
+    // 3. matching numbers elsewhere
+    if (selectedVal !== 0) {
+        for (let i = 0; i < 81; i++) {
+            if (i !== currentCell && cells[i] === selectedVal) {
+                highlightStatus[i] = H_SAME_NUMBER;
             }
         }
-
-        drawSudoku();
     }
+
+    drawSudoku();
+
 }
 
 // internal game function
@@ -136,7 +204,8 @@ function getMissionProgress() {
 function triggerGameEnd() {
     console.log("game's finished");
     currentCell = null;
-    drawFinishedSudoku();
+    // drawFinishedSudoku();
+    currentPuzzleIsCompleted = true;
 }
 // 
 
@@ -144,18 +213,21 @@ function triggerGameEnd() {
 function inputFromNumpad(n) {
     if (currentCell !== null && !givens[currentCell]) {
         updateCellValue(currentCell, n);
-        // selectCell(currentCell); // rerender
     }
 }
 
 // game helpers
 function updateCellValue(cell, value) {
+    if (currentPuzzleIsCompleted) return;
     // determine if a real write call is made by this 
     const oldValue = cells[cell]; // store the existing value
     if (value === oldValue) return; // exit if the value didn't change
     // overwrite value
     cells[cell] = value;
+
+
     addToHistory(cell, oldValue, value)
+
     // console.log(`made move, cell: ${cell}, oldValue: ${oldValue}, newValue: ${value}`)
     // detect mistake (CRUDELY - checking against the real answer; a finer way would be to check against the current board state for contradiction)
     if (value === 0) {
@@ -168,8 +240,18 @@ function updateCellValue(cell, value) {
         cellStatus[cell] = STATUS_CORRECT;
     }
 
+    const solved = checkSolved();
+    // console.log(`updateCellValue: solved = ${solved}`);
+
+    if (solved) {
+        triggerGameEnd();
+        // write with the 'completed = true' param     
+        if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cell, value, mistakesMade, true); // storage 
+    } else {
+        if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cell, value, mistakesMade); // storage 
+    }
     // call main render
-    selectCell(currentCell);
+    computeGameState();
 }
 
 function cellToCoords(cellNumber) {
@@ -181,7 +263,7 @@ function cellToCoords(cellNumber) {
 
 // sort of a "do render" thing; it's not super clear yet
 function selectCell(num) {
-    if (num < 0 || num > 80) return;
+    if (currentPuzzleIsCompleted || num < 0 || num > 80) return;
     const oldCell = currentCell;
     if (num !== oldCell) {
         currentCell = num;
@@ -235,35 +317,6 @@ function precomputeNeighbours() {
 }
 
 
-function loadPuzzle(puzzle) {
-    const m = puzzle.mission;
-    const s = puzzle.solution;
-
-    mistakesMade = 0;
-    printMistakes();
-
-    for (let i = 0; i < 81; i++) {
-        const mval = m.charCodeAt(i) - 48;
-        const sval = s.charCodeAt(i) - 48;
-
-        solution[i] = sval;
-
-        if (mval === 0) {
-            cells[i] = 0;
-            givens[i] = 0;
-            cellStatus[i] = STATUS_EMPTY; // empty
-        } else {
-            cells[i] = mval;
-            givens[i] = 1;
-            cellStatus[i] = STATUS_GIVEN; // given
-        }
-    }
-
-    currentCell = 0;
-    computeGameState();
-
-}
-
 function addToHistory(cell, oldValue, newValue) {
     const currentPos = historyPos;
 
@@ -274,25 +327,19 @@ function addToHistory(cell, oldValue, newValue) {
 }
 
 function undo() {
+    if (currentPuzzleIsCompleted) return;
     if (historyPos < 1) return;
-
     const undoToHistoryPos = historyPos - 1;
-
-    // const someCell = historyIndex[undoToHistoryPos];
-    // const someValue = historyOldValue[undoToHistoryPos];
-
-    const {cell, oldValue, newValue} = gameHistory[undoToHistoryPos];
-    // const someCell = someSomething.cell;
-    // const someValue = someSomething.oldValue;
-
+    const { cell, oldValue, newValue } = gameHistory[undoToHistoryPos];
     console.log(`undo: ${cell} from ${newValue} to ${oldValue}`);
 
     // overwrite value
     cells[cell] = oldValue;
-
     historyPos--;
-   
 
+    if (currentPuzzleID !== null) storage.saveUndo(currentPuzzleID, historyPos, mistakesMade); // storage
+
+    // text colour junk
     if (oldValue === 0) {
         cellStatus[cell] = STATUS_EMPTY;
     } else if (oldValue !== solution[cell]) {
@@ -398,6 +445,7 @@ function drawFinishedSudoku() {
         drawNumberFromCell(i);
     }
     drawGridLines();
+    console.log("drew finished guy");
 }
 
 // main draw function
@@ -537,9 +585,26 @@ function handleKeydown(e) {
 
             }
         }
-
-        // selectCell(next); // this triggers a redraw if a key was handled (fine for now)
     }
+}
+
+// ------------------------------
+// Convert [{cell,newValue}] → [{cell,oldValue,newValue}] for runtime
+// ------------------------------
+function rebuildRuntimeHistory(minHist, missionStr, historyPos) {
+    const tmp = new Uint8Array(81);
+    for (let i = 0; i < 81; i++) {
+        tmp[i] = missionStr.charCodeAt(i) - 48;
+    }
+
+    const out = [];
+    for (let i = 0; i < historyPos; i++) {
+        const { cell, newValue } = minHist[i];
+        const oldValue = tmp[cell];
+        out.push({ cell, oldValue, newValue });
+        tmp[cell] = newValue;
+    }
+    return out;
 }
 
 
@@ -556,12 +621,20 @@ numpadItems.forEach(item => {
 
 document.getElementById('sudokUndo').addEventListener('click', () => undo());
 document.getElementById('getCurrentString').addEventListener('click', () => console.log(getMissionProgress()));
-document.getElementById('puzzle0').addEventListener('click', () => loadPuzzle(puzzles[0]));
-document.getElementById('puzzle1').addEventListener('click', () => loadPuzzle(puzzles[1]));
-document.getElementById('puzzle2').addEventListener('click', () => loadPuzzle(puzzles[2]));
-document.getElementById('puzzle3').addEventListener('click', () => loadPuzzle(puzzles[3]));
+document.getElementById('newPuzzleBtn').addEventListener('click', () => console.log(puzzles));
+document.getElementById('puzzle0').addEventListener('click', () => openPuzzleById(puzzles[0].id));
+document.getElementById('puzzle1').addEventListener('click', () => openPuzzleById(puzzles[1].id));
+document.getElementById('puzzle2').addEventListener('click', () => openPuzzleById(puzzles[2].id));
+document.getElementById('puzzle3').addEventListener('click', () => openPuzzleById(puzzles[3].id));
+
 
 precomputeNeighbours();
-loadPuzzle(puzzles[0]);
 
-
+// INIT
+const defaultPuzzle = 1;
+const savedID = storage.getActivePuzzleID();
+if (savedID) {
+    openPuzzleById(savedID);
+} else {
+    openPuzzleById(puzzles[defaultPuzzle].id);
+}
