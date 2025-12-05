@@ -64,6 +64,8 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] store some memory of puzzle in `localStorage`
 - [x] override puzzle loads with storage loads
 - [x] block inputs on a completed puzzle
-- [ ] render a completed puzzle as completed on load from storage
-- [ ] provide a `reset` button for per-puzzle storage
-- [ ] display more puzzles on the page
+- [x] render a completed puzzle as completed on load from storage
+- [ ] provide a `reset` button for per-puzzle (game + storage)
+- [ ] provide more puzzles on the page
+- [ ] keep track of which digits have been completed (so their buttons can be styled / whatever)
+- [ ] provide a "how to play" section

@@ -74,7 +74,7 @@ let mistakesMade = 0;
 
 const completedDigits = new Uint8Array(9); // for the digits who have all been solved
 
-function openPuzzleById(id) {
+function openPuzzleById(id, reset = false) {
 
     const puzzle = puzzles.find(p => p.id == id);
     if (!puzzle) {
@@ -115,7 +115,7 @@ function openPuzzleById(id) {
     }
 
     // --- overlay saved history if present ---
-    if (saved) {
+    if (saved && reset !== true) {
 
         const savedHistory = saved.history;
         const savedPos = saved.historyPos;
@@ -148,12 +148,12 @@ function openPuzzleById(id) {
 
 
 function computeGameState() {
-    
+
     if (currentPuzzleIsCompleted) {
         drawFinishedSudoku();
         return;
     }
-    
+
     highlightStatus.fill(H_NONE);
     if (currentCell === null) return;
     const selectedVal = cells[currentCell];
@@ -620,13 +620,15 @@ numpadItems.forEach(item => {
 });
 
 document.getElementById('sudokUndo').addEventListener('click', () => undo());
-document.getElementById('getCurrentString').addEventListener('click', () => console.log(getMissionProgress()));
-document.getElementById('newPuzzleBtn').addEventListener('click', () => console.log(puzzles));
 document.getElementById('puzzle0').addEventListener('click', () => openPuzzleById(puzzles[0].id));
 document.getElementById('puzzle1').addEventListener('click', () => openPuzzleById(puzzles[1].id));
 document.getElementById('puzzle2').addEventListener('click', () => openPuzzleById(puzzles[2].id));
 document.getElementById('puzzle3').addEventListener('click', () => openPuzzleById(puzzles[3].id));
 
+document.getElementById('getCurrentString').addEventListener('click', () => console.log(getMissionProgress()));
+document.getElementById('newPuzzleBtn').addEventListener('click', () => UI_newPuzzle());
+document.getElementById('resetPuzzleBtn').addEventListener('click', () => UI_resetPuzzle());
+document.getElementById('browsePuzzlesBtn').addEventListener('click', () => UI_browsePuzzles());
 
 precomputeNeighbours();
 
@@ -638,3 +640,55 @@ if (savedID) {
 } else {
     openPuzzleById(puzzles[defaultPuzzle].id);
 }
+
+
+// rand
+function UI_resetPuzzle() {
+    // alert("implement puzzle reset, ie. 'wipe the progress of this current puzzle (including cache)'. this interact should not be an alert and should be asking for yes / no with no as default");
+    if (currentPuzzleID) {
+        openPuzzleById(currentPuzzleID, true);
+    }
+}
+
+
+const modalContainer = document.getElementById('modalContainer');
+function showModal() {
+    modalContainer.classList.add('show');
+}
+function hideModal() {
+    modalContainer.classList.remove('show');
+    console.log("hide modal");
+}
+function handleModalClick(e) {
+    if (!e.target.closest(".modalPanel")) {
+        hideModal();
+    }
+}
+
+modalContainer.onclick = handleModalClick;
+function UI_newPuzzle() {
+    // alert("implement an interaction for new puzzle");
+    showModal(modalContainer);
+}
+
+function UI_browsePuzzles() {
+    alert("maybe a modal dialogue too")
+}
+
+function pickSomeNewPuzzle() {
+    // get length of 
+    const length = puzzles.length;
+    // pick a random index from the length
+    // grab the index from the entry
+    // load the puzzle 
+
+    // openPuzzleById(puzzles[index].id)
+}
+
+document.getElementById("newRandom").onclick = () => {
+    const idx = Math.floor(Math.random() * puzzles.length);
+    openPuzzleById(puzzles[idx].id, true);
+    hideModal();
+};
+
+document.getElementById("newCancel").onclick = hideModal;

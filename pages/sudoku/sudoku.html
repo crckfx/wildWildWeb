@@ -1,52 +1,72 @@
-<div class="wrap grow center sudoku-container">
-    <div class="morePresets gameWrap">
-        <button class="someButton2 primary" id="newPuzzleBtn">New</button>
-    </div>
+<div class="sudoku-container">
+	<div id="modalContainer" class="modalContainer">
+		<div class="modalContent">
 
-    <div class="canvas-container">
-		<canvas tabindex="0" id="sudokuCanvas"></canvas>
-	</div>
+			<div id="panel-new" class="modalPanel">
+				<h2>New Puzzle</h2>
+				<button id="newRandom">Random</button>
+				<button id="newCancel">Cancel</button>
+			</div>
 
+			<div id="panel-reset" class="modalPanel">
+				<h2>Reset puzzle?</h2>
+				<p>This will wipe progress.</p>
+				<button id="resetConfirm">Reset</button>
+				<button id="resetCancel">Cancel</button>
+			</div>
 
-	<div class="numpad-wrapper gameWrap">
-		<div class="someSudokuOtherThangy" >
-			<button class="numpad-item" data-value="0" style="font-size:24px; padding: 8px;">erase</button>
-            <button id="sudokUndo" style="font-size:24px; padding: 8px;">undo</button>
-		</div>
-		<div id="numpad" class="numpad">
-			<div class="numpad-item" data-value="1">1</div>
-			<div class="numpad-item" data-value="2">2</div>
-			<div class="numpad-item" data-value="3">3</div>
-			<div class="numpad-item" data-value="4">4</div>
-			<div class="numpad-item" data-value="5">5</div>
-			<div class="numpad-item" data-value="6">6</div>
-			<div class="numpad-item" data-value="7">7</div>
-			<div class="numpad-item" data-value="8">8</div>
-			<div class="numpad-item" data-value="9">9</div>
+			<div id="panel-browse" class="modalPanel">
+				<h2>Browse puzzles</h2>
+				<div id="browseList"></div>
+				<button id="browseCancel">Cancel</button>
+			</div>
 		</div>
 	</div>
 
-	<div class="data">
-		<p>mistakes made: <span class="mistake">0</span></p>
-		<!-- <p>dpr: <span id="dpr"></span></p> -->
-	</div>
-	<p class="presets">
-		<button class="someButton2 primary" id="puzzle0">preset 0</button>
-		<button class="someButton2 primary" id="puzzle1">preset 1</button>
-		<button class="someButton2 primary" id="puzzle2">preset 2</button>
-		<button class="someButton2 primary" id="puzzle3">preset 3</button>
-	</p>
-	<p class="others">
-		<button class="someButton2 secondary" id="getCurrentString">print current string</button>
-	</p>
+	<div id="sudokuUI">
 
+
+		<div class="morePresets gameWrap">
+			<button class="gregBtn" id="newPuzzleBtn">New</button>
+			<button class="gregBtn" id="resetPuzzleBtn">Reset</button>
+			<button class="gregBtn" id="browsePuzzlesBtn">Browse</button>
+		</div>
+
+		<div class="canvas-container">
+			<canvas tabindex="0" id="sudokuCanvas"></canvas>
+		</div>
+
+
+		<div class="numpad-wrapper gameWrap">
+			<div class="someSudokuOtherThangy">
+				<button class="numpad-item gregBtn" data-value="0" style="font-size:24px; padding: 8px;">erase</button>
+				<button id="sudokUndo" class="gregBtn">undo</button>
+			</div>
+			<div id="numpad" class="numpad">
+				<div class="numpad-item gregBtn" data-value="1">1</div>
+				<div class="numpad-item gregBtn" data-value="2">2</div>
+				<div class="numpad-item gregBtn" data-value="3">3</div>
+				<div class="numpad-item gregBtn" data-value="4">4</div>
+				<div class="numpad-item gregBtn" data-value="5">5</div>
+				<div class="numpad-item gregBtn" data-value="6">6</div>
+				<div class="numpad-item gregBtn" data-value="7">7</div>
+				<div class="numpad-item gregBtn" data-value="8">8</div>
+				<div class="numpad-item gregBtn" data-value="9">9</div>
+			</div>
+		</div>
+
+		<div class="data">
+			<p>mistakes made: <span class="mistake">0</span></p>
+			<!-- <p>dpr: <span id="dpr"></span></p> -->
+		</div>
+		<p class="presets">
+			<button class="someButton2 primary" id="puzzle0">preset 0</button>
+			<button class="someButton2 primary" id="puzzle1">preset 1</button>
+			<button class="someButton2 primary" id="puzzle2">preset 2</button>
+			<button class="someButton2 primary" id="puzzle3">preset 3</button>
+		</p>
+		<p class="others">
+			<button class="someButton2 secondary" id="getCurrentString">print current string</button>
+		</p>
+	</div>
 </div>
-
-<!-- <script>document.getElementById('dpr').textContent = window.devicePixelRatio;</script> -->
-<style>
-	.someSudokuOtherThangy {
-		font-size: 24px;
-		display: flex;
-		justify-content: space-around;
-	}
-</style>
