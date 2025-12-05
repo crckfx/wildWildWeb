@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Sudoku Storage Inspector</title>
+<style>
+    body {
+        font-family: sans-serif;
+        margin: 20px;
+        line-height: 1.4;
+    }
+    h1 { margin-bottom: 0.5em; }
+    .controls { margin-bottom: 1em; }
+    .item {
+        border: 1px solid #ccc;
+        padding: 8px;
+        margin-bottom: 6px;
+        background: #fafafa;
+    }
+    .key {
+        font-weight: bold;
+        margin-bottom: 4px;
+    }
+    pre {
+        margin: 0;
+        padding: 4px 6px;
+        background: #eee;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+    button {
+        margin-top: 6px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Storage Inspector</h1>
+
+<div class="controls">
+    <label>Show:
+        <select id="typeFilter">
+            <option value="both">Session + Local</option>
+            <option value="session">SessionStorage only</option>
+            <option value="local">LocalStorage only</option>
+        </select>
+    </label>
+
+    <label style="margin-left: 20px;">
+        Filter keys:
+        <input type="text" id="searchFilter" placeholder="e.g. sudoku_">
+    </label>
+</div>
+
+<div id="list"></div>
+
+<hr>
+
+<button id="clearSudoku">Clear all sudoku_* keys</button>
+<button id="clearSession">Clear ENTIRE sessionStorage</button>
+<button id="clearLocal">Clear ENTIRE localStorage</button>
+
+<script>
+function listStorage() {
+    const container = document.getElementById("list");
+    container.innerHTML = "";
+
+    const type = document.getElementById("typeFilter").value;
+    const search = document.getElementById("searchFilter").value.toLowerCase();
+
+    function addItem(source, key, value) {
+        if (search && !key.toLowerCase().includes(search)) return;
+
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
+            <div class="key">${source}: ${key}</div>
+            <pre>${value}</pre>
+            <button>Delete</button>
+        `;
+
+        div.querySelector("button").onclick = () => {
+            if (source === "session") sessionStorage.removeItem(key);
+            else localStorage.removeItem(key);
+            listStorage();
+        };
+
+        container.appendChild(div);
+    }
+
+    if (type === "session" || type === "both") {
+        for (let i = 0; i < sessionStorage.length; i++) {
+            const key = sessionStorage.key(i);
+            addItem("session", key, sessionStorage.getItem(key));
+        }
+    }
+
+    if (type === "local" || type === "both") {
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            addItem("local", key, localStorage.getItem(key));
+        }
+    }
+}
+
+document.getElementById("typeFilter").onchange = listStorage;
+document.getElementById("searchFilter").oninput = listStorage;
+
+// Bulk clear Sudoku keys
+document.getElementById("clearSudoku").onclick = () => {
+    if (!confirm("Delete all sudoku_* keys from BOTH storages?")) return;
+
+    // local
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith("sudoku_")) {
+            localStorage.removeItem(key);
+            i--;
+        }
+    }
+
+    // session
+    for (let i = 0; i < sessionStorage.length; i++) {
+        const key = sessionStorage.key(i);
+        if (key.startsWith("sudoku_")) {
+            sessionStorage.removeItem(key);
+            i--;
+        }
+    }
+
+    listStorage();
+};
+
+// Clear all sessionStorage
+document.getElementById("clearSession").onclick = () => {
+    if (!confirm("Clear ENTIRE sessionStorage?")) return;
+    sessionStorage.clear();
+    listStorage();
+};
+
+// Clear all localStorage
+document.getElementById("clearLocal").onclick = () => {
+    if (!confirm("Clear ENTIRE localStorage?")) return;
+    localStorage.clear();
+    listStorage();
+};
+
+// Initial render
+listStorage();
+</script>
+
+</body>
+</html>
