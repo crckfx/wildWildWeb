@@ -1,7 +1,7 @@
 :root {
 
-    /* --sudoku-hue: var(--theme-hue-primary, 240); */
-    --sudoku-hue: 215;
+    --sudoku-hue: var(--theme-hue-primary, 240);
+    /* --sudoku-hue: 215; */
 
     /* Discrete colors from same hue family */
     --selectedCellColor: hsl(var(--sudoku-hue), 70%, 78%);
@@ -37,6 +37,7 @@
     margin: 48px 0;
     text-align: center;
 }
+
 #sudokuUI {
     transition: transform 0.5s, opacity 0.5s;
     position: relative;
@@ -67,6 +68,10 @@
 .morePresets {
     width: 100%;
     font-size: 20px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .morePresets .gregBtn {
@@ -136,11 +141,11 @@
 
 
 .gregBtn:hover {
-    background-color: hsl(215, 30%, 88%);
+    background-color: hsl(var(--sudoku-hue), 30%, 88%);
 }
 
 .gregBtn:active {
-    background-color: hsl(215, 30%, 84%);
+    background-color: hsl(var(--sudoku-hue), 30%, 84%);
 }
 
 
@@ -155,7 +160,7 @@
 
 .modalContainer {
     opacity: 0;
-    background-color: none;
+    background-color: transparent;
     position: absolute;
     top: 0;
     left: 0;
@@ -163,6 +168,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 20;
+    color: var(--givenNumberColor);
     transition: opacity 0.4s, background-color 0.4s;
 }
 
@@ -170,15 +176,51 @@
     opacity: 1;
     pointer-events: auto;
     background-color: #000000bb;
+    display: flex;
+    place-content: center;
+    place-items: center;
 }
 
 .modalContainer .modalContent {
     opacity: 1;
-}
-.modalContent .modalPanel {
-    background-color: #444;
+    max-width: 80%;
+    max-height: 80%;
+    width: 100%;
+    /* height: 100%; */
+    overflow: auto;
+    border-radius: 12px;
 }
 
-.modalContent .modalPanel.active {
+.modalContent .modalPanel {
+    background-color: #888;
+    display: none;
+    padding: 16px;
+}
+
+.modalContainer.show .modalContent .modalPanel.active {
     display: block;
+}
+
+
+#puzzleNumDisplay {
+    font-size: 16px;
+}
+
+ul#browseList {
+    list-style-type: none;
+    padding: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+}
+
+ul#browseList>li {
+    flex: 1;
+    text-wrap: nowrap;
+}
+
+ul#browseList>li>button {
+    width: 100%;
 }

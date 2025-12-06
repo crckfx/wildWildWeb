@@ -17,8 +17,20 @@
 
 			<div id="panel-browse" class="modalPanel">
 				<h2>Browse puzzles</h2>
-				<div id="browseList"></div>
+				<ul id="browseList"></ul>
 				<button id="browseCancel">Cancel</button>
+			</div>
+
+			<div id="panel-dev" class="modalPanel">
+				<h2>other menu stuff</h2>
+				<img src="/resources/images/png/fossilNumbersCalc.png">
+				<div class="data">
+					<p>mistakes made: <span class="mistake">0</span></p>
+				</div>
+
+				<div>
+					<button id="devCancel">Cancel</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -30,6 +42,9 @@
 			<button class="gregBtn" id="newPuzzleBtn">New</button>
 			<button class="gregBtn" id="resetPuzzleBtn">Reset</button>
 			<button class="gregBtn" id="browsePuzzlesBtn">Browse</button>
+
+			<span id="puzzleNumDisplay"></span>
+			<button class="gregBtn" id="devOptionsBtn">dev</button>
 		</div>
 
 		<div class="canvas-container">
@@ -55,18 +70,6 @@
 			</div>
 		</div>
 
-		<div class="data">
-			<p>mistakes made: <span class="mistake">0</span></p>
-			<!-- <p>dpr: <span id="dpr"></span></p> -->
-		</div>
-		<p class="presets">
-			<button class="someButton2 primary" id="puzzle0">preset 0</button>
-			<button class="someButton2 primary" id="puzzle1">preset 1</button>
-			<button class="someButton2 primary" id="puzzle2">preset 2</button>
-			<button class="someButton2 primary" id="puzzle3">preset 3</button>
-		</p>
-		<p class="others">
-			<button class="someButton2 secondary" id="getCurrentString">print current string</button>
-		</p>
+
 	</div>
 </div>
