@@ -1,7 +1,7 @@
 
 // generated some easy ones with qqwing
 // copied them in manually though - figure out how to do it programatically
-export const puzzles = [
+export const easyPuzzles = [
     {
         id: 101,
         mission: "000412089000000603000060040000000008006039214000001360000050000610000000020340900",
@@ -58,4 +58,11 @@ export const puzzles = [
         mission: "091000000000000600040000780000400000400580367800060501000300806000009005530100090",
         solution: "691748253387295614245613789156437928429581367873962541912354876764829135538176492"
     },
+]
+
+export const mediumPuzzles = [];
+
+export const puzzles = [
+    ...easyPuzzles,
+    ...mediumPuzzles
 ]

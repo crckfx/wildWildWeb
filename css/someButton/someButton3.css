@@ -1,0 +1,89 @@
+/* a button that's meant to have some different states */
+
+:root {
+    --btn-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    --hue-primary: var(--theme-hue-primary, 159);
+
+    --btn-primary-text: hsl(var(--hue-primary), 2%, 98%);
+    --btn-primary-default: hsl(var(--hue-primary), 61%, 47%);
+    --btn-primary-hover: hsl(var(--hue-primary), 55%, 40%);
+    --btn-primary-clicked: hsl(var(--hue-primary), 75%, 32%);
+    --btn-primary-activeBorder: hsl(var(--hue-primary), 56%, 32%);
+    --btn-primary-disabled: hsla(var(--hue-primary), 40%, 30%, 30%);
+
+    --hue-secondary: 60;
+    --btn-secondary-text: hsl(var(--hue-secondary), 2%, 2%);
+    --btn-secondary-default: hsl(var(--hue-secondary), 61%, 47%);
+    --btn-secondary-hover: hsl(var(--hue-secondary), 55%, 40%);
+    --btn-secondary-clicked: hsl(var(--hue-secondary), 75%, 32%);
+    --btn-secondary-activeBorder: hsl(var(--hue-secondary), 56%, 32%);
+    --btn-secondary-disabled: hsla(var(--hue-secondary), 40%, 30%, 30%);
+}
+
+[data-theme='dark'] {
+    --btn-primary-text: hsl(var(--hue-primary), 2%, 98%);
+    --btn-primary-default: hsl(var(--hue-primary), 61%, 27%);
+    --btn-primary-hover: hsl(var(--hue-primary), 55%, 40%);
+    --btn-primary-clicked: hsl(var(--hue-primary), 75%, 32%);
+    --btn-primary-activeBorder: hsl(var(--hue-primary), 56%, 32%);
+    --btn-primary-disabled: hsla(var(--hue-primary), 40%, 30%, 30%);
+}
+
+.someButton2 {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color .2s ease, color .2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 0.75em 1.25em;
+    font-size: inherit;
+    font-weight: 600;
+    color: var(--btn-primary-text);
+    background-color: var(--btn-primary-default);
+    /* font-family: inherit; */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+}
+
+.someButton2:hover {
+    background-color: var(--btn-primary-hover);
+    /* transform: translateY(-2px); */
+    box-shadow: var(--btn-shadow);
+}
+
+.someButton2:focus {
+    /* border-color: var(--btn-primary-activeBorder); */
+    /* background-color: var(--btn-primary-hover); */
+    border-color: var(--btn-primary-activeBorder);
+}
+
+.someButton2:active {
+    border-color: var(--btn-primary-activeBorder);
+    background-color: var(--btn-primary-clicked);
+    transform: scale(0.95);
+}
+
+.someButton2.disabled,
+.someButton2.disabled:hover,
+.someButton2.disabled:active {
+    opacity: 30%;
+    transform: none;
+}
+
+.secondary.someButton2 {
+    background-color: var(--btn-secondary-default);
+    color: var(--btn-secondary-text);
+}
+
+.secondary.someButton2:hover {
+    background-color: var(--btn-secondary-hover);
+}
+
+.secondary.someButton2:focus {
+    border-color: var(--btn-secondary-activeBorder);
+}
+
+.secondary.someButton2:active {
+    border-color: var(--btn-secondary-activeBorder);
+    background-color: var(--btn-secondary-clicked);
+}

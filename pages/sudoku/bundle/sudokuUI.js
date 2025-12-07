@@ -1,0 +1,228 @@
+import { puzzles } from "./puzzles.js";
+import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell } from "./sudoku.js";
+import * as storage from "./storage.js";
+import { browseList, canvas, cell, completedDigits, givens, numpadByValue, numpadItems } from "./sudokuGlobal.js";
+
+const modalContainer = document.getElementById('modalContainer');
+const panels = {
+    new: document.getElementById("panel-new"),
+    reset: document.getElementById("panel-reset"),
+    browse: document.getElementById("panel-browse"),
+    dev: document.getElementById("panel-dev"),
+};
+let modalIsOpen = false;
+function showModal(target) {
+    modalIsOpen = true;
+    modalContainer.classList.add('show');
+    if (target) {
+        Object.values(panels).forEach(p => p.classList.remove("active"));
+
+        target.classList.add('active');
+    }
+}
+function hideModal() {
+    modalIsOpen = false;
+    modalContainer.classList.remove('show');
+    console.log("hide modal");
+    Object.values(panels).forEach(p => p.classList.remove("active"));
+
+}
+function handleModalClick(e) {
+    if (!e.target.closest(".modalPanel")) {
+        hideModal();
+    }
+}
+
+modalContainer.onclick = handleModalClick;
+
+function UI_resetPuzzle() {
+    // alert("implement puzzle reset, ie. 'wipe the progress of this current puzzle (including cache)'. this interact should not be an alert and should be asking for yes / no with no as default");
+    if (currentPuzzleID) {
+        showModal(panels.reset);
+        // openPuzzleById(currentPuzzleID, true);
+    }
+}
+function UI_newPuzzle() {
+    // alert("implement an interaction for new puzzle");
+    showModal(panels.new);
+}
+
+function UI_modal_devOptions() {
+    showModal(panels.dev);
+}
+
+function UI_browsePuzzles() {
+    // alert("maybe a modal dialogue too");
+    showModal(panels.browse);
+}
+
+// populate browseList
+puzzles.forEach(p => {
+    const li = document.createElement("li");
+
+    // const nameSpan = document.createElement("span");
+    // nameSpan.textContent = `Puzzle ${p.id}`;
+    // li.appendChild(nameSpan);
+    const saved = storage.loadPuzzleState(p.id);
+    
+    // const btn = document.createElement("button");
+    li.classList.add('someButton2');
+    li.classList.add('primary');
+
+    let symbolForCompleted = '';
+    if (saved && saved.completedAt) {
+        symbolForCompleted = '✔️ ';
+        li.classList.add('completed');
+    }
+    console.log(`item ${p.id} ${symbolForCompleted}`)
+
+
+    li.dataset.puzzleid = p.id;
+
+    li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
+    li.onclick = () => {
+        openPuzzleById(p.id);
+        hideModal();
+    };
+
+    // li.appendChild(btn);
+    browseList.appendChild(li);
+});
+
+
+document.getElementById('sudokUndo').addEventListener('click', () => undo());
+
+document.getElementById("newRandom").onclick = () => {
+    const idx = Math.floor(Math.random() * puzzles.length);
+    openPuzzleById(puzzles[idx].id, true);
+    hideModal();
+};
+
+document.getElementById("newCancel").onclick = hideModal;
+
+document.getElementById("resetConfirm").onclick = () => {
+    const targetEl = browseList.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
+
+    targetEl.classList.remove('completed');
+    
+    targetEl.textContent = `Puzzle ${currentPuzzleID}`;
+
+    openPuzzleById(currentPuzzleID, true);
+    hideModal();
+};
+document.getElementById("resetCancel").onclick = hideModal;
+document.getElementById("browseCancel").onclick = hideModal;
+document.getElementById("devCancel").onclick = hideModal;
+document.getElementById('newPuzzleBtn').addEventListener('click', () => UI_newPuzzle());
+document.getElementById('resetPuzzleBtn').addEventListener('click', () => UI_resetPuzzle());
+document.getElementById('browsePuzzlesBtn').addEventListener('click', () => UI_browsePuzzles());
+document.getElementById('devOptionsBtn').addEventListener('click', () => UI_modal_devOptions());
+
+
+// keyboard
+const handledKeys = new Set([
+    "ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight",
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+    "Backspace", "Delete", "Escape"
+]);
+function handleKeydown(e) {
+    const key = e.key;
+    if (!handledKeys.has(key)) return;
+
+    if (modalIsOpen) {
+        if (key === "Escape") {
+            // console.log("handled but unused ESCAPE key press while modal is open");
+            hideModal();
+        }
+        return;
+    }
+
+    if (currentCell !== null) {
+        e.preventDefault();
+        // console.log("handled:", e.key);
+        let next = currentCell;
+
+        switch (key) {
+            case "ArrowUp":
+                if (next >= 9) next -= 9;
+                selectCell(next);
+                break;
+
+            case "ArrowDown":
+                if (next < 72) next += 9; // 72 = index of row 8 col 0
+                selectCell(next);
+                break;
+
+            case "ArrowLeft": {
+                const col = next % 9;
+                if (col > 0) next -= 1;
+                selectCell(next);
+                break;
+            }
+
+            case "ArrowRight": {
+                const col = next % 9;
+                if (col < 8) next += 1;
+                selectCell(next);
+                break;
+            }
+
+            case "0":
+            case "Delete":
+            case "Backspace": {
+                if (!givens[currentCell]) {
+                    updateCellValue(currentCell, 0); // this is really a "null cell" operation, maybe backspace would do the same thing? maybe not though?
+                }
+                break;
+            }
+
+            case "Escape":
+                break;
+
+            default: {
+                // default "let numbers through to here" case
+                if (!givens[currentCell]) {
+                    const value = Number(e.key);
+                    updateCellValue(currentCell, value);
+                }
+
+            }
+        }
+    }
+}
+
+
+// DOM-specific handler
+const handleCellClick = (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const col = Math.floor(x / cell);
+    const row = Math.floor(y / cell);
+    const cellNumber = (row * 9) + col;
+
+    selectCell(cellNumber);
+}
+
+// game bind + init
+canvas.addEventListener('mousedown', handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
+// canvas.addEventListener('blur', clearSelectedCell);
+window.addEventListener('keydown', handleKeydown);
+
+
+// receive input for game (DOM -> game)
+function inputFromNumpad(n) {
+    if (currentCell !== null && !givens[currentCell]) {
+        if (completedDigits[n-1] === 1) {
+            console.log(`from numpad when digit ${n} finished`);
+        } else {
+            updateCellValue(currentCell, n);
+        }
+    }
+}
+numpadItems.forEach(item => {
+    const n = Number(item.dataset.value);
+    item.addEventListener("click", () => inputFromNumpad(n));
+
+});
+

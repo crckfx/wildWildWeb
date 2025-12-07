@@ -27,18 +27,26 @@
 				<div class="data">
 					<p>mistakes made: <span class="mistake">0</span></p>
 				</div>
+				<div class="data">
+					<p>puzzles completed: <span class="puzzlesCompleted">?</span></p>
+				</div>
 
 				<div>
 					<button id="devCancel">Cancel</button>
 				</div>
 			</div>
+
+			<div id="panel-win" class="modalPanel">
+				<h2>You win!</h2>
+			</div>
+
 		</div>
 	</div>
 
 	<div id="sudokuUI">
 
 
-		<div class="morePresets gameWrap">
+		<div class="morePresets">
 			<button class="gregBtn" id="newPuzzleBtn">New</button>
 			<button class="gregBtn" id="resetPuzzleBtn">Reset</button>
 			<button class="gregBtn" id="browsePuzzlesBtn">Browse</button>
@@ -47,29 +55,33 @@
 			<button class="gregBtn" id="devOptionsBtn">dev</button>
 		</div>
 
-		<div class="canvas-container">
-			<canvas tabindex="0" id="sudokuCanvas"></canvas>
-		</div>
+        <div class="gameContainer">
 
-
-		<div class="numpad-wrapper gameWrap">
-			<div class="someSudokuOtherThangy">
-				<button class="numpad-item gregBtn" data-value="0" style="font-size:24px; padding: 8px;">erase</button>
-				<button id="sudokUndo" class="gregBtn">undo</button>
-			</div>
-			<div id="numpad" class="numpad">
-				<div class="numpad-item gregBtn" data-value="1">1</div>
-				<div class="numpad-item gregBtn" data-value="2">2</div>
-				<div class="numpad-item gregBtn" data-value="3">3</div>
-				<div class="numpad-item gregBtn" data-value="4">4</div>
-				<div class="numpad-item gregBtn" data-value="5">5</div>
-				<div class="numpad-item gregBtn" data-value="6">6</div>
-				<div class="numpad-item gregBtn" data-value="7">7</div>
-				<div class="numpad-item gregBtn" data-value="8">8</div>
-				<div class="numpad-item gregBtn" data-value="9">9</div>
-			</div>
-		</div>
-
+            
+            <div class="canvas-container">
+                <canvas tabindex="0" id="sudokuCanvas"></canvas>
+            </div>
+            
+            
+            <div class="numpad-wrapper">
+                <div class="someSudokuOtherThangy">
+                    <button class="numpad-item gregBtn" data-value="0">erase</button>
+                    <button id="sudokUndo" class="gregBtn">undo</button>
+                </div>
+                <div id="numpad" class="numpad">
+                    <div class="numpad-item gregBtn" data-value="1">1</div>
+                    <div class="numpad-item gregBtn" data-value="2">2</div>
+                    <div class="numpad-item gregBtn" data-value="3">3</div>
+                    <div class="numpad-item gregBtn" data-value="4">4</div>
+                    <div class="numpad-item gregBtn" data-value="5">5</div>
+                    <div class="numpad-item gregBtn" data-value="6">6</div>
+                    <div class="numpad-item gregBtn" data-value="7">7</div>
+                    <div class="numpad-item gregBtn" data-value="8">8</div>
+                    <div class="numpad-item gregBtn" data-value="9">9</div>
+                </div>
+            </div>
+            
+        </div>
 
 	</div>
 </div>

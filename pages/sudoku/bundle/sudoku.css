@@ -27,9 +27,6 @@
     --sudoku-hue: 60;
 } */
 
-.gameWrap {
-    max-width: 500px;
-}
 
 .sudoku-container {
     position: relative;
@@ -38,8 +35,17 @@
     text-align: center;
 }
 
+.gameContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 8px;
+}
+
 #sudokuUI {
-    transition: transform 0.5s, opacity 0.5s;
+    transition: transform 0.4s, opacity 0.4s;
     position: relative;
     opacity: 1;
     transform: none;
@@ -91,43 +97,13 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    height: 100%;
+    /* height: 100%; */
     justify-content: space-between;
     position: relative;
-    width: 100%;
+    /* width: 100%; */
+    gap: 4px;
 }
 
-
-.gregBtn {
-    box-sizing: border-box;
-    cursor: pointer;
-
-    position: relative;
-    text-align: center;
-    -webkit-tap-highlight-color: transparent;
-    align-items: center;
-    /* display: flex; */
-    /* height: 42px; */
-    justify-content: center;
-    transition: opacity .3s, color .3s, background-color .3s;
-    user-select: none;
-    /* transition: background-color .2s; */
-    background: transparent;
-    transform: translateZ(0);
-    border: 0;
-    border-radius: 5px;
-    /* color: #325aaf; */
-    color: var(--userNumberColor);
-    font: inherit;
-}
-
-
-.numpad .gregBtn {
-    font-size: 36px;
-    font-weight: 400;
-    flex-basis: 11.1111%;
-
-}
 
 
 #sudokuCanvas {
@@ -140,24 +116,6 @@
 }
 
 
-.gregBtn:hover {
-    background-color: hsl(var(--sudoku-hue), 30%, 88%);
-}
-
-.gregBtn:active {
-    background-color: hsl(var(--sudoku-hue), 30%, 84%);
-}
-
-
-[data-theme="dark"] .gregBtn:hover {
-    background-color: hsla(218, 30%, 33%, 0.267);
-}
-
-[data-theme="dark"] .gregBtn:active {
-
-    background-color: hsla(218, 30%, 44%, 0.267);
-}
-
 .modalContainer {
     opacity: 0;
     background-color: transparent;
@@ -168,7 +126,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 20;
-    color: var(--givenNumberColor);
+    color: var(--color-text-1);
     transition: opacity 0.4s, background-color 0.4s;
 }
 
@@ -183,16 +141,17 @@
 
 .modalContainer .modalContent {
     opacity: 1;
-    max-width: 80%;
+    max-width: min(80%, 600px);
     max-height: 80%;
     width: 100%;
     /* height: 100%; */
     overflow: auto;
     border-radius: 12px;
+    overscroll-behavior: none;
 }
 
 .modalContent .modalPanel {
-    background-color: #888;
+    background-color: var(--color-bg-3);
     display: none;
     padding: 16px;
 }
@@ -223,4 +182,43 @@ ul#browseList>li {
 
 ul#browseList>li>button {
     width: 100%;
+}
+
+@media screen and (min-width: 1000px) {
+    .sudoku-container {
+        width: 85%;
+    }
+
+    .gameContainer {
+        flex-direction: row;
+
+    }
+
+    .numpad-wrapper {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .numpad-wrapper .numpad {
+        display: grid;
+        /* height: 100%; */
+        justify-content: space-between;
+        position: relative;
+        /* width: 100%; */
+        gap: 4px;
+        grid-template-columns: 1fr 1fr 1fr;
+        flex: 3;
+    }
+
+    
+    .numpad-wrapper .someSudokuOtherThangy {
+        flex: 1;
+        gap: 8px;
+    }
+
+    .numpad-wrapper .someSudokuOtherThangy>button {
+        flex: 1;
+    }
+
+
 }

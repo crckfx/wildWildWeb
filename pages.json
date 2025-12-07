@@ -97,7 +97,8 @@
                 "modules": "./bundle/sudoku.js",
                 "styles": [
                     "./bundle/sudoku.css",
-                    "/css/someButton/someButton2.css"
+                    "./bundle/gregBtn.css",
+                    "/css/someButton/someButton3.css"
                 ]
             }
         }
