@@ -35,6 +35,44 @@ let gameHistory = [];
 export let currentCell = null; // <-- the main pointer guy for the game
 let mistakesMade = 0;
 
+export function shallowOpenPuzzleById(id) {
+    const puzzle = puzzles.find(p => p.id == id);
+    if (!puzzle) {
+        console.error(`couldn't find puzzle id:${id}`);
+        return;
+    }
+
+    return (shallowOpenPuzzle(puzzle));
+}
+
+export function shallowOpenPuzzle(puzzle) {
+
+    currentCell = 0;
+    // --- baseline load (mission/solution) ---
+    const mission = puzzle.mission;
+    const sol = puzzle.solution;
+
+    for (let i = 0; i < 81; i++) {
+        const mval = mission.charCodeAt(i) - 48;
+        const sval = sol.charCodeAt(i) - 48;
+
+        solution[i] = sval;
+
+        if (mval === 0) {
+            cells[i] = 0;
+            givens[i] = 0;
+            cellStatus[i] = STATUS_EMPTY;
+        } else {
+            cells[i] = mval;
+            givens[i] = 1;
+            cellStatus[i] = STATUS_GIVEN;
+        }
+    }
+    computeGameState();
+    // theoretically if this loads fine we might have a basis for a shallow mode
+    return true;
+}
+
 export function openPuzzleById(id, reset = false) {
 
     const puzzle = puzzles.find(p => p.id == id);
@@ -287,7 +325,7 @@ export function selectCell(num) {
 
 const neighboursOf = precomputeNeighbours();
 
-function precomputeNeighbours() {
+export function precomputeNeighbours() {
     const tempNeighboursOf = Array.from({ length: 81 }, () => []);
 
     for (let i = 0; i < 81; i++) {
@@ -415,16 +453,7 @@ function rebuildRuntimeHistory(minHist, missionStr, historyPos) {
     return out;
 }
 
-precomputeNeighbours();
 
-// INIT
-const defaultPuzzle = 1;
-const savedID = storage.getActivePuzzleID();
-if (savedID) {
-    openPuzzleById(savedID);
-} else {
-    openPuzzleById(puzzles[defaultPuzzle].id);
-}
 
 
 // rand

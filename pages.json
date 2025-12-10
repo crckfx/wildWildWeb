@@ -94,12 +94,24 @@
                 "title": "Sudoku",
                 "contentPath": "pages/sudoku/sudoku.html",
                 "imports": "pages/sudoku/bundle",
-                "modules": "./bundle/sudoku.js",
+                "modules": "./bundle/sudokuLoader.js",
                 "styles": [
                     "./bundle/sudoku.css",
                     "./bundle/gregBtn.css",
+                    "./bundle/modalMenu.css",
                     "/css/someButton/someButton3.css"
-                ]
+                ],
+                "children": {
+                    "extra": {
+                        "title": "Sudoku Puzzle Generator",
+                        "contentPath": "pages/sudoku/extra/qqwing.html",
+                        "styles": [
+                            "../bundle/sudoku.css"
+                        ],
+                        "imports": "pages/sudoku/extra/qqLoader.js",
+                        "modules": "./qqLoader.js"
+                    }
+                }
             }
         }
     },

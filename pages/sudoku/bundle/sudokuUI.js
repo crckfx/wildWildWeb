@@ -33,8 +33,6 @@ function handleModalClick(e) {
     }
 }
 
-modalContainer.onclick = handleModalClick;
-
 function UI_resetPuzzle() {
     // alert("implement puzzle reset, ie. 'wipe the progress of this current puzzle (including cache)'. this interact should not be an alert and should be asking for yes / no with no as default");
     if (currentPuzzleID) {
@@ -57,66 +55,41 @@ function UI_browsePuzzles() {
 }
 
 // populate browseList
-puzzles.forEach(p => {
-    const li = document.createElement("li");
+if (browseList) {
+    puzzles.forEach(p => {
+        const li = document.createElement("li");
 
-    // const nameSpan = document.createElement("span");
-    // nameSpan.textContent = `Puzzle ${p.id}`;
-    // li.appendChild(nameSpan);
-    const saved = storage.loadPuzzleState(p.id);
-    
-    // const btn = document.createElement("button");
-    li.classList.add('someButton2');
-    li.classList.add('primary');
+        // const nameSpan = document.createElement("span");
+        // nameSpan.textContent = `Puzzle ${p.id}`;
+        // li.appendChild(nameSpan);
+        const saved = storage.loadPuzzleState(p.id);
 
-    let symbolForCompleted = '';
-    if (saved && saved.completedAt) {
-        symbolForCompleted = '✔️ ';
-        li.classList.add('completed');
-    }
-    console.log(`item ${p.id} ${symbolForCompleted}`)
+        // const btn = document.createElement("button");
+        li.classList.add('someButton2');
+        li.classList.add('primary');
 
-
-    li.dataset.puzzleid = p.id;
-
-    li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
-    li.onclick = () => {
-        openPuzzleById(p.id);
-        hideModal();
-    };
-
-    // li.appendChild(btn);
-    browseList.appendChild(li);
-});
+        let symbolForCompleted = '';
+        if (saved && saved.completedAt) {
+            symbolForCompleted = '✔️ ';
+            li.classList.add('completed');
+        }
+        console.log(`item ${p.id} ${symbolForCompleted}`)
 
 
-document.getElementById('sudokUndo').addEventListener('click', () => undo());
+        li.dataset.puzzleid = p.id;
 
-document.getElementById("newRandom").onclick = () => {
-    const idx = Math.floor(Math.random() * puzzles.length);
-    openPuzzleById(puzzles[idx].id, true);
-    hideModal();
-};
+        li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
+        li.onclick = () => {
+            openPuzzleById(p.id);
+            hideModal();
+        };
 
-document.getElementById("newCancel").onclick = hideModal;
+        // li.appendChild(btn);
+        browseList.appendChild(li);
+    });
+}
 
-document.getElementById("resetConfirm").onclick = () => {
-    const targetEl = browseList.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
 
-    targetEl.classList.remove('completed');
-    
-    targetEl.textContent = `Puzzle ${currentPuzzleID}`;
-
-    openPuzzleById(currentPuzzleID, true);
-    hideModal();
-};
-document.getElementById("resetCancel").onclick = hideModal;
-document.getElementById("browseCancel").onclick = hideModal;
-document.getElementById("devCancel").onclick = hideModal;
-document.getElementById('newPuzzleBtn').addEventListener('click', () => UI_newPuzzle());
-document.getElementById('resetPuzzleBtn').addEventListener('click', () => UI_resetPuzzle());
-document.getElementById('browsePuzzlesBtn').addEventListener('click', () => UI_browsePuzzles());
-document.getElementById('devOptionsBtn').addEventListener('click', () => UI_modal_devOptions());
 
 
 // keyboard
@@ -190,6 +163,45 @@ function handleKeydown(e) {
         }
     }
 }
+const passiveKeys = new Set([
+    "ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight",
+]);
+function passiveKeyDown(e) {
+    const key = e.key;
+    if (!passiveKeys.has(key)) return;
+
+    if (currentCell !== null) {
+        e.preventDefault();
+        // console.log("handled:", e.key);
+        let next = currentCell;
+
+        switch (key) {
+            case "ArrowUp":
+                if (next >= 9) next -= 9;
+                selectCell(next);
+                break;
+
+            case "ArrowDown":
+                if (next < 72) next += 9; // 72 = index of row 8 col 0
+                selectCell(next);
+                break;
+
+            case "ArrowLeft": {
+                const col = next % 9;
+                if (col > 0) next -= 1;
+                selectCell(next);
+                break;
+            }
+
+            case "ArrowRight": {
+                const col = next % 9;
+                if (col < 8) next += 1;
+                selectCell(next);
+                break;
+            }
+        }
+    }
+}
 
 
 // DOM-specific handler
@@ -204,25 +216,72 @@ const handleCellClick = (e) => {
     selectCell(cellNumber);
 }
 
-// game bind + init
-canvas.addEventListener('mousedown', handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
-// canvas.addEventListener('blur', clearSelectedCell);
-window.addEventListener('keydown', handleKeydown);
-
 
 // receive input for game (DOM -> game)
 function inputFromNumpad(n) {
     if (currentCell !== null && !givens[currentCell]) {
-        if (completedDigits[n-1] === 1) {
+        if (completedDigits[n - 1] === 1) {
             console.log(`from numpad when digit ${n} finished`);
         } else {
             updateCellValue(currentCell, n);
         }
     }
 }
-numpadItems.forEach(item => {
-    const n = Number(item.dataset.value);
-    item.addEventListener("click", () => inputFromNumpad(n));
+if (numpadItems) {
+    numpadItems.forEach(item => {
+        const v = Number(item.dataset.value);
+        item.addEventListener("click", () => inputFromNumpad(v));
+        if (v >= 0 && v <= 9) {
+            numpadByValue[v] = item;
+        }
 
-});
+    });
+}
 
+export function bindUI({ passive = false} = {}) {
+    console.log("hello from UI binder");
+
+    if (modalContainer) modalContainer.onclick = handleModalClick;
+
+    document.getElementById('sudokUndo')?.addEventListener('click', () => undo());
+
+    document.getElementById("newRandom")?.addEventListener('click', () => {
+        const idx = Math.floor(Math.random() * puzzles.length);
+        openPuzzleById(puzzles[idx].id);
+        hideModal();
+
+    });
+
+
+    document.getElementById("newCancel")?.addEventListener('click', hideModal);
+
+    document.getElementById("resetConfirm")?.addEventListener('click', () => {
+        const targetEl = browseList.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
+
+        targetEl.classList.remove('completed');
+
+        targetEl.textContent = `Puzzle ${currentPuzzleID}`;
+
+        openPuzzleById(currentPuzzleID, true);
+        hideModal();
+    });
+
+
+    document.getElementById("resetCancel")?.addEventListener('click', hideModal);
+    document.getElementById("browseCancel")?.addEventListener('click', hideModal);
+    document.getElementById("devCancel")?.addEventListener('click', hideModal);
+    document.getElementById('newPuzzleBtn')?.addEventListener('click', () => UI_newPuzzle());
+    document.getElementById('resetPuzzleBtn')?.addEventListener('click', () => UI_resetPuzzle());
+    document.getElementById('browsePuzzlesBtn')?.addEventListener('click', () => UI_browsePuzzles());
+    document.getElementById('devOptionsBtn')?.addEventListener('click', () => UI_modal_devOptions());
+
+    // game bind + init
+    canvas.addEventListener('mousedown', handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
+    // canvas.addEventListener('blur', clearSelectedCell);
+    if (!passive) {
+        window.addEventListener('keydown', handleKeydown);
+    } else {
+        window.addEventListener('keydown', passiveKeyDown);
+    }
+
+}

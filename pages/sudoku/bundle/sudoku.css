@@ -22,10 +22,16 @@
     --errorNumberColor: hsl(0, 70%, 45%);
 }
 
-/* 
+
 [data-theme="dark"] {
-    --sudoku-hue: 60;
-} */
+    /* --sudoku-hue: 60; */
+    --sudokuCanvasBg: hsl(var(--sudoku-hue), 10%, 77%);
+    /* --sudokuCanvasBg: #444; */
+    --selectedCellColor: hsl(var(--sudoku-hue), 50%, 58%);
+    --sameNumberCellColor: hsl(var(--sudoku-hue), 40%, 62%);
+    --neighbourCellColor: hsl(var(--sudoku-hue), 30%, 71%);
+
+}
 
 
 .sudoku-container {
@@ -116,77 +122,11 @@
 }
 
 
-.modalContainer {
-    opacity: 0;
-    background-color: transparent;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 20;
-    color: var(--color-text-1);
-    transition: opacity 0.4s, background-color 0.4s;
-}
-
-.modalContainer.show {
-    opacity: 1;
-    pointer-events: auto;
-    background-color: #000000bb;
-    display: flex;
-    place-content: center;
-    place-items: center;
-}
-
-.modalContainer .modalContent {
-    opacity: 1;
-    max-width: min(80%, 600px);
-    max-height: 80%;
-    width: 100%;
-    /* height: 100%; */
-    overflow: auto;
-    border-radius: 12px;
-    overscroll-behavior: none;
-}
-
-.modalContent .modalPanel {
-    background-color: var(--color-bg-3);
-    display: none;
-    padding: 16px;
-}
-
-.modalContainer.show .modalContent .modalPanel.active {
-    display: block;
-}
-
-
-#puzzleNumDisplay {
-    font-size: 16px;
-}
-
-ul#browseList {
-    list-style-type: none;
-    padding: 0;
-
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 24px;
-}
-
-ul#browseList>li {
-    flex: 1;
-    text-wrap: nowrap;
-}
-
-ul#browseList>li>button {
-    width: 100%;
-}
 
 @media screen and (min-width: 1000px) {
     .sudoku-container {
         width: 85%;
+        max-width: 1000px;
     }
 
     .gameContainer {

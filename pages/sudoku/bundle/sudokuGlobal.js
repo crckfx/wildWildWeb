@@ -1,14 +1,9 @@
 export const canvas = document.getElementById('sudokuCanvas');
 export const ctx = canvas.getContext('2d');
 export const numpadWrapper = document.querySelector('.numpad-wrapper');
-export const numpadItems = numpadWrapper.querySelectorAll('.numpad-item');
+export const numpadItems = numpadWrapper?.querySelectorAll('.numpad-item');
 export const numpadByValue = Array(10).fill(null);
-numpadItems.forEach(el => {
-    const v = Number(el.dataset.value);
-    if (v >= 0 && v <= 9) {
-        numpadByValue[v] = el;
-    }
-});
+
 
 // ARRAYS (they're all length 81 because sudoku has 81 cells)
 export const cells = new Uint8Array(81).fill(0);       // for the evolving board state
