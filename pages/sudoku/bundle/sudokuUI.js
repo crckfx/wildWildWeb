@@ -1,5 +1,5 @@
 import { puzzles } from "./puzzles.js";
-import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell } from "./sudoku.js";
+import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell, miscOpenPuzzle } from "./sudoku.js";
 import * as storage from "./storage.js";
 import { browseList, canvas, cell, completedDigits, givens, numpadByValue, numpadItems } from "./sudokuGlobal.js";
 
@@ -284,4 +284,13 @@ export function bindUI({ passive = false} = {}) {
         window.addEventListener('keydown', passiveKeyDown);
     }
 
+}
+
+
+const someOtherPuzzleBtn = document.getElementById('someOtherPuzzleBtn');
+someOtherPuzzleBtn?.addEventListener('click', () => loadSomeOtherPuzzle());
+function loadSomeOtherPuzzle() {
+    const puzzle = {"mission":"000290870000000100008000006060080003000750060007900005001006050002870000070000900","solution":"613295874725648139948317526564182793139754268287963415891426357352879641476531982","difficultyCode":2,"difficultyName":"Easy"}
+    hideModal();
+    miscOpenPuzzle(puzzle);
 }

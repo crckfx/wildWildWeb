@@ -35,6 +35,7 @@ let gameHistory = [];
 export let currentCell = null; // <-- the main pointer guy for the game
 let mistakesMade = 0;
 
+// SHALLOW PUZZLE (FOR DISPLAY ONLY; NOT PLAYING)
 export function shallowOpenPuzzleById(id) {
     const puzzle = puzzles.find(p => p.id == id);
     if (!puzzle) {
@@ -45,6 +46,8 @@ export function shallowOpenPuzzleById(id) {
     return (shallowOpenPuzzle(puzzle));
 }
 
+
+// for "soft load" in 
 export function shallowOpenPuzzle(puzzle) {
 
     currentCell = 0;
@@ -71,6 +74,62 @@ export function shallowOpenPuzzle(puzzle) {
     computeGameState();
     // theoretically if this loads fine we might have a basis for a shallow mode
     return true;
+}
+
+// GAME OPEN PUZZLE (FOR REAL PLAYING)
+export function miscOpenPuzzle(puzzle) {
+    currentPuzzleIsCompleted = false;
+    currentPuzzleID = null;
+    currentCell = 0;
+
+    // --- baseline load (mission/solution) ---
+    const mission = puzzle.mission;
+    const sol = puzzle.solution;
+
+    mistakesMade = 0;
+    historyPos = 0;
+    gameHistory = [];
+
+    for (let i = 0; i < 81; i++) {
+        const mval = mission.charCodeAt(i) - 48;
+        const sval = sol.charCodeAt(i) - 48;
+
+        solution[i] = sval;
+
+        if (mval === 0) {
+            cells[i] = 0;
+            givens[i] = 0;
+            cellStatus[i] = STATUS_EMPTY;
+        } else {
+            cells[i] = mval;
+            givens[i] = 1;
+            cellStatus[i] = STATUS_GIVEN;
+        }
+    }
+    // -------- stuff for count finished digits -----------
+    correctCount.fill(0);
+    completedDigits.fill(0);
+    // cellwise "finished count" spanning all digits
+    for (let i = 0; i < 81; i++) {
+        const v = cells[i];
+        if (v !== 0 && v === solution[i]) {
+            correctCount[v - 1]++;
+        }
+    }
+    // see if any digits are finished
+    for (let d = 0; d < 9; d++) {
+        const value = d + 1;
+        if (correctCount[d] === 9) {
+            completedDigits[d] = 1;
+            hideNumpadItem(value);
+        } else {
+            showNumpadItem(value);
+        }
+    }
+    // -------- /stuff for count finished digits -----------
+    printMistakes();
+    updatepuzzleNumDisplay();
+    computeGameState();    
 }
 
 export function openPuzzleById(id, reset = false) {
@@ -112,27 +171,6 @@ export function openPuzzleById(id, reset = false) {
             cellStatus[i] = STATUS_GIVEN;
         }
     }
-
-    // -------- stuff for count finished digits -----------
-    correctCount.fill(0);
-    completedDigits.fill(0);
-    // cellwise "finished count" spanning all digits
-    for (let i = 0; i < 81; i++) {
-        const v = cells[i];
-        if (v !== 0 && v === solution[i]) {
-            correctCount[v - 1]++;
-        }
-    }
-    // see if any digits are finished
-    for (let d = 0; d < 9; d++) {
-        const c = correctCount[d] === 9;
-        if (c) {
-            completedDigits[d] = 1;
-            hideNumpadItem(d + 1);
-        }
-
-    }
-    // -------- /stuff for count finished digits -----------
 
     // --- overlay saved history if present ---
     if (saved && reset !== true) {
@@ -478,3 +516,4 @@ function showNumpadItem(value) {
     const item = numpadByValue[value];
     item.classList.remove('completed');
 }
+

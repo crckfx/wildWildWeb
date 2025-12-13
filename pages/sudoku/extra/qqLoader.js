@@ -11,7 +11,9 @@ const difficultyNameDisplay = document.getElementById('difficultyName');
 const difficultyCodeDisplay = document.getElementById('difficultyCode');
 const difficultySelector = document.getElementById('difficultySelector');
 
+const copyBtn = document.getElementById('copyBtn');
 
+let currentlyLoadedPuzzle = null;
 
 // INIT
 precomputeNeighbours();
@@ -25,6 +27,7 @@ function makeNewPuzzle() {
     const puzzle = get_qq_puzzle(targetDifficulty);
     // console.log(puzzle);
     shallowOpenPuzzle(puzzle);
+    currentlyLoadedPuzzle = puzzle;
     difficultyCodeDisplay.textContent = puzzle.difficultyCode;
     difficultyNameDisplay.textContent = `(${puzzle.difficultyName})`;
 
@@ -33,6 +36,7 @@ function clearPuzzle() {
     shallowOpenPuzzleById(0);
     difficultyCodeDisplay.textContent = "";
     difficultyNameDisplay.textContent = "";
+    currentlyLoadedPuzzle = null;
 }
 
 // function get_qq_puzzle(difficulty) {
@@ -119,6 +123,7 @@ function get_qq_puzzle(targetDifficulty) {
 
 generateBtn.addEventListener('click', () => makeNewPuzzle());
 clearBtn.addEventListener('click', () => clearPuzzle());
+copyBtn.addEventListener('click', () => copyPuzzleToClipboard());
 
 
 function treat_qq_puzzle(p) {
@@ -163,4 +168,11 @@ function treat_qq_puzzle(p) {
         difficultyCode: p.difficultyCode,
         difficultyName: p.difficultyName,
     };
+}
+
+function copyPuzzleToClipboard() {
+    if (currentlyLoadedPuzzle !== null) {
+        console.log("currently loaded:", currentlyLoadedPuzzle.mission, currentlyLoadedPuzzle.solution);
+        navigator.clipboard.writeText(JSON.stringify(currentlyLoadedPuzzle));
+    }
 }

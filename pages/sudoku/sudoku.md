@@ -68,5 +68,7 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] provide a `reset` button for per-puzzle (game + storage)
 - [x] provide more puzzles on the page (now 10 'easy' ones in a simple menu)
 - [x] keep track of which digits have been completed (so their buttons can be styled / whatever)
-- [x] trigger button style updates for completed digits
+- [x] trigger button style updates for completed digits (this could be used to trigger an animation or whatever event)
 - [ ] provide a "how to play" description section
+- [x] integrate qqwing JS (at /resources/qqwing-1.3.4) for generating puzzles
+- [ ] make a "soft load"; use draw.js to 
