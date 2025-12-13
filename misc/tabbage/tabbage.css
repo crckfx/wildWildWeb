@@ -1,0 +1,90 @@
+/* ========================= */
+/* BASE STYLES (shared) */
+/* ========================= */
+
+.switcher {
+    border: 1px solid #ccc;
+    background: var(--color-bg-1);
+    margin-bottom: 32px;
+
+    .headers {
+        display: flex;
+        gap: 4px;
+    }
+
+    .headers button {
+        all: unset;
+        cursor: pointer;
+        padding: 8px 12px;
+    }
+
+    .headers button.is-active {
+        background: var(--color-bg-3);
+        font-weight: 600;
+    }
+
+    .panels-box {
+        position: relative;
+    }
+
+    .panel {
+        padding: 16px;
+    }
+
+    .panel[hidden] {
+        display: none;
+    }
+}
+
+
+/* ========================= */
+/* LAYOUT A: vertical sidebar */
+/* ========================= */
+.switcher.vertical {
+    display: flex;
+    min-height: 220px;
+
+    .headers {
+        flex-direction: column;
+        border-right: 1px solid #ccc;
+        min-width: 160px;
+    }
+}
+
+
+
+/* ========================= */
+/* LAYOUT B: horizontal top bar */
+/* ========================= */
+.switcher.horizontal {
+    display: flex;
+    flex-direction: column;
+    
+    .headers {
+        border-bottom: 1px solid #ccc;
+    }
+}
+
+/* ========================= */
+/* PRESENTATION: horizontal wipe */
+/* ========================= */
+.switcher.horizontal.wipe .panels-box {
+    overflow: hidden;
+}
+
+.switcher.horizontal.wipe .panel {
+    position: absolute;
+    inset: 0;
+    display: block;
+    /* override hidden */
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 400ms ease, opacity 200ms ease;
+}
+
+.switcher.horizontal.wipe .panel:not([hidden]) {
+    opacity: 1;
+    transform: translateY(0);
+    position: relative;
+    /* defines height */
+}

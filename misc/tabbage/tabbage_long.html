@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Panel Switcher – Clean Foundation</title>
+
+	<link rel="stylesheet" href="./tabbage.css">
+</head>
+
+<body>
+
+	<h2>Vertical sidebar</h2>
+	<div class="switcher vertical" data-switcher>
+		<div class="headers" data-switch-headers>
+			<button data-switch="a" class="is-active">Intro</button>
+			<button data-switch="b">Settings</button>
+			<button data-switch="c">About</button>
+		</div>
+
+		<div class="panels-box">
+			<section class="panel" data-panel="a">Intro content.</section>
+			<section class="panel" data-panel="b" hidden>Settings content.</section>
+			<section class="panel" data-panel="c" hidden>About content.</section>
+		</div>
+	</div>
+
+	<h2>Horizontal top bar</h2>
+	<div class="switcher horizontal" data-switcher>
+		<div class="headers" data-switch-headers>
+			<button data-switch="x" class="is-active">One</button>
+			<button data-switch="y">Two</button>
+			<button data-switch="z">Three</button>
+		</div>
+
+		<div class="panels-box">
+			<section class="panel" data-panel="x">Panel one.</section>
+			<section class="panel" data-panel="y" hidden>Panel two.</section>
+			<section class="panel" data-panel="z" hidden>Panel three.</section>
+		</div>
+	</div>
+
+	<h2>Horizontal with fade transition</h2>
+	<div class="switcher horizontal wipe" data-switcher>
+		<div class="headers" data-switch-headers>
+			<button data-switch="m" class="is-active">Alpha</button>
+			<button data-switch="n">Beta</button>
+			<button data-switch="o">Gamma</button>
+		</div>
+
+		<div class="panels-box">
+			<section class="panel" data-panel="m">Alpha panel (wipe).</section>
+			<section class="panel" data-panel="n" hidden>Beta panel.</section>
+			<section class="panel" data-panel="o" hidden>Gamma panel.</section>
+		</div>
+	</div>
+
+	<script src="./tabbage.js"></script>
+
+</body>
+
+</html>
