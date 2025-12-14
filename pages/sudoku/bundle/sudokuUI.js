@@ -1,7 +1,7 @@
-import { puzzles } from "./puzzles.js";
+import { puzzles, easyPuzzles, mediumPuzzles } from "./puzzles.js";
 import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell, miscOpenPuzzle } from "./sudoku.js";
 import * as storage from "./storage.js";
-import { browseList, canvas, cell, completedDigits, givens, numpadByValue, numpadItems } from "./sudokuGlobal.js";
+import { cells, browseList, browseList_MEDIUM, canvas, cell, completedDigits, givens, numpadByValue, numpadItems, solution } from "./sudokuGlobal.js";
 
 const modalContainer = document.getElementById('modalContainer');
 const panels = {
@@ -56,7 +56,7 @@ function UI_browsePuzzles() {
 
 // populate browseList
 if (browseList) {
-    puzzles.forEach(p => {
+    easyPuzzles.forEach(p => {
         const li = document.createElement("li");
 
         // const nameSpan = document.createElement("span");
@@ -89,7 +89,39 @@ if (browseList) {
     });
 }
 
+if (browseList_MEDIUM) {
+        mediumPuzzles.forEach(p => {
+        const li = document.createElement("li");
 
+        // const nameSpan = document.createElement("span");
+        // nameSpan.textContent = `Puzzle ${p.id}`;
+        // li.appendChild(nameSpan);
+        const saved = storage.loadPuzzleState(p.id);
+
+        // const btn = document.createElement("button");
+        li.classList.add('someButton2');
+        li.classList.add('primary');
+
+        let symbolForCompleted = '';
+        if (saved && saved.completedAt) {
+            symbolForCompleted = '✔️ ';
+            li.classList.add('completed');
+        }
+        console.log(`item ${p.id} ${symbolForCompleted}`)
+
+
+        li.dataset.puzzleid = p.id;
+
+        li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
+        li.onclick = () => {
+            openPuzzleById(p.id);
+            hideModal();
+        };
+
+        // li.appendChild(btn);
+        browseList_MEDIUM.appendChild(li);
+    });
+}
 
 
 // keyboard
@@ -294,3 +326,25 @@ function loadSomeOtherPuzzle() {
     hideModal();
     miscOpenPuzzle(puzzle);
 }
+
+
+function copyPuzzleToClipboard() {
+    // if (currentlyLoadedPuzzle !== null) {
+    //     console.log("currently loaded:", currentlyLoadedPuzzle.mission, currentlyLoadedPuzzle.solution);
+    //     navigator.clipboard.writeText(JSON.stringify(currentlyLoadedPuzzle));
+    // }
+    let jkl = "";
+    let xyz = "";
+    for (let i=0; i<81; i++) {
+        jkl+= cells[i];
+        xyz+= solution[i];
+    }
+
+    console.log(jkl);
+
+    navigator.clipboard.writeText(JSON.stringify({mission: jkl, solution: xyz}));
+}
+const copyBtn = document.getElementById('copyBtn');
+copyBtn.addEventListener('click', () => copyPuzzleToClipboard());
+
+

@@ -31,9 +31,12 @@
 					<div class="panels-box">
 						<section class="panel" data-panel="m">Alpha panel (wipe).</section>
 						<section class="panel" data-panel="n" hidden>
-							<ul id="browseList"></ul>
+                            <ul class="browseList" id="browseList"></ul>
 						</section>
-						<section class="panel" data-panel="o" hidden>Gamma panel.</section>
+						<section class="panel" data-panel="o" hidden>
+                            <!-- Gamma panel. -->
+                            <ul class="browseList" id="browseList_MEDIUM"></ul>
+                        </section>
 					</div>
 				</div>
 			</div>
@@ -51,6 +54,7 @@
 					<p><a href="extra/">puzzle generator</a></p>
 					<p><a href="bundle/storage.html">storage editor thing</a></p>
 					<button id="someOtherPuzzleBtn">load some other puzzle</button>
+                    <button id="copyBtn">copy puzzle as JSON?</button>
 				</div>
 
 				<div>

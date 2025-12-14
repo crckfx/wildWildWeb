@@ -63,3 +63,4 @@ export function setGameSize() {
 
 // -------- UI (if it winds up here, it's probably so game can push to it) -----------
 export const browseList = document.getElementById("browseList");
+export const browseList_MEDIUM = document.getElementById("browseList_MEDIUM");

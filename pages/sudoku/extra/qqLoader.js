@@ -11,9 +11,13 @@ const difficultyNameDisplay = document.getElementById('difficultyName');
 const difficultyCodeDisplay = document.getElementById('difficultyCode');
 const difficultySelector = document.getElementById('difficultySelector');
 
-const copyBtn = document.getElementById('copyBtn');
+// const copyBtn = document.getElementById('copyBtn');
 
 let currentlyLoadedPuzzle = null;
+
+const launchBtn = document.getElementById('launchBtn');
+const pasteBtn = document.getElementById('pasteBtn');
+const pasteField = document.getElementById('pasteField');
 
 // INIT
 precomputeNeighbours();
@@ -39,39 +43,6 @@ function clearPuzzle() {
     currentlyLoadedPuzzle = null;
 }
 
-// function get_qq_puzzle(difficulty) {
-//     const qq = new qqwing();
-//     console.log(`generate puzzle, intended difficulty: ${difficulty}`);
-//     qq.setRecordHistory(true);
-//     qq.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
-
-//     // it kinda only makes sense to loop between:
-//     // --- here ---
-
-//     // generate puzzle
-//     qq.generatePuzzle();
-//     const mission = qq.getPuzzleString();
-
-//     // solve, which also logs the solving steps
-//     qq.solve();
-//     const solution = qq.getSolutionString();
-
-//     // now difficulty is defined
-//     const difficultyCode = qq.getDifficulty();            // enum 0–4
-//     const difficultyName = qq.getDifficultyAsString();    // "Simple", etc.
-
-//     // --- and here ---
-
-//     // pass everything into your sanitiser
-//     const treated = treat_qq_puzzle({
-//         mission,
-//         solution,
-//         difficultyCode,
-//         difficultyName,
-//     });
-
-//     return treated;
-// }
 
 function get_qq_puzzle(targetDifficulty) {
     for (;;) {
@@ -123,8 +94,8 @@ function get_qq_puzzle(targetDifficulty) {
 
 generateBtn.addEventListener('click', () => makeNewPuzzle());
 clearBtn.addEventListener('click', () => clearPuzzle());
-copyBtn.addEventListener('click', () => copyPuzzleToClipboard());
-
+launchBtn.addEventListener('click', () => console.log("launch some puzzle?"));
+pasteBtn.addEventListener('click', () => launchFromPaste());
 
 function treat_qq_puzzle(p) {
     const qqMission = p.mission ?? "";
@@ -170,9 +141,61 @@ function treat_qq_puzzle(p) {
     };
 }
 
-function copyPuzzleToClipboard() {
-    if (currentlyLoadedPuzzle !== null) {
-        console.log("currently loaded:", currentlyLoadedPuzzle.mission, currentlyLoadedPuzzle.solution);
-        navigator.clipboard.writeText(JSON.stringify(currentlyLoadedPuzzle));
+function launchFromPaste() {
+    const text = pasteField.value;
+
+    const result = validatePuzzleJSON(text);
+    if (!result.ok) {
+        console.error(result.error);
+        return;
     }
+
+    const { mission, solution } = result.puzzle;
+    console.log("valid puzzle", mission, solution);
+
+    pasteField.value = "";
+    shallowOpenPuzzle(result.puzzle);
+    currentlyLoadedPuzzle = result.puzzle;
+
+
+}
+
+function validatePuzzleJSON(text) {
+    let obj;
+
+    // 1. Must be valid JSON
+    try {
+        obj = JSON.parse(text);
+    } catch (e) {
+        return { ok: false, error: "Invalid JSON" };
+    }
+
+    // 2. Must be a plain object
+    if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
+        return { ok: false, error: "JSON is not an object" };
+    }
+
+    const { mission, solution } = obj;
+
+    // 3. Required fields
+    if (typeof mission !== "string" || typeof solution !== "string") {
+        return { ok: false, error: "mission and solution must be strings" };
+    }
+
+    // 4. Length check
+    if (mission.length !== 81 || solution.length !== 81) {
+        return { ok: false, error: "mission and solution must be 81 characters" };
+    }
+
+    // 5. Character set check (digits only)
+    if (!/^[0-9]{81}$/.test(mission) || !/^[0-9]{81}$/.test(solution)) {
+        return { ok: false, error: "mission/solution must contain only digits 0–9" };
+    }
+
+    return { ok: true, puzzle: obj };
+}
+
+function getClue() {
+    // take a puzzle, solve it with qqwing, walk back to the first valid move made to produce a "hint"
+    // optionally it could tell us how the hint was derived so we could show the derivation with visual cues
 }

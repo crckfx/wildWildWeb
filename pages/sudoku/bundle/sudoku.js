@@ -516,4 +516,3 @@ function showNumpadItem(value) {
     const item = numpadByValue[value];
     item.classList.remove('completed');
 }
-

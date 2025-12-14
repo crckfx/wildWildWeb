@@ -10,31 +10,48 @@
 		</div>
 	</div>
 
-    <div>
-        <h3>something</h3>
-        <p>something else</p>
-        <p>
-            <button id="generateBtn">generate puzzle</button>
-            <button id="clearBtn">clear puzzle</button>
-            <button id="launchBtn">load+play puzzle</button>
-            <button id="copyBtn">copy puzzle as JSON?</button>
-        </p>
-        <form>
-            <fieldset>
-                <label>select difficulty (qqwing)</label>
-                <select name="difficulty" id="difficultySelector">
-                    <option value="1">simple</option>
-                    <option value="2">easy</option>
-                    <option value="3">intermediate</option>
-                    <option value="4">expert</option>
-                </select>
-            </fieldset>
-        </form>            
-        <pre id="qqDisplay" style="margin: 0;">
-            <div>difficultyCode: <span id="difficultyCode"></span> <span id="difficultyName"></span></div>
-        </pre>
+	<div>
 
-    </div>
+		<!-- Generate + load -->
+		<div>
+			<h3>Generate puzzle</h3>
+
+			<label for="difficultySelector">Difficulty (qqwing)</label>
+			<select id="difficultySelector">
+				<option value="1">simple</option>
+				<option value="2">easy</option>
+				<option value="3">intermediate</option>
+				<option value="4">expert</option>
+			</select>
+
+			<button id="generateBtn">generate puzzle</button>
+			<button id="launchBtn">load + play puzzle</button>
+		</div>
+
+		<!-- Currently loaded -->
+		<div>
+			<h3>Currently loaded</h3>
+
+			<div id="qqDisplay">
+				difficultyCode:
+				<span id="difficultyCode"></span>
+				<span id="difficultyName"></span>
+			</div>
+
+			<button id="copyBtn">copy puzzle as JSON</button>
+			<button id="clearBtn">clear puzzle</button>
+		</div>
+
+		<!-- Paste JSON -->
+		<div>
+			<h3>Load from JSON</h3>
+
+			<input id="pasteField" type="text" placeholder="paste puzzle JSON here" autocomplete="off" spellcheck="false" />
+			<button id="pasteBtn">load</button>
+		</div>
+
+	</div>
+
 </div>
 
 <script src="/resources/qqwing-1.3.4/qqwing-1.3.4.min.js"></script>

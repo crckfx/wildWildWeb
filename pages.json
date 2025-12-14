@@ -92,7 +92,10 @@
             },
             "sudoku": {
                 "title": "Sudoku",
-                "contentPath": "pages/sudoku/sudoku.html",
+                "contentPath": [
+                    "pages/sudoku/sudoku.html"
+                    
+                ],
                 "imports": "pages/sudoku/bundle",
                 "modules": "./bundle/sudokuLoader.js",
                 "styles": [
