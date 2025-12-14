@@ -1,8 +1,9 @@
 import {
     canvas, cell, cellStatus, ctx, coords, cells, size,
     STATUS_EMPTY, STATUS_GIVEN, STATUS_CORRECT, STATUS_ERROR,
-    highlightStatus, 
+    highlightStatus,
     H_NONE, H_SELECTED, H_NEIGHBOUR, H_SAME_NUMBER,
+    sudoku_show_errors,
 } from "./sudokuGlobal.js";
 
 // COLOURS
@@ -87,13 +88,28 @@ function drawNumberFromCell(idx) {
             ctx.fillStyle = userNumberColor;
             break;
         case STATUS_ERROR:
-            ctx.fillStyle = errorNumberColor;
+            if (sudoku_show_errors) {
+                ctx.fillStyle = errorNumberColor;
+            } else {
+                ctx.fillStyle = userNumberColor;
+            }
             break;
         default:
             ctx.fillStyle = userNumberColor; // fallback for any future states
     }
 
 
+    ctx.fillText(String(value), x, y);
+}
+
+function drawNumberAtCell(i, colour) {
+    const value = cells[i];
+    if (value === 0) return;
+    const { row, col } = coords[i];
+    const x = Math.floor(col * cell + cell / 2) + 0.5;
+    const y = Math.floor(row * cell + cell / 2) + 0.5;
+
+    ctx.fillStyle = colour;
     ctx.fillText(String(value), x, y);
 }
 

@@ -1,8 +1,9 @@
-import { openPuzzleById, precomputeNeighbours, shallowOpenPuzzle, shallowOpenPuzzleById } from "../bundle/sudoku.js";
+import { getCurrentBoard, openPuzzleById, precomputeNeighbours, shallowOpenPuzzle, shallowOpenPuzzleById } from "../bundle/sudoku.js";
 import * as storage from "../bundle/storage.js";
 // import { puzzles } from "../bundle/puzzles.js";
 import { puzzles } from "../bundle/puzzles.js";
 import { bindUI } from "../bundle/sudokuUI.js";
+import { coords } from "../bundle/sudokuGlobal.js";
 
 const generateBtn = document.getElementById('generateBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -21,7 +22,8 @@ const pasteField = document.getElementById('pasteField');
 
 // INIT
 precomputeNeighbours();
-bindUI({ passive: true });
+// bindUI({ passive: true });
+bindUI();
 const result = shallowOpenPuzzleById(0);
 console.log("result:");
 console.log(result)
@@ -45,7 +47,7 @@ function clearPuzzle() {
 
 
 function get_qq_puzzle(targetDifficulty) {
-    for (;;) {
+    for (; ;) {
         const qq = new qqwing();
         console.log(`generate puzzle, intended difficulty: ${targetDifficulty}`);
 
@@ -157,7 +159,6 @@ function launchFromPaste() {
     shallowOpenPuzzle(result.puzzle);
     currentlyLoadedPuzzle = result.puzzle;
 
-
 }
 
 function validatePuzzleJSON(text) {
@@ -195,7 +196,101 @@ function validatePuzzleJSON(text) {
     return { ok: true, puzzle: obj };
 }
 
+const getClueBtn = document.getElementById('getClueBtn');
+getClueBtn.addEventListener('click', () => {
+    const clue = getClue();
+})
+
 function getClue() {
     // take a puzzle, solve it with qqwing, walk back to the first valid move made to produce a "hint"
     // optionally it could tell us how the hint was derived so we could show the derivation with visual cues
+    const qq = new qqwing();
+    qq.setRecordHistory(true);
+    qq.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
+
+    const board = getCurrentBoard();
+    const missionString = board.asString;
+    qq.setPuzzle(board.asArray);
+
+
+    qq.solve();
+    const solution = qq.getSolutionString();
+
+    const qqSolveInstructions = qq.getSolveInstructions();
+    const difficultyCode = qq.getDifficulty();
+    const difficultyName = qq.getDifficultyAsString();
+
+    const treated = treat_qq_puzzle({
+        mission: missionString,
+        solution: solution,
+        difficultyCode: difficultyCode,
+        difficultyName: difficultyName,
+    });
+    // return treated;
+
+    if (treated.solution === currentlyLoadedPuzzle?.solution) {
+        console.log("solution is correct")
+
+        const clue = extractFirstClueFromInstructions(qqSolveInstructions);
+        const clueCoords = coords[clue.index];
+        console.log(clue);
+        console.log(clueCoords.row, clueCoords.col, clue.conditionalOnGuess);
+
+        // console.log(qqSolveInstructions);
+        console.table(dumpRaw(qqSolveInstructions));
+
+
+    } else {
+
+        console.log("solution is incorrect");
+    }
+
+    return null;
+
 }
+
+function extractFirstClueFromInstructions(instructions) {
+    let seenGuess = false;
+
+    for (let i = 0; i < instructions.length; i++) {
+        const item = instructions[i];
+        const type = item.getType();
+
+        if (type === qqwing.LogType.GUESS) {
+            seenGuess = true;
+            continue; // don't return guesses as clues
+        }
+
+        const value = item.getValue();
+        const position = item.getPosition();
+        if (value <= 0 || position < 0) continue;
+
+        if (
+            type === qqwing.LogType.SINGLE ||
+            type === qqwing.LogType.HIDDEN_SINGLE_ROW ||
+            type === qqwing.LogType.HIDDEN_SINGLE_COLUMN ||
+            type === qqwing.LogType.HIDDEN_SINGLE_SECTION
+        ) {
+            return {
+                index: position,
+                value,
+                type,
+                description: item.getDescription(),
+                stepIndex: i,                 // index in solveInstructions
+                conditionalOnGuess: seenGuess // the important meaning bit
+            };
+        }
+    }
+    return null;
+}
+
+function dumpRaw(instructions) {
+    return instructions.map((item, i) => ({
+        step: i,                 // array order = chronology
+        type: item.getType(),    // raw enum number
+        round: item.getRound(),  // recursion depth
+        index: item.getPosition(),
+        value: item.getValue()
+    }));
+}
+

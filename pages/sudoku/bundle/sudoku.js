@@ -49,8 +49,10 @@ export function shallowOpenPuzzleById(id) {
 
 // for "soft load" in 
 export function shallowOpenPuzzle(puzzle) {
-
+    historyPos = 0;
+    gameHistory = [];
     currentCell = 0;
+
     // --- baseline load (mission/solution) ---
     const mission = puzzle.mission;
     const sol = puzzle.solution;
@@ -468,7 +470,7 @@ export function undo() {
 
 // misc DOM output
 function printMistakes() {
-    mistakesDisplay.textContent = mistakesMade;
+    if (mistakesDisplay) mistakesDisplay.textContent = mistakesMade;
 }
 
 
@@ -506,13 +508,27 @@ function applyStatus(cell, val) {
 }
 
 function hideNumpadItem(value) {
-    // console.log(`just finished digit ${value}`);
-    const item = numpadByValue[value];
-    console.log(item);
-    item.classList.add('completed');
+    // const item = numpadByValue[value];
+    // console.log(item);
+    // item.classList.add('completed');
+    numpadByValue[value]?.classList.add('completed');
 }
 function showNumpadItem(value) {
-    // console.log(`just UN-finished digit ${value}`);
-    const item = numpadByValue[value];
-    item.classList.remove('completed');
+    // const item = numpadByValue[value];
+    // item.classList.remove('completed');
+    numpadByValue[value]?.classList.remove('completed');
+}
+
+export function getCurrentBoard() {
+    const arr = new Array(81);
+    let str = "";
+    for (let i = 0; i < 81; i++) {
+        const val = cells[i];
+        arr[i] = val;
+        str += val;
+    }
+    return {
+        asString: str,
+        asArray: arr
+    };
 }
