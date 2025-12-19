@@ -20,7 +20,7 @@ import {
     H_NONE, H_SELECTED, H_NEIGHBOUR, H_SAME_NUMBER,
     correctCount, completedDigits,
     numpadItems, numpadByValue,
-    browseList,
+    browseList_ALL,
 } from "./sudokuGlobal.js";
 import "./sudokuUI.js";
 
@@ -131,7 +131,7 @@ export function miscOpenPuzzle(puzzle) {
     // -------- /stuff for count finished digits -----------
     printMistakes();
     updatepuzzleNumDisplay();
-    computeGameState();    
+    computeGameState();
 }
 
 export function openPuzzleById(id, reset = false) {
@@ -281,10 +281,20 @@ function triggerGameEnd() {
     currentPuzzleIsCompleted = true;
     // const zeroBtn = document
 
-    const targetEl = browseList.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
-    targetEl.classList.add('completed');
-    targetEl.textContent = `✔️ Puzzle ${currentPuzzleID}`;
-    // console.log(targetEl);
+    // const targetEl = browseList.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
+
+    const targetEl = browseList_ALL
+        .map(list => list.querySelector(
+            `[data-puzzleid='${currentPuzzleID}']`
+        ))
+        .find(Boolean);
+
+    if (targetEl) {
+        targetEl.classList.add('completed');
+        targetEl.textContent = `✔️ Puzzle ${currentPuzzleID}`;
+        // console.log(targetEl);
+    }
+
 
 }
 // 

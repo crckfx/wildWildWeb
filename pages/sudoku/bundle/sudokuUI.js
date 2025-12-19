@@ -1,7 +1,7 @@
 import { puzzles, easyPuzzles, mediumPuzzles } from "./puzzles.js";
 import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell, miscOpenPuzzle } from "./sudoku.js";
 import * as storage from "./storage.js";
-import { cells, browseList, browseList_MEDIUM, canvas, cell, completedDigits, givens, numpadByValue, numpadItems, solution } from "./sudokuGlobal.js";
+import { cells, browseList_EASY, browseList_MEDIUM, canvas, cell, completedDigits, givens, numpadByValue, numpadItems, solution, browseList_ALL } from "./sudokuGlobal.js";
 
 const modalContainer = document.getElementById('modalContainer');
 const panels = {
@@ -55,7 +55,7 @@ function UI_browsePuzzles() {
 }
 
 // populate browseList
-if (browseList) {
+if (browseList_EASY) {
     easyPuzzles.forEach(p => {
         const li = document.createElement("li");
 
@@ -85,7 +85,7 @@ if (browseList) {
         };
 
         // li.appendChild(btn);
-        browseList.appendChild(li);
+        browseList_EASY.appendChild(li);
     });
 }
 
@@ -288,7 +288,7 @@ export function bindUI({ passive = false} = {}) {
     document.getElementById("newCancel")?.addEventListener('click', hideModal);
 
     document.getElementById("resetConfirm")?.addEventListener('click', () => {
-        const targetEl = browseList.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
+        const targetEl = browseList_ALL.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
 
         targetEl.classList.remove('completed');
 

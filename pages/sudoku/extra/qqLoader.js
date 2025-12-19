@@ -20,6 +20,13 @@ const launchBtn = document.getElementById('launchBtn');
 const pasteBtn = document.getElementById('pasteBtn');
 const pasteField = document.getElementById('pasteField');
 
+const hasRichLogging =
+    typeof qqwing === "function" &&
+    qqwing.CRCKFX === 69;
+
+console.log(`hasRichLogging: ${hasRichLogging}`);
+
+
 // INIT
 precomputeNeighbours();
 // bindUI({ passive: true });
@@ -144,21 +151,37 @@ function treat_qq_puzzle(p) {
 }
 
 function launchFromPaste() {
-    const text = pasteField.value;
+    const text = pasteField.value.trim();
+    let puzzle;
 
-    const result = validatePuzzleJSON(text);
-    if (!result.ok) {
-        console.error(result.error);
-        return;
+    // --- raw 81-char puzzle string ---
+    if (text.length === 81 && /^[0-9.]+$/.test(text)) {
+        const mission = text.replace(/\./g, "0");
+        console.log("mission: ", mission)
+        const solution = get_qq_solution(mission);
+        if (
+            typeof solution !== "string" ||
+            solution.length !== 81
+        ) {
+            console.error("qqwing failed to produce a valid solution");
+            return;
+        }
+
+        puzzle = { mission, solution };
+
+        // --- JSON path (unchanged) ---
+    } else {
+        const result = validatePuzzleJSON(text);
+        if (!result.ok) {
+            console.error(result.error);
+            return;
+        }
+        puzzle = result.puzzle;
     }
 
-    const { mission, solution } = result.puzzle;
-    console.log("valid puzzle", mission, solution);
-
     pasteField.value = "";
-    shallowOpenPuzzle(result.puzzle);
-    currentlyLoadedPuzzle = result.puzzle;
-
+    currentlyLoadedPuzzle = puzzle;
+    shallowOpenPuzzle(puzzle);
 }
 
 function validatePuzzleJSON(text) {
@@ -198,10 +221,10 @@ function validatePuzzleJSON(text) {
 
 const getClueBtn = document.getElementById('getClueBtn');
 getClueBtn.addEventListener('click', () => {
-    const clue = getClue();
+    const clue = get_QQ_clue();
 })
 
-function getClue() {
+function get_QQ_clue() {
     // take a puzzle, solve it with qqwing, walk back to the first valid move made to produce a "hint"
     // optionally it could tell us how the hint was derived so we could show the derivation with visual cues
     const qq = new qqwing();
@@ -236,8 +259,21 @@ function getClue() {
         console.log(clue);
         console.log(clueCoords.row, clueCoords.col, clue.conditionalOnGuess);
 
-        // console.log(qqSolveInstructions);
-        console.table(dumpRaw(qqSolveInstructions));
+
+        // console.table(dumpRaw(qqSolveInstructions));
+
+        if (hasRichLogging) {
+            const instr = qqSolveInstructions[clue.stepIndex];
+
+            if (instr?.pair) {
+                console.log("RICH CLUE CONTEXT:");
+                console.log({
+                    technique: instr.getDescription(),
+                    pairCells: instr.pair.cells.map(i => coords[i]),
+                    pairValues: instr.pair.values
+                });
+            }
+        }
 
 
     } else {
@@ -263,13 +299,23 @@ function extractFirstClueFromInstructions(instructions) {
 
         const value = item.getValue();
         const position = item.getPosition();
-        if (value <= 0 || position < 0) continue;
+        // if (value <= 0 || position < 0) continue;
+
+        // allow elimination-only steps you explicitly want (even though value===0)
+        const allowEliminationClue =
+            hasRichLogging &&
+            (type === qqwing.LogType.NAKED_PAIR_ROW); // extend later if you want
+
+        // the original gate, but bypassed for allowed elimination steps
+        if (!allowEliminationClue && (value <= 0 || position < 0)) continue;
+
 
         if (
             type === qqwing.LogType.SINGLE ||
             type === qqwing.LogType.HIDDEN_SINGLE_ROW ||
             type === qqwing.LogType.HIDDEN_SINGLE_COLUMN ||
-            type === qqwing.LogType.HIDDEN_SINGLE_SECTION
+            type === qqwing.LogType.HIDDEN_SINGLE_SECTION ||
+            allowEliminationClue
         ) {
             return {
                 index: position,
@@ -294,3 +340,25 @@ function dumpRaw(instructions) {
     }));
 }
 
+function get_qq_solution(missionString) {
+
+    const qq = new qqwing();
+    // qq.setRecordHistory(true);
+    // qq.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
+    const board = new Array(81);
+    for (let i = 0; i < 81; i++) {
+        const mval = missionString.charCodeAt(i) - 48;
+        board[i] = mval;
+    }
+
+    console.log("board:", board)
+
+    qq.setPuzzle(board);
+    
+
+    qq.solve();
+    const solution = qq.getSolutionString();
+
+
+    return solution; // a string of 81 chars
+}

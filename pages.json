@@ -94,7 +94,6 @@
                 "title": "Sudoku",
                 "contentPath": [
                     "pages/sudoku/sudoku.html"
-                    
                 ],
                 "imports": "pages/sudoku/bundle",
                 "modules": "./bundle/sudokuLoader.js",
@@ -113,6 +112,16 @@
                         ],
                         "imports": "pages/sudoku/extra/qqLoader.js",
                         "modules": "./qqLoader.js"
+                    },
+                    "ac3": {
+                        "title": "AC3 solver",
+                        "contentPath": "pages/sudoku/ac3/ac3.html",
+                        "imports": [
+                            "pages/sudoku/ac3/ac3.js",
+                            "pages/sudoku/ac3/ac3_history2.js",
+                            "pages/sudoku/ac3/ac3_history3.js"
+                        ],
+                        "scripts": "ac3_history3.js"
                     }
                 }
             }

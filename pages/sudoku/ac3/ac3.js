@@ -1,0 +1,197 @@
+/* =========================
+   Constants & utilities
+   ========================= */
+
+const SUDOKU_NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+function squareIndex(x, y) {
+    return Math.floor(y / 3) * 3 + Math.floor(x / 3);
+}
+
+const SQUARE_TABLE = (() => {
+    const out = [];
+    for (let i = 0; i < 9; i++) {
+        const cells = [];
+        const sy = Math.floor(i / 3) * 3;
+        const sx = (i % 3) * 3;
+        for (let y = sy; y < sy + 3; y++) {
+            for (let x = sx; x < sx + 3; x++) {
+                cells.push([x, y]);
+            }
+        }
+        out.push(cells);
+    }
+    return out;
+})();
+
+/* =========================
+   AC3 solver (verbatim logic)
+   ========================= */
+
+function toSimpleSudoku(grid) {
+    return grid.map(row =>
+        row.map(cells => cells.length === 1 ? cells[0] : 0)
+    );
+}
+
+function toDomainSudoku(grid) {
+    return grid.map(row =>
+        row.map(c => c === 0 ? SUDOKU_NUMBERS.slice() : [c])
+    );
+}
+
+function ac3(sudoku) {
+    sudoku = sudoku.map(r => r.map(c => c.slice()));
+
+    while (true) {
+        let change = false;
+
+        for (let y = 0; y < 9; y++) {
+            for (let x = 0; x < 9; x++) {
+                let domain1 = sudoku[y][x];
+
+                const coordinates = [];
+
+                // row
+                for (let xx = 0; xx < 9; xx++) {
+                    if (xx !== x) coordinates.push([y, xx]);
+                }
+
+                // column
+                for (let yy = 0; yy < 9; yy++) {
+                    if (yy !== y) coordinates.push([yy, x]);
+                }
+
+                // square
+                const square = SQUARE_TABLE[squareIndex(x, y)];
+                for (let i = 0; i < 9; i++) {
+                    const [xx, yy] = square[i];
+                    if (xx !== x || yy !== y) {
+                        coordinates.push([yy, xx]);
+                    }
+                }
+
+                for (const [yy, xx] of coordinates) {
+                    const domain2 = sudoku[yy][xx];
+                    if (domain2.length === 1) {
+                        const idx = domain1.indexOf(domain2[0]);
+                        if (idx !== -1) {
+                            domain1.splice(idx, 1);
+                            change = true;
+                        }
+                    }
+                }
+
+                sudoku[y][x] = domain1;
+
+                if (domain1.length === 0) {
+                    return { sudoku, solvable: false };
+                }
+            }
+        }
+
+        if (!change) break;
+    }
+
+    return { sudoku, solvable: true };
+}
+
+function _solveGridAC3(stack, iterations) {
+    while (stack.length > 0) {
+        let [grid, ...rest] = stack;
+        iterations++;
+
+        if (iterations > 4000) {
+            return {
+                sudoku: toSimpleSudoku(grid),
+                iterations: Infinity,
+            };
+        }
+
+        const { sudoku: newGrid, solvable } = ac3(grid);
+        if (!solvable) {
+            stack = rest;
+            continue;
+        }
+        grid = newGrid;
+
+        const isFilled = grid.every(row =>
+            row.every(cells => cells.length === 1)
+        );
+
+        if (isFilled) {
+            return {
+                sudoku: toSimpleSudoku(grid),
+                iterations,
+            };
+        }
+
+        const possibleCells = [];
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                if (grid[r][c].length > 1) {
+                    possibleCells.push([r, c]);
+                }
+            }
+        }
+
+        possibleCells.sort(
+            (a, b) => grid[a[0]][a[1]].length - grid[b[0]][b[1]].length
+        );
+
+        const [rowIndex, cellIndex] = possibleCells[0];
+        const cell = grid[rowIndex][cellIndex];
+
+        const newGrids = cell.map(n =>
+            grid.map((row, r) =>
+                r === rowIndex
+                    ? row.map((cells, c) =>
+                        c === cellIndex ? [n] : cells.slice()
+                    )
+                    : row.slice()
+            )
+        );
+
+        stack = newGrids.concat(rest);
+    }
+
+    return { sudoku: null, iterations: Infinity };
+}
+
+function solve(grid) {
+    const stack = [toDomainSudoku(grid)];
+    return _solveGridAC3(stack, 0);
+}
+
+/* =========================
+   UI glue
+   ========================= */
+
+function parsePuzzle(str) {
+    const grid = [];
+    for (let y = 0; y < 9; y++) {
+        const row = [];
+        for (let x = 0; x < 9; x++) {
+            row.push(+str[y * 9 + x]);
+        }
+        grid.push(row);
+    }
+    return grid;
+}
+
+document.getElementById("solveBtn").onclick = () => {
+    const input = document.getElementById("input").value.trim();
+    const grid = parsePuzzle(input);
+
+    const result = solve(grid);
+    const out = document.getElementById("output");
+
+    if (!result.sudoku) {
+        out.textContent = "No solution";
+        return;
+    }
+
+    out.textContent =
+        result.sudoku.map(r => r.join(" ")).join("\n") +
+        "\n\niterations: " + result.iterations;
+};
