@@ -24,8 +24,9 @@
 				<div class="switcher horizontal wipe" data-switcher>
 					<div class="headers" data-switch-headers>
 						<button data-switch="m" class="is-active">Alpha</button>
-						<button data-switch="n">Beta</button>
-						<button data-switch="o">Gamma</button>
+						<button data-switch="n">Easy</button>
+						<button data-switch="o">Medium</button>
+						<button data-switch="p">Hard</button>
 					</div>
 
 					<div class="panels-box">
@@ -34,8 +35,10 @@
                             <ul class="browseList" id="browseList_EASY"></ul>
 						</section>
 						<section class="panel" data-panel="o" hidden>
-                            <!-- Gamma panel. -->
                             <ul class="browseList" id="browseList_MEDIUM"></ul>
+                        </section>
+						<section class="panel" data-panel="p" hidden>
+                            <ul class="browseList" id="browseList_HARD"></ul>
                         </section>
 					</div>
 				</div>
@@ -53,8 +56,8 @@
 				<div>
 					<p><a href="extra/">puzzle generator</a></p>
 					<p><a href="bundle/storage.html">storage editor thing</a></p>
-					<button id="someOtherPuzzleBtn">load some other puzzle</button>
                     <button id="copyBtn">copy puzzle as JSON?</button>
+                    <button id="copyAsStringBtn">copy board as string</button>
 				</div>
 
 				<div>

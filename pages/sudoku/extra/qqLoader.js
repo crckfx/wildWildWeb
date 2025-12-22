@@ -1,9 +1,7 @@
 import { getCurrentBoard, openPuzzleById, precomputeNeighbours, shallowOpenPuzzle, shallowOpenPuzzleById } from "../bundle/sudoku.js";
-import * as storage from "../bundle/storage.js";
-// import { puzzles } from "../bundle/puzzles.js";
-import { puzzles } from "../bundle/puzzles.js";
 import { bindUI } from "../bundle/sudokuUI.js";
 import { coords } from "../bundle/sudokuGlobal.js";
+import { SolverAC3 } from "/apps/sudoku/bundle/SolverAC3/SolverAC3.js";
 
 const generateBtn = document.getElementById('generateBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -12,13 +10,14 @@ const difficultyNameDisplay = document.getElementById('difficultyName');
 const difficultyCodeDisplay = document.getElementById('difficultyCode');
 const difficultySelector = document.getElementById('difficultySelector');
 
-// const copyBtn = document.getElementById('copyBtn');
-
 let currentlyLoadedPuzzle = null;
 
 const launchBtn = document.getElementById('launchBtn');
-const pasteBtn = document.getElementById('pasteBtn');
-const pasteField = document.getElementById('pasteField');
+const pasteBtn_JSON = document.getElementById('pasteBtn_JSON');
+const pasteField_JSON = document.getElementById('pasteField_JSON');
+
+const pasteBtn_string = document.getElementById('pasteBtn_string');
+const pasteField_string = document.getElementById('pasteField_string');
 
 const hasRichLogging =
     typeof qqwing === "function" &&
@@ -31,7 +30,7 @@ console.log(`hasRichLogging: ${hasRichLogging}`);
 precomputeNeighbours();
 // bindUI({ passive: true });
 bindUI();
-const result = shallowOpenPuzzleById(0);
+const result = shallowOpenPuzzleById(1);
 console.log("result:");
 console.log(result)
 
@@ -42,13 +41,13 @@ function makeNewPuzzle() {
     shallowOpenPuzzle(puzzle);
     currentlyLoadedPuzzle = puzzle;
     difficultyCodeDisplay.textContent = puzzle.difficultyCode;
-    difficultyNameDisplay.textContent = `(${puzzle.difficultyName})`;
+    // difficultyNameDisplay.textContent = `(${puzzle.difficultyName})`;
 
 }
 function clearPuzzle() {
-    shallowOpenPuzzleById(0);
+    shallowOpenPuzzleById(1); // using 1 (not 0) for 'blank with no solution' to see how it propagates
     difficultyCodeDisplay.textContent = "";
-    difficultyNameDisplay.textContent = "";
+    // difficultyNameDisplay.textContent = "";
     currentlyLoadedPuzzle = null;
 }
 
@@ -69,10 +68,9 @@ function get_qq_puzzle(targetDifficulty) {
         const solution = qq.getSolutionString();
 
         const difficultyCode = qq.getDifficulty();
-        const difficultyName = qq.getDifficultyAsString();
-        // --- end core generation block ---
+        // const difficultyName = qq.getDifficultyAsString();
 
-        console.log(`generated difficulty: ${difficultyCode} (${difficultyName})`);
+        // --- end core generation block ---
 
         // accept ANY difficulty
         if (targetDifficulty === 0) {
@@ -80,7 +78,6 @@ function get_qq_puzzle(targetDifficulty) {
                 mission,
                 solution,
                 difficultyCode,
-                difficultyName,
             });
             return treated;
         }
@@ -91,7 +88,6 @@ function get_qq_puzzle(targetDifficulty) {
                 mission,
                 solution,
                 difficultyCode,
-                difficultyName,
             });
             return treated;
         }
@@ -104,7 +100,8 @@ function get_qq_puzzle(targetDifficulty) {
 generateBtn.addEventListener('click', () => makeNewPuzzle());
 clearBtn.addEventListener('click', () => clearPuzzle());
 launchBtn.addEventListener('click', () => console.log("launch some puzzle?"));
-pasteBtn.addEventListener('click', () => launchFromPaste());
+pasteBtn_JSON.addEventListener('click', () => launchFrom_paste_JSON());
+pasteBtn_string.addEventListener('click', () => launchFrom_paste_string());
 
 function treat_qq_puzzle(p) {
     const qqMission = p.mission ?? "";
@@ -146,42 +143,56 @@ function treat_qq_puzzle(p) {
         mission,
         solution,
         difficultyCode: p.difficultyCode,
-        difficultyName: p.difficultyName,
+        // difficultyName: p.difficultyName,
     };
 }
 
-function launchFromPaste() {
-    const text = pasteField.value.trim();
-    let puzzle;
+function launchFrom_paste_string() {
+    // now the real work begins
+    const text = pasteField_string.value.trim();
+    const textValid = (text.length === 81 && /^[0-9.]+$/.test(text));
 
-    // --- raw 81-char puzzle string ---
-    if (text.length === 81 && /^[0-9.]+$/.test(text)) {
-        const mission = text.replace(/\./g, "0");
-        console.log("mission: ", mission)
-        const solution = get_qq_solution(mission);
-        if (
-            typeof solution !== "string" ||
-            solution.length !== 81
-        ) {
-            console.error("qqwing failed to produce a valid solution");
-            return;
+    const solution_qq = get_qq_solution(text).trim();
+    const solution_ac3 = get_ac3_solution(text);
+    console.log('ac3 sol:', solution_ac3);
+    const hasSolution = solution_qq ? true : false;
+
+    console.log(`text (length: ${text.length}, valid: ${textValid}, hasSolution: ${!(!solution_qq)}):`);
+
+    if (textValid && hasSolution) {
+
+        const puzzle = {
+            mission: text,
+            solution: solution_qq
         }
 
-        puzzle = { mission, solution };
+        console.log("puzzle:");
+        console.log(puzzle)
 
-        // --- JSON path (unchanged) ---
+        pasteField_string.value = "";
+        currentlyLoadedPuzzle = puzzle;
+        shallowOpenPuzzle(puzzle);
     } else {
-        const result = validatePuzzleJSON(text);
-        if (!result.ok) {
-            console.error(result.error);
-            return;
-        }
-        puzzle = result.puzzle;
+        console.log("misfire in paste string or otherwise could not solve");
     }
 
-    pasteField.value = "";
+}
+
+function launchFrom_paste_JSON() {
+    const text = pasteField_JSON.value.trim();
+    // let puzzle;
+
+    const result = validatePuzzleJSON(text);
+    if (!result.ok) {
+        console.error(result.error);
+        return;
+    }
+    const puzzle = result.puzzle;
+
+    pasteField_JSON.value = "";
     currentlyLoadedPuzzle = puzzle;
     shallowOpenPuzzle(puzzle);
+
 }
 
 function validatePuzzleJSON(text) {
@@ -241,13 +252,11 @@ function get_QQ_clue() {
 
     const qqSolveInstructions = qq.getSolveInstructions();
     const difficultyCode = qq.getDifficulty();
-    const difficultyName = qq.getDifficultyAsString();
 
     const treated = treat_qq_puzzle({
         mission: missionString,
         solution: solution,
         difficultyCode: difficultyCode,
-        difficultyName: difficultyName,
     });
     // return treated;
 
@@ -340,25 +349,42 @@ function dumpRaw(instructions) {
     }));
 }
 
-function get_qq_solution(missionString) {
 
+
+function get_qq_solution(missionString) {
     const qq = new qqwing();
-    // qq.setRecordHistory(true);
-    // qq.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
+    qq.setRecordHistory(true);
+    qq.setPrintStyle(qqwing.PrintStyle.ONE_LINE);
+
     const board = new Array(81);
     for (let i = 0; i < 81; i++) {
-        const mval = missionString.charCodeAt(i) - 48;
-        board[i] = mval;
+        board[i] = missionString.charCodeAt(i) - 48;
     }
 
-    console.log("board:", board)
+    if (!qq.setPuzzle(board)) {
+        return null;
+    }
 
-    qq.setPuzzle(board);
-    
+    if (!qq.solve()) {
+        return null;
+    }
 
-    qq.solve();
     const solution = qq.getSolutionString();
-
-
-    return solution; // a string of 81 chars
+    return solution; // ← this string you logged IS correct
 }
+
+function get_ac3_solution(missionString) {
+    const solver = new SolverAC3();
+    
+    // parse
+    const grid = solver.parsePuzzle(missionString);
+
+    // solve
+    const result = solver.solve(grid);
+    return result;
+}
+// console.log(get_qq_solution("617023504400056100500104060854217639276389451193465278045602810782531946061048025"));
+
+// 103: 219653478486917532375824961928361754657498213143275896764532189831749625592186307
+// 402 (text): 617023504400056100500104060854217639276389451193465278045602810782531946061048025
+// 402 (json): {"mission":"617023504400056100500104060854217639276389451193465278045602810782531946061048025","solution":"617823594439756182528194367854217639276389451193465278945672813782531946361948725"}

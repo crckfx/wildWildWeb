@@ -64,11 +64,13 @@ export function setGameSize() {
 // -------- UI (if it winds up here, it's probably so game can push to it) -----------
 export const browseList_EASY = document.getElementById("browseList_EASY");
 export const browseList_MEDIUM = document.getElementById("browseList_MEDIUM");
+export const browseList_HARD = document.getElementById("browseList_HARD");
 
 export const browseList_ALL = [
     browseList_EASY,
     browseList_MEDIUM,
+    browseList_HARD
 ].filter(Boolean);
 
 
-export let sudoku_show_errors = false;
+export let sudoku_show_errors = true;

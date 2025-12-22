@@ -111,6 +111,7 @@
                             "../bundle/sudoku.css"
                         ],
                         "imports": "pages/sudoku/extra/qqLoader.js",
+                        "scripts": "/resources/qqwing-1.3.4/qqwing-1.3.4.js",
                         "modules": "./qqLoader.js"
                     },
                     "ac3": {
@@ -118,10 +119,25 @@
                         "contentPath": "pages/sudoku/ac3/ac3.html",
                         "imports": [
                             "pages/sudoku/ac3/ac3.js",
-                            "pages/sudoku/ac3/ac3_history2.js",
                             "pages/sudoku/ac3/ac3_history3.js"
                         ],
                         "scripts": "ac3_history3.js"
+                    },
+                    "ac3_v2": {
+                        "title": "AC3 solver v2",
+                        "contentPath": "pages/sudoku/ac3/ac3.html",
+                        "modules": "/apps/sudoku/bundle/SolverAC3/2D/ac3_withClass_2D.js"
+                    },
+                    "ac3_v3": {
+                        "title": "AC3 solver v3",
+                        "contentPath": "pages/sudoku/ac3/ac3.html",
+                        "modules": "/apps/sudoku/bundle/SolverAC3/1D/ac3_withClass_1D.js"
+                    },
+                    "comparisons": {
+                        "title": "comparisons (solvers galore)",
+                        "contentPath": "pages/sudoku/ac3/comparisons.html",
+                        "scripts": "/resources/qqwing-1.3.4/qqwing-1.3.4.js",
+                        "modules": "/apps/sudoku/bundle/comparisons.js"
                     }
                 }
             }

@@ -1,7 +1,7 @@
-import { puzzles, easyPuzzles, mediumPuzzles } from "./puzzles.js";
+import { puzzles, easyPuzzles, mediumPuzzles, hardPuzzles } from "./puzzles.js";
 import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell, miscOpenPuzzle } from "./sudoku.js";
 import * as storage from "./storage.js";
-import { cells, browseList_EASY, browseList_MEDIUM, canvas, cell, completedDigits, givens, numpadByValue, numpadItems, solution, browseList_ALL } from "./sudokuGlobal.js";
+import { cells, browseList_EASY, browseList_MEDIUM, browseList_HARD, canvas, cell, completedDigits, givens, numpadByValue, numpadItems, solution, browseList_ALL } from "./sudokuGlobal.js";
 
 const modalContainer = document.getElementById('modalContainer');
 const panels = {
@@ -54,75 +54,37 @@ function UI_browsePuzzles() {
     showModal(panels.browse);
 }
 
-// populate browseList
-if (browseList_EASY) {
-    easyPuzzles.forEach(p => {
+function populateBrowseList(listEl, puzzles) {
+    if (!listEl) return;
+
+    puzzles.forEach(p => {
         const li = document.createElement("li");
 
-        // const nameSpan = document.createElement("span");
-        // nameSpan.textContent = `Puzzle ${p.id}`;
-        // li.appendChild(nameSpan);
         const saved = storage.loadPuzzleState(p.id);
 
-        // const btn = document.createElement("button");
-        li.classList.add('someButton2');
-        li.classList.add('primary');
+        li.classList.add("someButton2", "primary");
 
-        let symbolForCompleted = '';
+        let symbolForCompleted = "";
         if (saved && saved.completedAt) {
-            symbolForCompleted = '✔️ ';
-            li.classList.add('completed');
+            symbolForCompleted = "✔️ ";
+            li.classList.add("completed");
         }
-        console.log(`item ${p.id} ${symbolForCompleted}`)
-
 
         li.dataset.puzzleid = p.id;
-
         li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
+
         li.onclick = () => {
             openPuzzleById(p.id);
             hideModal();
         };
 
-        // li.appendChild(btn);
-        browseList_EASY.appendChild(li);
+        listEl.appendChild(li);
     });
 }
 
-if (browseList_MEDIUM) {
-        mediumPuzzles.forEach(p => {
-        const li = document.createElement("li");
-
-        // const nameSpan = document.createElement("span");
-        // nameSpan.textContent = `Puzzle ${p.id}`;
-        // li.appendChild(nameSpan);
-        const saved = storage.loadPuzzleState(p.id);
-
-        // const btn = document.createElement("button");
-        li.classList.add('someButton2');
-        li.classList.add('primary');
-
-        let symbolForCompleted = '';
-        if (saved && saved.completedAt) {
-            symbolForCompleted = '✔️ ';
-            li.classList.add('completed');
-        }
-        console.log(`item ${p.id} ${symbolForCompleted}`)
-
-
-        li.dataset.puzzleid = p.id;
-
-        li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
-        li.onclick = () => {
-            openPuzzleById(p.id);
-            hideModal();
-        };
-
-        // li.appendChild(btn);
-        browseList_MEDIUM.appendChild(li);
-    });
-}
-
+populateBrowseList(browseList_EASY, easyPuzzles);
+populateBrowseList(browseList_MEDIUM, mediumPuzzles);
+populateBrowseList(browseList_HARD, hardPuzzles);
 
 // keyboard
 const handledKeys = new Set([
@@ -270,7 +232,7 @@ if (numpadItems) {
     });
 }
 
-export function bindUI({ passive = false} = {}) {
+export function bindUI({ passive = false } = {}) {
     console.log("hello from UI binder");
 
     if (modalContainer) modalContainer.onclick = handleModalClick;
@@ -288,11 +250,18 @@ export function bindUI({ passive = false} = {}) {
     document.getElementById("newCancel")?.addEventListener('click', hideModal);
 
     document.getElementById("resetConfirm")?.addEventListener('click', () => {
-        const targetEl = browseList_ALL.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
+        // const targetEl = browseList_ALL.querySelector(`[data-puzzleid='${currentPuzzleID}']`);
+        const targetEl = browseList_ALL
+            .map(list => list.querySelector(
+                `[data-puzzleid='${currentPuzzleID}']`
+            ))
+            .find(Boolean);
 
-        targetEl.classList.remove('completed');
+        if (targetEl) {
+            targetEl.classList.remove('completed');
+            targetEl.textContent = `Puzzle ${currentPuzzleID}`;
+        }
 
-        targetEl.textContent = `Puzzle ${currentPuzzleID}`;
 
         openPuzzleById(currentPuzzleID, true);
         hideModal();
@@ -318,15 +287,15 @@ export function bindUI({ passive = false} = {}) {
 
 }
 
+function copyBoardAsString() {
+    let jkl = "";
+    for (let i = 0; i < 81; i++) {
+        jkl += cells[i];
+    }
 
-const someOtherPuzzleBtn = document.getElementById('someOtherPuzzleBtn');
-someOtherPuzzleBtn?.addEventListener('click', () => loadSomeOtherPuzzle());
-function loadSomeOtherPuzzle() {
-    const puzzle = {"mission":"000290870000000100008000006060080003000750060007900005001006050002870000070000900","solution":"613295874725648139948317526564182793139754268287963415891426357352879641476531982","difficultyCode":2,"difficultyName":"Easy"}
-    hideModal();
-    miscOpenPuzzle(puzzle);
+    navigator.clipboard.writeText(jkl);
+    console.log(`copied to clipboard: ${jkl}`);
 }
-
 
 function copyPuzzleToClipboard() {
     // if (currentlyLoadedPuzzle !== null) {
@@ -335,16 +304,18 @@ function copyPuzzleToClipboard() {
     // }
     let jkl = "";
     let xyz = "";
-    for (let i=0; i<81; i++) {
-        jkl+= cells[i];
-        xyz+= solution[i];
+    for (let i = 0; i < 81; i++) {
+        jkl += cells[i];
+        xyz += solution[i];
     }
 
     console.log(jkl);
 
-    navigator.clipboard.writeText(JSON.stringify({mission: jkl, solution: xyz}));
+    navigator.clipboard.writeText(JSON.stringify({ mission: jkl, solution: xyz }));
 }
 const copyBtn = document.getElementById('copyBtn');
-copyBtn.addEventListener('click', () => copyPuzzleToClipboard());
+copyBtn?.addEventListener('click', () => copyPuzzleToClipboard());
 
 
+const copyAsStringBtn = document.getElementById('copyAsStringBtn');
+copyAsStringBtn?.addEventListener('click', () => copyBoardAsString());

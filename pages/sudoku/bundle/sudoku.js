@@ -46,7 +46,6 @@ export function shallowOpenPuzzleById(id) {
     return (shallowOpenPuzzle(puzzle));
 }
 
-
 // for "soft load" in 
 export function shallowOpenPuzzle(puzzle) {
     historyPos = 0;
@@ -59,10 +58,8 @@ export function shallowOpenPuzzle(puzzle) {
 
     for (let i = 0; i < 81; i++) {
         const mval = mission.charCodeAt(i) - 48;
-        const sval = sol.charCodeAt(i) - 48;
-
-        solution[i] = sval;
-
+        
+        
         if (mval === 0) {
             cells[i] = 0;
             givens[i] = 0;
@@ -71,6 +68,11 @@ export function shallowOpenPuzzle(puzzle) {
             cells[i] = mval;
             givens[i] = 1;
             cellStatus[i] = STATUS_GIVEN;
+        }
+
+        if (sol) {
+            const sval = sol.charCodeAt(i) - 48;
+            solution[i] = sval;
         }
     }
     computeGameState();

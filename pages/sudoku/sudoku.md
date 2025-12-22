@@ -10,38 +10,14 @@
 }
 ```
 
-### the colour relationships in sudoku.com
-backgrounds
-- none: #ffffff
-- selected: #bbdefb
-- neighbour: #e2ebf3
-- sameValue: #c3d7ea
-
-grid
-- thin line: #cad0db
-- thick line: #344861
-
-text
-- given: #344861
-- user: #325aaf
-
-button (new game)
-- bg: #5a7bc0
-- text: #ffffff
-
-button (numpad large)
-- bg: #eaeef4
-- bg-hover: #dce3ed
-- bg-active: #d2dae7
-- text: #325aaf
-
 
 so, for example, a configuration reads left to right as rows
 zeroes are used for empty ones
 
 a canvas would consist of a 9x9 grid and clicks would get listens, probably, to identify our current position. same for arrow keys when the sudo is selected.
 
-### tasks
+## tasks
+### main game
 - [x] draw a grid
 - [x] thick lines at edges and for 3x3 cubes
 - [x] activate a grid cell
@@ -70,6 +46,24 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] keep track of which digits have been completed (so their buttons can be styled / whatever)
 - [x] trigger button style updates for completed digits (this could be used to trigger an animation or whatever event)
 - [ ] provide a "how to play" description section
+- [ ] show a 'congrats' modal when a puzzle is completed
+
+### qqLoader
+qqLoader.js marks a split into focusing on generating, solving, and clues. 
+> multiple different pages are now using sudoku architecture
+
 - [x] integrate qqwing JS (at /resources/qqwing-1.3.4) for generating puzzles
 - [x] make a "soft load"; render puzzle to canvas bypassing game (at ./extra/qqLoader.js) - note: also uses highlighting
-- 
+- [x] generate puzzle in-page using qqwing and soft-load it into canvas
+- [x] derive a 'clue' from a qq-solved puzzle
+    - achieved by using forked qqwing (ie. experiments in providing rich logging from qq)
+- [x] provide 'paste puzzle JSON' (mission+solution) into soft-loader
+- [x] provide 'paste mission string' (mission-only) into soft-loader
+
+### ac3 solver
+- [x] fork/steal tn1ck stuff to create "ac3 solver"
+- [x] solve puzzle using ac3
+- [x] generate clue using ac3+staging
+- [x] make SolverAC3 into a JS class
+- [x] test embedded puzzle solutions against live ac3+qqwing (running it gets the expected results)
+- [x] create separate versions for 1D and 2D variations of the SolverAC3 class (tn1ck example uses 2D, but this project prefers 1D)
