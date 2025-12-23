@@ -1,3 +1,38 @@
+function formatDateTime(ms) {
+    if (!ms) return "—";
+    const d = new Date(ms);
+    return d.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+}
+
+function formatDuration(ms) {
+    if (ms < 0) return "—";
+
+    let s = Math.floor(ms / 1000);
+
+    const days = Math.floor(s / 86400);
+    s %= 86400;
+    const hours = Math.floor(s / 3600);
+    s %= 3600;
+    const minutes = Math.floor(s / 60);
+    const seconds = s % 60;
+
+    const parts = [];
+    if (days) parts.push(`${days}d`);
+    if (hours || parts.length) parts.push(`${hours}h`);
+    if (minutes || parts.length) parts.push(`${minutes}m`);
+    parts.push(`${seconds}s`);
+
+    return parts.join(" ");
+}
+
+
 import { puzzles, easyPuzzles, mediumPuzzles, hardPuzzles } from "./puzzles.js";
 import { openPuzzleById, currentPuzzleID, undo, currentCell, updateCellValue, selectCell, miscOpenPuzzle } from "./sudoku.js";
 import * as storage from "./storage.js";
@@ -9,14 +44,26 @@ const panels = {
     reset: document.getElementById("panel-reset"),
     browse: document.getElementById("panel-browse"),
     dev: document.getElementById("panel-dev"),
+    win: document.getElementById("panel-win"),
 };
+
+const winInfo = document.getElementById('win-info');
+const winOptions = document.getElementById('win-options');
+const winUIStuff = {
+    info: {
+        startedAt: winInfo.querySelector('.startedAt'),
+        completedAt: winInfo.querySelector('.completedAt'),
+        mistakes: winInfo.querySelector('.mistakes'),
+        timeTaken: winInfo.querySelector('.timeTaken'),
+    }
+}
+
 let modalIsOpen = false;
 function showModal(target) {
     modalIsOpen = true;
     modalContainer.classList.add('show');
+    Object.values(panels).forEach(p => p.classList.remove("active"));
     if (target) {
-        Object.values(panels).forEach(p => p.classList.remove("active"));
-
         target.classList.add('active');
     }
 }
@@ -32,6 +79,47 @@ function handleModalClick(e) {
         hideModal();
     }
 }
+
+
+export function showWinModal() {
+    modalIsOpen = true;
+    Object.values(panels).forEach(p => p.classList.remove("active"));
+
+    // const winInfo = document.getElementById('win-info');
+    const state = storage.loadPuzzleState(currentPuzzleID);
+    if (winUIStuff && state) {
+
+
+        const { startedAt, completedAt, mistakes } = state;
+        const timeTaken = completedAt - startedAt;
+
+        // we should be sticking into print instead:
+        // - times normalised to readable for startedAt and completedAt
+        // - time normalised to dd:hh:mm:ss:whatever (for now)
+
+        // winInfo.innerHTML = `
+        //     <div class='startedAt'>startedAt: ${formatDateTime(startedAt)}</div>
+        //     <div class='completedAt'>completedAt: ${formatDateTime(completedAt)}</div>
+        //     <div class='mistakes'>mistakes: ${mistakes}</div>
+        //     <div class='timeTaken'>timeTaken: ${formatDuration(timeTaken)}</div>
+        // `;
+
+        winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
+        winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
+        winUIStuff.info.mistakes.textContent = mistakes;
+        winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+
+        if (winOptions) {
+            winOptions.innerHTML = `
+                <div>boobs</div>
+            `;
+        }
+    }
+
+    modalContainer.classList.add('show');
+    panels.win.classList.add('active');
+}
+
 
 function UI_resetPuzzle() {
     // alert("implement puzzle reset, ie. 'wipe the progress of this current puzzle (including cache)'. this interact should not be an alert and should be asking for yes / no with no as default");
@@ -54,6 +142,7 @@ function UI_browsePuzzles() {
     showModal(panels.browse);
 }
 
+// create a list of available puzzles
 function populateBrowseList(listEl, puzzles) {
     if (!listEl) return;
 
@@ -74,8 +163,8 @@ function populateBrowseList(listEl, puzzles) {
         li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
 
         li.onclick = () => {
-            openPuzzleById(p.id);
             hideModal();
+            openPuzzleById(p.id);
         };
 
         listEl.appendChild(li);
@@ -241,9 +330,8 @@ export function bindUI({ passive = false } = {}) {
 
     document.getElementById("newRandom")?.addEventListener('click', () => {
         const idx = Math.floor(Math.random() * puzzles.length);
-        openPuzzleById(puzzles[idx].id);
         hideModal();
-
+        openPuzzleById(puzzles[idx].id);
     });
 
 

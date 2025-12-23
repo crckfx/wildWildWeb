@@ -32,14 +32,14 @@
 					<div class="panels-box">
 						<section class="panel" data-panel="m">Alpha panel (wipe).</section>
 						<section class="panel" data-panel="n" hidden>
-                            <ul class="browseList" id="browseList_EASY"></ul>
+							<ul class="browseList" id="browseList_EASY"></ul>
 						</section>
 						<section class="panel" data-panel="o" hidden>
-                            <ul class="browseList" id="browseList_MEDIUM"></ul>
-                        </section>
+							<ul class="browseList" id="browseList_MEDIUM"></ul>
+						</section>
 						<section class="panel" data-panel="p" hidden>
-                            <ul class="browseList" id="browseList_HARD"></ul>
-                        </section>
+							<ul class="browseList" id="browseList_HARD"></ul>
+						</section>
 					</div>
 				</div>
 			</div>
@@ -56,8 +56,8 @@
 				<div>
 					<p><a href="extra/">puzzle generator</a></p>
 					<p><a href="bundle/storage.html">storage editor thing</a></p>
-                    <button id="copyBtn">copy puzzle as JSON?</button>
-                    <button id="copyAsStringBtn">copy board as string</button>
+					<button id="copyBtn">copy puzzle as JSON?</button>
+					<button id="copyAsStringBtn">copy board as string</button>
 				</div>
 
 				<div>
@@ -66,7 +66,14 @@
 			</div>
 
 			<div id="panel-win" class="modalPanel">
-				<h2>You win!</h2>
+				<h2>Puzzle <span class="puzzleId"></span> Completed</h2>
+				<div id="win-info">
+					<div>startedAt: <span class='startedAt'></span></div>
+					<div>completedAt: <span class='completedAt'></span></div>
+					<div>mistakes: <span class='mistakes'></span></div>
+					<div>timeTaken: <span class='timeTaken'></span></div>
+				</div>
+				<div id="win-options"></div>
 			</div>
 
 		</div>

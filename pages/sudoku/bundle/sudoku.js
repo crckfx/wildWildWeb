@@ -23,6 +23,7 @@ import {
     browseList_ALL,
 } from "./sudokuGlobal.js";
 import "./sudokuUI.js";
+import { showWinModal } from "./sudokuUI.js";
 
 
 
@@ -35,6 +36,8 @@ let gameHistory = [];
 export let currentCell = null; // <-- the main pointer guy for the game
 let mistakesMade = 0;
 
+
+// ---------- PUZZLE OPENERS ----------
 // SHALLOW PUZZLE (FOR DISPLAY ONLY; NOT PLAYING)
 export function shallowOpenPuzzleById(id) {
     const puzzle = puzzles.find(p => p.id == id);
@@ -230,7 +233,7 @@ export function openPuzzleById(id, reset = false) {
     updatepuzzleNumDisplay();
     computeGameState();
 }
-
+// ---------- /PUZZLE OPENERS ----------
 
 function computeGameState() {
 
@@ -297,7 +300,9 @@ function triggerGameEnd() {
         // console.log(targetEl);
     }
 
-
+    
+    
+    showWinModal();
 }
 // 
 
@@ -305,8 +310,9 @@ function triggerGameEnd() {
 
 // game helpers
 export function updateCellValue(cell, value) {
-    if (currentPuzzleIsCompleted) return;
     // determine if a real write call is made by this 
+    if (currentPuzzleIsCompleted) return;
+    
     const oldValue = cells[cell]; // store the existing value
     if (value === oldValue) return; // exit if the value didn't change
     // overwrite value
@@ -352,9 +358,10 @@ export function updateCellValue(cell, value) {
     const solved = checkSolved();
 
     if (solved) {
-        triggerGameEnd();
-        // write with the 'completed = true' param     
+        // write to history with the 'completed = true' param
         if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cell, value, mistakesMade, true); // storage 
+        // run the game end sequence
+        triggerGameEnd();
     } else {
         if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cell, value, mistakesMade); // storage 
     }

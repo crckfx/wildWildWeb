@@ -27,16 +27,28 @@
     max-height: 80%;
     width: 100%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     border-radius: 12px;
-    overscroll-behavior: none;
+    /* overscroll-behavior: none; */
 }
 
 .modalContent .modalPanel {
     background-color: var(--color-bg-3);
     display: none;
     padding: 16px;
+    overflow: auto;
+    height: 100%;
+    overscroll-behavior: none;
 }
+
+.modalContent .modalPanel {
+    scrollbar-width: thin;
+}
+.modalContent .modalPanel:-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
 
 .modalContainer.show .modalContent .modalPanel.active {
     display: block;

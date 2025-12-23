@@ -46,7 +46,9 @@ a canvas would consist of a 9x9 grid and clicks would get listens, probably, to 
 - [x] keep track of which digits have been completed (so their buttons can be styled / whatever)
 - [x] trigger button style updates for completed digits (this could be used to trigger an animation or whatever event)
 - [ ] provide a "how to play" description section
-- [ ] show a 'congrats' modal when a puzzle is completed
+- [x] show a 'congrats' modal when a puzzle is completed
+- [x] show info about the win on a completed puzzle display
+- [ ] make handled keys not nerfed when trying to use a form on the page
 
 ### qqLoader
 qqLoader.js marks a split into focusing on generating, solving, and clues. 
