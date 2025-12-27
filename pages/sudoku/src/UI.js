@@ -27,6 +27,9 @@ export function createUI({ game, renderer, UI_container }) {
 
 
     const UI = {
+        container: UI_container,
+        inputBlocked: false,
+
         _undo() {
             game.undo();
             renderer.drawSudoku();
@@ -38,6 +41,10 @@ export function createUI({ game, renderer, UI_container }) {
         },
 
         _inputNumber(cellNum, value) {
+            if (UI.inputBlocked) {
+                console.log(`INPUT BLOCKED: tried to input ${value} at cell ${cellNum}, but UI.inputBlocked`);
+                return;
+            }
             // console.log(`todo: implement input ${value} at [${cellNum}]`);
             game.updateCellValue(cellNum, value);
             renderer.drawSudoku();
@@ -47,7 +54,7 @@ export function createUI({ game, renderer, UI_container }) {
             const currentCell = game.currentCell;
             //  
             if (currentCell === null) {
-                UI_container.focus();
+                UI.container.focus();
                 game.selectCell(0);
                 return;
             }

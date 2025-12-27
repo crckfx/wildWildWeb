@@ -1,5 +1,4 @@
 // import { openPuzzleById, precomputeNeighbours } from "./sudoku.js";
-// import * as storage from "./storage.js";
 // import { bindUI } from "./sudokuUI.js";
 
 
@@ -10,7 +9,8 @@ import { puzzles } from "/apps/sudoku/bundle/puzzles.js";
 import { SudokuGame } from "./SudokuGame.js";
 import { Renderer } from "./Renderer.js";
 import { createUI } from "./UI.js";
-import { createAppManager } from "./manager.js";
+import { createAppManager } from "./manager/manager.js";
+import * as storage from "./manager/mstorage.js";
 
 export const game = new SudokuGame();
 const renderer = new Renderer({ game, canvas });
@@ -23,10 +23,16 @@ const manager = createAppManager({ game, renderer, UI });
 document.getElementById('browsePuzzlesBtn')?.addEventListener('click', manager._showBrowse);
 document.getElementById('devOptionsBtn')?.addEventListener('click', manager._showDev);
 
-game.onWin = manager._testWinInManager;
+game.onWin = manager._showWin;
+game.onUpdate = manager._onGameUpdate;
 
+const savedID = storage.getActivePuzzleID();
+if (savedID) {
+    manager._openPuzzleByID(savedID);
+} else {
+    manager._openPuzzleByID(103);
+}
 
 // game.miscOpenPuzzle(puzzles[4]);
-manager._openPuzzleByID(701);
 UI_container.focus();
 renderer.drawSudoku();

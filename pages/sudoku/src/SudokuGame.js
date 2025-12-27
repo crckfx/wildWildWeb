@@ -27,6 +27,7 @@ export class SudokuGame {
         this.recordHistory = recordHistory;
 
         this.onWin = null;
+        this.onUpdate = null;
 
     }
 
@@ -50,6 +51,9 @@ export class SudokuGame {
         // --- baseline load (mission/solution) ---
         const mission = puzzle.mission;
         const sol = puzzle.solution;
+
+        const history = puzzle.history ?? null;
+
 
         this.mistakesMade = 0;
         this.historyPos = 0;
@@ -143,7 +147,7 @@ export class SudokuGame {
     }
 
 
-    // sort of a "do render" thing; it's not super clear yet
+    // nota  "do render" thing anymore now that we're doing classmode
     selectCell(num) {
         if (this.currentPuzzleIsCompleted || num < 0 || num > 80) return;
         const oldCell = this.currentCell;
@@ -152,7 +156,6 @@ export class SudokuGame {
             // console.log(`fresh select on ${coords.col}, ${coords.row}`);
         }
         this.computeGameState();
-
 
     }
 
@@ -182,6 +185,7 @@ export class SudokuGame {
 
         if (this.recordHistory) this.addToHistory(cellNumber, oldValue, value)
 
+        if (this.onUpdate) this.onUpdate();
 
         // detect mistake (CRUDELY - checking against the real answer; a finer way would be to check against the current board state for contradiction)
         // const status = applyStatus(cellNumber, value);
@@ -205,9 +209,10 @@ export class SudokuGame {
         const solved = this.checkSolved();
         if (solved) {
             console.log("SOLVED THE PUZZLE");
+
             this.triggerGameEnd();
         }
-            
+
 
         // if (solved) {
         //     // write to history with the 'completed = true' param
@@ -287,6 +292,26 @@ export class SudokuGame {
         if (this.onWin !== null) {
             this.onWin();
         }
+    }
+
+    // -- RESTORE HISTORY --
+    //  expects a 'saved' object to contain:
+    //      - runtimeHistory
+    //      - historyPos 
+    //      - mistakesMade
+    restoreHistory(saved) {
+        this.gameHistory = saved.runtimeHistory;
+        this.historyPos = saved.historyPos;
+
+        // restore history into cells (full replay)
+        for (let i = 0; i < this.historyPos; i++) {
+            const { cell, newValue } = this.gameHistory[i];
+            this.cells[cell] = newValue;
+            this.cellStatus[cell] = this.applyStatus(cell, newValue);
+        }
+
+        this.mistakesMade = saved.mistakesMade;
+
     }
 
 }
