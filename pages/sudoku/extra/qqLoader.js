@@ -1,7 +1,8 @@
 import { getCurrentBoard, openPuzzleById, precomputeNeighbours, shallowOpenPuzzle, shallowOpenPuzzleById } from "../bundle/sudoku.js";
 import { bindUI } from "../bundle/sudokuUI.js";
 import { coords } from "../bundle/sudokuGlobal.js";
-import { SolverAC3 } from "/apps/sudoku/bundle/SolverAC3/SolverAC3.js";
+// import { SolverAC3 } from "/apps/sudoku/bundle/SolverAC3/SolverAC3.js";
+import { SolverAC3_1D } from "/apps/sudoku/bundle/SolverAC3/1D/SolverAC3_1D.js";
 
 const generateBtn = document.getElementById('generateBtn');
 const clearBtn = document.getElementById('clearBtn');
@@ -46,6 +47,9 @@ function makeNewPuzzle() {
 }
 function clearPuzzle() {
     shallowOpenPuzzleById(1); // using 1 (not 0) for 'blank with no solution' to see how it propagates
+
+    // todo: change architecture so that an empty board can be "soft loaded"
+
     difficultyCodeDisplay.textContent = "";
     // difficultyNameDisplay.textContent = "";
     currentlyLoadedPuzzle = null;
@@ -374,7 +378,7 @@ function get_qq_solution(missionString) {
 }
 
 function get_ac3_solution(missionString) {
-    const solver = new SolverAC3();
+    const solver = new SolverAC3_1D();
     
     // parse
     const grid = solver.parsePuzzle(missionString);

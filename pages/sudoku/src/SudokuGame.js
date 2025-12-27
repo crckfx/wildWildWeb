@@ -1,0 +1,286 @@
+import { H_NEIGHBOUR, H_NONE, H_SAME_NUMBER, H_SELECTED, neighboursOf, STATUS_CORRECT, STATUS_EMPTY, STATUS_ERROR, STATUS_GIVEN } from "./static.js";
+
+export class SudokuGame {
+    constructor({ recordHistory = true } = {}) {
+        this.helloWorld = "hi friend";
+
+        this.historyPos = 0;
+        this.gameHistory = [];
+
+        this.currentCell = null; // <-- the main pointer guy for the game
+        this.mistakesMade = 0;
+        this.currentPuzzleIsCompleted = false;
+
+        // ARRAYS (they're all length 81 because sudoku has 81 cells)
+        this.cells = new Uint8Array(81).fill(0);       // for the evolving board state
+        this.solution = new Uint8Array(81);            // for the solution values
+        this.givens = new Uint8Array(81);              // for "is this cell's value provided in the initial puzzle state?"
+        this.cellStatus = new Uint8Array(81);          // for "what colour to render the text in this cell?"
+        this.highlightStatus = new Uint8Array(81);     // for "what colour to render the background for this cell"
+
+
+        // For digits 1..9 → index 0..8
+        this.correctCount = new Uint8Array(9);
+        this.completedDigits = new Uint8Array(9); // 1 = done, 0 = not done
+
+
+        this.recordHistory = recordHistory;
+
+    }
+
+
+    addToHistory(cell, oldValue, newValue) {
+        const currentPos = this.historyPos;
+
+        this.gameHistory[currentPos] = { cell, oldValue, newValue };
+
+        console.log(`history write ${currentPos}: cell:${cell}, old:${oldValue}, new:${newValue}`);
+        this.historyPos++;
+    }
+
+
+    // GAME OPEN PUZZLE (FOR REAL PLAYING)
+    miscOpenPuzzle(puzzle) {
+        this.currentPuzzleIsCompleted = false;
+        // currentPuzzleID = null;
+        this.currentCell = 0;
+
+        // --- baseline load (mission/solution) ---
+        const mission = puzzle.mission;
+        const sol = puzzle.solution;
+
+        this.mistakesMade = 0;
+        this.historyPos = 0;
+        this.gameHistory = [];
+
+        for (let i = 0; i < 81; i++) {
+            const mval = mission.charCodeAt(i) - 48;
+            const sval = sol.charCodeAt(i) - 48;
+
+            this.solution[i] = sval;
+
+            if (mval === 0) {
+                this.cells[i] = 0;
+                this.givens[i] = 0;
+                this.cellStatus[i] = STATUS_EMPTY;
+            } else {
+                this.cells[i] = mval;
+                this.givens[i] = 1;
+                this.cellStatus[i] = STATUS_GIVEN;
+            }
+        }
+        // -------- stuff for count finished digits -----------
+        this.correctCount.fill(0);
+        this.completedDigits.fill(0);
+        // cellwise "finished count" spanning all digits
+        for (let i = 0; i < 81; i++) {
+            const v = this.cells[i];
+            if (v !== 0 && v === this.solution[i]) {
+                this.correctCount[v - 1]++;
+            }
+        }
+        // see if any digits are finished
+        for (let d = 0; d < 9; d++) {
+            const value = d + 1;
+            if (this.correctCount[d] === 9) {
+                this.completedDigits[d] = 1;
+                // hideNumpadItem(value);
+            } else {
+                // showNumpadItem(value);
+            }
+        }
+        // -------- /stuff for count finished digits -----------
+
+
+        // printMistakes(); // <-- this should not be the concern of game; maybe an emission to UI instead?
+        // updatepuzzleNumDisplay(); // <-- again, likely output a signal to the UI?
+
+        this.computeGameState();
+        return true;
+    }
+
+
+
+    computeGameState() {
+
+        if (this.currentPuzzleIsCompleted) {
+            // drawFinishedSudoku();
+            console.log("todo: handle currentPuzzleIsCompleted");
+            return;
+        }
+
+        const highlightStatus = this.highlightStatus;
+        const currentCell = this.currentCell;
+        const cells = this.cells;
+
+        highlightStatus.fill(H_NONE);
+        if (currentCell === null) return;
+        const selectedVal = this.cells[currentCell];
+
+        // selected cell
+        highlightStatus[currentCell] = H_SELECTED;
+
+        // 2. neighbours (once)
+        const nbs = neighboursOf[currentCell];
+        for (let i = 0; i < nbs.length; i++) {
+            const idx = nbs[i];
+            highlightStatus[idx] = H_NEIGHBOUR;
+        }
+
+        // 3. matching numbers elsewhere
+        if (selectedVal !== 0) {
+            for (let i = 0; i < 81; i++) {
+                if (i !== currentCell && cells[i] === selectedVal) {
+                    highlightStatus[i] = H_SAME_NUMBER;
+                }
+            }
+        }
+
+        // drawSudoku(); // <-- either call a renderer or emit a signal to an orchestrator
+
+    }
+
+
+    // sort of a "do render" thing; it's not super clear yet
+    selectCell(num) {
+        if (this.currentPuzzleIsCompleted || num < 0 || num > 80) return;
+        const oldCell = this.currentCell;
+        if (num !== oldCell) {
+            this.currentCell = num;
+            // console.log(`fresh select on ${coords.col}, ${coords.row}`);
+        }
+        this.computeGameState();
+
+
+    }
+
+    updateCellValue(cellNumber, value) {
+        // determine if a real write call is made by this 
+        if (this.currentPuzzleIsCompleted) return;
+
+        const oldValue = this.cells[cellNumber]; // store the existing value
+        if (value === oldValue) return; // exit if the value didn't change
+        // overwrite value
+        this.cells[cellNumber] = value;
+
+
+        // --- if we change from a correct to something else, we need to decrement the digit's "completed" count ---
+        // if (oldValue === this.solution[cellNumber]) {
+        //     const idxOld = oldValue - 1;
+        //     const oldCount = correctCount[idxOld];
+
+        //     correctCount[idxOld]--;
+        //     this.completedDigits[idxOld] = (correctCount[idxOld] === 9) ? 1 : 0;
+
+        //     // un-trigger the old digit's "complete" status
+        //     if (oldCount === 9) {
+        //         showNumpadItem(oldValue);
+        //     }
+        // }
+
+        if (this.recordHistory) this.addToHistory(cellNumber, oldValue, value)
+
+
+        // detect mistake (CRUDELY - checking against the real answer; a finer way would be to check against the current board state for contradiction)
+        // const status = applyStatus(cellNumber, value);
+        // cellStatus[cellNumber] = status;
+        // if (status === STATUS_ERROR) {
+        //     mistakesMade++;
+        //     printMistakes();
+        // }
+
+        // --- if we change from something to correct, we need to increment the digit's "completed" count ---
+        // if (status === STATUS_CORRECT) {
+        //     const i = value - 1;
+        //     correctCount[i]++;
+        //     const completed = (correctCount[i] === 9) ? 1 : 0
+        //     completedDigits[i] = completed;
+        //     if (completed === 1) {
+        //         hideNumpadItem(value);
+        //     }
+        // }
+
+        const solved = this.checkSolved();
+        if (solved) {
+            console.log("SOLVED THE PUZZLE");
+            this.triggerGameEnd();
+        }
+            
+
+        // if (solved) {
+        //     // write to history with the 'completed = true' param
+        //     if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cellNumber, value, mistakesMade, true); // storage 
+        //     // run the game end sequence
+        //     triggerGameEnd();
+        // } else {
+        //     if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cellNumber, value, mistakesMade); // storage 
+        // }
+        // call main render
+        this.computeGameState();
+    }
+
+    undo() {
+        if (this.currentPuzzleIsCompleted || this.historyPos < 1) return;
+
+        const undoToHistoryPos = this.historyPos - 1;
+        const { cell, oldValue, newValue } = this.gameHistory[undoToHistoryPos];
+        console.log(`undo: ${cell} from ${newValue} to ${oldValue}`);
+
+        // overwrite value
+        this.cells[cell] = oldValue;
+        this.historyPos--;
+
+        // if (currentPuzzleID !== null) storage.saveUndo(currentPuzzleID, historyPos, mistakesMade); // storage
+
+        this.cellStatus[cell] = this.applyStatus(cell, oldValue);
+
+        // // REMOVE contribution of newValue (the one being undone)
+        // if (newValue === solution[cell]) {
+        //     const i = newValue - 1;
+        //     const oldCount = correctCount[i];
+        //     correctCount[i]--;
+        //     completedDigits[i] = (correctCount[i] === 9) ? 1 : 0;
+
+        //     if (oldCount === 9) {
+        //         console.log(`just UNDID a previously complete digit ${newValue}`);
+        //         showNumpadItem(newValue);
+        //     }
+        // }
+
+        // // APPLY contribution of oldValue
+        // if (oldValue === solution[cell]) {
+        //     const i = oldValue - 1;
+        //     correctCount[i]++;
+        //     const completed = (correctCount[i] === 9) ? 1 : 0;
+        //     completedDigits[i] = completed;
+        //     if (completed === 1) {
+        //         hideNumpadItem(oldValue);
+        //     }
+        // }
+
+        this.selectCell(cell);
+
+
+    }
+
+    applyStatus(cell, val) {
+        if (val === 0) return STATUS_EMPTY;
+        return val === this.solution[cell] ? STATUS_CORRECT : STATUS_ERROR;
+    }
+
+    checkSolved() {
+        const cells = this.cells;
+        const solution = this.solution;
+        for (let i = 0; i < 81; i++) {
+            if (cells[i] !== solution[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    triggerGameEnd() {
+        console.log("game end triggered from SudokuGame.js");
+    }
+
+}

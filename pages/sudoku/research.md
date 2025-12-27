@@ -50,7 +50,7 @@ after exploring DFS, the article explores an 'arc consistency' approach.
 
 this proved to be the 'best' method per the article conclusion
 
-> for constructing a solver in this project, the arc consistency approach was chosen
+> for constructing a solver in this project, the 'arc consistency' approach was chosen
 
 # cases
 
@@ -63,9 +63,13 @@ const puzzle_701 = {
     difficultyCode: 4 
 },
 ```
+
 at this point:
 >`105070236400000517702500498300725841527080963814936725678000354241357689953648172`
-is "too hard" for sudokubliss.com's "clue generator"?
+is "too hard" for sudokubliss.com's 'clue generator'? ('Sorry, this is too hard for me' or something like that as popup on clue request)
 
-when using sudokubliss.com's solver:
+when using sudokubliss.com's **solver**:
 >`Brute force was required to finish the puzzle.`
+
+## hard sudoku from the newspaper (26/12/25)
+509003214060042905400095608306917502200356109195284367604021893000009421900438756

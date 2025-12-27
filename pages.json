@@ -138,6 +138,20 @@
                         "contentPath": "pages/sudoku/ac3/comparisons.html",
                         "scripts": "/resources/qqwing-1.3.4/qqwing-1.3.4.js",
                         "modules": "/apps/sudoku/bundle/comparisons.js"
+                    },
+                    "sudoku2": {
+                        "title": "Sudoku 2 (class)",
+                        "contentPath": [
+                            "pages/sudoku/sudoku.html"
+                        ],
+                        "imports": "pages/sudoku/src",
+                        "modules": "./src/sudokuLoader.js",
+                        "styles": [
+                            "/apps/sudoku/bundle/sudoku.css",
+                            "/apps/sudoku/bundle/gregBtn.css",
+                            "/apps/sudoku/bundle/modalMenu.css",
+                            "/css/someButton/someButton3.css"
+                        ]
                     }
                 }
             }

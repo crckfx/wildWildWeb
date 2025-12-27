@@ -51,10 +51,10 @@ const winInfo = document.getElementById('win-info');
 const winOptions = document.getElementById('win-options');
 const winUIStuff = {
     info: {
-        startedAt: winInfo.querySelector('.startedAt'),
-        completedAt: winInfo.querySelector('.completedAt'),
-        mistakes: winInfo.querySelector('.mistakes'),
-        timeTaken: winInfo.querySelector('.timeTaken'),
+        startedAt: winInfo?.querySelector('.startedAt'),
+        completedAt: winInfo?.querySelector('.completedAt'),
+        mistakes: winInfo?.querySelector('.mistakes'),
+        timeTaken: winInfo?.querySelector('.timeTaken'),
     }
 }
 
@@ -110,9 +110,7 @@ export function showWinModal() {
         winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
 
         if (winOptions) {
-            winOptions.innerHTML = `
-                <div>boobs</div>
-            `;
+            // 
         }
     }
 

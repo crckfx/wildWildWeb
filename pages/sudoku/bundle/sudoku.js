@@ -36,7 +36,6 @@ let gameHistory = [];
 export let currentCell = null; // <-- the main pointer guy for the game
 let mistakesMade = 0;
 
-
 // ---------- PUZZLE OPENERS ----------
 // SHALLOW PUZZLE (FOR DISPLAY ONLY; NOT PLAYING)
 export function shallowOpenPuzzleById(id) {
