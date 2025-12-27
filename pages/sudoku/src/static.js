@@ -72,3 +72,39 @@ export const coords = new Array(81);                   // for a precomputed look
 for (let i = 0; i < 81; i++) {
     coords[i] = cellToCoords(i);
 }
+
+
+
+export function formatDateTime(ms) {
+    if (!ms) return "—";
+    const d = new Date(ms);
+    return d.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+}
+
+export function formatDuration(ms) {
+    if (ms < 0) return "—";
+
+    let s = Math.floor(ms / 1000);
+
+    const days = Math.floor(s / 86400);
+    s %= 86400;
+    const hours = Math.floor(s / 3600);
+    s %= 3600;
+    const minutes = Math.floor(s / 60);
+    const seconds = s % 60;
+
+    const parts = [];
+    if (days) parts.push(`${days}d`);
+    if (hours || parts.length) parts.push(`${hours}h`);
+    if (minutes || parts.length) parts.push(`${minutes}m`);
+    parts.push(`${seconds}s`);
+
+    return parts.join(" ");
+}

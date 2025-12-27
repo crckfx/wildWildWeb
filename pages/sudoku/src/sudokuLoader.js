@@ -23,6 +23,8 @@ const manager = createAppManager({ game, renderer, UI });
 document.getElementById('browsePuzzlesBtn')?.addEventListener('click', manager._showBrowse);
 document.getElementById('devOptionsBtn')?.addEventListener('click', manager._showDev);
 
+game.onWin = manager._testWinInManager;
+
 
 // game.miscOpenPuzzle(puzzles[4]);
 manager._openPuzzleByID(701);

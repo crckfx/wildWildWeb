@@ -1,11 +1,23 @@
 import { puzzles, easyPuzzles, mediumPuzzles, hardPuzzles } from "/apps/sudoku//bundle/puzzles.js";
 import * as storage from "/apps/sudoku//bundle/storage.js";
+import { formatDateTime, formatDuration } from "./static.js";
 
 export function createAppManager({ game, renderer, UI }) {
 
     let modalIsOpen = false;
-
     const modalContainer = document.getElementById('modalContainer');
+    const winInfo = document.getElementById('win-info');
+    const winOptions = document.getElementById('win-options');
+    const winUIStuff = {
+        info: {
+            startedAt: winInfo?.querySelector('.startedAt'),
+            completedAt: winInfo?.querySelector('.completedAt'),
+            mistakes: winInfo?.querySelector('.mistakes'),
+            timeTaken: winInfo?.querySelector('.timeTaken'),
+        }
+    }
+
+
     if (modalContainer) modalContainer.onclick = handleModalClick;
     const panels = {
         browse: document.getElementById('panel-browse'),
@@ -38,6 +50,27 @@ export function createAppManager({ game, renderer, UI }) {
         }
     }
 
+    function prepareWinInfo(e) {
+        // for printing the appropriate info into the "win modal" before showing it
+        // const winInfo = document.getElementById('win-info');
+        const state = storage.loadPuzzleState(currentPuzzleID);
+        if (winUIStuff && state) {
+
+
+            const { startedAt, completedAt, mistakes } = state;
+            const timeTaken = completedAt - startedAt;
+
+            winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
+            winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
+            winUIStuff.info.mistakes.textContent = mistakes;
+            winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+
+            if (winOptions) {
+                // 
+            }
+        }
+    }
+
 
     const manager = {
 
@@ -63,6 +96,9 @@ export function createAppManager({ game, renderer, UI }) {
         _showDev() {
             // console.log(`todo: implement dev panel`, panels.dev);
             showModal('dev');
+        },
+        _testWinInManager() {
+            console.log("heyyy its me manager");
         }
     };
 

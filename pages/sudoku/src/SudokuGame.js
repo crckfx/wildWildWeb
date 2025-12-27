@@ -26,6 +26,8 @@ export class SudokuGame {
 
         this.recordHistory = recordHistory;
 
+        this.onWin = null;
+
     }
 
 
@@ -281,6 +283,10 @@ export class SudokuGame {
 
     triggerGameEnd() {
         console.log("game end triggered from SudokuGame.js");
+
+        if (this.onWin !== null) {
+            this.onWin();
+        }
     }
 
 }
