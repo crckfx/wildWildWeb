@@ -9,48 +9,40 @@ export function createUI({ game, renderer, UI_container }) {
     const canvas = renderer.canvas;
 
     
-
-    UI_container.addEventListener('focus', () => {
-        renderer.drawSudoku();
-    });
-    UI_container.addEventListener('blur', () => {
-        renderer.drawSudoku({ showSelectedCell: true, showHighlighting: false });
-    });
-
-    // keyboard
-    const handledKeys = new Set([
-        "ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight",
-        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-        "Backspace", "Delete", "Escape"
-    ]);
-
-
-
     const UI = {
         container: UI_container,
-        inputBlocked: false,
+        boardInteractBlocked: false,
+        boardWriteBlocked: false,
 
         _undo() {
+            if (UI.boardInteractBlocked || UI.boardWriteBlocked) return;
             game.undo();
             renderer.drawSudoku();
         },
 
         _selectCell(num) {
+            if (UI.boardInteractBlocked) return;
             game.selectCell(num);
             renderer.drawSudoku();
         },
 
         _inputNumber(cellNum, value) {
-            if (UI.inputBlocked) {
-                console.log(`INPUT BLOCKED: tried to input ${value} at cell ${cellNum}, but UI.inputBlocked`);
+            if (UI.boardInteractBlocked || UI.boardWriteBlocked) {
+                console.log(`INPUT BLOCKED: tried to input ${value} at cell ${cellNum}, but UI.boardWriteBlocked`);
                 return;
             }
             // console.log(`todo: implement input ${value} at [${cellNum}]`);
             game.updateCellValue(cellNum, value);
+
+            // sorta need to know if it was won here; using this as a cheap flag for "finished" 
+            if (UI.boardInteractBlocked)
+                return; // if interact got blocked by updateCellValue, it will handle its own render
+            
             renderer.drawSudoku();
         },
 
         inputFromNumpad(n) {
+            if (UI.boardInteractBlocked || UI.boardWriteBlocked) return;
             const currentCell = game.currentCell;
             //  
             if (currentCell === null) {
@@ -64,8 +56,6 @@ export function createUI({ game, renderer, UI_container }) {
             }
         },
 
-
-
         // DOM-specific handler
         handleCellClick(e) {
             const cell = renderer.cell;
@@ -78,62 +68,6 @@ export function createUI({ game, renderer, UI_container }) {
 
             UI._selectCell(cellNumber);
         },
-
-        handleKeydown: (e) => {
-            const key = e.key;
-            if (!handledKeys.has(key)) return;
-
-            let next = game.currentCell;
-
-            switch (key) {
-                case "ArrowUp":
-                    if (next >= 9) next -= 9;
-                    UI._selectCell(next);
-                    break;
-
-                case "ArrowDown":
-                    if (next < 72) next += 9; // 72 = index of row 8 col 0
-                    UI._selectCell(next);
-
-                    break;
-
-                case "ArrowLeft": {
-                    const col = next % 9;
-                    if (col > 0) next -= 1;
-                    UI._selectCell(next);
-                    break;
-                }
-
-                case "ArrowRight": {
-                    const col = next % 9;
-                    if (col < 8) next += 1;
-                    UI._selectCell(next);
-                    break;
-                }
-
-                case "0":
-                case "Delete":
-                case "Backspace": {
-                    if (!game.givens[next]) {
-                        UI._inputNumber(next, 0);
-                    }
-                    break;
-                }
-
-                case "Escape":
-                    break;
-
-                default: {
-                    // default "let numbers through to here" case
-                    if (!game.givens[next]) {
-                        UI._inputNumber(next, Number(key))
-                    }
-
-                }
-            }
-        }
-
-
 
     };
 

@@ -110,3 +110,5 @@ in the JS, the `loader` loads (and instantiates) `SudokuGame`, `Renderer`, and `
 - `SudokuGame` and `Renderer` are both classes, and both draw from the `static` file
 - `UI` is a custom object, not a class. it receives both and does DOM stuff
 - `manager` is new and is for the UI beyond the board controls; for the larger app puzzle system
+
+> problem: now, the win condition is still firing a (normal) draw after the "draw without highlighting call"

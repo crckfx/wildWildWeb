@@ -16,14 +16,15 @@ export const game = new SudokuGame();
 const renderer = new Renderer({ game, canvas });
 const UI = createUI({ game, renderer, UI_container });
 canvas.addEventListener('mousedown', UI.handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
-UI_container.addEventListener('keydown', UI.handleKeydown);
 
 const manager = createAppManager({ game, renderer, UI });
+// UI_container.addEventListener('keydown', UI.handleKeydown);
+UI_container.addEventListener('keydown', manager._handleKeydown);
 
 document.getElementById('browsePuzzlesBtn')?.addEventListener('click', manager._showBrowse);
 document.getElementById('devOptionsBtn')?.addEventListener('click', manager._showDev);
 
-game.onWin = manager._showWin;
+game.onWin = manager._handleGameWin;
 game.onUpdate = manager._onGameUpdate;
 
 const savedID = storage.getActivePuzzleID();
@@ -33,6 +34,5 @@ if (savedID) {
     manager._openPuzzleByID(103);
 }
 
-// game.miscOpenPuzzle(puzzles[4]);
 UI_container.focus();
-renderer.drawSudoku();
+// render is done by open pipelines now, focus is extra

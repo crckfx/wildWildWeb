@@ -142,8 +142,6 @@ export class SudokuGame {
             }
         }
 
-        // drawSudoku(); // <-- either call a renderer or emit a signal to an orchestrator
-
     }
 
 
@@ -185,15 +183,15 @@ export class SudokuGame {
 
         if (this.recordHistory) this.addToHistory(cellNumber, oldValue, value)
 
-        if (this.onUpdate) this.onUpdate();
+
 
         // detect mistake (CRUDELY - checking against the real answer; a finer way would be to check against the current board state for contradiction)
-        // const status = applyStatus(cellNumber, value);
-        // cellStatus[cellNumber] = status;
-        // if (status === STATUS_ERROR) {
-        //     mistakesMade++;
-        //     printMistakes();
-        // }
+        const status = this.applyStatus(cellNumber, value);
+        this.cellStatus[cellNumber] = status;
+        if (status === STATUS_ERROR) {
+            this.mistakesMade++;
+            // printMistakes();
+        }
 
         // --- if we change from something to correct, we need to increment the digit's "completed" count ---
         // if (status === STATUS_CORRECT) {
@@ -207,23 +205,15 @@ export class SudokuGame {
         // }
 
         const solved = this.checkSolved();
-        if (solved) {
-            console.log("SOLVED THE PUZZLE");
 
-            this.triggerGameEnd();
-        }
+        if (solved) this.setFinished(); // mark internally; do nothing much with it
 
 
-        // if (solved) {
-        //     // write to history with the 'completed = true' param
-        //     if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cellNumber, value, mistakesMade, true); // storage 
-        //     // run the game end sequence
-        //     triggerGameEnd();
-        // } else {
-        //     if (currentPuzzleID !== null) storage.saveMove(currentPuzzleID, cellNumber, value, mistakesMade); // storage 
-        // }
-        // call main render
         this.computeGameState();
+
+
+        if (this.onUpdate) this.onUpdate({solved, cell: cellNumber, value, mistakesMade: this.mistakesMade});
+
     }
 
     undo() {
@@ -265,9 +255,15 @@ export class SudokuGame {
         //     }
         // }
 
+        
         this.selectCell(cell);
+        
+        
 
-
+    }
+    
+    setFinished() {
+        this.currentPuzzleIsCompleted = true;
     }
 
     applyStatus(cell, val) {
@@ -286,19 +282,19 @@ export class SudokuGame {
         return true;
     }
 
-    triggerGameEnd() {
-        console.log("game end triggered from SudokuGame.js");
+    // triggerGameEnd() {
+    //     console.log("game end triggered from SudokuGame.js");
 
-        if (this.onWin !== null) {
-            this.onWin();
-        }
-    }
+    //     if (this.onWin !== null) {
+    //         this.onWin();
+    //     }
+    // }
 
     // -- RESTORE HISTORY --
     //  expects a 'saved' object to contain:
     //      - runtimeHistory
     //      - historyPos 
-    //      - mistakesMade
+    //      - mistakes (a simple count)
     restoreHistory(saved) {
         this.gameHistory = saved.runtimeHistory;
         this.historyPos = saved.historyPos;
@@ -310,7 +306,8 @@ export class SudokuGame {
             this.cellStatus[cell] = this.applyStatus(cell, newValue);
         }
 
-        this.mistakesMade = saved.mistakesMade;
+        console.log(saved.mistakes);
+        this.mistakesMade = saved.mistakes;
 
     }
 

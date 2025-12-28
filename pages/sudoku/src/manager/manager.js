@@ -28,21 +28,7 @@ export function createAppManager({ game, renderer, UI }) {
         win: document.getElementById('panel-win'),
     };
 
-    function hideModal() {
-        modalIsOpen = false;
-        modalContainer.classList.remove('show');
-        Object.values(panels).forEach(p => p?.classList.remove('active'));
-    }
 
-    function showModal(name) {
-        const panel = panels[name];
-        if (!panel) return;
-        modalIsOpen = true;
-
-        Object.values(panels).forEach(p => p?.classList.remove('active'));
-        modalContainer.classList.add('show');
-        panel.classList.add('active');
-    }
 
     function handleModalClick(e) {
         if (!e.target.closest(".modalPanel")) {
@@ -52,28 +38,24 @@ export function createAppManager({ game, renderer, UI }) {
         }
     }
 
-    function prepareWinInfo() {
-        // for printing the appropriate info into the "win modal" before showing it
-        // const winInfo = document.getElementById('win-info');
-        const state = storage.loadPuzzleState(game.currentPuzzleID);
-
-        console.log(state);
-        if (winUIStuff && state) {
-
-
-            const { startedAt, completedAt, mistakes } = state;
-            const timeTaken = completedAt - startedAt;
-
-            winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
-            winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
-            winUIStuff.info.mistakes.textContent = mistakes;
-            winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
-
-            if (winOptions) {
-                // 
-            }
+    function _specialDraw() {
+        if (UI.boardInteractBlocked) {
+            // renderer.drawSudoku({ showSelectedCell: true, showHighlighting: false });    
+            //
+        } else {
+            renderer.drawSudoku();
         }
     }
+
+    UI.container.addEventListener('focus', () => {
+        if (!UI.boardInteractBlocked)
+            renderer.drawSudoku();
+    });
+    UI.container.addEventListener('blur', () => {
+        if (!UI.boardInteractBlocked)
+            renderer.drawSudoku({ showSelectedCell: true, showHighlighting: false });
+    });
+
 
     function populateBrowseList(listEl, puzzles) {
         if (!listEl) return;
@@ -124,39 +106,12 @@ export function createAppManager({ game, renderer, UI }) {
     }
 
 
-    // a puzzle's ID is the concern of this manager; not the concern of the game, as is the storage
-    function _openPuzzleByID(id) {
-        const puzzle = puzzles.find(p => p.id == id);
-        // maybe check storage for progress first?
-        const saved = storage.loadPuzzleState(id);
-        if (saved) {
-            console.log(`yeah got some history for puzzle ${id}`, saved);
-            const gameHistory = rebuildRuntimeHistory(saved.history, puzzle.mission, saved.historyPos);
-            // console.log(saved.history, puzzle.mission, saved.historyPos);
-            console.log(gameHistory);
-            saved.runtimeHistory = gameHistory;
-            // if (validateGameHistory) { // or something probably}
-        }
-        // manager._openPuzzle(puzzle);
-        console.log(`_openPuzzleByID: hopefully loaded puzzle ${id}`);
 
-        hideModal();
-        game.miscOpenPuzzle(puzzle);
-
-        if (saved) {
-            game.restoreHistory(saved);
-            if (saved.completedAt) {
-                console.log("hi from manager, this saved game is finished");
-
-            }
-        }
-
-        renderer.drawSudoku();
-    }
 
     const manager = {
 
         currentPuzzleID: null,
+        modalIsOpen: false,
 
         _showBrowse() {
             showModal('browse');
@@ -166,24 +121,199 @@ export function createAppManager({ game, renderer, UI }) {
         },
         _showWin() {
             prepareWinInfo();
-            console.log("heyyy its me manager");
             showModal('win');
-
+        },
+        _handleGameWin() {
+            console.log("heyyy its me a game win in manager");
+            UI.boardWriteBlocked = true;
+            UI.boardInteractBlocked = true;
+            renderer.drawSudoku({ showSelectedCell: false, showHighlighting: false });
+            manager._showWin();
         },
 
         hideModal,
         _openPuzzle(p) {
+            manager.currentPuzzleID = null;
             hideModal();
             game.miscOpenPuzzle(p);
             renderer.drawSudoku();
         },
         _openPuzzleByID,
 
-        _onGameUpdate() {
-            console.log("yes whats up its me game update signal at manager");
-            // so maybe it's here that we write to history?
-        }
+        _onGameUpdate({solved = false, cell, value, mistakesMade}) {
+
+            
+            // so maybe it's here that we write to {STORED HISTORY}?
+            // the following should now work:
+            if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, mistakesMade, solved); // storage 
+            // console.log(`gameUpdate: cell '${cell}' to ${value}, mistakesMade: ${mistakesMade}, solved: ${solved}`); // test instead before engaging
+            
+            // this might also be the right place to printMistakes, maybe some other junk too
+            
+            if (solved === true) {
+                console.log("----------------------");
+                console.log("SOLVED THE PUZZLE");
+                console.log("----------------------");
+                manager._handleGameWin();
+            }
+        },
+
+        _handleKeydown,
+
     };
+
+    function hideModal() {
+        manager.modalIsOpen = false;
+        modalContainer.classList.remove('show');
+        Object.values(panels).forEach(p => p?.classList.remove('active'));
+    }
+
+    function showModal(name) {
+        const panel = panels[name];
+        if (!panel) return;
+        manager.modalIsOpen = true;
+
+        Object.values(panels).forEach(p => p?.classList.remove('active'));
+        modalContainer.classList.add('show');
+        panel.classList.add('active');
+    }
+
+    function prepareWinInfo() {
+        // for printing the appropriate info into the "win modal" before showing it
+        // const winInfo = document.getElementById('win-info');
+        const state = storage.loadPuzzleState(manager.currentPuzzleID);
+
+        // console.log(state);
+        if (winUIStuff && state) {
+
+            console.log(`hi from prepareWinInfo`);
+            console.log(state);
+            const { startedAt, completedAt, mistakes } = state;
+            const timeTaken = completedAt - startedAt;
+
+
+            winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
+            winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
+            winUIStuff.info.mistakes.textContent = mistakes;
+            winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+
+            if (winOptions) {
+                // 
+            }
+        }
+    }
+
+    // a puzzle's ID is the concern of this manager; not the concern of the game, as is the storage
+    function _openPuzzleByID(id) {
+        UI.boardWriteBlocked = false;
+        UI.boardInteractBlocked = false;
+        const puzzle = puzzles.find(p => p.id == id);
+        // maybe check storage for progress first?
+        const saved = storage.loadPuzzleState(id);
+        storage.setActivePuzzleID(id);
+        if (saved) {
+            const gameHistory = rebuildRuntimeHistory(saved.history, puzzle.mission, saved.historyPos);
+            saved.runtimeHistory = gameHistory;
+            // if (validateGameHistory) { // or something probably}
+        }
+
+        console.log(`_openPuzzleByID: hopefully loaded puzzle ${id}`);
+
+        manager.currentPuzzleID = id;
+        hideModal();
+        game.miscOpenPuzzle(puzzle);
+
+        if (saved) {
+            game.restoreHistory(saved);
+            if (saved.completedAt) {
+                // console.log("hi from manager, this saved game is finished");
+                manager._handleGameWin();
+            } else {
+                renderer.drawSudoku();
+            }
+        } else {
+            storage.startPuzzle(puzzle);
+            renderer.drawSudoku();
+        }
+
+    }
+
+    // 
+
+
+    // keyboard
+    const handledKeys = new Set([
+        "ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight",
+        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+        "Backspace", "Delete", "Escape"
+    ]);
+
+
+    function _handleKeydown(e) {
+        const key = e.key;
+        if (!handledKeys.has(key)) return;
+
+        if (manager.modalIsOpen) {
+            // console.log("yep you made a key input while modal is open!");
+            switch (key) {
+                case "Escape":
+                    manager.hideModal();
+                    break;
+                default:
+                    console.log(`modal is open, pressed key "${key}", but it's not handled for modal`);
+            }
+            return;
+        }
+
+        let next = game.currentCell;
+
+        switch (key) {
+            case "ArrowUp":
+                if (next >= 9) next -= 9;
+                UI._selectCell(next);
+                break;
+
+            case "ArrowDown":
+                if (next < 72) next += 9; // 72 = index of row 8 col 0
+                UI._selectCell(next);
+
+                break;
+
+            case "ArrowLeft": {
+                const col = next % 9;
+                if (col > 0) next -= 1;
+                UI._selectCell(next);
+                break;
+            }
+
+            case "ArrowRight": {
+                const col = next % 9;
+                if (col < 8) next += 1;
+                UI._selectCell(next);
+                break;
+            }
+
+            case "0":
+            case "Delete":
+            case "Backspace": {
+                if (!game.givens[next]) {
+                    UI._inputNumber(next, 0);
+                }
+                break;
+            }
+
+            case "Escape":
+                break;
+
+            default: {
+                // default "let numbers through to here" case
+                if (!game.givens[next]) {
+                    UI._inputNumber(next, Number(key))
+                }
+
+            }
+        }
+    }
 
     // ---- browse list modal menu stuff ----
 
@@ -199,3 +329,4 @@ export function createAppManager({ game, renderer, UI }) {
 
     return manager;
 }
+// 
