@@ -18,17 +18,29 @@ export function createAppManager({ game, renderer, UI }) {
     }
 
 
-    if (modalContainer) modalContainer.onclick = handleModalClick;
     const panels = {
         browse: document.getElementById('panel-browse'),
         dev: document.getElementById("panel-dev"),
 
         // new: document.getElementById('panel-new'),
-        // reset: document.getElementById('panel-reset'),
+        reset: document.getElementById('panel-reset'),
         win: document.getElementById('panel-win'),
     };
 
 
+    if (modalContainer) {
+        modalContainer.onclick = handleModalClick;
+
+        modalContainer.addEventListener("keydown", (e) => {
+            if (e.key !== "Escape") return;
+
+            e.preventDefault();
+            e.stopPropagation();
+            hideModal();
+
+            console.log('key ESCAPE handled on modal');
+        });
+    }
 
     function handleModalClick(e) {
         if (!e.target.closest(".modalPanel")) {
@@ -46,15 +58,6 @@ export function createAppManager({ game, renderer, UI }) {
             renderer.drawSudoku();
         }
     }
-
-    UI.container.addEventListener('focus', () => {
-        if (!UI.boardInteractBlocked)
-            renderer.drawSudoku();
-    });
-    UI.container.addEventListener('blur', () => {
-        if (!UI.boardInteractBlocked)
-            renderer.drawSudoku({ showSelectedCell: true, showHighlighting: false });
-    });
 
 
     function populateBrowseList(listEl, puzzles) {
@@ -106,18 +109,36 @@ export function createAppManager({ game, renderer, UI }) {
     }
 
 
+    function analyzeBoard(cells, solution) {
+        const correctCount = new Uint8Array(9);
 
+        for (let i = 0; i < 81; i++) {
+            const v = cells[i];
+            if (v && v === solution[i]) {
+                correctCount[v - 1]++;
+            }
+        }
+
+        return {
+            completedDigits: correctCount.map(c => c === 9)
+        };
+    }
 
     const manager = {
 
         currentPuzzleID: null,
         modalIsOpen: false,
+        lastCompletedDigits: new Uint8Array(9), // all zero by default
 
         _showBrowse() {
             showModal('browse');
         },
         _showDev() {
             showModal('dev');
+        },
+        _showReset() {
+            console.log("hi from _showReset modal thing");
+            showModal('reset');
         },
         _showWin() {
             prepareWinInfo();
@@ -134,28 +155,55 @@ export function createAppManager({ game, renderer, UI }) {
         hideModal,
         _openPuzzle(p) {
             manager.currentPuzzleID = null;
-            hideModal();
             game.miscOpenPuzzle(p);
+            hideModal();
+            UI.container.focus();
             renderer.drawSudoku();
         },
         _openPuzzleByID,
 
-        _onGameUpdate({solved = false, cell, value, mistakesMade}) {
-
+        _onGameUpdate({ solved = false, cell, value }) {
+            // const completedDigits = analyzeBoard(game.cells, game.solution);
+            // console.log(`hello from gameUpdate, completedDigits:`, completedDigits);
             
+            const curr = analyzeBoard(game.cells, game.solution).completedDigits;
+            
+            for (let d = 0; d < 9; d++) {
+                if (curr[d] !== manager.lastCompletedDigits[d]) {
+                    const digit = d + 1;
+                    
+                    if (curr[d]) {
+                        UI.numpadByValue[digit]?.classList.add("completed");
+                    } else {
+                        UI.numpadByValue[digit]?.classList.remove("completed");
+                    }
+                }
+            }
+            
+            manager.lastCompletedDigits.set(curr);
+            console.log(`hello from gameUpdate, completedDigits:`, manager.lastCompletedDigits);
+
             // so maybe it's here that we write to {STORED HISTORY}?
             // the following should now work:
-            if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, mistakesMade, solved); // storage 
+
+            if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, game.mistakesMade, solved); // storage 
+
             // console.log(`gameUpdate: cell '${cell}' to ${value}, mistakesMade: ${mistakesMade}, solved: ${solved}`); // test instead before engaging
-            
+
             // this might also be the right place to printMistakes, maybe some other junk too
-            
+
             if (solved === true) {
                 console.log("----------------------");
                 console.log("SOLVED THE PUZZLE");
                 console.log("----------------------");
                 manager._handleGameWin();
             }
+        },
+
+        _onGameUndo({ historyPos }) {
+            // console.log(`hello from _onGameUndo. historyPos is ${historyPos}`);
+            if (this.currentPuzzleID !== null) storage.saveUndo(manager.currentPuzzleID, historyPos, game.mistakesMade); // storage
+
         },
 
         _handleKeydown,
@@ -166,6 +214,7 @@ export function createAppManager({ game, renderer, UI }) {
         manager.modalIsOpen = false;
         modalContainer.classList.remove('show');
         Object.values(panels).forEach(p => p?.classList.remove('active'));
+        UI.container.focus();
     }
 
     function showModal(name) {
@@ -176,6 +225,7 @@ export function createAppManager({ game, renderer, UI }) {
         Object.values(panels).forEach(p => p?.classList.remove('active'));
         modalContainer.classList.add('show');
         panel.classList.add('active');
+        modalContainer.focus(); // <-- new
     }
 
     function prepareWinInfo() {
@@ -220,8 +270,8 @@ export function createAppManager({ game, renderer, UI }) {
         console.log(`_openPuzzleByID: hopefully loaded puzzle ${id}`);
 
         manager.currentPuzzleID = id;
-        hideModal();
         game.miscOpenPuzzle(puzzle);
+        hideModal();
 
         if (saved) {
             game.restoreHistory(saved);
@@ -229,14 +279,19 @@ export function createAppManager({ game, renderer, UI }) {
                 // console.log("hi from manager, this saved game is finished");
                 manager._handleGameWin();
             } else {
+                UI.container.focus();
                 renderer.drawSudoku();
             }
         } else {
             storage.startPuzzle(puzzle);
+            UI.container.focus();
             renderer.drawSudoku();
         }
 
     }
+
+
+
 
     // 
 

@@ -6,6 +6,19 @@ export function createUI({ game, renderer, UI_container }) {
     const numpadItems = numpadWrapper?.querySelectorAll('.numpad-item');
     const numpadByValue = Array(10).fill(null);
 
+    // set up numpad 1-9 (and '0' for erase) and 'undo'
+    if (numpadItems) {
+        numpadItems.forEach(item => {
+            const v = Number(item.dataset.value);
+            item.addEventListener("click", () => UI.inputFromNumpad(v));
+            if (v >= 0 && v <= 9) {
+                numpadByValue[v] = item;
+            }
+
+        });
+    }
+
+
     const canvas = renderer.canvas;
 
     
@@ -13,10 +26,16 @@ export function createUI({ game, renderer, UI_container }) {
         container: UI_container,
         boardInteractBlocked: false,
         boardWriteBlocked: false,
+        numpadByValue: numpadByValue,
 
         _undo() {
             if (UI.boardInteractBlocked || UI.boardWriteBlocked) return;
             game.undo();
+            renderer.drawSudoku();
+        },
+        _redo() {
+            if (UI.boardInteractBlocked || UI.boardWriteBlocked) return;
+            game.redo();
             renderer.drawSudoku();
         },
 
@@ -72,19 +91,9 @@ export function createUI({ game, renderer, UI_container }) {
     };
 
 
-    // set up numpad 1-9 (and '0' for erase) and 'undo'
-    if (numpadItems) {
-        numpadItems.forEach(item => {
-            const v = Number(item.dataset.value);
-            item.addEventListener("click", () => UI.inputFromNumpad(v));
-            if (v >= 0 && v <= 9) {
-                numpadByValue[v] = item;
-            }
-
-        });
-    }
 
     document.getElementById('sudokUndo')?.addEventListener('click', UI._undo);
+    document.getElementById('sudokRedo')?.addEventListener('click', UI._redo);
 
     return UI;
 }

@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/misc/tabbage/tabbage.css">
 <div class="sudoku-container">
-	<div id="modalContainer" class="modalContainer">
+	<div id="modalContainer" class="modalContainer" tabindex="-1">
 		<div class="modalContent">
 
 			<div id="panel-new" class="modalPanel">
@@ -84,7 +84,7 @@
 
 		<div class="morePresets">
 			<button class="gregBtn" id="newPuzzleBtn">New</button>
-			<button class="gregBtn" id="resetPuzzleBtn">Reset</button>
+			<span class="gregBtn" id="resetPuzzleBtn">Reset</span>
 			<span class="gregBtn" id="browsePuzzlesBtn">Browse</span>
 
 			<span id="puzzleNumDisplay"></span>
@@ -103,6 +103,7 @@
 				<div class="someSudokuOtherThangy">
 					<div class="numpad-item gregBtn" data-value="0">erase</div>
 					<div id="sudokUndo" class="gregBtn">undo</div>
+					<div id="sudokRedo" class="gregBtn">redo</div>
 				</div>
 				<div id="numpad" class="numpad">
 					<div class="numpad-item gregBtn" data-value="1">1</div>

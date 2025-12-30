@@ -28,6 +28,7 @@ export class SudokuGame {
 
         this.onWin = null;
         this.onUpdate = null;
+        this.onUndo = null;
 
     }
 
@@ -203,25 +204,34 @@ export class SudokuGame {
         //         hideNumpadItem(value);
         //     }
         // }
+        this.computeGameState();
 
         const solved = this.checkSolved();
 
         if (solved) this.setFinished(); // mark internally; do nothing much with it
 
-
-        this.computeGameState();
-
-
-        if (this.onUpdate) this.onUpdate({solved, cell: cellNumber, value, mistakesMade: this.mistakesMade});
-
+        if (this.onUpdate) this.onUpdate({ solved, cell: cellNumber, value, mistakesMade: this.mistakesMade });
     }
+
+    redo() {
+        if (this.currentPuzzleIsCompleted || this.historyPos >= this.gameHistory.length) return;
+
+        const { cell, newValue } = this.gameHistory[this.historyPos]; // take the current position because it stays one ahead
+
+        this.cells[cell] = newValue;
+        this.cellStatus[cell] = this.applyStatus(cell, newValue);
+
+        this.historyPos++;
+        this.selectCell(cell);
+    }
+
 
     undo() {
         if (this.currentPuzzleIsCompleted || this.historyPos < 1) return;
 
         const undoToHistoryPos = this.historyPos - 1;
         const { cell, oldValue, newValue } = this.gameHistory[undoToHistoryPos];
-        console.log(`undo: ${cell} from ${newValue} to ${oldValue}`);
+        // console.log(`undo: ${cell} from ${newValue} to ${oldValue}`);
 
         // overwrite value
         this.cells[cell] = oldValue;
@@ -257,11 +267,11 @@ export class SudokuGame {
 
         
         this.selectCell(cell);
-        
-        
+        if (this.onUndo) this.onUndo({historyPos: this.historyPos});
+
 
     }
-    
+
     setFinished() {
         this.currentPuzzleIsCompleted = true;
     }

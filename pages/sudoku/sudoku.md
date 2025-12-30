@@ -112,3 +112,10 @@ in the JS, the `loader` loads (and instantiates) `SudokuGame`, `Renderer`, and `
 - `manager` is new and is for the UI beyond the board controls; for the larger app puzzle system
 
 > problem: now, the win condition is still firing a (normal) draw after the "draw without highlighting call"
+
+30/12/25
+now the "board analyse" (ie. "correct digits count") is done by manager, correctly. achieved by tracking `manager.lastCompletedDigits` and writing to it each time. the printed analyses appear correct, but we need to:
+- [ ] make sure analysis (DOM stuff) is done in replay history
+- [ ] make sure analysis (DOM stuff) is done in undo
+
+also, (separate to board analyse) redo doesn't yet properly engage with history in the same way that normal and undo moves do. redo is not finished.

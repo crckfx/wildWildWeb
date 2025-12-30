@@ -21,11 +21,23 @@ const manager = createAppManager({ game, renderer, UI });
 // UI_container.addEventListener('keydown', UI.handleKeydown);
 UI_container.addEventListener('keydown', manager._handleKeydown);
 
+
 document.getElementById('browsePuzzlesBtn')?.addEventListener('click', manager._showBrowse);
 document.getElementById('devOptionsBtn')?.addEventListener('click', manager._showDev);
+document.getElementById('resetPuzzleBtn')?.addEventListener('click', manager._showReset);
+
+UI.container.addEventListener('focus', () => {
+    if (!UI.boardInteractBlocked)
+        renderer.drawSudoku();
+});
+UI.container.addEventListener('blur', () => {
+    if (!UI.boardInteractBlocked)
+        renderer.drawSudoku({ showSelectedCell: true, showHighlighting: false });
+});
 
 game.onWin = manager._handleGameWin;
 game.onUpdate = manager._onGameUpdate;
+game.onUndo = manager._onGameUndo;
 
 const savedID = storage.getActivePuzzleID();
 if (savedID) {
@@ -34,5 +46,5 @@ if (savedID) {
     manager._openPuzzleByID(103);
 }
 
-UI_container.focus();
+// UI_container.focus();
 // render is done by open pipelines now, focus is extra
