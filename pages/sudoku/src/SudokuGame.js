@@ -18,12 +18,6 @@ export class SudokuGame {
         this.cellStatus = new Uint8Array(81);          // for "what colour to render the text in this cell?"
         this.highlightStatus = new Uint8Array(81);     // for "what colour to render the background for this cell"
 
-
-        // For digits 1..9 → index 0..8
-        this.correctCount = new Uint8Array(9);
-        this.completedDigits = new Uint8Array(9); // 1 = done, 0 = not done
-
-
         this.recordHistory = recordHistory;
 
         this.onWin = null;
@@ -46,15 +40,11 @@ export class SudokuGame {
     // GAME OPEN PUZZLE (FOR REAL PLAYING)
     miscOpenPuzzle(puzzle) {
         this.currentPuzzleIsCompleted = false;
-        // currentPuzzleID = null;
         this.currentCell = 0;
 
         // --- baseline load (mission/solution) ---
         const mission = puzzle.mission;
         const sol = puzzle.solution;
-
-        const history = puzzle.history ?? null;
-
 
         this.mistakesMade = 0;
         this.historyPos = 0;
@@ -76,28 +66,6 @@ export class SudokuGame {
                 this.cellStatus[i] = STATUS_GIVEN;
             }
         }
-        // -------- stuff for count finished digits -----------
-        this.correctCount.fill(0);
-        this.completedDigits.fill(0);
-        // cellwise "finished count" spanning all digits
-        for (let i = 0; i < 81; i++) {
-            const v = this.cells[i];
-            if (v !== 0 && v === this.solution[i]) {
-                this.correctCount[v - 1]++;
-            }
-        }
-        // see if any digits are finished
-        for (let d = 0; d < 9; d++) {
-            const value = d + 1;
-            if (this.correctCount[d] === 9) {
-                this.completedDigits[d] = 1;
-                // hideNumpadItem(value);
-            } else {
-                // showNumpadItem(value);
-            }
-        }
-        // -------- /stuff for count finished digits -----------
-
 
         // printMistakes(); // <-- this should not be the concern of game; maybe an emission to UI instead?
         // updatepuzzleNumDisplay(); // <-- again, likely output a signal to the UI?
@@ -167,21 +135,6 @@ export class SudokuGame {
         // overwrite value
         this.cells[cellNumber] = value;
 
-
-        // --- if we change from a correct to something else, we need to decrement the digit's "completed" count ---
-        // if (oldValue === this.solution[cellNumber]) {
-        //     const idxOld = oldValue - 1;
-        //     const oldCount = correctCount[idxOld];
-
-        //     correctCount[idxOld]--;
-        //     this.completedDigits[idxOld] = (correctCount[idxOld] === 9) ? 1 : 0;
-
-        //     // un-trigger the old digit's "complete" status
-        //     if (oldCount === 9) {
-        //         showNumpadItem(oldValue);
-        //     }
-        // }
-
         if (this.recordHistory) this.addToHistory(cellNumber, oldValue, value)
 
 
@@ -194,16 +147,6 @@ export class SudokuGame {
             // printMistakes();
         }
 
-        // --- if we change from something to correct, we need to increment the digit's "completed" count ---
-        // if (status === STATUS_CORRECT) {
-        //     const i = value - 1;
-        //     correctCount[i]++;
-        //     const completed = (correctCount[i] === 9) ? 1 : 0
-        //     completedDigits[i] = completed;
-        //     if (completed === 1) {
-        //         hideNumpadItem(value);
-        //     }
-        // }
         this.computeGameState();
 
         const solved = this.checkSolved();
@@ -241,35 +184,8 @@ export class SudokuGame {
 
         this.cellStatus[cell] = this.applyStatus(cell, oldValue);
 
-        // // REMOVE contribution of newValue (the one being undone)
-        // if (newValue === solution[cell]) {
-        //     const i = newValue - 1;
-        //     const oldCount = correctCount[i];
-        //     correctCount[i]--;
-        //     completedDigits[i] = (correctCount[i] === 9) ? 1 : 0;
-
-        //     if (oldCount === 9) {
-        //         console.log(`just UNDID a previously complete digit ${newValue}`);
-        //         showNumpadItem(newValue);
-        //     }
-        // }
-
-        // // APPLY contribution of oldValue
-        // if (oldValue === solution[cell]) {
-        //     const i = oldValue - 1;
-        //     correctCount[i]++;
-        //     const completed = (correctCount[i] === 9) ? 1 : 0;
-        //     completedDigits[i] = completed;
-        //     if (completed === 1) {
-        //         hideNumpadItem(oldValue);
-        //     }
-        // }
-
-        
         this.selectCell(cell);
         if (this.onUndo) this.onUndo({historyPos: this.historyPos});
-
-
     }
 
     setFinished() {
