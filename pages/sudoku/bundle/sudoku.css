@@ -41,8 +41,9 @@
     text-align: center;
     padding: 0;
     background: var(--color-bg-2);
-    transition: transform 0.4s, opacity 0.4s;
-    
+    /* transition: transform 0.4s, opacity 0.4s; */
+    overflow: clip;
+
 }
 
 .gameContainer {
@@ -64,17 +65,23 @@
     padding: 24px;
 }
 
+
+.sudoku-container:has(#sudokuUI:focus),
+.sudoku-container:has(#sudokuUI:focus-visible),
+.sudoku-container:has(.modalContainer:focus),
+.sudoku-container:has(.modalContainer:focus-visible) {
+    box-shadow: var(--shadow-preset-A);
+    /* outline: none; */
+}
+
 #sudokuUI:focus,
 #sudokuUI:focus-visible {
     outline: none;
-    box-shadow: var(--shadow-preset-A);
 }
 
-.sudoku-container:has(.modalContainer.show) #sudokuUI .gameContainer {
+/* .sudoku-container:has(.modalContainer.show) #sudokuUI .gameContainer {
     transform: scale(90%);
-    /* opacity: 0.5; */
-    /* transition: transform 0.4s, opacity 0.4s; */
-}
+} */
 
 .canvas-container {
     margin-top: 12px;
@@ -166,7 +173,7 @@
         flex: 3;
     }
 
-    
+
     .numpad-wrapper .someSudokuOtherThangy {
         flex: 1;
         gap: 8px;

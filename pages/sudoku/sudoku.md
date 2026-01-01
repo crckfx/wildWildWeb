@@ -99,7 +99,7 @@ Well, loosely yes; the board is part of the UI. but perhaps in this sense, UI ow
 
 It doesn't seem right for "UI to own Game". So, there's gotta be a better way to reconcile this model conceptually.
 
-### rewrite progress
+## rewrite progress
 rewritten thing is now playable but doesn't have game win orchestration or puzzle browser or anything.
 
 >new feature added: key handling only happens if the UI is focused.
@@ -113,9 +113,32 @@ in the JS, the `loader` loads (and instantiates) `SudokuGame`, `Renderer`, and `
 
 > problem: now, the win condition is still firing a (normal) draw after the "draw without highlighting call"
 
-30/12/25
+### 30/12/25
 now the "board analyse" (ie. "correct digits count") is done by manager, correctly. achieved by tracking `manager.lastCompletedDigits` and writing to it each time. the printed analyses appear correct, but we need to:
-- [ ] make sure analysis (DOM stuff) is done in replay history
-- [ ] make sure analysis (DOM stuff) is done in undo
+- [x] make sure analysis (aka "which digits are completed?" DOM stuff) is done in replay history
+- [x] make sure analysis (aka "which digits are completed?" DOM stuff) is done in undo, redo
 
 also, (separate to board analyse) redo doesn't yet properly engage with history in the same way that normal and undo moves do. redo is not finished.
+
+mistakesMade is calculated by the game. make a decision about whether it should be this way or not.
+
+modified mstorage.js to overwrite history on normal forward-type saveMove instead of on history seek.
+
+- [ ] add mistakesMade printing to manager
+- [x] add currentPuzzleId printing to manager
+- [x] hook up "reset this puzzle" button in manager
+- [x] hook up a "copy board" button in manager
+- [ ] update DOM puzzle buttons on wins / resets (potentially on more?)
+
+### roles
+**SudokuGame**:
+- does the computations for a sudoku board
+- loads in a puzzle fresh, or loads one in with a runtimeHistory
+- receives controls via a `UI` object
+- emits events for each move
+- tracks a history of moves made
+
+**Manager**:
+- has a `SudokuGame` instance, along with a `Renderer` instance and a `UI` object
+- knows about puzzle IDs
+- receives DOM inputs: tells its `SudokuGame` to try update (if applicable), tells its `Renderer` to draw when needed

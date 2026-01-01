@@ -71,6 +71,8 @@ is "too hard" for sudokubliss.com's 'clue generator'? ('Sorry, this is too hard 
 when using sudokubliss.com's **solver**:
 >`Brute force was required to finish the puzzle.`
 
+**the same goes for using sudokubliss at a certain point on puzzle 702**
+
 ## hard sudoku from the newspaper (26/12/25)
 
 progress: 509003214060042905400095608306917502200356109195284367604021893000009421900438756

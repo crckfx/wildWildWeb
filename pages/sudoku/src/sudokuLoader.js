@@ -11,17 +11,20 @@ import { Renderer } from "./Renderer.js";
 import { createUI } from "./UI.js";
 import { createAppManager } from "./manager/manager.js";
 import * as storage from "./manager/mstorage.js";
+import { SolverAC3_1D } from "/apps/sudoku/bundle/SolverAC3/1D/SolverAC3_1D.js";
 
 export const game = new SudokuGame();
 const renderer = new Renderer({ game, canvas });
 const UI = createUI({ game, renderer, UI_container });
 canvas.addEventListener('mousedown', UI.handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
+const solver = new SolverAC3_1D();
 
-const manager = createAppManager({ game, renderer, UI });
+const manager = createAppManager({ game, renderer, UI, solver});
 // UI_container.addEventListener('keydown', UI.handleKeydown);
 UI_container.addEventListener('keydown', manager._handleKeydown);
 
 
+document.getElementById('newPuzzleBtn')?.addEventListener('click', manager._showNew);
 document.getElementById('browsePuzzlesBtn')?.addEventListener('click', manager._showBrowse);
 document.getElementById('devOptionsBtn')?.addEventListener('click', manager._showDev);
 document.getElementById('resetPuzzleBtn')?.addEventListener('click', manager._showReset);
@@ -37,7 +40,8 @@ UI.container.addEventListener('blur', () => {
 
 game.onWin = manager._handleGameWin;
 game.onUpdate = manager._onGameUpdate;
-game.onUndo = manager._onGameUndo;
+game.onUndo = manager._onGameHistoryMove;
+game.onRedo = manager._onGameHistoryMove;
 
 const savedID = storage.getActivePuzzleID();
 if (savedID) {

@@ -3,17 +3,34 @@
 	<div id="modalContainer" class="modalContainer" tabindex="-1">
 		<div class="modalContent">
 
+			<div class="contentHeader" style="height: 50px; position: relative;">
+				<span id="closeModalBtn" class="closeModalBtn" style="position: absolute; top: 0px; right: 0px; font-size: 28px; width: 40px; height: 40px; cursor:pointer;">
+					<svg class="icon" fill="currentColor">
+						<use xlink:href="#icon-close"></use>
+					</svg>
+				</span>
+			</div>
+
 			<div id="panel-new" class="modalPanel">
 				<h2>New Puzzle</h2>
-				<button id="newRandom">Random</button>
-				<button id="newCancel">Cancel</button>
+				<h3>Select a random puzzle from the collection</h3>
+				<span id="newRandom" class="gregBtn">Random</span>
+				<!-- <button id="newCancel">Cancel</button> -->
+
+				<h3>Or paste a board string</h3>
+                <div style="display: flex; gap: 8px;">
+                    <input id="pasteField_string" type="text" placeholder="paste puzzle string here" autocomplete="off" spellcheck="false" />
+                    <span id="pasteBtn_string" class="gregBtn">load</span>
+                </div>
+
 			</div>
 
 			<div id="panel-reset" class="modalPanel">
 				<h2>Reset puzzle?</h2>
+
 				<p>This will wipe progress.</p>
-				<button id="resetConfirm">Reset</button>
-				<button id="resetCancel">Cancel</button>
+				<span id="resetConfirm" class="gregBtn">Reset</span>
+				<!-- <button id="resetCancel">Cancel</button> -->
 			</div>
 
 			<div id="panel-browse" class="modalPanel">
@@ -56,13 +73,19 @@
 				<div>
 					<!-- <p><a href="extra/">puzzle generator</a></p> -->
 					<p><a href="/apps/sudoku/bundle/storage.html">storage editor thing</a></p>
-					<button id="copyBtn">copy puzzle as JSON?</button>
-					<button id="copyAsStringBtn">copy board as string</button>
+					<div style="display: flex; justify-content: center; gap: 8px;">
+
+						<span id="copyBtn" class="gregBtn feedbackCopyBtn">
+                            <span class="label">copy puzzle as JSON?</span>
+                            <span class="overlay">Copied ✔️</span>
+                        </span>
+						<span id="copyAsStringBtn" class="gregBtn feedbackCopyBtn">
+                            <span class="label">copy board as string</span>
+                            <span class="overlay">Copied ✔️</span>
+                        </span>
+					</div>
 				</div>
 
-				<div>
-					<button id="devCancel">Cancel</button>
-				</div>
 			</div>
 
 			<div id="panel-win" class="modalPanel">
@@ -83,7 +106,7 @@
 
 
 		<div class="morePresets">
-			<button class="gregBtn" id="newPuzzleBtn">New</button>
+			<span class="gregBtn" id="newPuzzleBtn">New</span>
 			<span class="gregBtn" id="resetPuzzleBtn">Reset</span>
 			<span class="gregBtn" id="browsePuzzlesBtn">Browse</span>
 

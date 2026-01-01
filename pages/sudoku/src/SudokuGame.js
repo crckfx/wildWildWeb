@@ -9,7 +9,8 @@ export class SudokuGame {
 
         this.currentCell = null; // <-- the main pointer guy for the game
         this.mistakesMade = 0;
-        this.currentPuzzleIsCompleted = false;
+
+        this.currentPuzzle = null;
 
         // ARRAYS (they're all length 81 because sudoku has 81 cells)
         this.cells = new Uint8Array(81).fill(0);       // for the evolving board state
@@ -23,6 +24,7 @@ export class SudokuGame {
         this.onWin = null;
         this.onUpdate = null;
         this.onUndo = null;
+        this.onRedo = null;
 
     }
 
@@ -39,12 +41,13 @@ export class SudokuGame {
 
     // GAME OPEN PUZZLE (FOR REAL PLAYING)
     miscOpenPuzzle(puzzle) {
-        this.currentPuzzleIsCompleted = false;
         this.currentCell = 0;
 
         // --- baseline load (mission/solution) ---
         const mission = puzzle.mission;
         const sol = puzzle.solution;
+
+
 
         this.mistakesMade = 0;
         this.historyPos = 0;
@@ -67,6 +70,7 @@ export class SudokuGame {
             }
         }
 
+        this.currentPuzzle = puzzle;
         // printMistakes(); // <-- this should not be the concern of game; maybe an emission to UI instead?
         // updatepuzzleNumDisplay(); // <-- again, likely output a signal to the UI?
 
@@ -77,13 +81,6 @@ export class SudokuGame {
 
 
     computeGameState() {
-
-        if (this.currentPuzzleIsCompleted) {
-            // drawFinishedSudoku();
-            console.log("todo: handle currentPuzzleIsCompleted");
-            return;
-        }
-
         const highlightStatus = this.highlightStatus;
         const currentCell = this.currentCell;
         const cells = this.cells;
@@ -116,7 +113,7 @@ export class SudokuGame {
 
     // nota  "do render" thing anymore now that we're doing classmode
     selectCell(num) {
-        if (this.currentPuzzleIsCompleted || num < 0 || num > 80) return;
+        if (num < 0 || num > 80) return;
         const oldCell = this.currentCell;
         if (num !== oldCell) {
             this.currentCell = num;
@@ -127,9 +124,6 @@ export class SudokuGame {
     }
 
     updateCellValue(cellNumber, value) {
-        // determine if a real write call is made by this 
-        if (this.currentPuzzleIsCompleted) return;
-
         const oldValue = this.cells[cellNumber]; // store the existing value
         if (value === oldValue) return; // exit if the value didn't change
         // overwrite value
@@ -151,26 +145,27 @@ export class SudokuGame {
 
         const solved = this.checkSolved();
 
-        if (solved) this.setFinished(); // mark internally; do nothing much with it
+        // if (solved) this.setFinished(); // mark internally; do nothing much with it
 
         if (this.onUpdate) this.onUpdate({ solved, cell: cellNumber, value, mistakesMade: this.mistakesMade });
     }
 
     redo() {
-        if (this.currentPuzzleIsCompleted || this.historyPos >= this.gameHistory.length) return;
+        if (this.historyPos >= this.gameHistory.length) return;
 
-        const { cell, newValue } = this.gameHistory[this.historyPos]; // take the current position because it stays one ahead
+        const { cell, newValue } = this.gameHistory[this.historyPos]; // take the current position because it stays one ahead ?
 
         this.cells[cell] = newValue;
         this.cellStatus[cell] = this.applyStatus(cell, newValue);
 
         this.historyPos++;
         this.selectCell(cell);
+        if (this.onRedo) this.onRedo({ historyPos: this.historyPos });
     }
 
 
     undo() {
-        if (this.currentPuzzleIsCompleted || this.historyPos < 1) return;
+        if (this.historyPos < 1) return;
 
         const undoToHistoryPos = this.historyPos - 1;
         const { cell, oldValue, newValue } = this.gameHistory[undoToHistoryPos];
@@ -180,17 +175,15 @@ export class SudokuGame {
         this.cells[cell] = oldValue;
         this.historyPos--;
 
-        // if (currentPuzzleID !== null) storage.saveUndo(currentPuzzleID, historyPos, mistakesMade); // storage
-
         this.cellStatus[cell] = this.applyStatus(cell, oldValue);
 
         this.selectCell(cell);
-        if (this.onUndo) this.onUndo({historyPos: this.historyPos});
+        if (this.onUndo) this.onUndo({ historyPos: this.historyPos });
     }
 
-    setFinished() {
-        this.currentPuzzleIsCompleted = true;
-    }
+    // setFinished() {
+    //     console.log("do you need an implementation for setFinished within Game?")
+    // }
 
     applyStatus(cell, val) {
         if (val === 0) return STATUS_EMPTY;
@@ -221,20 +214,31 @@ export class SudokuGame {
     //      - runtimeHistory
     //      - historyPos 
     //      - mistakes (a simple count)
+
     restoreHistory(saved) {
         this.gameHistory = saved.runtimeHistory;
         this.historyPos = saved.historyPos;
 
-        // restore history into cells (full replay)
+        // // clear board to mission first
+        // this.resetToMission();
+
+        // replay only up to playhead
         for (let i = 0; i < this.historyPos; i++) {
             const { cell, newValue } = this.gameHistory[i];
             this.cells[cell] = newValue;
             this.cellStatus[cell] = this.applyStatus(cell, newValue);
         }
 
-        console.log(saved.mistakes);
         this.mistakesMade = saved.mistakes;
+    }
 
+    getBoardAsString() {
+        let str = "";
+        for (let i=0; i<81; i++) {
+            str += this.cells[i];
+        }
+
+        return str;
     }
 
 }

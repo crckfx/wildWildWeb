@@ -52,6 +52,11 @@ export function saveMove(id, cell, newValue, mistakes, completed = false) {
     const state = JSON.parse(raw);
     const timestamp = Date.now();
 
+    // 🔑
+    if (state.historyPos < state.history.length) {
+        state.history.length = state.historyPos;
+    }
+
     state.history.push({ cell, newValue });
     state.historyPos = state.history.length;
     state.mistakes = mistakes;
@@ -68,7 +73,7 @@ export function saveMove(id, cell, newValue, mistakes, completed = false) {
 // ------------------------------
 // Save undo (only playhead + mistakes)
 // ------------------------------
-export function saveUndo(id, newHistoryPos, mistakes) {
+export function saveHistoryMove(id, newHistoryPos, mistakes) {
     id = String(id);
 
     const raw = localStorage.getItem(stateKey(id));
@@ -79,7 +84,7 @@ export function saveUndo(id, newHistoryPos, mistakes) {
     state.historyPos = newHistoryPos;
     state.mistakes = mistakes;
     state.timestamp = Date.now();
-    state.history.length = state.historyPos;
+    // state.history.length = state.historyPos;
 
     localStorage.setItem(stateKey(id), JSON.stringify(state));
 }
