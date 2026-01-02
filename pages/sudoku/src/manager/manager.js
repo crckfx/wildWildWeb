@@ -4,7 +4,6 @@ import { formatDateTime, formatDuration } from "../static.js";
 
 export function createAppManager({ game, renderer, UI, solver }) {
 
-    let modalIsOpen = false;
     const modalContainer = document.getElementById('modalContainer');
 
     // win panel stuff
@@ -27,7 +26,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
 
         field_pasteBoardAsString: document.getElementById('pasteField_string'),
 
-        display_mistakesMade: null,
+        display_mistakesMade: document.getElementById('mistakesMadeDisplay'),
         display_puzzleId: document.getElementById('puzzleNumDisplay'),
     }
 
@@ -154,50 +153,50 @@ export function createAppManager({ game, renderer, UI, solver }) {
         lastCompletedDigits: new Uint8Array(9).fill(0), // all zero by default
         lastMistakesMade: 0,
 
-        _showNew() {
-            showModal('new');
-        },
-        _showBrowse() {
-            showModal('browse');
-        },
-        _showDev() {
-            showModal('dev');
-        },
-        _showReset() {
-            console.log("hi from _showReset modal thing");
-            showModal('reset');
-        },
+        modalContainer,
+
+        _showNew() { showModal('new'); },
+        _showBrowse() { showModal('browse'); },
+        _showDev() { showModal('dev'); },
+        _showReset() { showModal('reset'); },
         _showWin() {
             prepareWinInfo();
             showModal('win');
         },
+        
         _handleGameWin() {
             console.log("heyyy its me a game win in manager");
             UI.boardWriteBlocked = true;
             UI.boardInteractBlocked = true;
+
+            // if (UI.numpadByValue[0]) console.log(`yes there's any erase button`);
+
             renderer.drawSudoku({ showSelectedCell: false, showHighlighting: false });
+
             manager._showWin();
         },
 
         hideModal,
-        _openPuzzle(p) {
-            manager.currentPuzzleID = null;
-            manager.lastCompletedDigits.fill(0);
-            manager.lastMistakesMade = 0;
-            game.miscOpenPuzzle(p);
-            hideModal();
-            _syncCompletedDigits();
-            if (miscManagerStuff.display_puzzleId) miscManagerStuff.display_puzzleId.textContent = "pasted puzzle";
-            UI.container.focus();
-            renderer.drawSudoku();
-        },
+
+        _openPuzzle,
         _openPuzzleByID,
 
         _onGameUpdate,
 
         _onGameHistoryMove({ historyPos }) {
-            _syncCompletedDigits();
             if (this.currentPuzzleID !== null) storage.saveHistoryMove(manager.currentPuzzleID, historyPos, game.mistakesMade); // storage
+
+            // no redo
+            if (historyPos >= game.gameHistory.length) {
+                console.log('um maybe redo not possible after this move now');
+            }
+            
+            // no undo
+            if (historyPos < 1) {
+                console.log('um maybe undo not possible after this move now');
+            }
+
+            _syncCompletedDigits();
         },
 
         _handleKeydown,
@@ -255,6 +254,21 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
     }
 
+
+    function _openPuzzle(p) {
+        manager.currentPuzzleID = null; // this doesn't necessarily belong here?
+        manager.lastCompletedDigits.fill(0);
+        game.miscOpenPuzzle(p);
+        if (miscManagerStuff.display_puzzleId) miscManagerStuff.display_puzzleId.textContent = "pasted puzzle";
+        const mistakesMade = game.mistakesMade;
+        manager.lastMistakesMade = mistakesMade;
+        if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = mistakesMade;
+        hideModal();
+        UI.container.focus();
+        renderer.drawSudoku();
+        _syncCompletedDigits();
+    }
+
     // a puzzle's ID is the concern of this manager; not the concern of the game, as is the storage
     function _openPuzzleByID(id, reset = false) {
         UI.boardWriteBlocked = false;
@@ -265,7 +279,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
         storage.setActivePuzzleID(id);
         if (saved) {
             const gameHistory = rebuildRuntimeHistory(saved.history, puzzle.mission, saved.historyPos);
-            saved.runtimeHistory = gameHistory;
+            saved.runtimeHistory = gameHistory; // attach a specific kind of "history" to the 'saved' object
             // if (validateGameHistory) { // or something probably}
         }
 
@@ -276,12 +290,14 @@ export function createAppManager({ game, renderer, UI, solver }) {
         if (miscManagerStuff.display_puzzleId) miscManagerStuff.display_puzzleId.textContent = `puzzle ${id}`;
         manager.lastCompletedDigits.fill(0);
         manager.lastMistakesMade = 0;
-
         game.miscOpenPuzzle(puzzle);
+        
         hideModal();
 
         if (saved && reset !== true) {
+            // case: we are loading some kind of history
             game.restoreHistory(saved);
+            if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = game.mistakesMade;
 
             if (saved.completedAt) {
                 // console.log("hi from manager, this saved game is finished");
@@ -292,13 +308,14 @@ export function createAppManager({ game, renderer, UI, solver }) {
                 _syncCompletedDigits();
             }
         } else {
+            if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = 0;
             storage.startPuzzle(puzzle);
             UI.container.focus();
             renderer.drawSudoku();
             _syncCompletedDigits();
         }
-
     }
+
 
     function _syncCompletedDigits() {
         const curr = analyzeBoard(game.cells, game.solution).completedDigits;
@@ -328,11 +345,15 @@ export function createAppManager({ game, renderer, UI, solver }) {
         _syncCompletedDigits();
         // console.log(`hello from gameUpdate, completedDigits:`, manager.lastCompletedDigits);
 
-        // so maybe it's here that we write to {STORED HISTORY}?
-        // the following should now work:
-
-        if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, game.mistakesMade, solved); // storage 
-
+        const mistakesMade = game.mistakesMade;
+        // --- miscManagerStuff ---
+        if (mistakesMade !== manager.lastMistakesMade) {
+            manager.lastMistakesMade = mistakesMade;    
+            if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = mistakesMade;
+        }
+        
+        if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, mistakesMade, solved); // storage 
+        
         // console.log(`gameUpdate: cell '${cell}' to ${value}, mistakesMade: ${mistakesMade}, solved: ${solved}`); // test instead before engaging
 
         // this might also be the right place to printMistakes, maybe some other junk too
@@ -447,7 +468,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
             miscManagerStuff.btn_copyBoardAsString.classList.add('actioned');
             setTimeout(() => {
                 miscManagerStuff.btn_copyBoardAsString.classList.remove('actioned');
-            }, 2000)
+            }, 1000)
         }
 
     }
@@ -473,7 +494,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
         const result = solver.solve(grid);
         if (result.sudoku) {
             const solution = result.sudoku.join("");
-            
+
             const fullPuzzle = {
                 mission: text,
                 solution: solution

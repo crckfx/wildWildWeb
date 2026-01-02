@@ -17,11 +17,13 @@ export const game = new SudokuGame();
 const renderer = new Renderer({ game, canvas });
 const UI = createUI({ game, renderer, UI_container });
 canvas.addEventListener('mousedown', UI.handleCellClick); // a perfect middle for instant mouse & "click" behaviour on mobile
+
 const solver = new SolverAC3_1D();
 
 const manager = createAppManager({ game, renderer, UI, solver});
 // UI_container.addEventListener('keydown', UI.handleKeydown);
 UI_container.addEventListener('keydown', manager._handleKeydown);
+manager.modalContainer.addEventListener('keydown', manager._handleKeydown);
 
 
 document.getElementById('newPuzzleBtn')?.addEventListener('click', manager._showNew);

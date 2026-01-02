@@ -25,6 +25,9 @@ export class SudokuGame {
         this.onUpdate = null;
         this.onUndo = null;
         this.onRedo = null;
+        
+        this.startedAt = null;
+        this.completedAt = null;
 
     }
 
@@ -52,6 +55,8 @@ export class SudokuGame {
         this.mistakesMade = 0;
         this.historyPos = 0;
         this.gameHistory = [];
+
+        this.startedAt = Date.now();
 
         for (let i = 0; i < 81; i++) {
             const mval = mission.charCodeAt(i) - 48;
@@ -146,7 +151,9 @@ export class SudokuGame {
         const solved = this.checkSolved();
 
         // if (solved) this.setFinished(); // mark internally; do nothing much with it
+        if (solved) this.completedAt = Date.now(); 
 
+        // ping game write update (if it exists)
         if (this.onUpdate) this.onUpdate({ solved, cell: cellNumber, value, mistakesMade: this.mistakesMade });
     }
 
@@ -160,6 +167,8 @@ export class SudokuGame {
 
         this.historyPos++;
         this.selectCell(cell);
+
+        // ping game redo update (if it exists)
         if (this.onRedo) this.onRedo({ historyPos: this.historyPos });
     }
 
@@ -178,6 +187,8 @@ export class SudokuGame {
         this.cellStatus[cell] = this.applyStatus(cell, oldValue);
 
         this.selectCell(cell);
+
+        // ping game undo update (if it exists)
         if (this.onUndo) this.onUndo({ historyPos: this.historyPos });
     }
 

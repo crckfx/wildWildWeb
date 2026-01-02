@@ -1,9 +1,52 @@
 <link rel="stylesheet" href="/misc/tabbage/tabbage.css">
 <div class="sudoku-container">
+
+
+	<div id="sudokuUI" tabindex="0">
+		<div id="sudoku_topMenu" class="menu_horizontal">
+			<span class="gregBtn" id="newPuzzleBtn">New</span>
+			<span class="gregBtn" id="resetPuzzleBtn">Reset</span>
+			<span class="gregBtn" id="browsePuzzlesBtn">Browse</span>
+
+			<span id="puzzleNumDisplay"></span>
+			<span class="gregBtn" id="devOptionsBtn">dev</span>
+		</div>
+
+		<div class="gameContainer">
+
+
+			<div class="canvas-container">
+				<canvas id="sudokuCanvas"></canvas>
+			</div>
+
+
+			<div class="numpad-wrapper">
+				<div class="someSudokuOtherThangy">
+					<div id="sudokuErase" class="numpad-item gregBtn" data-value="0">erase</div>
+					<div id="sudokUndo" class="gregBtn">undo</div>
+					<div id="sudokRedo" class="gregBtn">redo</div>
+				</div>
+				<div id="numpad" class="numpad">
+					<div class="numpad-item gregBtn" data-value="1">1</div>
+					<div class="numpad-item gregBtn" data-value="2">2</div>
+					<div class="numpad-item gregBtn" data-value="3">3</div>
+					<div class="numpad-item gregBtn" data-value="4">4</div>
+					<div class="numpad-item gregBtn" data-value="5">5</div>
+					<div class="numpad-item gregBtn" data-value="6">6</div>
+					<div class="numpad-item gregBtn" data-value="7">7</div>
+					<div class="numpad-item gregBtn" data-value="8">8</div>
+					<div class="numpad-item gregBtn" data-value="9">9</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
 	<div id="modalContainer" class="modalContainer" tabindex="-1">
 		<div class="modalContent">
 
-			<div class="contentHeader" style="height: 50px; position: relative;">
+			<div class="contentHeader" style="position: relative; flex: 0 0 50px;">
 				<span id="closeModalBtn" class="closeModalBtn" style="position: absolute; top: 0px; right: 0px; font-size: 28px; width: 40px; height: 40px; cursor:pointer;">
 					<svg class="icon" fill="currentColor">
 						<use xlink:href="#icon-close"></use>
@@ -65,7 +108,7 @@
 				<h2>other menu stuff</h2>
 				<img src="/resources/images/png/fossilNumbersCalc.png">
 				<div class="data">
-					<p>mistakes made: <span class="mistake">0</span></p>
+					<p>mistakes made: <span id="mistakesMadeDisplay" class="mistake">0</span></p>
 				</div>
 				<div class="data">
 					<p>puzzles completed: <span class="puzzlesCompleted">?</span></p>
@@ -102,48 +145,6 @@
 		</div>
 	</div>
 
-	<div id="sudokuUI" tabindex="0">
-
-
-		<div class="morePresets">
-			<span class="gregBtn" id="newPuzzleBtn">New</span>
-			<span class="gregBtn" id="resetPuzzleBtn">Reset</span>
-			<span class="gregBtn" id="browsePuzzlesBtn">Browse</span>
-
-			<span id="puzzleNumDisplay"></span>
-			<span class="gregBtn" id="devOptionsBtn">dev</span>
-		</div>
-
-		<div class="gameContainer">
-
-
-			<div class="canvas-container">
-				<canvas id="sudokuCanvas"></canvas>
-			</div>
-
-
-			<div class="numpad-wrapper">
-				<div class="someSudokuOtherThangy">
-					<div class="numpad-item gregBtn" data-value="0">erase</div>
-					<div id="sudokUndo" class="gregBtn">undo</div>
-					<div id="sudokRedo" class="gregBtn">redo</div>
-				</div>
-				<div id="numpad" class="numpad">
-					<div class="numpad-item gregBtn" data-value="1">1</div>
-					<div class="numpad-item gregBtn" data-value="2">2</div>
-					<div class="numpad-item gregBtn" data-value="3">3</div>
-					<div class="numpad-item gregBtn" data-value="4">4</div>
-					<div class="numpad-item gregBtn" data-value="5">5</div>
-					<div class="numpad-item gregBtn" data-value="6">6</div>
-					<div class="numpad-item gregBtn" data-value="7">7</div>
-					<div class="numpad-item gregBtn" data-value="8">8</div>
-					<div class="numpad-item gregBtn" data-value="9">9</div>
-				</div>
-			</div>
-
-		</div>
-
-	</div>
 </div>
 
 <script src="/misc/tabbage/tabbage.js"></script>

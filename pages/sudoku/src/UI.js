@@ -28,6 +28,10 @@ export function createUI({ game, renderer, UI_container }) {
         boardWriteBlocked: false,
         numpadByValue: numpadByValue,
 
+        btn_erase: document.getElementById('sudokuErase'),
+        btn_undo: document.getElementById('sudokUndo'),
+        btn_redo: document.getElementById('sudokRedo'),
+
         _undo() {
             if (UI.boardInteractBlocked || UI.boardWriteBlocked) return;
             game.undo();
@@ -90,10 +94,11 @@ export function createUI({ game, renderer, UI_container }) {
 
     };
 
+    UI.btn_undo?.addEventListener('click', UI._undo);
+    UI.btn_redo?.addEventListener('click', UI._redo);
 
-
-    document.getElementById('sudokUndo')?.addEventListener('click', UI._undo);
-    document.getElementById('sudokRedo')?.addEventListener('click', UI._redo);
+    // document.getElementById('sudokUndo')?.addEventListener('click', UI._undo);
+    // document.getElementById('sudokRedo')?.addEventListener('click', UI._redo);
 
     return UI;
 }

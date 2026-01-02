@@ -40,6 +40,8 @@
     transition: transform 0.3s ease;
     transform: translateY(100%);
     padding: 16px;
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (min-width: 1000px) {

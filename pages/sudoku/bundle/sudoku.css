@@ -100,19 +100,18 @@
     width: 100%;
 }
 
-.morePresets {
+.menu_horizontal {
     width: 100%;
     font-size: 20px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
 
-.morePresets .gregBtn {
-    /* height: 42px; */
+}
+.menu_horizontal .gregBtn {
     padding: 8px;
 }
+
 
 .numpad-wrapper {
     width: 100%;

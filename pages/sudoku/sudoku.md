@@ -124,7 +124,7 @@ mistakesMade is calculated by the game. make a decision about whether it should 
 
 modified mstorage.js to overwrite history on normal forward-type saveMove instead of on history seek.
 
-- [ ] add mistakesMade printing to manager
+- [x] add mistakesMade printing to manager
 - [x] add currentPuzzleId printing to manager
 - [x] hook up "reset this puzzle" button in manager
 - [x] hook up a "copy board" button in manager
@@ -142,3 +142,7 @@ modified mstorage.js to overwrite history on normal forward-type saveMove instea
 - has a `SudokuGame` instance, along with a `Renderer` instance and a `UI` object
 - knows about puzzle IDs
 - receives DOM inputs: tells its `SudokuGame` to try update (if applicable), tells its `Renderer` to draw when needed
+
+### 02/01/26
+- [x] there's cool effects on MODAL content+panels now, but we need to prevent clipping on panels and do scrolling instead
+    - this is now solved, but it could be prettier
