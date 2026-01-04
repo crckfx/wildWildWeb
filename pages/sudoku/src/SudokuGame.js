@@ -22,9 +22,10 @@ export class SudokuGame {
         this.recordHistory = recordHistory;
 
         this.onWin = null;
-        this.onUpdate = null;
+        this.onCellWrite = null;
         this.onUndo = null;
         this.onRedo = null;
+        this.onCellSelect = null;
         
         this.startedAt = null;
         this.completedAt = null;
@@ -116,7 +117,7 @@ export class SudokuGame {
     }
 
 
-    // nota  "do render" thing anymore now that we're doing classmode
+    // not a "do render" thing anymore now that we're doing classmode
     selectCell(num) {
         if (num < 0 || num > 80) return;
         const oldCell = this.currentCell;
@@ -126,6 +127,7 @@ export class SudokuGame {
         }
         this.computeGameState();
 
+        this.onCellSelect?.();
     }
 
     updateCellValue(cellNumber, value) {
@@ -154,7 +156,7 @@ export class SudokuGame {
         if (solved) this.completedAt = Date.now(); 
 
         // ping game write update (if it exists)
-        if (this.onUpdate) this.onUpdate({ solved, cell: cellNumber, value, mistakesMade: this.mistakesMade });
+        if (this.onCellWrite) this.onCellWrite({ solved, cell: cellNumber, value, mistakesMade: this.mistakesMade });
     }
 
     redo() {

@@ -108,3 +108,39 @@ export function formatDuration(ms) {
 
     return parts.join(" ");
 }
+
+
+// ------------------------------
+// Convert [{cell,newValue}] → [{cell,oldValue,newValue}] for runtime
+// ------------------------------
+export function rebuildRuntimeHistory(minHist, missionStr, historyPos) {
+    const tmp = new Uint8Array(81);
+    for (let i = 0; i < 81; i++) {
+        tmp[i] = missionStr.charCodeAt(i) - 48;
+    }
+
+    const out = [];
+    for (let i = 0; i < minHist.length; i++) {
+        const { cell, newValue } = minHist[i];
+        const oldValue = tmp[cell];
+        out.push({ cell, oldValue, newValue });
+        tmp[cell] = newValue;
+    }
+    return out;
+}
+
+
+export function analyzeBoard(cells, solution) {
+    const correctCount = new Uint8Array(9);
+
+    for (let i = 0; i < 81; i++) {
+        const v = cells[i];
+        if (v && v === solution[i]) {
+            correctCount[v - 1]++;
+        }
+    }
+
+    return {
+        completedDigits: correctCount.map(c => c === 9)
+    };
+}

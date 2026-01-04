@@ -1,0 +1,71 @@
+.gregBtn {
+    box-sizing: border-box;
+    cursor: pointer;
+
+    position: relative;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent;
+    align-items: center;
+    display: flex;
+    /* height: 42px; */
+    justify-content: center;
+    transition: opacity .3s, color .3s, background-color .3s;
+    user-select: none;
+    /* transition: background-color .2s; */
+    background: transparent;
+    transform: translateZ(0);
+    border: 0;
+    border-radius: 5px;
+    /* color: #325aaf; */
+    color: var(--userNumberColor);
+    font: inherit;
+    background-color: hsl(var(--sudoku-hue), 20%, 94%);
+}
+
+
+.numpad .gregBtn {
+    font-size: 36px;
+    font-weight: 400;
+    flex-basis: 11.1111%;
+}
+
+[data-theme="dark"] .gregBtn {
+    background-color: hsla(var(--sudoku-hue), 30%, 15%, 0.267);
+}
+
+.gregBtn.hidden {
+    opacity: 0.4;
+}
+
+
+
+.gregBtn:hover {
+    background-color: hsl(var(--sudoku-hue), 30%, 88%);
+}
+
+.gregBtn:active {
+    background-color: hsl(var(--sudoku-hue), 30%, 84%);
+}
+
+[data-theme="dark"] .gregBtn:hover {
+    background-color: hsla(var(--sudoku-hue), 30%, 33%, 0.267);
+}
+
+[data-theme="dark"] .gregBtn:active {
+    background-color: hsla(var(--sudoku-hue), 30%, 44%, 0.267);
+}
+
+.gregBtn.hidden,
+.gregBtn.hidden:hover,
+.gregBtn.hidden:active {
+    cursor: auto;
+    background-color: hsl(var(--sudoku-hue), 30%, 94%);
+}
+
+[data-theme="dark"] .gregBtn.hidden,
+[data-theme="dark"] .gregBtn.hidden:hover,
+[data-theme="dark"] .gregBtn.hidden:active {
+    /* background-color: hsl(, 30%, 94%); */
+    background-color: hsla(var(--sudoku-hue), 30%, 22%, 0.267);
+
+}

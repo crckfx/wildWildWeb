@@ -41,9 +41,10 @@ UI.container.addEventListener('blur', () => {
 });
 
 game.onWin = manager._handleGameWin;
-game.onUpdate = manager._onGameUpdate;
+game.onCellWrite = manager._onGameUpdate;
 game.onUndo = manager._onGameHistoryMove;
 game.onRedo = manager._onGameHistoryMove;
+game.onCellSelect = manager._onGameCellSelect;
 
 const savedID = storage.getActivePuzzleID();
 if (savedID) {

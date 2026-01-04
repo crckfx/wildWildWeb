@@ -90,6 +90,8 @@
     font-size: 16px;
 }
 
+/* ----- browseList ----- */
+/* ----------------------------- */
 ul.browseList {
     list-style-type: none;
     padding: 0;
@@ -105,16 +107,26 @@ ul.browseList>li {
     text-wrap: nowrap;
 }
 
-ul.browseList>li>button {
-    width: 100%;
+ul.browseList>li.loaded {
+    opacity: 0.3;
+    pointer-events: none;
 }
 
+ul.browseList>li::before {
+    content: "✔️";
+    display: none;
+}
+ul.browseList>li.completed::before {
+    display: inline;
+}
 
 .modalContent .gregBtn {
     padding: 8px;
 }
 
 
+/* ----- feedbackCopyBtn ----- */
+/* ----------------------------- */
 /* --- A NEAT COPY BUTTON WITH FEEDBACK --- */
 .feedbackCopyBtn {
     position: relative;

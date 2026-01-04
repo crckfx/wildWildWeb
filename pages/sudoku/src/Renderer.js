@@ -155,7 +155,7 @@ export class Renderer {
 
     // main draw function
     drawSudoku({ showSelectedCell = true, showHighlighting = true } = {}) {
-        console.log(`draw: showSelectedCell: ${showSelectedCell}`);
+        // console.log(`draw: showSelectedCell: ${showSelectedCell}`);
         const ctx = this.ctx;
         const width = this.canvas.width;
         const height = this.canvas.height;

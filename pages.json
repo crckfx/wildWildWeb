@@ -148,7 +148,7 @@
                         "modules": "./src/sudokuLoader.js",
                         "styles": [
                             "/apps/sudoku/bundle/sudoku.css",
-                            "/apps/sudoku/bundle/gregBtn.css",
+                            "./src/gregBtn2.css",
                             "/apps/sudoku/bundle/modalMenu.css",
                             "/css/someButton/someButton3.css"
                         ]

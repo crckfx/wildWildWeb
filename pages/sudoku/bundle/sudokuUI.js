@@ -151,14 +151,13 @@ function populateBrowseList(listEl, puzzles) {
 
         li.classList.add("someButton2", "primary");
 
-        let symbolForCompleted = "";
-        if (saved && saved.completedAt) {
-            symbolForCompleted = "✔️ ";
+        
+        if (saved && saved.completedAt) {    
             li.classList.add("completed");
         }
 
         li.dataset.puzzleid = p.id;
-        li.textContent = `${symbolForCompleted} Puzzle ${p.id}`;
+        li.textContent = `Puzzle ${p.id}`;
 
         li.onclick = () => {
             hideModal();

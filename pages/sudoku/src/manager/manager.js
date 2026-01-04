@@ -1,51 +1,24 @@
 import { puzzles, easyPuzzles, mediumPuzzles, hardPuzzles } from "/apps/sudoku/bundle/puzzles.js";
 import * as storage from "./mstorage.js";
-import { formatDateTime, formatDuration } from "../static.js";
+import { analyzeBoard, formatDateTime, formatDuration, rebuildRuntimeHistory } from "../static.js";
+import {
+    miscManagerStuff, modalContainer, panels, winOptions, winUIStuff,
+    browseList_EASY, browseList_MEDIUM, browseList_HARD
+} from "./mDOM.js";
 
 export function createAppManager({ game, renderer, UI, solver }) {
 
-    const modalContainer = document.getElementById('modalContainer');
-
-    // win panel stuff
-    const winInfo = document.getElementById('win-info');
-    const winOptions = document.getElementById('win-options');
-    const winUIStuff = {
-        info: {
-            startedAt: winInfo?.querySelector('.startedAt'),
-            completedAt: winInfo?.querySelector('.completedAt'),
-            mistakes: winInfo?.querySelector('.mistakes'),
-            timeTaken: winInfo?.querySelector('.timeTaken'),
-        }
-    }
-
-    const miscManagerStuff = {
-        btn_closeModal: document.getElementById('closeModalBtn'),
-        btn_resetConfirm: document.getElementById('resetConfirm'),
-        btn_copyBoardAsString: document.getElementById('copyAsStringBtn'),
-        btn_pasteBoardAsString: document.getElementById('pasteBtn_string'),
-
-        field_pasteBoardAsString: document.getElementById('pasteField_string'),
-
-        display_mistakesMade: document.getElementById('mistakesMadeDisplay'),
-        display_puzzleId: document.getElementById('puzzleNumDisplay'),
-    }
+    // track puzzle items
+    const pi_easy = populateBrowseList(browseList_EASY, easyPuzzles);
+    const pi_medium = populateBrowseList(browseList_MEDIUM, mediumPuzzles);
+    const pi_hard = populateBrowseList(browseList_HARD, hardPuzzles);
+    const puzzleListAllItems = { ...pi_easy, ...pi_medium, ...pi_hard };
 
 
     miscManagerStuff.btn_closeModal?.addEventListener('click', hideModal);
     miscManagerStuff.btn_resetConfirm?.addEventListener('click', resetCurrentPuzzle);
     miscManagerStuff.btn_copyBoardAsString?.addEventListener('click', copyBoardAsString);
     miscManagerStuff.btn_pasteBoardAsString?.addEventListener('click', pasteBoardAsString);
-
-
-    // pieces of modal menu
-    const panels = {
-        browse: document.getElementById('panel-browse'),
-        dev: document.getElementById("panel-dev"),
-
-        new: document.getElementById('panel-new'),
-        reset: document.getElementById('panel-reset'),
-        win: document.getElementById('panel-win'),
-    };
 
 
     if (modalContainer) {
@@ -62,6 +35,8 @@ export function createAppManager({ game, renderer, UI, solver }) {
         });
     }
 
+
+
     function handleModalClick(e) {
         // if (!e.target.closest(".modalPanel")) {
         if (!e.target.closest(".modalContent")) {
@@ -71,79 +46,36 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
     }
 
-    function _specialDraw() {
-        if (UI.boardInteractBlocked) {
-            // renderer.drawSudoku({ showSelectedCell: true, showHighlighting: false });    
-            //
-        } else {
-            renderer.drawSudoku();
-        }
-    }
-
-
     function populateBrowseList(listEl, puzzles) {
         if (!listEl) return;
 
         listEl.innerHTML = "";
+
+        const puzzleListItems = {};
 
         puzzles.forEach(p => {
             const li = document.createElement("li");
             li.classList.add("someButton2", "primary");
 
             const saved = storage.loadPuzzleState(p.id);
-            let symbolForCompleted = "";
             if (saved && saved.completedAt) {
-                symbolForCompleted = "✔️ ";
                 li.classList.add("completed");
             }
 
-            // li.textContent = `Puzzle ${p.id}`;
-            li.textContent = `${symbolForCompleted}Puzzle ${p.id}`;
-
-
+            li.textContent = `Puzzle ${p.id}`;
+            li.dataset.puzzleId = p.id;
             listEl.appendChild(li);
-
-            // li.addEventListener('click', () => manager._openPuzzle(p));
             li.addEventListener('click', () => manager._openPuzzleByID(p.id));
 
+            // add item to puzzleList
+            puzzleListItems[p.id] = li;
         });
+
+        return puzzleListItems;
     }
 
 
-    // ------------------------------
-    // Convert [{cell,newValue}] → [{cell,oldValue,newValue}] for runtime
-    // ------------------------------
-    function rebuildRuntimeHistory(minHist, missionStr, historyPos) {
-        const tmp = new Uint8Array(81);
-        for (let i = 0; i < 81; i++) {
-            tmp[i] = missionStr.charCodeAt(i) - 48;
-        }
 
-        const out = [];
-        for (let i = 0; i < minHist.length; i++) {
-            const { cell, newValue } = minHist[i];
-            const oldValue = tmp[cell];
-            out.push({ cell, oldValue, newValue });
-            tmp[cell] = newValue;
-        }
-        return out;
-    }
-
-
-    function analyzeBoard(cells, solution) {
-        const correctCount = new Uint8Array(9);
-
-        for (let i = 0; i < 81; i++) {
-            const v = cells[i];
-            if (v && v === solution[i]) {
-                correctCount[v - 1]++;
-            }
-        }
-
-        return {
-            completedDigits: correctCount.map(c => c === 9)
-        };
-    }
 
     const manager = {
         solver,
@@ -152,6 +84,8 @@ export function createAppManager({ game, renderer, UI, solver }) {
         modalIsOpen: false,
         lastCompletedDigits: new Uint8Array(9).fill(0), // all zero by default
         lastMistakesMade: 0,
+
+        loadedPuzzleIsComplete: false,
 
         modalContainer,
 
@@ -163,13 +97,21 @@ export function createAppManager({ game, renderer, UI, solver }) {
             prepareWinInfo();
             showModal('win');
         },
-        
+
         _handleGameWin() {
             console.log("heyyy its me a game win in manager");
             UI.boardWriteBlocked = true;
             UI.boardInteractBlocked = true;
 
+            const li = puzzleListAllItems[manager.currentPuzzleID];
+            if (li) li.classList.add('completed');
+
             // if (UI.numpadByValue[0]) console.log(`yes there's any erase button`);
+            UI.btn_erase?.classList.add('hidden');
+            UI.btn_undo?.classList.add('hidden');
+            UI.btn_redo?.classList.add('hidden');
+            console.log('added hidden to all 3 thangs')
+
 
             renderer.drawSudoku({ showSelectedCell: false, showHighlighting: false });
 
@@ -180,31 +122,11 @@ export function createAppManager({ game, renderer, UI, solver }) {
 
         _openPuzzle,
         _openPuzzleByID,
-
         _onGameUpdate,
-
-        _onGameHistoryMove({ historyPos }) {
-            if (this.currentPuzzleID !== null) storage.saveHistoryMove(manager.currentPuzzleID, historyPos, game.mistakesMade); // storage
-
-            // no redo
-            if (historyPos >= game.gameHistory.length) {
-                console.log('um maybe redo not possible after this move now');
-            }
-            
-            // no undo
-            if (historyPos < 1) {
-                console.log('um maybe undo not possible after this move now');
-            }
-
-            _syncCompletedDigits();
-        },
+        _onGameHistoryMove,
+        _onGameCellSelect,
 
         _handleKeydown,
-
-
-
-
-
     };
 
     function hideModal() {
@@ -229,6 +151,13 @@ export function createAppManager({ game, renderer, UI, solver }) {
         modalContainer.focus(); // <-- new
     }
 
+    function clearWinModal() {
+        winUIStuff.info.startedAt.textContent = "?";
+        winUIStuff.info.completedAt.textContent = "?";
+        winUIStuff.info.mistakes.textContent = "?";
+        winUIStuff.info.timeTaken.textContent = "?";
+    }
+
     function prepareWinInfo() {
         // for printing the appropriate info into the "win modal" before showing it
         // const winInfo = document.getElementById('win-info');
@@ -238,8 +167,9 @@ export function createAppManager({ game, renderer, UI, solver }) {
         if (winUIStuff && state) {
 
             console.log(`hi from prepareWinInfo`);
-            console.log(state);
+            // console.log(state);
             const { startedAt, completedAt, mistakes } = state;
+            // const { startedAt, completedAt, mistakesMade } = game;
             const timeTaken = completedAt - startedAt;
 
 
@@ -254,10 +184,11 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
     }
 
-
     function _openPuzzle(p) {
         manager.currentPuzzleID = null; // this doesn't necessarily belong here?
-        manager.lastCompletedDigits.fill(0);
+        manager.lastCompletedDigits.fill(-1);
+        manager.loadedPuzzleIsComplete = false;
+        resetManagerUI();
         game.miscOpenPuzzle(p);
         if (miscManagerStuff.display_puzzleId) miscManagerStuff.display_puzzleId.textContent = "pasted puzzle";
         const mistakesMade = game.mistakesMade;
@@ -266,6 +197,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
         hideModal();
         UI.container.focus();
         renderer.drawSudoku();
+        _onGameCellSelect();
         _syncCompletedDigits();
     }
 
@@ -287,12 +219,19 @@ export function createAppManager({ game, renderer, UI, solver }) {
 
         manager.currentPuzzleID = id;
 
+        console.log('---puzzleListAllItems---', puzzleListAllItems, '---/puzzleListAllItems---');
+
+
         if (miscManagerStuff.display_puzzleId) miscManagerStuff.display_puzzleId.textContent = `puzzle ${id}`;
-        manager.lastCompletedDigits.fill(0);
+        manager.lastCompletedDigits.fill(-1);
+        manager.loadedPuzzleIsComplete = false;
         manager.lastMistakesMade = 0;
+        resetManagerUI();
         game.miscOpenPuzzle(puzzle);
-        
+        assignBrowseListCurrent(id);
+
         hideModal();
+
 
         if (saved && reset !== true) {
             // case: we are loading some kind of history
@@ -301,23 +240,67 @@ export function createAppManager({ game, renderer, UI, solver }) {
 
             if (saved.completedAt) {
                 // console.log("hi from manager, this saved game is finished");
+                manager.loadedPuzzleIsComplete = true;
                 manager._handleGameWin();
             } else {
                 UI.container.focus();
                 renderer.drawSudoku();
-                _syncCompletedDigits();
+
             }
         } else {
             if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = 0;
             storage.startPuzzle(puzzle);
             UI.container.focus();
             renderer.drawSudoku();
-            _syncCompletedDigits();
+
+
+            // mark this puzzle as "not completed"
+            if (puzzleListAllItems) {
+                console.log("hi from openPuzzleByID, item:")
+                const li = puzzleListAllItems[id];
+                console.log(li);
+                if (li) li.classList.remove('completed');
+            }
         }
+        _syncCompletedDigits();
+        _onGameCellSelect();
     }
 
+    function syncHistoryControls() {
+        const historyPos = game.historyPos;
+
+        // state for undo
+        if (historyPos < 1) {
+            UI.btn_undo?.classList.add('hidden');
+        } else {
+            UI.btn_undo?.classList.remove('hidden');
+        }
+
+        // state for redo
+        if (historyPos >= game.gameHistory.length) {
+            UI.btn_redo?.classList.add('hidden');
+        } else {
+            UI.btn_redo?.classList.remove('hidden');
+        }
+
+    }
+
+    function _blockAllButtons() {
+        manager.lastCompletedDigits.fill(1);
+        for (let i = 0; i < 10; i++) {
+            const d = i + 1;
+            UI.numpadByValue[d]?.classList.add('hidden');
+        }
+        UI.btn_redo?.classList.add('hidden');
+        UI.btn_undo?.classList.add('hidden');
+    }
 
     function _syncCompletedDigits() {
+        if (manager.loadedPuzzleIsComplete) {
+            _blockAllButtons();
+            return;
+        }
+
         const curr = analyzeBoard(game.cells, game.solution).completedDigits;
 
         for (let d = 0; d < 9; d++) {
@@ -325,38 +308,41 @@ export function createAppManager({ game, renderer, UI, solver }) {
                 const digit = d + 1;
 
                 if (curr[d]) {
-                    UI.numpadByValue[digit]?.classList.add("completed");
+                    UI.numpadByValue[digit]?.classList.add("hidden");
                 } else {
-                    UI.numpadByValue[digit]?.classList.remove("completed");
+                    UI.numpadByValue[digit]?.classList.remove("hidden");
                 }
             }
         }
         manager.lastCompletedDigits.set(curr);
+
+        syncHistoryControls();
     }
 
     function resetCurrentPuzzle() {
         if (manager.currentPuzzleID !== null) {
-            manager._openPuzzleByID(manager.currentPuzzleID, true);
+            const id = manager.currentPuzzleID;
+            manager._openPuzzleByID(id, true);
+
         }
     }
 
 
+    // --- HANDLERS NOTIFIED BY GAME ---
+    // handle cell writes
     function _onGameUpdate({ solved = false, cell, value }) {
         _syncCompletedDigits();
+        _onGameCellSelect();
         // console.log(`hello from gameUpdate, completedDigits:`, manager.lastCompletedDigits);
 
         const mistakesMade = game.mistakesMade;
         // --- miscManagerStuff ---
         if (mistakesMade !== manager.lastMistakesMade) {
-            manager.lastMistakesMade = mistakesMade;    
+            manager.lastMistakesMade = mistakesMade;
             if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = mistakesMade;
         }
-        
-        if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, mistakesMade, solved); // storage 
-        
-        // console.log(`gameUpdate: cell '${cell}' to ${value}, mistakesMade: ${mistakesMade}, solved: ${solved}`); // test instead before engaging
 
-        // this might also be the right place to printMistakes, maybe some other junk too
+        if (manager.currentPuzzleID !== null) storage.saveMove(manager.currentPuzzleID, cell, value, mistakesMade, solved); // storage 
 
         if (solved === true) {
             console.log("----------------------");
@@ -366,8 +352,31 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
     }
 
-    // 
+    // handle history steps
+    function _onGameHistoryMove({ historyPos }) {
+        if (this.currentPuzzleID !== null) storage.saveHistoryMove(manager.currentPuzzleID, historyPos, game.mistakesMade); // storage
+        _syncCompletedDigits();
+    }
 
+    // handle cell selection
+    function _onGameCellSelect() {
+        const num = game.currentCell;
+        const givens = game.givens;
+        const val = game.cells[num];
+        // console.log('m select cell:', num, givens);
+
+
+        if (givens[num] || val === 0) {
+            // console.log("select a cell that's given or empty (no erase)");
+            UI.btn_erase?.classList.add('hidden');
+        } else {
+            // console.log("select an ERASABLE cell");
+            UI.btn_erase?.classList.remove('hidden');
+        }
+    }
+    // --- /HANDLERS NOTIFIED BY GAME ---
+
+    // 
 
     // keyboard
     const handledKeys = new Set([
@@ -444,17 +453,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
     }
 
-    // ---- browse list modal menu stuff ----
 
-    const browseList_EASY = document.getElementById("browseList_EASY");
-    const browseList_MEDIUM = document.getElementById("browseList_MEDIUM");
-    const browseList_HARD = document.getElementById("browseList_HARD");
-
-
-    // temporary: dump all puzzles into EASY for now
-    populateBrowseList(browseList_EASY, easyPuzzles);
-    populateBrowseList(browseList_MEDIUM, mediumPuzzles);
-    populateBrowseList(browseList_HARD, hardPuzzles);
 
     // misc
     function copyBoardAsString() {
@@ -505,6 +504,53 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
 
     }
+
+    function resetBrowseListCurrent() {
+        if (!puzzleListAllItems) return;
+
+        for (const el of Object.values(puzzleListAllItems)) {
+            el.classList.remove("loaded");
+        }
+    }
+
+
+    // for "mark current" on the puzzle button AND its tabbage page
+    function assignBrowseListCurrent(id) {
+        const el = puzzleListAllItems?.[id];
+        if (!el) return;
+
+        el.classList.add("loaded");
+
+        if (miscManagerStuff.puzzleMenu) {
+            //
+            const switcher = miscManagerStuff.puzzleMenu;
+            const currentMenuItem = switcher.querySelector(`[data-puzzle-id="${id}"]`);
+            const currentPanel = currentMenuItem.closest('section.panel');        // <section data-panel="n">
+            // console.log(currentPanel);
+            setSwitcherActive(switcher, currentPanel.dataset.panel) // for tabbage pre-selection
+
+        }
+    }
+    // COULD CALL THIS "TABBAGE API"
+    function setSwitcherActive(root, key) {
+        const headers = root.querySelector("[data-switch-headers]");
+        const buttons = headers.querySelectorAll("[data-switch]");
+
+        buttons.forEach(b =>
+            b.classList.toggle("is-active", b.dataset.switch === key)
+        );
+
+        root.querySelectorAll("[data-panel]").forEach(p => {
+            p.hidden = p.dataset.panel !== key;
+        });
+    }
+
+    function resetManagerUI() {
+        clearWinModal();
+        resetBrowseListCurrent();
+    }
+
+
 
 
     return manager;
