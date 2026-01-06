@@ -26,7 +26,7 @@ export class SudokuGame {
         this.onUndo = null;
         this.onRedo = null;
         this.onCellSelect = null;
-        
+
         this.startedAt = null;
         this.completedAt = null;
 
@@ -35,6 +35,13 @@ export class SudokuGame {
 
     addToHistory(cell, oldValue, newValue) {
         const currentPos = this.historyPos;
+
+        // branch to a new history if playhead is not at the very end of the history
+        if (currentPos < this.gameHistory.length) {
+            // const oldHistoryLength = this.gameHistory.length;
+            // console.log(`branching history: old length ${oldHistoryLength}, new length ${currentPos}`);
+            this.gameHistory.length = currentPos;
+        }
 
         this.gameHistory[currentPos] = { cell, oldValue, newValue };
 
@@ -50,8 +57,6 @@ export class SudokuGame {
         // --- baseline load (mission/solution) ---
         const mission = puzzle.mission;
         const sol = puzzle.solution;
-
-
 
         this.mistakesMade = 0;
         this.historyPos = 0;
@@ -77,9 +82,6 @@ export class SudokuGame {
         }
 
         this.currentPuzzle = puzzle;
-        // printMistakes(); // <-- this should not be the concern of game; maybe an emission to UI instead?
-        // updatepuzzleNumDisplay(); // <-- again, likely output a signal to the UI?
-
         this.computeGameState();
         return true;
     }
@@ -153,7 +155,7 @@ export class SudokuGame {
         const solved = this.checkSolved();
 
         // if (solved) this.setFinished(); // mark internally; do nothing much with it
-        if (solved) this.completedAt = Date.now(); 
+        if (solved) this.completedAt = Date.now();
 
         // ping game write update (if it exists)
         if (this.onCellWrite) this.onCellWrite({ solved, cell: cellNumber, value, mistakesMade: this.mistakesMade });
@@ -180,9 +182,7 @@ export class SudokuGame {
 
         const undoToHistoryPos = this.historyPos - 1;
         const { cell, oldValue, newValue } = this.gameHistory[undoToHistoryPos];
-        // console.log(`undo: ${cell} from ${newValue} to ${oldValue}`);
 
-        // overwrite value
         this.cells[cell] = oldValue;
         this.historyPos--;
 
@@ -194,9 +194,6 @@ export class SudokuGame {
         if (this.onUndo) this.onUndo({ historyPos: this.historyPos });
     }
 
-    // setFinished() {
-    //     console.log("do you need an implementation for setFinished within Game?")
-    // }
 
     applyStatus(cell, val) {
         if (val === 0) return STATUS_EMPTY;
@@ -232,25 +229,18 @@ export class SudokuGame {
         this.gameHistory = saved.runtimeHistory;
         this.historyPos = saved.historyPos;
 
-        // // clear board to mission first
-        // this.resetToMission();
-
         // replay only up to playhead
         for (let i = 0; i < this.historyPos; i++) {
             const { cell, newValue } = this.gameHistory[i];
             this.cells[cell] = newValue;
             this.cellStatus[cell] = this.applyStatus(cell, newValue);
         }
-
         this.mistakesMade = saved.mistakes;
     }
 
     getBoardAsString() {
         let str = "";
-        for (let i=0; i<81; i++) {
-            str += this.cells[i];
-        }
-
+        for (let i = 0; i < 81; i++) { str += this.cells[i]; }
         return str;
     }
 

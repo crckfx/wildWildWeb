@@ -113,7 +113,7 @@ export function formatDuration(ms) {
 // ------------------------------
 // Convert [{cell,newValue}] → [{cell,oldValue,newValue}] for runtime
 // ------------------------------
-export function rebuildRuntimeHistory(minHist, missionStr, historyPos) {
+export function rebuildRuntimeHistory(minHist, missionStr) {
     const tmp = new Uint8Array(81);
     for (let i = 0; i < 81; i++) {
         tmp[i] = missionStr.charCodeAt(i) - 48;

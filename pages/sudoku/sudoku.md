@@ -147,10 +147,17 @@ modified mstorage.js to overwrite history on normal forward-type saveMove instea
 ### 02/01/26
 - [x] there's cool effects on MODAL content+panels now, but we need to prevent clipping on panels and do scrolling instead (this is now solved, but it could be prettier)
 
-- [ ] make winInfo usable for other puzzles - maybe don't use stored state by default?
+- [x] make winInfo usable for other puzzles - maybe don't use stored state by default?
 - [x] "hide" the buttons for `erase`, `undo`, `redo` conditionally, similar to the other digits (solved. undo/redo is a "compare historyPos to either zero or gameHistory length on write/historyMove" and erase is "see if cell has a value that is erasable on cellSelect"). *to achieve it: tapped into already-emitted `onGameHistoryMove` and implemented handling for `onGameCellSelect` too.*
 
 - [x] style the "loaded" class for browseList
 - [x] block all board buttons on win (erase, 1-9, undo, redo)
 - [x] update erase/undo/redo on writes (call onCellSelect from onGameUpdate)
 
+- [x] fix "erase doesn't hide redo" problem
+- [x] potentially undo conversion of puzzleListAllItems (and such) into Map(s); it might be stupid
+
+- [x] restore startedAt and completedAt from game, simultaneous to gameHistory
+
+### 07/01
+- [ ] keep track of one "currently loaded non-ID puzzle" in storage (allow refresh->return to a custom puzzle)

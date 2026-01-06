@@ -1,82 +1,9 @@
-import { puzzles, easyPuzzles, mediumPuzzles, hardPuzzles } from "/apps/sudoku/bundle/puzzles.js";
+import { puzzles } from "/apps/sudoku/bundle/puzzles.js";
 import * as storage from "./mstorage.js";
 import { analyzeBoard, formatDateTime, formatDuration, rebuildRuntimeHistory } from "../static.js";
-import {
-    miscManagerStuff, modalContainer, panels, winOptions, winUIStuff,
-    browseList_EASY, browseList_MEDIUM, browseList_HARD
-} from "./mDOM.js";
+import { assignBrowseListCurrent, miscManagerStuff, modalContainer, panels, puzzleListAllItems, winOptions, winUIStuff, } from "./mDOM.js";
 
 export function createAppManager({ game, renderer, UI, solver }) {
-
-    // track puzzle items
-    const pi_easy = populateBrowseList(browseList_EASY, easyPuzzles);
-    const pi_medium = populateBrowseList(browseList_MEDIUM, mediumPuzzles);
-    const pi_hard = populateBrowseList(browseList_HARD, hardPuzzles);
-    const puzzleListAllItems = { ...pi_easy, ...pi_medium, ...pi_hard };
-
-
-    miscManagerStuff.btn_closeModal?.addEventListener('click', hideModal);
-    miscManagerStuff.btn_resetConfirm?.addEventListener('click', resetCurrentPuzzle);
-    miscManagerStuff.btn_copyBoardAsString?.addEventListener('click', copyBoardAsString);
-    miscManagerStuff.btn_pasteBoardAsString?.addEventListener('click', pasteBoardAsString);
-
-
-    if (modalContainer) {
-        modalContainer.onclick = handleModalClick;
-
-        modalContainer.addEventListener("keydown", (e) => {
-            if (e.key !== "Escape") return;
-
-            e.preventDefault();
-            e.stopPropagation();
-            hideModal();
-
-            console.log('key ESCAPE handled on modal');
-        });
-    }
-
-
-
-    function handleModalClick(e) {
-        // if (!e.target.closest(".modalPanel")) {
-        if (!e.target.closest(".modalContent")) {
-
-            hideModal();
-            UI.container.focus();
-        }
-    }
-
-    function populateBrowseList(listEl, puzzles) {
-        if (!listEl) return;
-
-        listEl.innerHTML = "";
-
-        const puzzleListItems = {};
-
-        puzzles.forEach(p => {
-            const li = document.createElement("li");
-            li.classList.add("someButton2", "primary");
-
-            const saved = storage.loadPuzzleState(p.id);
-            if (saved && saved.completedAt) {
-                li.classList.add("completed");
-            }
-
-            li.textContent = `Puzzle ${p.id}`;
-            li.dataset.puzzleId = p.id;
-            listEl.appendChild(li);
-            li.addEventListener('click', () => manager._openPuzzleByID(p.id));
-
-            // add item to puzzleList
-            puzzleListItems[p.id] = li;
-        });
-
-        return puzzleListItems;
-    }
-
-
-
-
     const manager = {
         solver,
 
@@ -98,45 +25,63 @@ export function createAppManager({ game, renderer, UI, solver }) {
             showModal('win');
         },
 
-        _handleGameWin() {
-            console.log("heyyy its me a game win in manager");
-            UI.boardWriteBlocked = true;
-            UI.boardInteractBlocked = true;
-
-            const li = puzzleListAllItems[manager.currentPuzzleID];
-            if (li) li.classList.add('completed');
-
-            // if (UI.numpadByValue[0]) console.log(`yes there's any erase button`);
-            UI.btn_erase?.classList.add('hidden');
-            UI.btn_undo?.classList.add('hidden');
-            UI.btn_redo?.classList.add('hidden');
-            console.log('added hidden to all 3 thangs')
-
-
-            renderer.drawSudoku({ showSelectedCell: false, showHighlighting: false });
-
-            manager._showWin();
-        },
 
         hideModal,
 
-        _openPuzzle,
-        _openPuzzleByID,
-        _onGameUpdate,
-        _onGameHistoryMove,
-        _onGameCellSelect,
-
-        _handleKeydown,
+        _openPuzzle,                // generic puzzle open
+        _openPuzzleByID,            // open from manager's loaded set
+        _onGameUpdate,              // 
+        _onGameHistoryMove,         //
+        _onGameCellSelect,          //
+        _handleKeydown,             //
+        _handleGameWin,             // 
     };
+
+
+
+    miscManagerStuff.btn_closeModal?.addEventListener('click', hideModal);
+    miscManagerStuff.btn_resetConfirm?.addEventListener('click', resetCurrentPuzzle);
+    miscManagerStuff.btn_copyBoardAsString?.addEventListener('click', copyBoardAsString);
+    miscManagerStuff.btn_pasteBoardAsString?.addEventListener('click', pasteBoardAsString);
+
+    // puzzleListAllItems.forEach(li => {
+    //     // console.log("hi",li);
+    //     li.addEventListener('click', () => manager._openPuzzleByID(p.id));
+    // })
+
+    for (const id in puzzleListAllItems) {
+        const el = puzzleListAllItems[id];
+        el?.addEventListener('click', () => manager._openPuzzleByID(id));
+    }
+
+    if (modalContainer) {
+        modalContainer.addEventListener("click", handleModalClick);
+        modalContainer.addEventListener("keydown", handleModalKey);
+    }
+
+    function handleModalClick(e) {
+        if (!e.target.closest(".modalContent")) {
+            hideModal();
+            UI.container.focus();
+        }
+    }
+
+    function handleModalKey(e) {
+        if (e.key !== "Escape") return; // crudely handle only escape for now
+        e.preventDefault();
+        e.stopPropagation();
+
+        hideModal();
+        // console.log('key ESCAPE handled on modal');
+    }
 
     function hideModal() {
         manager.modalIsOpen = false;
         modalContainer.classList.remove('show');
         // Object.values(panels).forEach(p => p?.classList.remove('active'));
 
-        // cheap hardcode for copy button functionality for now
+        // cheap safety hardcode for "copy" button's feedback (for now)
         miscManagerStuff.btn_copyBoardAsString?.classList.remove('actioned');
-
         UI.container.focus();
     }
 
@@ -160,28 +105,54 @@ export function createAppManager({ game, renderer, UI, solver }) {
 
     function prepareWinInfo() {
         // for printing the appropriate info into the "win modal" before showing it
+        if (!winUIStuff) return; // winUIStuff is the set of DOM data boxes for the modal page for a game win
         // const winInfo = document.getElementById('win-info');
-        const state = storage.loadPuzzleState(manager.currentPuzzleID);
-
-        // console.log(state);
-        if (winUIStuff && state) {
-
-            console.log(`hi from prepareWinInfo`);
-            // console.log(state);
-            const { startedAt, completedAt, mistakes } = state;
-            // const { startedAt, completedAt, mistakesMade } = game;
-            const timeTaken = completedAt - startedAt;
+        const storedState = storage.loadPuzzleState(manager.currentPuzzleID);
 
 
-            winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
-            winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
-            winUIStuff.info.mistakes.textContent = mistakes;
-            winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+        // console.log(storedState);
+        // if (storedState) {
 
-            if (winOptions) {
-                // 
-            }
-        }
+        //     console.log(`hi from prepareWinInfo`);
+        //     const { startedAt, completedAt, mistakes } = storedState;
+        //     // const { startedAt, completedAt, mistakesMade } = game;
+        //     const timeTaken = completedAt - startedAt;
+
+
+        //     winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
+        //     winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
+        //     winUIStuff.info.mistakes.textContent = mistakes;
+        //     winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+
+        //     if (winOptions) {
+        //         // 
+        //     }
+        // } else {
+        //     const { startedAt, completedAt, mistakesMade } = game;
+        //     // const { startedAt, completedAt, mistakesMade } = game;
+
+        //     console.log(`startedAt ${startedAt}, completedAt ${completedAt}, mistakesMade ${mistakesMade}`);
+        //     const timeTaken = completedAt - startedAt;
+
+
+        //     winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
+        //     winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
+        //     winUIStuff.info.mistakes.textContent = mistakesMade;
+        //     winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+        // }
+
+        const { startedAt, completedAt, mistakesMade } = game;
+        // const { startedAt, completedAt, mistakesMade } = game;
+
+        const timeTaken = completedAt - startedAt;
+        console.log(`startedAt ${startedAt}, completedAt ${completedAt}, mistakesMade ${mistakesMade}, timeTaken ${timeTaken}`);
+
+
+        winUIStuff.info.startedAt.textContent = formatDateTime(startedAt);
+        winUIStuff.info.completedAt.textContent = formatDateTime(completedAt);
+        winUIStuff.info.mistakes.textContent = mistakesMade;
+        winUIStuff.info.timeTaken.textContent = formatDuration(timeTaken);
+
     }
 
     function _openPuzzle(p) {
@@ -198,7 +169,7 @@ export function createAppManager({ game, renderer, UI, solver }) {
         UI.container.focus();
         renderer.drawSudoku();
         _onGameCellSelect();
-        _syncCompletedDigits();
+        _syncGameButtons();
     }
 
     // a puzzle's ID is the concern of this manager; not the concern of the game, as is the storage
@@ -206,101 +177,104 @@ export function createAppManager({ game, renderer, UI, solver }) {
         UI.boardWriteBlocked = false;
         UI.boardInteractBlocked = false;
         const puzzle = puzzles.find(p => p.id == id);
-        // maybe check storage for progress first?
-        const saved = storage.loadPuzzleState(id);
-        storage.setActivePuzzleID(id);
-        if (saved) {
-            const gameHistory = rebuildRuntimeHistory(saved.history, puzzle.mission, saved.historyPos);
-            saved.runtimeHistory = gameHistory; // attach a specific kind of "history" to the 'saved' object
-            // if (validateGameHistory) { // or something probably}
-        }
-
-        console.log(`_openPuzzleByID: hopefully loaded puzzle ${id}`);
-
+        // console.log(`_openPuzzleByID: hopefully loaded puzzle ${id}`);
         manager.currentPuzzleID = id;
-
-        console.log('---puzzleListAllItems---', puzzleListAllItems, '---/puzzleListAllItems---');
-
-
+        // console.log('---puzzleListAllItems---', puzzleListAllItems, '---/puzzleListAllItems---');
         if (miscManagerStuff.display_puzzleId) miscManagerStuff.display_puzzleId.textContent = `puzzle ${id}`;
         manager.lastCompletedDigits.fill(-1);
         manager.loadedPuzzleIsComplete = false;
         manager.lastMistakesMade = 0;
-        resetManagerUI();
+
+
         game.miscOpenPuzzle(puzzle);
+
+        // maybe check storage for progress first?
+        storage.setActivePuzzleID(id);
+        const saved = storage.loadPuzzleState(id);
+        if (saved) {
+            const gameHistory = rebuildRuntimeHistory(saved.history, puzzle.mission);
+            saved.runtimeHistory = gameHistory; // attach a specific kind of "history" to the 'saved' object
+            // if (validateGameHistory) { // or something probably}
+
+        }
+
+
+        resetManagerUI();
+
         assignBrowseListCurrent(id);
 
         hideModal();
 
 
         if (saved && reset !== true) {
-            // case: we are loading some kind of history
+            // case: we are loading some kind of history without resetting it
             game.restoreHistory(saved);
+            game.startedAt = saved.startedAt ?? null;
+            game.completedAt = saved.completedAt ?? null;
+          
             if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = game.mistakesMade;
 
             if (saved.completedAt) {
-                // console.log("hi from manager, this saved game is finished");
+                // case: we have loaded history and it is finished
                 manager.loadedPuzzleIsComplete = true;
-                manager._handleGameWin();
+                _handleGameWin();
             } else {
+                // case: we have loaded history and it is NOT finished
                 UI.container.focus();
                 renderer.drawSudoku();
 
             }
         } else {
+            // case: we are NOT loading any history (note: "reset===true" also means we load 'source' - NOT history)
             if (miscManagerStuff.display_mistakesMade) miscManagerStuff.display_mistakesMade.textContent = 0;
             storage.startPuzzle(puzzle);
-            UI.container.focus();
-            renderer.drawSudoku();
-
 
             // mark this puzzle as "not completed"
             if (puzzleListAllItems) {
                 console.log("hi from openPuzzleByID, item:")
+                // const li = puzzleListAllItems[id];
                 const li = puzzleListAllItems[id];
                 console.log(li);
                 if (li) li.classList.remove('completed');
             }
+            UI.container.focus();
+            renderer.drawSudoku();
         }
-        _syncCompletedDigits();
+        _syncGameButtons();
         _onGameCellSelect();
+    }
+
+    // --- FUNCTIONS TO SYNC DOM ELEMENTS ---
+    function _syncGameButtons() {
+        // completeness gate can live in this check instead of inside the functions it calls
+        if (manager.loadedPuzzleIsComplete) {
+            _blockAllButtons();
+            return;
+        }
+
+        syncCompletedDigits();
+        syncHistoryControls();
     }
 
     function syncHistoryControls() {
         const historyPos = game.historyPos;
-
         // state for undo
+
         if (historyPos < 1) {
             UI.btn_undo?.classList.add('hidden');
         } else {
             UI.btn_undo?.classList.remove('hidden');
         }
-
         // state for redo
         if (historyPos >= game.gameHistory.length) {
             UI.btn_redo?.classList.add('hidden');
         } else {
             UI.btn_redo?.classList.remove('hidden');
         }
-
     }
 
-    function _blockAllButtons() {
-        manager.lastCompletedDigits.fill(1);
-        for (let i = 0; i < 10; i++) {
-            const d = i + 1;
-            UI.numpadByValue[d]?.classList.add('hidden');
-        }
-        UI.btn_redo?.classList.add('hidden');
-        UI.btn_undo?.classList.add('hidden');
-    }
 
-    function _syncCompletedDigits() {
-        if (manager.loadedPuzzleIsComplete) {
-            _blockAllButtons();
-            return;
-        }
-
+    function syncCompletedDigits() {
         const curr = analyzeBoard(game.cells, game.solution).completedDigits;
 
         for (let d = 0; d < 9; d++) {
@@ -315,23 +289,26 @@ export function createAppManager({ game, renderer, UI, solver }) {
             }
         }
         manager.lastCompletedDigits.set(curr);
-
-        syncHistoryControls();
     }
 
-    function resetCurrentPuzzle() {
-        if (manager.currentPuzzleID !== null) {
-            const id = manager.currentPuzzleID;
-            manager._openPuzzleByID(id, true);
 
+    function _blockAllButtons() {
+        manager.lastCompletedDigits.fill(-1);
+        for (let i = 0; i < 10; i++) {
+            const d = i + 1;
+            
+            UI.numpadByValue[i]?.classList.add('hidden');
         }
+        UI.btn_redo?.classList.add('hidden');
+        UI.btn_undo?.classList.add('hidden');
     }
+    // --- /FUNCTIONS TO SYNC DOM ELEMENTS ---
 
 
     // --- HANDLERS NOTIFIED BY GAME ---
     // handle cell writes
     function _onGameUpdate({ solved = false, cell, value }) {
-        _syncCompletedDigits();
+        _syncGameButtons();
         _onGameCellSelect();
         // console.log(`hello from gameUpdate, completedDigits:`, manager.lastCompletedDigits);
 
@@ -348,14 +325,14 @@ export function createAppManager({ game, renderer, UI, solver }) {
             console.log("----------------------");
             console.log("SOLVED THE PUZZLE");
             console.log("----------------------");
-            manager._handleGameWin();
+            _handleGameWin();
         }
     }
 
     // handle history steps
     function _onGameHistoryMove({ historyPos }) {
         if (this.currentPuzzleID !== null) storage.saveHistoryMove(manager.currentPuzzleID, historyPos, game.mistakesMade); // storage
-        _syncCompletedDigits();
+        _syncGameButtons();
     }
 
     // handle cell selection
@@ -363,8 +340,6 @@ export function createAppManager({ game, renderer, UI, solver }) {
         const num = game.currentCell;
         const givens = game.givens;
         const val = game.cells[num];
-        // console.log('m select cell:', num, givens);
-
 
         if (givens[num] || val === 0) {
             // console.log("select a cell that's given or empty (no erase)");
@@ -375,6 +350,26 @@ export function createAppManager({ game, renderer, UI, solver }) {
         }
     }
     // --- /HANDLERS NOTIFIED BY GAME ---
+    function _handleGameWin() {
+        // console.log("heyyy its me a game win in manager");
+        UI.boardWriteBlocked = true;
+        UI.boardInteractBlocked = true;
+
+
+        const li = puzzleListAllItems[manager.currentPuzzleID];
+        if (li) li.classList.add('completed');
+
+        // if (UI.numpadByValue[0]) console.log(`yes there's any erase button`);
+        UI.btn_erase?.classList.add('hidden');
+        UI.btn_undo?.classList.add('hidden');
+        UI.btn_redo?.classList.add('hidden');
+        console.log('added hidden to all 3 thangs')
+
+
+        renderer.drawSudoku({ showSelectedCell: false, showHighlighting: false });
+
+        manager._showWin();
+    }
 
     // 
 
@@ -455,23 +450,31 @@ export function createAppManager({ game, renderer, UI, solver }) {
 
 
 
-    // misc
+    // --- misc ---
+
+    function resetCurrentPuzzle() {
+        if (manager.currentPuzzleID !== null) {
+            const id = manager.currentPuzzleID;
+            manager._openPuzzleByID(id, true);
+        }
+    }
+
+    // get board from game and copy it to clipboard as 81-char string
     function copyBoardAsString() {
         const boardString = game.getBoardAsString();
         navigator.clipboard.writeText(boardString);
         console.log(`copied to clipboard: ${boardString}`);
 
-
+        // presuming we're using this designated button to action the copy, show feedback on it
         if (miscManagerStuff.btn_copyBoardAsString) {
-
             miscManagerStuff.btn_copyBoardAsString.classList.add('actioned');
             setTimeout(() => {
                 miscManagerStuff.btn_copyBoardAsString.classList.remove('actioned');
             }, 1000)
         }
-
     }
 
+    // use a dedicated pasteBox
     function pasteBoardAsString() {
         if (!miscManagerStuff.field_pasteBoardAsString) return;
 
@@ -508,42 +511,14 @@ export function createAppManager({ game, renderer, UI, solver }) {
     function resetBrowseListCurrent() {
         if (!puzzleListAllItems) return;
 
-        for (const el of Object.values(puzzleListAllItems)) {
-            el.classList.remove("loaded");
+        for (const id in puzzleListAllItems) {
+            const el = puzzleListAllItems[id];
+            el?.classList.remove("loaded");
         }
     }
 
 
-    // for "mark current" on the puzzle button AND its tabbage page
-    function assignBrowseListCurrent(id) {
-        const el = puzzleListAllItems?.[id];
-        if (!el) return;
 
-        el.classList.add("loaded");
-
-        if (miscManagerStuff.puzzleMenu) {
-            //
-            const switcher = miscManagerStuff.puzzleMenu;
-            const currentMenuItem = switcher.querySelector(`[data-puzzle-id="${id}"]`);
-            const currentPanel = currentMenuItem.closest('section.panel');        // <section data-panel="n">
-            // console.log(currentPanel);
-            setSwitcherActive(switcher, currentPanel.dataset.panel) // for tabbage pre-selection
-
-        }
-    }
-    // COULD CALL THIS "TABBAGE API"
-    function setSwitcherActive(root, key) {
-        const headers = root.querySelector("[data-switch-headers]");
-        const buttons = headers.querySelectorAll("[data-switch]");
-
-        buttons.forEach(b =>
-            b.classList.toggle("is-active", b.dataset.switch === key)
-        );
-
-        root.querySelectorAll("[data-panel]").forEach(p => {
-            p.hidden = p.dataset.panel !== key;
-        });
-    }
 
     function resetManagerUI() {
         clearWinModal();
